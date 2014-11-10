@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Aes.cpp" />
     <ClCompile Include="..\Shared\Guid.cpp" />
     <ClCompile Include="..\Shared\networkServices.cpp" />
     <ClCompile Include="..\Shared\Packet.cpp" />
@@ -132,6 +133,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\Aes.h" />
     <ClInclude Include="..\Shared\Guid.h" />
     <ClInclude Include="..\Shared\networkServices.h" />
     <ClInclude Include="..\Shared\Packet.h" />

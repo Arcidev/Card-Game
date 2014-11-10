@@ -1,11 +1,12 @@
 #include <cstdlib>
 #include "clientGame.h"
 #include "cardGame.h"
+#include "../Shared/Aes.h"
 
 ClientGame::ClientGame(CardGame* cardGame, QString const& playerName) : m_name(playerName), m_cardGame(cardGame)
 {
     Packet packet(CMSG_INIT_PACKET);
-    packet << playerName.toStdString();
+    packet << Aes::encrypt(playerName.toStdString().c_str());
     SendPacket(packet);
 }
 

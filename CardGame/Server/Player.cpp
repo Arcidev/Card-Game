@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "serverNetwork.h"
+#include "../Shared/Aes.h"
 #include "../Shared/Packet.h"
 #include "../Shared/networkServices.h"
 #include "../Shared/SharedDefines.h"
@@ -49,9 +50,6 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
     Packet packet(data, dataLength);
     while (packet.GetReadPosition() < dataLength)
     {
-        packet.encrypt();
-        packet.decrypt();
-
         uint16_t packetType;
         packet >> packetType;
 
@@ -74,6 +72,7 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
 void Player::handleInitPacket(Packet& packet)
 {
     packet >> m_name;
+    m_name = Aes::decrypt(m_name.c_str());
     sendInitResponse();
     if (m_game->IsFull())
         m_game->GetOpponent(this)->sendInitResponse();

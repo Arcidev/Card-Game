@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Multiplatform\NetworkCommunication.h" />
+    <ClInclude Include="..\Shared\Aes.h" />
     <ClInclude Include="..\Shared\Guid.h" />
     <ClInclude Include="..\Shared\OpenSSL\aes.h" />
     <ClInclude Include="..\Shared\OpenSSL\opensslconf.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="serverNetwork.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Aes.cpp" />
     <ClCompile Include="..\Shared\Guid.cpp" />
     <ClCompile Include="..\Shared\networkServices.cpp" />
     <ClCompile Include="..\Shared\Packet.cpp" />

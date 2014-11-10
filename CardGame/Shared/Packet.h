@@ -25,8 +25,6 @@ class Packet
         uint8_t m_curbitval;
         std::vector<uint8_t> m_storage;
 
-        void initialize();
-
         void append(uint8_t const* src, size_t cnt);
         template <typename T> void append(T value);
         template <typename T> T read(size_t pos);
@@ -56,7 +54,4 @@ class Packet
         Packet& operator >> (uint16_t& value);
         Packet& operator >> (uint8_t& value);
         Packet& operator >> (std::string& value);
-
-        void encrypt();
-        void decrypt();
 };

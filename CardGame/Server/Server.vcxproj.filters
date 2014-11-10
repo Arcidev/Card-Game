@@ -54,6 +54,9 @@
     <ClInclude Include="..\Shared\OpenSSL\opensslconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Shared\Aes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Shared\networkServices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Aes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
