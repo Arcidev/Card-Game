@@ -1,6 +1,9 @@
 #include <cstring>
 #include <stdexcept>
 #include "Packet.h"
+#include "OpenSSL/aes.h"
+
+#define AESKEY "yayayaIamLordeyayaya"
 
 Packet::Packet(uint32_t opcodeNumber) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
 {
@@ -12,13 +15,18 @@ Packet::Packet(char const* data, uint32_t length) : m_rpos(0), m_wpos(0), m_bitp
     append((uint8_t const*)data, length);
 }
 
-// Inicializes data in packet
-void Packet::Initialize(uint32_t opcodeNumber)
+void Packet::initialize()
 {
     m_wpos = 0;
     m_bitpos = 8;
     m_curbitval = 0;
     m_storage.clear();
+}
+
+// Inicializes data in packet
+void Packet::Initialize(uint32_t opcodeNumber)
+{
+    initialize();
     append<uint16_t>(opcodeNumber);
 }
 
@@ -187,4 +195,30 @@ Packet& Packet::operator >> (std::string& value)
     m_rpos += length;
 
     return *this;
+}
+
+void Packet::encrypt()
+{
+    unsigned char output[16];
+    AES_KEY AESkey;
+    AES_set_encrypt_key((unsigned const char*)AESKEY, 128, &AESkey);
+    AES_encrypt(&m_storage[0], output, &AESkey);
+    m_wpos = 0;
+    m_bitpos = 8;
+    m_curbitval = 0;
+    m_storage.clear();
+    append((uint8_t const*)output, 16);
+}
+
+void Packet::decrypt()
+{
+    unsigned char output[16];
+    AES_KEY AESkey;
+    AES_set_decrypt_key((unsigned const char*)AESKEY, 128, &AESkey);
+    AES_decrypt(&m_storage[0], output, &AESkey);
+    m_wpos = 0;
+    m_bitpos = 8;
+    m_curbitval = 0;
+    m_storage.clear();
+    append((uint8_t const*)output, 16);
 }

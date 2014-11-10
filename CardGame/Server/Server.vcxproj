@@ -60,6 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\Shared\libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,6 +79,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\Shared\libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -86,6 +88,8 @@
   <ItemGroup>
     <ClInclude Include="..\Multiplatform\NetworkCommunication.h" />
     <ClInclude Include="..\Shared\Guid.h" />
+    <ClInclude Include="..\Shared\OpenSSL\aes.h" />
+    <ClInclude Include="..\Shared\OpenSSL\opensslconf.h" />
     <ClInclude Include="..\Shared\Packet.h" />
     <ClInclude Include="..\Shared\networkServices.h" />
     <ClInclude Include="..\Shared\SharedDefines.h" />

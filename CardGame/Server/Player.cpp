@@ -49,6 +49,9 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
     Packet packet(data, dataLength);
     while (packet.GetReadPosition() < dataLength)
     {
+        packet.encrypt();
+        packet.decrypt();
+
         uint16_t packetType;
         packet >> packetType;
 
