@@ -7,5 +7,5 @@ int NetworkServices::sendMessage(SOCKET const& curSocket, uint8_t const* message
 
 int NetworkServices::receiveMessage(SOCKET const& curSocket, char* buffer, int bufSize)
 {
-    return recv(curSocket ,buffer, bufSize, 0);
+    return recv(curSocket, buffer, bufSize, 0);
 }

@@ -84,6 +84,7 @@
     <ClCompile Include="..\Shared\networkServices.cpp" />
     <ClCompile Include="..\Shared\Packet.cpp" />
     <ClCompile Include="..\Shared\Rsa.cpp" />
+    <ClCompile Include="..\Shared\Sha.cpp" />
     <ClCompile Include="cardgame.cpp" />
     <ClCompile Include="ChatWindow.cpp" />
     <ClCompile Include="clientGame.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="..\Shared\networkServices.h" />
     <ClInclude Include="..\Shared\Packet.h" />
     <ClInclude Include="..\Shared\Rsa.h" />
+    <ClInclude Include="..\Shared\Sha.h" />
     <ClInclude Include="..\Shared\SharedDefines.h" />
     <ClInclude Include="clientGame.h" />
     <ClInclude Include="clientNetwork.h" />

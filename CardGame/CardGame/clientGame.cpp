@@ -3,6 +3,7 @@
 #include "cardGame.h"
 #include "../Shared/Aes.h"
 #include "../Shared/Rsa.h"
+#include "../Shared/Sha.h"
 
 ClientGame::ClientGame(CardGame* cardGame, QString const& playerName) : m_name(playerName), m_cardGame(cardGame)
 {

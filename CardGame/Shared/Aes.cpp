@@ -3,7 +3,7 @@
 #include "Aes.h"
 #include "OpenSSL/aes.h"
 
-#define AESKEY "CakeIsALie"
+#define AESKEY "yayayaIamLordeyayaya"
 #define BYTE_SIZE 16
 #define BIT_SIZE 128
 
@@ -17,7 +17,7 @@ std::string Aes::Encrypt(std::string const& data)
     unsigned char output[BYTE_SIZE];
     AES_KEY AESkey;
     AES_set_encrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
-    for (uint32_t i = 0; i < (data.length() / BYTE_SIZE) + ((data.length() % BYTE_SIZE) ? 1 : 0); i++)
+    for (uint32_t i = 0; i < (data.size() / BYTE_SIZE) + ((data.size() % BYTE_SIZE) ? 1 : 0); i++)
     {
         AES_encrypt((unsigned const char*)data.c_str() + (BYTE_SIZE * i), output, &AESkey);
         value.resize(value.size() + BYTE_SIZE);
@@ -38,7 +38,7 @@ std::string Aes::Decrypt(std::string const& data)
     AES_KEY AESkey;
     AES_set_decrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
 
-    for (uint32_t i = 0; i < data.length() / BYTE_SIZE - 1; i++)
+    for (uint32_t i = 0; i < data.size() / BYTE_SIZE; i++)
     {
         AES_decrypt((unsigned const char*)data.c_str() + (16 * i), output, &AESkey);
         output[16] = '\0';
