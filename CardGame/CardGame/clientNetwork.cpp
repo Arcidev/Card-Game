@@ -29,7 +29,7 @@ ClientNetwork::ClientNetwork(void)
     hints.ai_protocol = IPPROTO_TCP;  //TCP connection!!!
 
     //resolve server address and port 
-    iResult = getaddrinfo("89.185.245.81", DEFAULT_PORT, &hints, &result);
+    iResult = getaddrinfo("localhost", DEFAULT_PORT, &hints, &result);
 
     if (iResult != 0)
     {
