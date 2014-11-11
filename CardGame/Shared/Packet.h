@@ -3,7 +3,7 @@
 #include <vector>
 #include "Guid.h"
 
-#define MAX_PACKET_SIZE 1000
+#define MAX_PACKET_SIZE 10000
 
 enum CMSGPackets
 {

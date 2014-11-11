@@ -6,7 +6,7 @@
 #pragma comment (lib, "Ws2_32.lib")
 #define InitWinsock(word, data) WSAStartup(word, data)
 #define CloseWinsock WSACleanup
-#define GetWinsockError() WSAGetLastError()
+#define GetSockError() WSAGetLastError()
 #define IoctlSocket ioctlsocket
 #endif // !_WIN32
 
@@ -15,13 +15,14 @@
 #include "sys/ioctl.h"
 #include "netdb.h"
 #include "netinet/tcp.h"
+#include "errno.h"
 #include <cstring>
 #define SOCKET int
 #define WSADATA int
 #define SD_BOTH 2
 #define InitWinsock(word, data) 0
 #define CloseWinsock [] () { }
-#define GetWinsockError() 0
+#define GetSockError() errno
 #define ZeroMemory(destination, length) memset((destination),0,(length))
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR   -1

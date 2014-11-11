@@ -1,6 +1,6 @@
-#include "serverNetwork.h"
-#include "Player.h"
 #include "Game.h"
+#include "Player.h"
+#include "serverNetwork.h"
 
 ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOCKET), ClientSocket(INVALID_SOCKET)
 {
@@ -13,7 +13,8 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
 
     // Initialize Winsock
     iResult = InitWinsock(MAKEWORD(2, 2), &wsaData);
-    if (iResult != 0) {
+    if (iResult != 0)
+    {
         printf("WSAStartup failed with error: %d\r\n", iResult);
         exit(1);
     }
@@ -27,7 +28,8 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     // Resolve the server address and port
     iResult = getaddrinfo(nullptr, DEFAULT_PORT, &hints, &result);
 
-    if (iResult != 0) {
+    if (iResult != 0)
+    {
         printf("Getaddrinfo failed with error: %d\r\n", iResult);
         CloseWinsock();
         exit(1);
@@ -36,8 +38,9 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     // Create a SOCKET for connecting to server
     ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-    if (ListenSocket == INVALID_SOCKET) {
-        printf("Socket failed with error: %ld\r\n", GetWinsockError());
+    if (ListenSocket == INVALID_SOCKET)
+    {
+        printf("Socket failed with error: %d\r\n", GetSockError());
         freeaddrinfo(result);
         CloseWinsock();
         exit(1);
@@ -47,8 +50,9 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     u_long iMode = 1;
     iResult = IoctlSocket(ListenSocket, FIONBIO, &iMode);
 
-    if (iResult == SOCKET_ERROR) {
-        printf("IoctlSocket failed with error: %d\r\n", GetWinsockError());
+    if (iResult == SOCKET_ERROR)
+    {
+        printf("IoctlSocket failed with error: %d\r\n", GetSockError());
         shutdown(ListenSocket, SD_BOTH);
         CloseWinsock();
         exit(1);
@@ -57,8 +61,9 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     // Setup the TCP listening socket
     iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 
-    if (iResult == SOCKET_ERROR) {
-        printf("Bind failed with error: %d\r\n", GetWinsockError());
+    if (iResult == SOCKET_ERROR)
+    {
+        printf("Bind failed with error: %d\r\n", GetSockError());
         freeaddrinfo(result);
         shutdown(ListenSocket, SD_BOTH);
         CloseWinsock();
@@ -71,8 +76,9 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     // start listening for new clients attempting to connect
     iResult = listen(ListenSocket, SOMAXCONN);
 
-    if (iResult == SOCKET_ERROR) {
-        printf("Listen failed with error: %d\r\n", GetWinsockError());
+    if (iResult == SOCKET_ERROR)
+    {
+        printf("Listen failed with error: %d\r\n", GetSockError());
         shutdown(ListenSocket, SD_BOTH);
         CloseWinsock();
         exit(1);
@@ -90,12 +96,15 @@ bool ServerNetwork::AcceptNewClient(unsigned int& id)
 {
     // if client waiting, accept the connection and save the socket
     ClientSocket = accept(ListenSocket, nullptr, nullptr);
-
     if (ClientSocket != INVALID_SOCKET)
     {
         // disable nagle on the client's socket
         char value = 1;
-        setsockopt(ClientSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
+        if (setsockopt(ClientSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) == SOCKET_ERROR)
+        {
+            printf("setsockopt failed with error: %d\r\n", GetSockError());
+            shutdown(ClientSocket, SD_BOTH);
+        }
 
         Game* game = nullptr;
         if (m_lastPlayer)

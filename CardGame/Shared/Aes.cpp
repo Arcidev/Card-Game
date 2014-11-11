@@ -1,43 +1,46 @@
 #include <cstdint>
+#include <cstring>
 #include "Aes.h"
+#include "OpenSSL/aes.h"
 
-#define AESKEY "yayayaIamLordeyayaya"
+#define AESKEY "CakeIsALie"
+#define BYTE_SIZE 16
+#define BIT_SIZE 128
 
-std::string Aes::encrypt(char const* data)
+std::string Aes::Encrypt(std::string const& data)
 {
-    uint32_t length = strlen(data);
-    if (!length)
+    if (data.empty())
         return "";
 
     std::string value;
 
-    unsigned char output[17];
+    unsigned char output[BYTE_SIZE];
     AES_KEY AESkey;
-    AES_set_encrypt_key((unsigned const char*)AESKEY, 128, &AESkey);
-    for (uint32_t i = 0; i < (length / 16) + ((length % 16) ? 1 : 0); i++)
+    AES_set_encrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
+    for (uint32_t i = 0; i < (data.length() / BYTE_SIZE) + ((data.length() % BYTE_SIZE) ? 1 : 0); i++)
     {
-        AES_encrypt((unsigned const char*)data + (16 * i), output, &AESkey);
-        output[16] = '\0';
-        value += (char*)output;
+        AES_encrypt((unsigned const char*)data.c_str() + (BYTE_SIZE * i), output, &AESkey);
+        value.resize(value.size() + BYTE_SIZE);
+        std::memcpy(&value[BYTE_SIZE * i], output, BYTE_SIZE);
     }
     
     return value;
 }
 
-std::string Aes::decrypt(char const* data)
+std::string Aes::Decrypt(std::string const& data)
 {
-    uint32_t length = strlen(data);
-    if (!length)
+    if (data.empty())
         return "";
 
     std::string value;
 
-    unsigned char output[17];
+    unsigned char output[BYTE_SIZE + 1];
     AES_KEY AESkey;
-    AES_set_decrypt_key((unsigned const char*)AESKEY, 128, &AESkey);
-    for (uint32_t i = 0; i < length / 16; i++)
+    AES_set_decrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
+
+    for (uint32_t i = 0; i < data.length() / BYTE_SIZE - 1; i++)
     {
-        AES_decrypt((unsigned const char*)data + (16 * i), output, &AESkey);
+        AES_decrypt((unsigned const char*)data.c_str() + (16 * i), output, &AESkey);
         output[16] = '\0';
         value += (char*)output;
     }

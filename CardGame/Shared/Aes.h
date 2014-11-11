@@ -1,10 +1,9 @@
 #pragma once
 #include <string>
-#include "OpenSSL/aes.h"
 
 class Aes
 {
     public:
-        static std::string encrypt(char const* data);
-        static std::string decrypt(char const* data);
+        static std::string Encrypt(std::string const& data);
+        static std::string Decrypt(std::string const& data);
 };

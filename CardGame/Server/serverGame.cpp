@@ -36,7 +36,9 @@ void ServerGame::receiveFromClients()
             continue;
         }
 
+        printf("Receiving From Client");
         iter->second->ReceivePacket(data_length, m_networkData);
+        printf("Received From Client");
         iter++;
     }
 }

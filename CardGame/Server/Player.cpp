@@ -67,12 +67,14 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
                 return;
         }
     }
+
+    printf("Receive Packet Function\r\n");
 }
 
 void Player::handleInitPacket(Packet& packet)
 {
     packet >> m_name;
-    m_name = Aes::decrypt(m_name.c_str());
+    m_name = Aes::Decrypt(m_name);
     sendInitResponse();
     if (m_game->IsFull())
         m_game->GetOpponent(this)->sendInitResponse();

@@ -89,10 +89,9 @@
     <ClInclude Include="..\Multiplatform\NetworkCommunication.h" />
     <ClInclude Include="..\Shared\Aes.h" />
     <ClInclude Include="..\Shared\Guid.h" />
-    <ClInclude Include="..\Shared\OpenSSL\aes.h" />
-    <ClInclude Include="..\Shared\OpenSSL\opensslconf.h" />
     <ClInclude Include="..\Shared\Packet.h" />
     <ClInclude Include="..\Shared\networkServices.h" />
+    <ClInclude Include="..\Shared\Rsa.h" />
     <ClInclude Include="..\Shared\SharedDefines.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="Game.h" />
@@ -105,6 +104,7 @@
     <ClCompile Include="..\Shared\Guid.cpp" />
     <ClCompile Include="..\Shared\networkServices.cpp" />
     <ClCompile Include="..\Shared\Packet.cpp" />
+    <ClCompile Include="..\Shared\Rsa.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="serverGame.cpp" />
