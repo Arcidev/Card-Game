@@ -9,13 +9,6 @@ ClientGame::ClientGame(CardGame* cardGame, QString const& playerName) : m_name(p
     Packet packet(CMSG_INIT_PACKET);
     packet << Aes::Encrypt(playerName.toStdString());
     SendPacket(packet);
-
-    std::string test = "trolololo";
-    test = Rsa::Encrypt(test, true);
-    test = Rsa::Decrypt(test, false);
-
-    test = Rsa::Encrypt(test, false);
-    test = Rsa::Decrypt(test, true);
 }
 
 void ClientGame::handleInitPacket(Packet& packet)

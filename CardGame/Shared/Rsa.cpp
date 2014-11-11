@@ -41,30 +41,25 @@ unsigned char privateKey[] = "-----BEGIN RSA PRIVATE KEY-----\n"\
 "uJSUVL5+CVjKLjZEJ6Qc2WZLl94xSwL71E41H4YciVnSCQxVc4Jw\n"\
 "-----END RSA PRIVATE KEY-----\n";
 
-int padding = RSA_PKCS1_PADDING;
+#define PADDING RSA_PKCS1_PADDING
 
 RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
 {
-    RSA *rsa = NULL;
-    BIO *keybio;
-    keybio = BIO_new_mem_buf(key, -1);
-    if (keybio == NULL)
+    RSA* rsa = nullptr;
+    BIO* keybio = BIO_new_mem_buf(key, -1);
+    if (!keybio)
     {
         printf("Failed to create key BIO");
-        return 0;
+        return nullptr;
     }
+
     if (isPublic)
-    {
         rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL);
-    }
     else
-    {
         rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
-    }
-    if (rsa == NULL)
-    {
+
+    if (!rsa)
         printf("Failed to create RSA");
-    }
 
     return rsa;
 }
@@ -75,10 +70,13 @@ std::string Rsa::Encrypt(std::string& data, bool isPublic)
         return "";
 
     char encrypted[4098];
-    RSA * rsa = createRSA(isPublic ? publicKey : privateKey, isPublic);
+    RSA* rsa = createRSA(isPublic ? publicKey : privateKey, isPublic);
+    if (!rsa)
+        return "";
+
     int(*encryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_encrypt : RSA_private_encrypt;
 
-    int encryptedLength = encryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)encrypted, rsa, padding);
+    int encryptedLength = encryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)encrypted, rsa, PADDING);
     if (encryptedLength == -1)
         return "";
 
@@ -95,10 +93,13 @@ std::string Rsa::Decrypt(std::string& data, bool isPublic)
         return "";
 
     char decrypted[4098];
-    RSA * rsa = createRSA(isPublic ? publicKey : privateKey, isPublic);
+    RSA* rsa = createRSA(isPublic ? publicKey : privateKey, isPublic);
+    if (!rsa)
+        return "";
+
     int(*decryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_decrypt : RSA_private_decrypt;
 
-    int decryptedLength = decryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)decrypted, rsa, padding);
+    int decryptedLength = decryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)decrypted, rsa, PADDING);
     if (decryptedLength == -1)
         return "";
 
