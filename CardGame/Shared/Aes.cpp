@@ -3,27 +3,32 @@
 #include "Aes.h"
 #include "OpenSSL/aes.h"
 
-#define AESKEY "yayayaIamLordeyayaya"
-#define BYTE_SIZE 16
+#define AESKEY "yayayaIamLordeya"
 #define BIT_SIZE 128
+
+std::vector<unsigned char> Aes::ivec = { 255, 254, 253, 252, 251, 250, 249, 248, 60, 61, 62, 63, 64,65, 66, 67 };
 
 std::string Aes::Encrypt(std::string const& data)
 {
     if (data.empty())
         return "";
 
-    std::string value;
+    unsigned char encryptionIvec[AES_BLOCK_SIZE];
+    std::memcpy(encryptionIvec, &ivec[0], AES_BLOCK_SIZE);
 
-    unsigned char output[BYTE_SIZE];
     AES_KEY AESkey;
     AES_set_encrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
-    for (uint32_t i = 0; i < (data.size() / BYTE_SIZE) + ((data.size() % BYTE_SIZE) ? 1 : 0); i++)
+    unsigned char buffer[AES_BLOCK_SIZE];
+    std::string value;
+
+    for (uint32_t i = 0; i < data.size(); i += AES_BLOCK_SIZE)
     {
-        AES_encrypt((unsigned const char*)data.c_str() + (BYTE_SIZE * i), output, &AESkey);
-        value.resize(value.size() + BYTE_SIZE);
-        std::memcpy(&value[BYTE_SIZE * i], output, BYTE_SIZE);
+        AES_cbc_encrypt((unsigned const char*)data.c_str() + i, buffer, ((i + AES_BLOCK_SIZE) < data.size()) ? AES_BLOCK_SIZE : (data.size() - i), &AESkey, encryptionIvec, AES_ENCRYPT);
+        value.resize(value.size() + AES_BLOCK_SIZE);
+        std::memcpy(&value[i], buffer, AES_BLOCK_SIZE);
+        std::memcpy(encryptionIvec, (unsigned const char*)data.c_str() + i, AES_BLOCK_SIZE);
     }
-    
+
     return value;
 }
 
@@ -32,17 +37,20 @@ std::string Aes::Decrypt(std::string const& data)
     if (data.empty())
         return "";
 
-    std::string value;
+    unsigned char decryptionIvec[AES_BLOCK_SIZE];
+    std::memcpy(decryptionIvec, &ivec[0], AES_BLOCK_SIZE);
 
-    unsigned char output[BYTE_SIZE + 1];
     AES_KEY AESkey;
     AES_set_decrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
+    unsigned char buffer[AES_BLOCK_SIZE + 1];
+    std::string value;
 
-    for (uint32_t i = 0; i < data.size() / BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < data.size(); i += AES_BLOCK_SIZE)
     {
-        AES_decrypt((unsigned const char*)data.c_str() + (16 * i), output, &AESkey);
-        output[16] = '\0';
-        value += (char*)output;
+        AES_cbc_encrypt((unsigned const char*)data.c_str() + i, buffer, AES_BLOCK_SIZE, &AESkey, decryptionIvec, AES_DECRYPT);
+        buffer[16] = '\0';
+        value += (char*)buffer;
+        std::memcpy(decryptionIvec, buffer, AES_BLOCK_SIZE);
     }
 
     return value;
