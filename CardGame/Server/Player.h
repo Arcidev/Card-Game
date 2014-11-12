@@ -20,6 +20,7 @@ class Player
         ServerNetwork* m_network;
         SOCKET m_socket;
         std::string m_name;
+        std::string m_AesKey;
 
         // Packets
         void handleInitPacket(Packet& packet);

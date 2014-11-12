@@ -12,6 +12,7 @@ class ClientGame
         QString m_name;
         ClientNetwork m_network;
         CardGame* m_cardGame;
+        std::string m_AesKey;
         char network_data[MAX_PACKET_SIZE];
         
         void handleInitPacket(Packet& packet);

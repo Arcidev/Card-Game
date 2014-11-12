@@ -8,7 +8,13 @@
 
 std::vector<unsigned char> Aes::ivec = { 255, 254, 253, 252, 251, 250, 249, 248, 60, 61, 62, 63, 64,65, 66, 67 };
 
-std::string Aes::Encrypt(std::string const& data)
+std::string Aes::GenerateKey()
+{
+    // TODO:
+    return AESKEY;
+}
+
+std::string Aes::Encrypt(std::string const& data, std::string const& key)
 {
     if (data.empty())
         return "";
@@ -17,7 +23,7 @@ std::string Aes::Encrypt(std::string const& data)
     std::memcpy(encryptionIvec, &ivec[0], AES_BLOCK_SIZE);
 
     AES_KEY AESkey;
-    AES_set_encrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
+    AES_set_encrypt_key((unsigned const char*)key.c_str(), BIT_SIZE, &AESkey);
     unsigned char buffer[AES_BLOCK_SIZE];
     std::string value;
 
@@ -32,7 +38,7 @@ std::string Aes::Encrypt(std::string const& data)
     return value;
 }
 
-std::string Aes::Decrypt(std::string const& data)
+std::string Aes::Decrypt(std::string const& data, std::string const& key)
 {
     if (data.empty())
         return "";
@@ -41,7 +47,7 @@ std::string Aes::Decrypt(std::string const& data)
     std::memcpy(decryptionIvec, &ivec[0], AES_BLOCK_SIZE);
 
     AES_KEY AESkey;
-    AES_set_decrypt_key((unsigned const char*)AESKEY, BIT_SIZE, &AESkey);
+    AES_set_decrypt_key((unsigned const char*)key.c_str(), BIT_SIZE, &AESkey);
     unsigned char buffer[AES_BLOCK_SIZE + 1];
     std::string value;
 

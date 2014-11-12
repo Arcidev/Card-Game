@@ -68,13 +68,13 @@
     <ClCompile Include="..\Shared\Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Aes.cpp">
+    <ClCompile Include="..\Crypto\Aes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Rsa.cpp">
+    <ClCompile Include="..\Crypto\Rsa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Sha.cpp">
+    <ClCompile Include="..\Crypto\Sha.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,13 +120,16 @@
     <ClInclude Include="..\Shared\SharedDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Aes.h">
+    <ClInclude Include="..\Crypto\Aes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Rsa.h">
+    <ClInclude Include="..\Crypto\Rsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Sha.h">
+    <ClInclude Include="..\Crypto\Sha.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Crypto\Keys\RSAPublicKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

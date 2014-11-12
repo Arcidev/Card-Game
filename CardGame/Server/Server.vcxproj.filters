@@ -48,13 +48,13 @@
     <ClInclude Include="..\Multiplatform\NetworkCommunication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Aes.h">
+    <ClInclude Include="..\Crypto\Aes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Rsa.h">
+    <ClInclude Include="..\Crypto\Rsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Sha.h">
+    <ClInclude Include="..\Crypto\Keys\RSAPrivateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,13 +86,10 @@
     <ClCompile Include="..\Shared\networkServices.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Aes.cpp">
+    <ClCompile Include="..\Crypto\Aes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Rsa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Shared\Sha.cpp">
+    <ClCompile Include="..\Crypto\Rsa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

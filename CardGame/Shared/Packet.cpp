@@ -149,8 +149,8 @@ Packet& Packet::operator << (float value)
 
 Packet& Packet::operator << (std::string value)
 {
-    *this << (uint8_t)value.length();
-    append((uint8_t*)value.c_str(), value.length());
+    *this << (uint16_t)value.size();
+    append((uint8_t*)value.c_str(), value.size());
     return *this;
 }
 
@@ -174,7 +174,7 @@ Packet& Packet::operator >> (uint8_t &value)
 
 Packet& Packet::operator >> (std::string& value)
 {
-    uint8_t length;
+    uint16_t length;
     *this >> length;
 
     if (m_rpos + length > m_storage.size())

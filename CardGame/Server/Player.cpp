@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "Game.h"
 #include "serverNetwork.h"
-#include "../Shared/Aes.h"
+#include "../Crypto/Aes.h"
+#include "../Crypto/Rsa.h"
+#include "../Crypto/Keys/RSAPrivateKey.h"
 #include "../Shared/Packet.h"
 #include "../Shared/networkServices.h"
 #include "../Shared/SharedDefines.h"
@@ -73,9 +75,12 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
 
 void Player::handleInitPacket(Packet& packet)
 {
+    packet >> m_AesKey;
+    m_AesKey = Rsa::Decrypt(m_AesKey, privateKey, false);
     packet >> m_name;
-    m_name = Aes::Decrypt(m_name);
+    m_name = Aes::Decrypt(m_name, m_AesKey);
     sendInitResponse();
+
     if (m_game->IsFull())
         m_game->GetOpponent(this)->sendInitResponse();
 }

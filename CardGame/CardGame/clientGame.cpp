@@ -1,14 +1,15 @@
 #include <cstdlib>
 #include "clientGame.h"
 #include "cardGame.h"
-#include "../Shared/Aes.h"
-#include "../Shared/Rsa.h"
-#include "../Shared/Sha.h"
+#include "../Crypto/Aes.h"
+#include "../Crypto/Rsa.h"
+#include "../Crypto/Keys/RSAPublicKey.h"
 
-ClientGame::ClientGame(CardGame* cardGame, QString const& playerName) : m_name(playerName), m_cardGame(cardGame)
+ClientGame::ClientGame(CardGame* cardGame, QString const& playerName) : m_name(playerName), m_cardGame(cardGame), m_AesKey(Aes::GenerateKey())
 {
     Packet packet(CMSG_INIT_PACKET);
-    packet << Aes::Encrypt(playerName.toStdString());
+    packet << Rsa::Encrypt(m_AesKey, publicKey, true);
+    packet << Aes::Encrypt(playerName.toStdString(), m_AesKey);
     SendPacket(packet);
 }
 
