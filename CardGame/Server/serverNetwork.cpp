@@ -98,14 +98,6 @@ bool ServerNetwork::AcceptNewClient(unsigned int& id)
     ClientSocket = accept(ListenSocket, nullptr, nullptr);
     if (ClientSocket != INVALID_SOCKET)
     {
-        // disable nagle on the client's socket
-        char value = 1;
-        if (setsockopt(ClientSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) == SOCKET_ERROR)
-        {
-            printf("setsockopt failed with error: %d\r\n", GetSockError());
-            shutdown(ClientSocket, SD_BOTH);
-        }
-
         Game* game = nullptr;
         if (m_lastPlayer)
         {
@@ -132,8 +124,7 @@ bool ServerNetwork::AcceptNewClient(unsigned int& id)
 // receive incoming data
 int ServerNetwork::ReceiveData(Player* player, char* recvbuf)
 {
-    SOCKET currentSocket = player->GetSocket();
-    iResult = NetworkServices::receiveMessage(currentSocket, recvbuf, MAX_PACKET_SIZE);
+    iResult = NetworkServices::receiveMessage(player->GetSocket(), recvbuf, MAX_PACKET_SIZE);
     return iResult;
 }
 

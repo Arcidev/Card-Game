@@ -85,10 +85,6 @@ ClientNetwork::ClientNetwork(void)
         WSACleanup();
         exit(1);
     }
-
-    //disable nagle
-    char value = 1;
-    setsockopt(ConnectSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
 }
 
 ClientNetwork::~ClientNetwork()

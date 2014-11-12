@@ -4,6 +4,7 @@
 #include "winsock2.h"
 #include "ws2tcpip.h"
 #pragma comment (lib, "Ws2_32.lib")
+#define MSG_DONTWAIT 0
 #define InitWinsock(word, data) WSAStartup(word, data)
 #define CloseWinsock WSACleanup
 #define GetSockError() WSAGetLastError()

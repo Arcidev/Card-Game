@@ -18,7 +18,8 @@ void ServerGame::update()
 
 void ServerGame::receiveFromClients()
 {
-    for (PlayerMap::iterator iter = m_network.GetPlayers().begin(); iter != m_network.GetPlayers().end();)
+    PlayerMap::iterator iter = m_network.GetPlayers().begin();
+    while (iter != m_network.GetPlayers().end())
     {
         // get data for that client
         int data_length = m_network.ReceiveData(iter->second, m_networkData);
@@ -36,9 +37,7 @@ void ServerGame::receiveFromClients()
             continue;
         }
 
-        printf("Receiving From Client");
         iter->second->ReceivePacket(data_length, m_networkData);
-        printf("Received From Client");
         iter++;
     }
 }

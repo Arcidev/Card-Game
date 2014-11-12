@@ -69,8 +69,6 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
                 return;
         }
     }
-
-    printf("Receive Packet Function\r\n");
 }
 
 void Player::handleInitPacket(Packet& packet)
