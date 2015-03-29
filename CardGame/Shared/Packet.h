@@ -8,14 +8,17 @@
 enum CMSGPackets
 {
     CMSG_INIT_PACKET = 1,
-    CMSG_CHAT_MESSAGE
-    
+    CMSG_CHAT_MESSAGE,
+    CMSG_SELECTED_CARDS
 };
 
 enum SMSGPackets
 {
     SMSG_INIT_RESPONSE = 1,
-    SMSG_CHAT_MESSAGE
+    SMSG_AVAILABLE_CARDS,
+    SMSG_CHAT_MESSAGE,
+    SMSG_WHISPER_FAILED,
+    SMSG_SELECT_CARDS_FAILED
 };
 
 class Packet
@@ -31,7 +34,7 @@ class Packet
 
     public:
         Packet(uint32_t opcodeNumber);
-        Packet(char const* data, uint32_t length);
+        Packet(std::string const& data);
         void Initialize(uint32_t opcodeNumber);
         void FlushBits();
         bool WriteBit(uint32_t bit);

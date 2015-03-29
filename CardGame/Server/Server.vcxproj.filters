@@ -57,6 +57,15 @@
     <ClInclude Include="..\Crypto\Keys\RSAPrivateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StaticHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -90,6 +99,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Crypto\Rsa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataHolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "serverNetwork.h"
+#include "StaticHelper.h"
 
 ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOCKET), ClientSocket(INVALID_SOCKET)
 {
@@ -132,6 +133,20 @@ void ServerNetwork::BroadcastPacket(Packet const* packet) const
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
         iter->second->SendPacket(packet);
+}
+
+bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const* packet) const
+{
+    for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
+    {
+        if (StaticHelper::CompareStringCaseInsensitive(iter->second->GetName(), playerName))
+        {
+            iter->second->SendPacket(packet);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void ServerNetwork::OnPlayerDisconnected(Player* player)

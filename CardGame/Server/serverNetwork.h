@@ -26,6 +26,7 @@ class ServerNetwork
         // receive incoming data
         int ReceiveData(Player* player, char* recvbuf);
         void BroadcastPacket(Packet const* packet) const;
+        bool SendPacketToPlayer(std::string const& playerName, Packet const* packet) const;
 
         PlayerMap& GetPlayers() { return m_players; }
         PlayerMap const& GetPlayers() const { return m_players; }

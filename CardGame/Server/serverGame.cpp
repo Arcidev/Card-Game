@@ -1,5 +1,6 @@
 #include "serverGame.h"
 #include "Player.h"
+#include "../Shared/SharedDefines.h"
 
 unsigned int ServerGame::m_clientId = 0;
 
@@ -8,8 +9,7 @@ void ServerGame::update()
     // get new clients
     if (m_network.AcceptNewClient(m_clientId))
     {
-        printf("Client %d has been connected to the server\n", m_clientId);
-
+        DEBUG_LOG("Client %d has been connected to the server\n", m_clientId);
         m_clientId++;
     }
 

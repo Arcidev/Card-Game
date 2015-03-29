@@ -8,6 +8,6 @@ class Rsa
         static RSA* createRSA(unsigned char* key, bool isPublic);
 
     public:
-        static std::string Encrypt(std::string& data, unsigned char* key, bool isPublic);
-        static std::string Decrypt(std::string& data, unsigned char* key, bool isPublic);
+        static std::string Encrypt(std::string const& data, unsigned char* key, bool isPublic);
+        static std::string Decrypt(std::string const& data, unsigned char* key, bool isPublic);
 };

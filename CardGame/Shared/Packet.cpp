@@ -7,9 +7,9 @@ Packet::Packet(uint32_t opcodeNumber) : m_rpos(0), m_wpos(0), m_bitpos(8), m_cur
     append<uint16_t>(opcodeNumber);
 }
 
-Packet::Packet(char const* data, uint32_t length) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
+Packet::Packet(std::string const& data) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
 {
-    append((uint8_t const*)data, length);
+    append((uint8_t const*)data.c_str(), data.size());
 }
 
 // Inicializes data in packet

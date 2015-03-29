@@ -1,11 +1,11 @@
+#include <stdexcept>
 #include "Player.h"
 #include "Game.h"
 #include "serverNetwork.h"
+#include "DataHolder.h"
+#include "PacketHandler.h"
 #include "../Crypto/Aes.h"
-#include "../Crypto/Rsa.h"
-#include "../Crypto/Keys/RSAPrivateKey.h"
 #include "../Shared/Packet.h"
-#include "../Shared/networkServices.h"
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_id(id), m_currentCard(nullptr), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
@@ -15,7 +15,7 @@ Player::~Player()
     m_game->RemovePlayer(m_id);
     m_network->OnPlayerDisconnected(this);
     shutdown(m_socket, SD_BOTH);
-    printf("Client %d: Connection closed\r\n", m_id);
+    DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
 void Player::Attack(Player* victim, uint64_t victimCardGuid)
@@ -49,66 +49,79 @@ inline Card* Player::GetCard(uint64_t cardGuid)
 
 void Player::ReceivePacket(uint32_t dataLength, char const* data)
 {
-    Packet packet(data, dataLength);
-    while (packet.GetReadPosition() < dataLength)
+    uint32_t readedData = 0;
+    
+    while (readedData < dataLength)
     {
-        uint16_t packetType;
-        packet >> packetType;
+        uint16_t packetLength;
+        std::memcpy(&packetLength, data + readedData, sizeof(uint16_t));
+        std::string networkData;
+        networkData.resize(packetLength);
+        std::memcpy(&networkData[0], data + sizeof(uint16_t) + readedData, packetLength);
 
-        printf("Client %d: sended packet %d\r\n", m_id, packetType);
-
-        switch (packetType)
+        Packet packet(Aes::Decrypt(networkData, m_AesKey));
+        try
         {
-            case CMSG_INIT_PACKET:
-                handleInitPacket(packet);
-                break;
-            case CMSG_CHAT_MESSAGE:
-                handlChatPacket(packet);
-                break;
-            default:
-                return;
+            uint16_t packetType;
+            packet >> packetType;
+
+            PacketHandlerFunc packetHandler = PacketHandler::GetPacketHandler(packetType);
+            if (packetHandler)
+                packetHandler(this, &packet);
         }
+        catch (std::out_of_range ex)
+        {
+            printf("Error occured while reading packet: %s\n", ex.what());
+        }
+
+        readedData += dataLength + sizeof(uint16_t);
     }
 }
 
-void Player::handleInitPacket(Packet& packet)
+void Player::SendAvailableCards() const
 {
-    packet >> m_AesKey;
-    m_AesKey = Rsa::Decrypt(m_AesKey, privateKey, false);
-    packet >> m_name;
-    m_name = Aes::Decrypt(m_name, m_AesKey);
-    sendInitResponse();
-
-    if (m_game->IsFull())
-        m_game->GetOpponent(this)->sendInitResponse();
-}
-
-void Player::handlChatPacket(Packet& packet)
-{
-    uint8_t chatId;
-    std::string message;
-    packet >> chatId;
-    packet >> message;
-
-    Packet pck(SMSG_CHAT_MESSAGE);
-    pck << chatId;
-    pck << m_name;
-    pck << message;
-
-    switch (chatId)
+    // can be static, always sending the same
+    CardsDataMap cards = DataHolder::GetCards();
+    Packet packet(SMSG_AVAILABLE_CARDS);
+    packet << (uint16_t)cards.size();
+    for (CardsDataMap::const_iterator iter = cards.begin(); iter != cards.end(); ++iter)
     {
-        case CHAT_GLOBAL:
-            m_network->BroadcastPacket(&pck);
-            break;
-        case CHAT_LOCAL:
-            m_game->BroadcastPacket(&pck);
-            break;
-        default:
-            break;
+        packet << iter->second.GetId();
+        packet << iter->second.GetType();
+        packet << iter->second.GetHealth();
+        packet << iter->second.GetDamage();
+        packet << iter->second.GetMana();
+        packet << iter->second.GetDefense();
     }
+
+    SendPacket(&packet);
 }
 
-void Player::sendInitResponse() const
+void Player::SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const
+{
+    Packet pck(success ? SMSG_CHAT_MESSAGE : SMSG_WHISPER_FAILED);
+
+    if (success)
+    {
+        pck << (uint8_t)CHAT_WHISPER_RESPONSE;
+        pck << receiver;
+        pck << message;
+    }
+    else
+        pck << receiver;
+    
+    SendPacket(&pck);
+}
+
+void Player::SendSelectCardsFailed(uint8_t failReason) const
+{
+    Packet packet(SMSG_SELECT_CARDS_FAILED);
+    packet << failReason;
+
+    SendPacket(&packet);
+}
+
+void Player::SendInitResponse() const
 {
     Packet pck(SMSG_INIT_RESPONSE);
     pck.WriteBit(m_game->IsFull());
@@ -125,5 +138,11 @@ void Player::sendInitResponse() const
 
 void Player::SendPacket(Packet const* packet) const
 {
-    NetworkServices::sendMessage(m_socket, &packet->GetStorage()[0], packet->GetStorage().size());
+    std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesKey);
+    uint16_t size = encrypted.length();
+    std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
+    std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
+    std::memcpy(&toSend[0] + sizeof(uint16_t), encrypted.c_str(), size);
+
+    NetworkServices::sendMessage(m_socket, &toSend[0], toSend.size());
 }

@@ -23,7 +23,7 @@ RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
     return rsa;
 }
 
-std::string Rsa::Encrypt(std::string& data, unsigned char* key, bool isPublic)
+std::string Rsa::Encrypt(std::string const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())
         return "";
@@ -46,7 +46,7 @@ std::string Rsa::Encrypt(std::string& data, unsigned char* key, bool isPublic)
     return value;
 }
 
-std::string Rsa::Decrypt(std::string& data, unsigned char* key, bool isPublic)
+std::string Rsa::Decrypt(std::string const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())
         return "";
