@@ -1,7 +1,0 @@
-#Ignore files build by Visual Studio
-*.suo
-*.sdf
-[Bb]uild*/
-[Ii]pch*/
-[Dd]ebug*/
-[Rr]elease*/

@@ -1,0 +1,163 @@
+﻿<Window x:Class="CardGameWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        Title="Card Game" Height="600" Width="1024"
+        Closing="MainWindow_Closing" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Assets/IconWarrior.png">
+
+    <Window.Resources>
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+        <Storyboard x:Key="FadeLstBox">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="666"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.8000000" Value="666"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.8000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Left}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static HorizontalAlignment.Right}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.8000000" Value="{x:Static HorizontalAlignment.Left}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+        </Storyboard>
+        <Storyboard x:Key="FadeLstBoxBack">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="666"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="666"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Right}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static HorizontalAlignment.Left}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.7000000" Value="{x:Static HorizontalAlignment.Right}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border  x:Name="Bd" SnapsToDevicePixels="true"  Background="#EEFFFFFF" BorderBrush="#FFCCCCCC"  RenderTransformOrigin="1,1" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                BorderThickness="1">
+                            <Grid>
+                                <Image x:Name="img" ToolTipService.Placement="Top"
+                                       Source="{Binding Path=Image}" Height="91" Stretch="Fill" Width="64">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" x:Name="scaleTrans"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <Image.ToolTip>
+                                        <ToolTip BorderBrush="{x:Null}" Background="{x:Null}" Effect="{x:Null}"
+                                                 DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}" HasDropShadow="False">
+                                            <Border Background="{x:Null}" VerticalAlignment="Center" Height="160" Margin="0" Width="100" HorizontalAlignment="Center">
+                                                <Grid Background="{x:Null}">
+                                                    <Image Source="Assets/thisimage.png" Stretch="Fill"/>
+                                                    <Border Margin="8,9.583,8,52.5" Width="82" Height="95.197">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush EndPoint="0.859,0.893" StartPoint="0.141,0.107">
+                                                                <GradientStop Color="#FF98C897" Offset="0"/>
+                                                                <GradientStop Color="#FFACE500" Offset="1"/>
+                                                                <GradientStop Color="#FFCFF163" Offset="0.289"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                        <Image Source="{Binding Path=Source}"/>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid Name="SlideShowGrid" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="700" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38"/>
+                <RowDefinition Height="97"/>
+                <RowDefinition/>
+                <RowDefinition Height="270"/>
+            </Grid.RowDefinitions>
+            <Image x:Name="imgMain" Margin="25,0,25,8" Grid.Row="3" Grid.Column="0" MaxWidth="600" MaxHeight="600"/>
+            <StackPanel Margin="0" Orientation="Horizontal"  Grid.Row="1" HorizontalAlignment="Center" Width="794.668" Grid.ColumnSpan="2">
+                <Button x:Name="BtnPrevious" Background="{x:Null}" BorderBrush="{x:Null}" Click="btnPrevious_Click">
+                    <Image Source="Assets/nback.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
+                </Button>
+                <Border Margin="0" Width="666" Background="#FF656161">
+                    <Grid x:Name="grid" Width="666" HorizontalAlignment="Right">
+                        <ListBox x:Name="Images" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}"  
+                             ItemsPanel="{DynamicResource ItemsPanelTemplate1}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemContainerStyle="{DynamicResource ListBoxItemStyle}" SelectionChanged="Images_SelectionChanged"
+                             HorizontalAlignment="Center" ItemsSource="{Binding}" Width="666">
+                        </ListBox>
+                    </Grid>
+                </Border>
+                <Button x:Name="BtnNext" HorizontalAlignment="Center" Click="btnNext_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Image Source="{Binding Path=Assets/nforward.png}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
+                </Button>
+            </StackPanel>
+            <TextBlock x:Name="CardName" Grid.Row="3" Grid.Column="1" Margin="0" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="CardDamage" Grid.Row="3" Grid.Column="1" Margin="0 25" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="CardHitPoints" Grid.Row="3" Grid.Column="1" Margin="0 50" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="CardMana" Grid.Row="3" Grid.Column="1" Margin="0 75" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="CardDefense" Grid.Row="3" Grid.Column="1" Margin="0 100" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
+            <Button Content="" Visibility="Hidden" Name="SelectCardButton" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="0, 125" VerticalAlignment="Top" Width="74" Click="SelectCardButton_Click"/>
+            <Button Content="Send" Visibility="Hidden" Name="SendCardsButton" HorizontalAlignment="Left" Margin="0,154,0,0" VerticalAlignment="Top" Width="74" Click="SendCardsButton_Click" Height="20" Grid.Row="3" Grid.Column="1"/>
+        </Grid>
+        <Button Name="LoginBox" Content="Login" HorizontalAlignment="Left" Height="60" Margin="412,450,0,0" VerticalAlignment="Top" Width="200" Click="LoginButtonClick"/>
+        <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="412,374,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" MaxLength="16" TextChanged="UserNameBox_Changed"/>
+        <Grid Visibility="Hidden" Name="CardDeckGrid">
+            <Grid Name="PlayerCardDeck" Margin="0,283,313,37">
+                <Image Source="Assets/CardBack.png" Name="PlayerCard1" Width="158" Margin="0,0,527,0"/>
+                <Image Source="Assets/CardBack.png" Name="PlayerCard2" Width="158" Margin="0,0,195,0"/>
+                <Image Source="Assets/CardBack.png" Name="PlayerCard3" Width="158" Margin="0,0,-137,0"/>
+                <Image Source="Assets/CardBack.png" Name="PlayerCard4" Width="158" Margin="0,0,-471,0"/>
+            </Grid>
+            <Grid Name="OpponentCardDeck" Margin="0,10,313,310" Height="252">
+                <Image Source="Assets/CardBack.png" Name="OpponentCard1" Width="158" Margin="0,0,527,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard2" Width="158" Margin="0,0,195,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard3" Width="158" Margin="0,0,-137,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard4" Width="158" Margin="0,0,-471,0"/>
+            </Grid>
+        </Grid>
+        <Grid Visibility="Hidden" Name="WaitingGrid" Margin="722,10,10,271">
+            <Image gif:ImageBehavior.AnimatedSource="Assets/Waiting.gif" />
+        </Grid>
+        <Grid Name="ChatTabGrid" Visibility="Hidden">
+            <TabControl Name="ChatTabControl" HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="332" Margin="674,330,0,0">
+                <TabItem Header="General">
+                    <Grid Background="#FFE5E5E5">
+                        <RichTextBox IsDocumentEnabled="True" Name="GeneralChatTab" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <TextBox Name="ChatTextBox" HorizontalAlignment="Left" Height="25" Margin="725,535,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="226" KeyDown="ChatTextBox_KeyDown"/>
+            <Button Name="ChatButton" Content="Send" HorizontalAlignment="Left" Margin="956,535,0,0" VerticalAlignment="Top" Width="50" Click="ChatButton_Click"/>
+            <Label Name="ChatActiveLabel" Content="Global:" Foreground="Green" HorizontalAlignment="Left" Margin="674,534,0,0" VerticalAlignment="Top" Width="46"/>
+        </Grid>
+    </Grid>
+</Window>
