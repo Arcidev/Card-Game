@@ -25,8 +25,11 @@ void ServerGame::receiveFromClients()
         int data_length = m_network.ReceiveData(iter->second, m_networkData);
         if (!data_length)
         {
-            delete iter->second;
+            Player* player = iter->second;
             iter = m_network.GetPlayers().erase(iter);
+            player->Disconnect();
+            if (player->GetGame()->IsEmpty())
+                delete player->GetGame();
             continue;
         }
 

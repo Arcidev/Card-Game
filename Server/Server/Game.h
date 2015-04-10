@@ -17,7 +17,8 @@ class Game
         ~Game();
 
         bool IsFull() const { return m_player1 && m_player2; }
-        void RemovePlayer(uint32_t playerID);
+        bool IsEmpty() const;
+        void DisconnectPlayer(uint32_t playerID);
         void AddPlayer(Player* player);
         void ActivateSecondPlayer();
 

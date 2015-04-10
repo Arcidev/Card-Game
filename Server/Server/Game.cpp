@@ -6,18 +6,29 @@ Game::Game() : m_activePlayerId(0), m_player1(nullptr), m_player2(nullptr), m_ne
 
 Game::~Game()
 {
+    if (m_player1)
+        delete m_player1;
 
+    if (m_player2)
+        delete m_player2;
 }
 
-void Game::RemovePlayer(uint32_t playerID)
+void Game::DisconnectPlayer(uint32_t playerID)
 {
+    Player* opponent = nullptr;
+    
     if (m_player1 && (playerID == m_player1->GetId()))
-        m_player1 = nullptr;
+        opponent = m_player2;
     else if (m_player2 && (playerID == m_player2->GetId()))
-        m_player2 = nullptr;
+        opponent = m_player1;
 
-    if (!m_player1 && !m_player2)
-        delete this;
+    if (opponent && !opponent->IsDisconnected())
+        opponent->SendPlayerDisconnected();
+}
+
+bool Game::IsEmpty() const
+{
+    return (!m_player1 || m_player1->IsDisconnected()) && (!m_player2 || m_player2->IsDisconnected());
 }
 
 void Game::AddPlayer(Player* player)

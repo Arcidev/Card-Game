@@ -22,7 +22,8 @@ namespace CardGameWPF.Network
             { SMSGPackets.SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER,    HandleSelectCardsWait       },
             { SMSGPackets.SMSG_SELECT_CARDS,                            HandleSelectCards           },
             { SMSGPackets.SMSG_DECK_CARDS,                              HandleDeckCards             },
-            { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          }
+            { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          },
+            { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    }
         };
 
         private static void HandleInitResponse(Packet packet, ClientGame game)
@@ -185,6 +186,11 @@ namespace CardGameWPF.Network
         private static void HandleActivePlayer(Packet packet, ClientGame game)
         {
 
+        }
+
+        private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
+        {
+            game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
         }
 
         public static Action<Packet, ClientGame> GetPacketHandler(SMSGPackets packetType)

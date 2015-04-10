@@ -9,11 +9,12 @@
 #include "Packet.h"
 #include "../Shared/SharedDefines.h"
 
-Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_id(id), m_currentCard(nullptr), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
+Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCard(nullptr), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
 
-Player::~Player()
+void Player::Disconnect()
 {
-    m_game->RemovePlayer(m_id);
+    m_isDisconnected = true;
+    m_game->DisconnectPlayer(m_id);
     m_network->OnPlayerDisconnected(this);
     shutdown(m_socket, SD_BOTH);
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
@@ -136,6 +137,12 @@ void Player::SendInitResponse() const
     }
 
     SendPacket(&pck);
+}
+
+void Player::SendPlayerDisconnected() const
+{
+    Packet packet(SMSG_PLAYER_DISCONNECTED);
+    SendPacket(&packet);
 }
 
 void Player::SendPacket(Packet const* packet) const
