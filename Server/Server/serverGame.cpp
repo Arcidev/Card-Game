@@ -4,6 +4,7 @@
 
 unsigned int ServerGame::m_clientId = 1;
 
+// Looking for new connections and data from connected clients
 void ServerGame::update()
 {
     // get new clients
@@ -16,6 +17,7 @@ void ServerGame::update()
     receiveFromClients();
 }
 
+// Receive data from all clients
 void ServerGame::receiveFromClients()
 {
     PlayerMap::iterator iter = m_network.GetPlayers().begin();
@@ -45,6 +47,7 @@ void ServerGame::receiveFromClients()
     }
 }
 
+// Infinite server pdate loop
 void ServerGame::Loop()
 {
     while (true)

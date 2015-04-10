@@ -11,6 +11,7 @@
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCard(nullptr), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
 
+// Set player state to disconnected
 void Player::Disconnect()
 {
     m_isDisconnected = true;
@@ -20,6 +21,7 @@ void Player::Disconnect()
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
+// Attacks enemy player
 void Player::Attack(Player* victim, uint64_t victimCardGuid)
 {
     Card* victimCard = victim->GetCard(victimCardGuid);
@@ -34,6 +36,7 @@ void Player::Attack(Player* victim, uint64_t victimCardGuid)
         victim->DestroyCard(victimCardGuid);
 }
 
+// Removes card from player deck
 void Player::DestroyCard(uint64_t cardGuid)
 {
     CardsMap::iterator iter = m_cards.find(cardGuid);
@@ -43,12 +46,14 @@ void Player::DestroyCard(uint64_t cardGuid)
     m_cards.erase(iter);
 }
 
+// Gets card from player deck
 inline Card* Player::GetCard(uint64_t cardGuid)
 {
     CardsMap::iterator iter = m_cards.find(cardGuid);
     return (iter == m_cards.end()) ? nullptr : &iter->second;
 }
 
+// Receive encrypted packet from client
 void Player::ReceivePacket(uint32_t dataLength, char const* data)
 {
     uint32_t readedData = 0;
@@ -61,6 +66,7 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
         networkData.resize(packetLength);
         std::memcpy(&networkData[0], data + sizeof(uint16_t) + readedData, packetLength);
 
+        // Inicializes readable packet with decrypted data
         Packet packet(Aes::Decrypt(networkData, m_AesKey));
         try
         {
@@ -80,6 +86,7 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
     }
 }
 
+// Sends all cards that are currently available to be played with
 void Player::SendAvailableCards() const
 {
     // can be static, always sending the same
@@ -99,6 +106,7 @@ void Player::SendAvailableCards() const
     SendPacket(&packet);
 }
 
+// Sends whisper response to sender
 void Player::SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const
 {
     Packet pck(success ? SMSG_CHAT_MESSAGE : SMSG_WHISPER_FAILED);
@@ -115,6 +123,7 @@ void Player::SendChatWhisperResponse(std::string const& message, std::string con
     SendPacket(&pck);
 }
 
+// Sends selection card has failed
 void Player::SendSelectCardsFailed(uint8_t failReason) const
 {
     Packet packet(SMSG_SELECT_CARDS_FAILED);
@@ -123,6 +132,7 @@ void Player::SendSelectCardsFailed(uint8_t failReason) const
     SendPacket(&packet);
 }
 
+// Sends info about opponent if is already connected
 void Player::SendInitResponse() const
 {
     Packet pck(SMSG_INIT_RESPONSE);
@@ -139,12 +149,14 @@ void Player::SendInitResponse() const
     SendPacket(&pck);
 }
 
+// Sends information about disconnected opponent
 void Player::SendPlayerDisconnected() const
 {
     Packet packet(SMSG_PLAYER_DISCONNECTED);
     SendPacket(&packet);
 }
 
+// Sends encrypted packet to client
 void Player::SendPacket(Packet const* packet) const
 {
     std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesKey);
@@ -156,6 +168,7 @@ void Player::SendPacket(Packet const* packet) const
     NetworkServices::sendMessage(m_socket, &toSend[0], toSend.size());
 }
 
+// Adds card into deck from existing template
 void Player::CreateCard(Card const& cardTemplate)
 {
     Card card(cardTemplate.GetId(), cardTemplate.GetType(), cardTemplate.GetHealth(), cardTemplate.GetDamage(), cardTemplate.GetMana(), cardTemplate.GetDefense());
@@ -165,12 +178,14 @@ void Player::CreateCard(Card const& cardTemplate)
     m_cardOrder.push_back(GetCard(card.GetGuid()));
 }
 
+// Set player state to prepared to play
 void Player::Prepare()
 {
     m_isPrepared = true;
     std::shuffle(m_cardOrder.begin(), m_cardOrder.end(), std::default_random_engine(rand()));
 }
 
+// Sends players card deck
 void Player::HandleDeckCards(bool addCard)
 {
     if (addCard && (!m_cardOrder.empty() || (m_currentCards.size() < MAX_CARDS_ON_DECK)))

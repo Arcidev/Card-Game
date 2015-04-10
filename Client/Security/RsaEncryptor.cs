@@ -35,6 +35,7 @@ namespace CardGameWPF.Security
         private static byte[] exponent = { 1, 0, 1 };
         private static RSACryptoServiceProvider rsa;
 
+        // Inicializes RSA instance
         public static void Inicialize()
         {
             if (rsa != null)
@@ -47,6 +48,7 @@ namespace CardGameWPF.Security
             rsa.ImportParameters(rsaParams);
         }
 
+        // Encrypts data
         public static byte[] Encrypt(string toEncrypt)
         {
             if (rsa == null)

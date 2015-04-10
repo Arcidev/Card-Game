@@ -4,6 +4,7 @@
 #include "DataHolder.h"
 #include "../Shared/SharedDefines.h"
 
+// Handle CMSG_SELECTED_CARDS packet
 void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 {
     uint32_t cardId;
@@ -12,6 +13,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     if (cardCount != MAX_CARDS_COUNT)
         player->SendSelectCardsFailed(INVALID_CARD_COUNT);
 
+    // In case it failed in packet sended before
     player->ClearCards();
     DEBUG_LOG("CMSG_SELECTED_CARDS:\n\tCardCount: %d\n", cardCount);
     CardsDataMap const& cards = DataHolder::GetCards();

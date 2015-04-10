@@ -27,14 +27,14 @@ namespace CardGameWPF.Network
             curBitVal = 0;
         }
 
-        public bool HasDataToRead { get { return (readData != null) && readData.PeekChar() != -1; } }
-
+        // Inicializes writeable packet
         public Packet(CMSGPackets opcodeNumber)
         {
             encrypt = opcodeNumber != CMSGPackets.CMSG_INIT_PACKET;
             Initialize(opcodeNumber);
         }
 
+        // Inicializes readable packet
         public Packet(byte[] data, int length)
         {
             inicialize();
@@ -71,6 +71,7 @@ namespace CardGameWPF.Network
             }
         }
 
+        // Writes guid byte stream in specified order
         public void WriteGuidByteStreamInOrder(Guid guid, params int[] indexes)
         {
             foreach (var index in indexes)
@@ -78,12 +79,14 @@ namespace CardGameWPF.Network
                     Write(guid[index]);
         }
 
+        // Writes guid bit stream in specified order
         public void WriteGuidBitStreamInOrder(Guid guid, params int[] indexes)
         {
             foreach (var index in indexes)
                 WriteBit(guid[index]);
         }
 
+        // Flushes bits from memory to stream
         public void FlushBits()
         {
             if (bitPos == 8)
@@ -108,33 +111,42 @@ namespace CardGameWPF.Network
             return ((curBitVal >> (7 - bitPos)) & 1) != 0;
         }
 
+        // Writes string value
         public void Write (string val)
 		{
 			writeData.Write((UInt16)val.Length);
             writeData.Write(System.Text.Encoding.ASCII.GetBytes(val));
 		}
 
+        // Reads Int16
         public Int16 ReadInt16() { return readData.ReadInt16(); }
 
+        // Reads Int32
         public Int32 ReadInt32() { return readData.ReadInt32(); }
 
+        // Reads UInt16
         public UInt16 ReadUInt16() { return readData.ReadUInt16(); }
 
+        // Reads UInt32
         public UInt32 ReadUInt32() { return readData.ReadUInt32(); }
 
+        // Reads byte
         public byte ReadByte() { return readData.ReadByte(); }
 
+        // Reads multiple bytes
         public byte[] ReadBytes()
         {
             var length = ReadUInt16();
             return readData.ReadBytes(length);
         }
 
+        // Reads string
         public string ReadString()
         {
             return System.Text.Encoding.ASCII.GetString(ReadBytes());
         }
 
+        // Reads guid byte stream in specified order
         public void ReadGuidByteStreamInOrder(Guid guid, params int[] indexes)
         {
             foreach (var index in indexes)
@@ -142,6 +154,7 @@ namespace CardGameWPF.Network
                     guid[index] = ReadByte();
         }
 
+        // Reads guid bit stream in specified order
         public void ReadGuidBitStreamInOrder(Guid guid, params int[] indexes)
         {
             foreach (var index in indexes)

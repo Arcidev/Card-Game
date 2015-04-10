@@ -18,21 +18,25 @@ namespace CardGameWPF.Game
             "whisper"
         };
 
+        // Writes syntax error into chat
         private static void FormatSyntaxError(ClientGame game, string correctSyntax)
         {
             game.Chat.Write(string.Format("Invalid syntax. Use: {0}", correctSyntax), ChatTypes.Info);
         }
 
+        // Writes invalid command into chat
         private static void WriteInvalidCommand(ClientGame game)
         {
             game.Chat.Write("Invalid command", ChatTypes.Info);
         }
 
+        // Lists all commands in chat
         private static void ListCommands(ClientGame game)
         {
             game.Chat.Write(string.Format("Possible commands:{0}{1}", LineSeparator, string.Join(LineSeparator, commands)), ChatTypes.Info);
         }
 
+        // Sends whisper message to server
         private static void HandleWhisperCommand(ClientGame game, string arg)
         {
             int commandDelimiter = arg.IndexOf(" ");
@@ -54,8 +58,10 @@ namespace CardGameWPF.Game
             game.SendChatMessage(message, ChatTypes.Whisper,receiverName);
         }
 
+        // Line separator
         public static string LineSeparator { get { return "\u2028"; } }
 
+        // Handle command written in chat
         public static void HandleCommand(string command, ClientGame game)
         {
             if (string.IsNullOrWhiteSpace(command))

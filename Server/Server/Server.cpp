@@ -5,7 +5,7 @@
 int main()
 {
     srand((unsigned int)time(nullptr)); // set seed on startup
-    DataHolder::LoadData();
+    DataHolder::LoadData(); // loads data from database
     ServerGame server;
     server.Loop();
 

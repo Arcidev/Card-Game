@@ -2,11 +2,13 @@
 #include <stdexcept>
 #include "Packet.h"
 
+// Inicializes writeable packet
 Packet::Packet(uint32_t opcodeNumber) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
 {
     append<uint16_t>(opcodeNumber);
 }
 
+// Inicializes readable packet
 Packet::Packet(std::string const& data) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
 {
     append((uint8_t const*)data.c_str(), data.size());
@@ -33,6 +35,7 @@ void Packet::FlushBits()
     m_bitpos = 8;
 }
 
+// Appends data into packet stream
 void Packet::append(uint8_t const* src, size_t cnt)
 {
     if (m_storage.size() < m_wpos + cnt)
@@ -59,6 +62,7 @@ bool Packet::WriteBit(uint32_t bit)
     return (bit != 0);
 }
 
+// Appends specified type as byte values
 template <typename T>
 void Packet::append(T value)
 {
@@ -66,6 +70,7 @@ void Packet::append(T value)
     append((uint8_t *)&value, sizeof(value));
 }
 
+// Gets specified type from byte values
 template <typename T>
 T Packet::read(size_t pos)
 {
@@ -109,6 +114,7 @@ void Packet::WriteGuidByteStreamInOrder(Guid guid, std::vector<uint8_t> indexOrd
     }
 }
 
+// Reads 1 bit from stream
 bool Packet::ReadBit()
 {
     ++m_bitpos;
@@ -128,25 +134,28 @@ Packet& Packet::operator << (uint32_t value)
     return *this;
 }
 
+// Stores uint16 value in stream
 Packet& Packet::operator << (uint16_t value)
 {
     append<uint16_t>(value);
     return *this;
 }
 
+// Stores uint8 value in stream
 Packet& Packet::operator << (uint8_t value)
 {
     append<uint8_t>(value);
     return *this;
 }
 
-
+// Stores float value in stream
 Packet& Packet::operator << (float value)
 {
     append<float>(value);
     return *this;
 }
 
+// Stores string and string length in stream
 Packet& Packet::operator << (std::string value)
 {
     *this << (uint16_t)value.size();
@@ -154,24 +163,28 @@ Packet& Packet::operator << (std::string value)
     return *this;
 }
 
+// Reads uint32 value from stream
 Packet& Packet::operator >> (uint32_t &value)
 {
     value = read<uint32_t>(m_rpos);
     return *this;
 }
 
+// Reads uint16 value from stream
 Packet& Packet::operator >> (uint16_t &value)
 {
     value = read<uint16_t>(m_rpos);
     return *this;
 }
 
+// Reads uint8 value from stream
 Packet& Packet::operator >> (uint8_t &value)
 {
     value = read<uint8_t>(m_rpos);
     return *this;
 }
 
+// Reads string and string length from stream
 Packet& Packet::operator >> (std::string& value)
 {
     uint16_t length;

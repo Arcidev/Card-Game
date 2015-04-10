@@ -15,6 +15,7 @@ namespace CardGameWPF.Security
 
         public static string Key { get; private set; }
 
+        // Incializes AES instance
         public static void Inicialize()
         {
             if (aes != null)
@@ -27,11 +28,13 @@ namespace CardGameWPF.Security
             aes.Padding = PaddingMode.Zeros;
         }
 
+        // Encrypts data
         public static byte[] Encrypt(string toEncrypt)
         {
             return Encrypt(System.Text.Encoding.ASCII.GetBytes(toEncrypt));
         }
 
+        // Encrypts data
         public static byte[] Encrypt(byte[] toEncrypt)
         {
             if (aes == null)
@@ -57,11 +60,13 @@ namespace CardGameWPF.Security
             return encodedText;
         }
 
+        // Decrypts data
         public static byte[] Decrypt(string toDecrypt)
         {
             return Decrypt(System.Text.Encoding.ASCII.GetBytes(toDecrypt), toDecrypt.Length);
         }
 
+        // Decrypts data
         public static byte[] Decrypt(byte[] toDecode, int length)
         {
             if (aes == null)

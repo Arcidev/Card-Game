@@ -8,6 +8,7 @@ PacketHandlerMap const PacketHandler::packetHandlers =
     { CMSG_SELECTED_CARDS, handleSelectedCardsPacket }
 };
 
+// Returns function that handle sended packet
 PacketHandlerFunc PacketHandler::GetPacketHandler(uint16_t packetId)
 {
     PacketHandlerMap::const_iterator iter = packetHandlers.find(packetId);

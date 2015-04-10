@@ -3,6 +3,7 @@
 #include "serverNetwork.h"
 #include "StaticHelper.h"
 
+// Creates network
 ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOCKET), ClientSocket(INVALID_SOCKET)
 {
     // create WSADATA object
@@ -86,16 +87,20 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     }
 }
 
+// Removes all resources
 ServerNetwork::~ServerNetwork()
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
+    {
+        iter->second->GetGame()->RemovePlayer(iter->second->GetId());
         delete iter->second;
+    }
 }
 
-// accept new connections
+// Accepts new connections
 bool ServerNetwork::AcceptNewClient(unsigned int& id)
 {
-    // if client waiting, accept the connection and save the socket
+    // if client is waiting, accept the connection and save the socket
     ClientSocket = accept(ListenSocket, nullptr, nullptr);
     if (ClientSocket != INVALID_SOCKET)
     {
@@ -129,12 +134,14 @@ int ServerNetwork::ReceiveData(Player* player, char* recvbuf)
     return iResult;
 }
 
+// Broadcasts packet to all clients
 void ServerNetwork::BroadcastPacket(Packet const* packet) const
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
         iter->second->SendPacket(packet);
 }
 
+// Sends packet to player searched by name
 bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const* packet) const
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
@@ -149,6 +156,7 @@ bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet con
     return false;
 }
 
+// Set last player to null if this player was the one last connected
 void ServerNetwork::OnPlayerDisconnected(Player* player)
 {
     if (m_lastPlayer && (player->GetId() == m_lastPlayer->GetId()))

@@ -5,6 +5,7 @@
 
 #define PADDING RSA_PKCS1_PADDING
 
+// Creates RSA key
 RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
 {
     RSA* rsa = nullptr;
@@ -23,6 +24,7 @@ RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
     return rsa;
 }
 
+// Encrypts data with RSA algorithm
 std::string Rsa::Encrypt(std::string const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())
@@ -46,6 +48,7 @@ std::string Rsa::Encrypt(std::string const& data, unsigned char* key, bool isPub
     return value;
 }
 
+// Decrypts data ecnrypted by RSA algorithm
 std::string Rsa::Decrypt(std::string const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())

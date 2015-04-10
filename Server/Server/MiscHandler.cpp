@@ -6,6 +6,7 @@
 #include "../Crypto/Rsa.h"
 #include "../Crypto/Keys/RSAPrivateKey.h"
 
+// Handle CMSG_INIT_PACKET packet
 void PacketHandler::handleInitPacket(Player* player, Packet* packet)
 {
     std::string aesKey;

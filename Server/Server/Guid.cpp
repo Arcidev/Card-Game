@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include "Guid.h"
 
+// Inicialize Guid object from uint64_t value
 Guid::Guid(uint64_t guid)
 {
     setByteValues(guid);

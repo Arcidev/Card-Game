@@ -19,6 +19,7 @@ namespace CardGameWPF.Network
             stream = tcpClnt.GetStream();
         }
 
+        // Sends packet to server
         public void SendPacket(Packet packet)
         {
             var encryptedData = packet.EnryptedData;
@@ -28,6 +29,7 @@ namespace CardGameWPF.Network
             packet.Dispose();
         }
 
+        // Receive data from server
         public byte[] ReceiveData()
         {
             if (stream.DataAvailable)
@@ -40,6 +42,7 @@ namespace CardGameWPF.Network
             return null;
         }
 
+        // Free all resources
         public void Dispose()
         {
             stream.Close();

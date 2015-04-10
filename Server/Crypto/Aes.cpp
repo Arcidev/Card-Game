@@ -3,17 +3,11 @@
 #include "Aes.h"
 #include "OpenSSL/aes.h"
 
-#define AESKEY "yayayaIamLordeya"
 #define BIT_SIZE 128
 
 std::vector<unsigned char> Aes::ivec = { 255, 254, 253, 252, 251, 250, 249, 248, 60, 61, 62, 63, 64,65, 66, 67 };
 
-std::string Aes::GenerateKey()
-{
-    // TODO:
-    return AESKEY;
-}
-
+// Encrypts data with AES algorithm
 std::string Aes::Encrypt(std::string const& data, std::string const& key)
 {
     if (data.empty() || key.empty())
@@ -37,6 +31,7 @@ std::string Aes::Encrypt(std::string const& data, std::string const& key)
     return value;
 }
 
+// Decrypts data ecnrypted by AES algorithm
 std::string Aes::Decrypt(std::string const& data, std::string const& key)
 {
     if (data.empty() || key.empty())

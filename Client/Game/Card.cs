@@ -35,6 +35,7 @@ namespace CardGameWPF.Game
         private static Point hpPosition = new Point(35.0, 920.0);
         private static Point defensePosition = new Point(640.0, 920.0);
 
+        // Creates card template
         private void createCardTemplateImage()
         {
             BitmapFrame cardTemplate = BitmapFrame.Create(new Uri("Assets/CardTemplate.png", UriKind.Relative));
@@ -63,6 +64,7 @@ namespace CardGameWPF.Game
             cardTemplateImage = bmp;
         }
 
+        // Reloads stats on card
         private void reloadStats()
         {
             if (cardTemplateImage == null)

@@ -4,6 +4,7 @@
 #include "serverNetwork.h"
 #include "../Shared/SharedDefines.h"
 
+// Handle CMSG_CHAT_MESSAGE packet
 void PacketHandler::handleChatPacket(Player* player, Packet* packet)
 {
     uint8_t chatId;

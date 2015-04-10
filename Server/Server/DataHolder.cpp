@@ -4,6 +4,7 @@
 
 CardsDataMap DataHolder::m_cards;
 
+// Callback for select from cards table
 int DataHolder::loadCardsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/)
 {
     if (argc != 6)
@@ -14,14 +15,16 @@ int DataHolder::loadCardsCallback(void* /*data*/, int argc, char** argv, char** 
     return 0;
 }
 
+// Loads cards info from database
 void DataHolder::loadCards(sqlite3* db)
 {
     char* errorMsg;
-    std::string sql = "SELECT * FROM Cards";
+    std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense FROM Cards";
     if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, 0, &errorMsg) != SQLITE_OK)
         printf("Error while loading cards\n");
 }
 
+// Loads all data from database
 bool DataHolder::LoadData()
 {
     sqlite3* db;

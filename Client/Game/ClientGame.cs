@@ -20,6 +20,7 @@ namespace CardGameWPF.Game
         private MainWindow mainWindow;
         private ChatHandler chat;
 
+        // Checks every 50ms for new packets form server in separated thread
         private void Update(Object source, ElapsedEventArgs e)
         {
             byte[] networkData = network.ReceiveData();
@@ -49,6 +50,7 @@ namespace CardGameWPF.Game
             Player = new Player(this, MainWindow.PlayerCard1, MainWindow.PlayerCard2, MainWindow.PlayerCard3, MainWindow.PlayerCard4) { Name = name };
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
 
+            // Sends init packet to server
             Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
             RsaEncryptor.Inicialize();
             AesEncryptor.Inicialize();
@@ -69,6 +71,7 @@ namespace CardGameWPF.Game
         public Player Player { get; set; }
         public Player Opponent { get; set; }
 
+        // Gets player by id
         public Player GetPlayer(UInt32 playerId)
         {
             var player = Player ?? Opponent;
@@ -78,12 +81,14 @@ namespace CardGameWPF.Game
             return (Player.Id == playerId) ? Player : Opponent;
         }
 
+        // Sends packet to server
         public void SendPacket(Packet packet) 
         { 
             if (network != null)
                 network.SendPacket(packet);
         }
 
+        // Removes all resources
         public void Dispose()
         {
             if (network != null)
@@ -95,6 +100,7 @@ namespace CardGameWPF.Game
             AesEncryptor.Clear();
         }
 
+        // Sends chat message packet to server
         public void SendChatMessage(string text, ChatTypes chatType, params string[] customParams)
         {
             if (chatType == ChatTypes.AutoSelect)
@@ -103,16 +109,19 @@ namespace CardGameWPF.Game
             chat.SendChatMessage(text, chatType, customParams);
         }
 
+        // Handle command written in chat
         public void HandleCommand(string command)
         {
             CommandHandler.HandleCommand(command, this);
         }
 
+        // Invokes action to UI thread
         public void Invoke(Action action)
         {
             mainWindow.Invoke(action);
         }
 
+        // Send selected cards to server
         public void SendSelectedCards()
         {
             Packet packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
@@ -128,6 +137,7 @@ namespace CardGameWPF.Game
             SendPacket(packet);
         }
 
+        // Shows card deck
         public void ShowCardDeck(bool showWaitGrid)
         {
             Invoke(new Action(delegate()

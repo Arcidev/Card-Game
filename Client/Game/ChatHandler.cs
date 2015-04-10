@@ -21,8 +21,10 @@ namespace CardGameWPF.Game
             ActiveChat = ChatTypes.Global;
         }
 
+        // Currently active chat
         public ChatTypes ActiveChat { get; set; }
 
+        // Returns chat color
         public Brush GetChatColor(ChatTypes chatType)
         {
             switch (chatType)
@@ -41,6 +43,7 @@ namespace CardGameWPF.Game
             }
         }
 
+        // Writes message into chat
         public void Write(string message, ChatTypes chatType)
         {
             Brush brush = GetChatColor(chatType);
@@ -54,11 +57,13 @@ namespace CardGameWPF.Game
             }));
         }
 
+        // Writes message as channel message into chat
         public void WriteChannelMessage(ChatTypes chatType, string message, string sender)
         {
             Write(string.Format("[{0}] {1}> {2}", chatType.GetDescription(), sender, message), chatType);
         }
 
+        // Sends chat message to server
         public void SendChatMessage(string text, ChatTypes chatType, params string[] customParams)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -73,6 +78,7 @@ namespace CardGameWPF.Game
             clientGame.SendPacket(packet);
         }
 
+        // Sets active chat
         public void SetActiveChat(ChatTypes chatType)
         {
             ActiveChat = chatType;

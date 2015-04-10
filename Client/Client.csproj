@@ -80,7 +80,6 @@
     </Compile>
     <Compile Include="Security\AesEncryptor.cs" />
     <Compile Include="Security\RsaEncryptor.cs" />
-    <Compile Include="UI\GifImage.cs" />
     <Compile Include="UI\SlideShow.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

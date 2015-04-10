@@ -26,6 +26,7 @@ namespace CardGameWPF.Network
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    }
         };
 
+        // Handle SMSG_INIT_RESPONSE packet
         private static void HandleInitResponse(Packet packet, ClientGame game)
         {
             bool hasOpponent = packet.ReadBit();
@@ -48,6 +49,7 @@ namespace CardGameWPF.Network
             game.Chat.Write(message, ChatTypes.Info);
         }
 
+        // Handle SMSG_AVAILABLE_CARDS packet
         private static void HandleAvailableCards(Packet packet, ClientGame game)
         {
             UInt16 cardsCount = packet.ReadUInt16();
@@ -61,6 +63,7 @@ namespace CardGameWPF.Network
             game.MainWindow.SlideShow.SetVisible(true);
         }
 
+        // Handle SMSG_CHAT_MESSAGE packet
         private static void HandleChatMessage(Packet packet, ClientGame game)
         {
             ChatTypes chatType = (ChatTypes)packet.ReadByte();
@@ -70,16 +73,19 @@ namespace CardGameWPF.Network
             game.Chat.WriteChannelMessage(chatType, message, senderName);
         }
 
+        // Handle SMSG_WHISPER_FAILED packet
         private static void HandleWhisperFailed(Packet packet, ClientGame game)
         {
             game.Chat.Write(string.Format("Player \"{0}\" not found", packet.ReadString()), ChatTypes.Info);
         }
 
+        // Handle SMSG_SELECT_CARDS_FAILED packet
         private static void HandleSelectCardsFailed(Packet packet, ClientGame game)
         {
             game.Chat.Write(string.Format("Selecting cards failed: {0}", ((SelectCardFailReason)packet.ReadByte()).GetDescription()), ChatTypes.Info);
         }
 
+        // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet
         private static void HandleSelectCardsWait(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
@@ -87,6 +93,7 @@ namespace CardGameWPF.Network
             game.Chat.Write("Waiting for another player to pick his cards", ChatTypes.Info);
         }
 
+        // Handle SMSG_SELECT_CARDS packet
         private static void HandleSelectCards(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
@@ -162,6 +169,7 @@ namespace CardGameWPF.Network
             game.Chat.Write("Game has started", ChatTypes.Info);
         }
 
+        // Handle SMSG_DECK_CARDS packet
         private static void HandleDeckCards(Packet packet, ClientGame game)
         {
             var cardsCount = packet.ReadByte();
@@ -183,16 +191,19 @@ namespace CardGameWPF.Network
             }
         }
 
+        // Handle SMSG_ACTIVE_PLAYER packet
         private static void HandleActivePlayer(Packet packet, ClientGame game)
         {
 
         }
 
+        // Handle SMSG_PLAYER_DISCONNECTED packet
         private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
         {
             game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
         }
 
+        // Returns function to handle packet
         public static Action<Packet, ClientGame> GetPacketHandler(SMSGPackets packetType)
         {
             return packetHandlers[packetType];

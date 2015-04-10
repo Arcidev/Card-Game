@@ -13,6 +13,7 @@ namespace CardGameWPF.Data
     {
         public static IEnumerable<Card> Cards { get; private set; }
 
+        // Loads cards from database
         public static void LoadData(IEnumerable<Card> cards)
         {
             using (SQLiteConnection connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))

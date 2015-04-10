@@ -1,6 +1,7 @@
 #include "Sha.h"
 #include "OpenSSL/sha.h"
 
+// Creates hash from data
 std::string Sha::CreateHash(std::string const& data)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
