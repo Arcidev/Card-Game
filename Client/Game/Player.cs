@@ -1,4 +1,5 @@
 ﻿using CardGameWPF.Data;
+using Client.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,21 @@ namespace CardGameWPF.Game
     {
         private ClientGame game;
         private Dictionary<UInt64, Card> cards;
-        private Image[] cardDeck;
+        private Pair<Card, Image>[] cardDeck;
 
         public UInt32 Id { get; set; }
 
         public string Name { get; set; }
 
-        public Player(ClientGame clientGame, Image card1, Image card2, Image card3, Image card4)
+        public Player(ClientGame clientGame, params Image[] imageLocations)
         {
             game = clientGame;
-            cardDeck = new Image[4];
-            cardDeck[0] = card1;
-            cardDeck[1] = card2;
-            cardDeck[2] = card3;
-            cardDeck[3] = card4;
+            cardDeck = new Pair<Card, Image>[imageLocations.Length];
+            for (int i = 0; i < imageLocations.Length; i++)
+            {
+                cardDeck[i] = new Pair<Card, Image>();
+                cardDeck[i].Second = imageLocations[i];
+            }
         }
 
         // Adds cards to player card deck
@@ -48,10 +50,45 @@ namespace CardGameWPF.Game
             Card card;
             if (cards.TryGetValue(cardGuid, out card))
             {
+                cardDeck[position].First = card;
                 Invoke(new Action(delegate() 
                 {
-                    cardDeck[position].Source = card.Image;
+                    cardDeck[position].Second.Source = card.Image;
                 }));
+            }
+        }
+
+        public void SetActivateState(UInt64 cardGuid)
+        {
+            foreach(var c in cardDeck)
+            {
+                var select = false;
+                if (c.First.Guid == cardGuid)
+                    select = true;
+
+                if (c.First.Selected != select)
+                {
+                    c.First.Selected = true;
+                    Invoke(new Action(delegate()
+                    {
+                        c.Second.Source = c.First.Image;
+                    }));
+                }
+            }
+        }
+
+        public void DeselectAllCards()
+        {
+            foreach (var c in cardDeck)
+            {
+                if (c.First.Selected)
+                {
+                    c.First.Selected = false;
+                    Invoke(new Action(delegate()
+                    {
+                        c.Second.Source = c.First.Image;
+                    }));
+                }
             }
         }
     }

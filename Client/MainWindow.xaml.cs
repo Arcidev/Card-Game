@@ -150,7 +150,7 @@ namespace CardGameWPF
                 return;
             }
 
-            SlideShow.SelectedCard.SelectCard(!SlideShow.SelectedCard.Selected);
+            SlideShow.SelectedCard.Selected = !SlideShow.SelectedCard.Selected;
             SetSelectCard(SlideShow.SelectedCard.Selected);
             SlideShow.LoadItems();
             imgMain.Source = SlideShow.SelectedCard.Image;

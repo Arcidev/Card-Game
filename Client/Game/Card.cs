@@ -16,7 +16,6 @@ namespace CardGameWPF.Game
     {
         private BitmapSource cardTemplateImage;
         private BitmapSource image;
-        private BitmapSource selectedImage;
 
         private static int creatureImageWidth = 656;
         private static int creatureImageHeight = 480;
@@ -91,6 +90,29 @@ namespace CardGameWPF.Game
             image = bmp;
         }
 
+        // Visually selects card
+        private BitmapSource SelectedCard()
+        {
+            DrawingVisual drawingVisual = new DrawingVisual();
+            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            {
+                // Card
+                drawingContext.DrawImage(image, new Rect(0, 0, image.PixelWidth, image.PixelHeight));
+
+                // Draw border
+                Pen pen = new Pen(Brushes.Yellow, 50.0);
+                drawingContext.DrawLine(pen, new Point(0, 0), new Point(image.Width, 0));
+                drawingContext.DrawLine(pen, new Point(image.Width, 0), new Point(image.Width, image.Height));
+                drawingContext.DrawLine(pen, new Point(image.Width, image.Height), new Point(0, image.Height));
+                drawingContext.DrawLine(pen, new Point(0, image.Height), new Point(0, 0));
+            }
+
+            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            bmp.Render(drawingVisual);
+
+            return bmp;
+        }
+
         public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
         {
             Id = id;
@@ -123,49 +145,19 @@ namespace CardGameWPF.Game
                 if (image == null)
                     reloadStats();
 
-                return selectedImage ?? image;
+                return Selected ? SelectedCard() : image;
             }
         }
 
         public string Name { get; set; }
-
-        // Visually selects card
-        public void SelectCard(bool select)
-        {
-            if (!select)
-            {
-                selectedImage = null;
-                return;
-            }
-
-            DrawingVisual drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-            {
-                // Card
-                drawingContext.DrawImage(Image, new Rect(0, 0, Image.PixelWidth, Image.PixelHeight));
-
-                // Draw border
-                Pen pen = new Pen(Brushes.Yellow, 50.0);
-                drawingContext.DrawLine(pen, new Point(0, 0), new Point(Image.Width, 0));
-                drawingContext.DrawLine(pen, new Point(Image.Width, 0), new Point(Image.Width, Image.Height));
-                drawingContext.DrawLine(pen, new Point(Image.Width, Image.Height), new Point(0, Image.Height));
-                drawingContext.DrawLine(pen, new Point(0, Image.Height), new Point(0, 0));
-            }
-
-            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
-            bmp.Render(drawingVisual);
-
-            selectedImage = bmp;
-        }
 
         // Unloads images from memory
         public void UnloadImages()
         {
             cardTemplateImage = null;
             image = null;
-            selectedImage = null;
         }
 
-        public bool Selected { get { return selectedImage != null; } }
+        public bool Selected { get; set; }
     }
 }

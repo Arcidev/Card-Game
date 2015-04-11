@@ -194,7 +194,17 @@ namespace CardGameWPF.Network
         // Handle SMSG_ACTIVE_PLAYER packet
         private static void HandleActivePlayer(Packet packet, ClientGame game)
         {
+            Guid cardGuid = new Guid();
+            packet.ReadGuidBitStreamInOrder(cardGuid, 7, 1, 2, 0, 3, 5, 4, 6);
 
+            packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
+            var activePlayerId = packet.ReadUInt32();
+            Player activePlayer = (game.Player.Id == activePlayerId) ? game.Player : game.Opponent;
+            Player nonActivePlayer = (game.Player.Id == activePlayerId) ? game.Opponent : game.Player;
+
+            packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
+            activePlayer.SetActivateState(cardGuid);
+            nonActivePlayer.DeselectAllCards();
         }
 
         // Handle SMSG_PLAYER_DISCONNECTED packet

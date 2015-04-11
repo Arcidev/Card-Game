@@ -20,7 +20,7 @@ class Player
         bool m_isDisconnected;
         uint32_t m_id;
         CardsMap m_cards;
-        Card* m_currentCard;
+        uint8_t m_currentCardIndex;
         Game* m_game;
         ServerNetwork* m_network;
         SOCKET m_socket;
@@ -32,14 +32,14 @@ class Player
 
         void SetEncryptionKey(std::string const& key) { m_AesKey = key; }
         void SetName(std::string const& name) { m_name = name; }
-        void SetCurrentCard(Card* card) { m_currentCard = card; }
+        void IncreaseCurrentCardIndex() { ++m_currentCardIndex; };
         void SendInitResponse() const;
         void SendAvailableCards() const;
         void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
         void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;
         void Attack(Player* victim, uint64_t victimCardGuid);
-        void Defense() { m_currentCard->Defend(); }
+        void Defense() { GetCurrentCard()->Defend(); }
         void Prepare();
         void DestroyCard(uint64_t cardGuid);
         void ClearCards() { m_cards.clear(); }
@@ -50,7 +50,7 @@ class Player
         void HandleDeckCards(bool addCard);
 
         Player* GetOpponent() const { return m_game->GetOpponent(this); }
-        Card* GetCurrentCard() const { return m_currentCard; }
+        Card* GetCurrentCard();
         CardsMap const& GetCards() { return m_cards; }
         Card* GetCard(uint64_t cardGuid);
         SOCKET GetSocket() const { return m_socket; }

@@ -9,7 +9,7 @@
 #include "Packet.h"
 #include "../Shared/SharedDefines.h"
 
-Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCard(nullptr), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
+Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
 
 // Set player state to disconnected
 void Player::Disconnect()
@@ -26,10 +26,10 @@ void Player::Attack(Player* victim, uint64_t victimCardGuid)
 {
     Card* victimCard = victim->GetCard(victimCardGuid);
 
-    if (!victimCard || !m_currentCard)
+    if (!victimCard)
         return;
 
-    uint32_t damage = m_currentCard->GetDamage() - victimCard->GetDefense();
+    uint32_t damage = GetCurrentCard()->GetDamage() - victimCard->GetDefense();
     victimCard->DealDamage(damage);
 
     if (!victimCard->IsAlive())
@@ -206,4 +206,13 @@ void Player::HandleDeckCards(bool addCard)
         packet.WriteGuidByteStreamInOrder(m_currentCards[i]->GetGuid(), std::vector<uint8_t> { 2, 1, 7, 6, 0, 5, 3, 4 });
     
     m_game->BroadcastPacket(&packet);
+}
+
+Card* Player::GetCurrentCard()
+{
+    if (m_currentCards.empty())
+        return nullptr;
+
+    m_currentCardIndex = m_currentCardIndex % m_currentCards.size();
+    return m_currentCards[m_currentCardIndex];
 }
