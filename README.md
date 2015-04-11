@@ -1,7 +1,9 @@
-# Card-Game
-
+Card-Game
+=========
 How to build and run:
+
   Windows:
+  
     Requirements:
       MS Visual Studio 2013
     How to run:
@@ -11,6 +13,7 @@ How to build and run:
       Client:
         Copy directory Client/Assets to directory where you have builded an executable (by default Client/Build/RealeaseOrDebug)
   UNIX-like systems:
+  
     Server:
       Minimal requirements:
         OpenSSL 1.0.1e
