@@ -68,7 +68,7 @@ namespace CardGameWPF.Game
 
                 if (c.First.Selected != select)
                 {
-                    c.First.Selected = true;
+                    c.First.Selected = select;
                     Invoke(new Action(delegate()
                     {
                         c.Second.Source = c.First.Image;
