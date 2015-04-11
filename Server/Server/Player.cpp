@@ -26,7 +26,7 @@ void Player::Attack(Player* victim, uint64_t victimCardGuid)
 {
     Card* victimCard = victim->GetCard(victimCardGuid);
 
-    if (!victimCard)
+    if (!victimCard || !GetCurrentCard())
         return;
 
     uint32_t damage = GetCurrentCard()->GetDamage() - victimCard->GetDefense();
