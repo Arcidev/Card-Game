@@ -1,8 +1,7 @@
 Card-Game
 =========
-How to build and run:
-
-  Windows:
+##How to build and run:
+  <b>Windows:</b>
   
     Requirements:
       MS Visual Studio 2013
@@ -12,7 +11,7 @@ How to build and run:
         Copy directory Server/Database to directory above an executable (by default Server/Build)
       Client:
         Copy directory Client/Assets to directory where you have builded an executable (by default Client/Build/RealeaseOrDebug)
-  UNIX-like systems:
+  <b>UNIX-like systems:</b>
   
     Server:
       Minimal requirements:
