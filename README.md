@@ -23,3 +23,8 @@ Card-Game
         Copy directory Server/Database to directory above an executable (by default Server)
     Client:
       Not officially supported yet
+      
+## Copyright
+<b>License:</b> GPL 3.0
+
+Read file [LICENSE](LICENSE)
