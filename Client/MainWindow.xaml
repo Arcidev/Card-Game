@@ -117,7 +117,7 @@
                     </Grid>
                 </Border>
                 <Button x:Name="BtnNext" HorizontalAlignment="Center" Click="btnNext_Click" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Image Source="{Binding Path=Assets/nforward.png}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
+                    <Image Source="Assets/nforward.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
                 </Button>
             </StackPanel>
             <TextBlock x:Name="CardName" Grid.Row="3" Grid.Column="1" Margin="0" TextWrapping="Wrap" Foreground="Black" FontSize="21.333" HorizontalAlignment="Left"/>
