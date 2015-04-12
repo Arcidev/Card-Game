@@ -27,4 +27,4 @@ Card-Game
 ## Copyright
 <b>License:</b> GPL 3.0
 
-Read file [LICENSE](LICENSE)
+Read file [LICENSE](LICENSE.md)
