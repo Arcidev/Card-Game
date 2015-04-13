@@ -1,0 +1,2 @@
+#!/bin/bash
+g++ -std=c++11 $@ -Wall -Wextra -lssl -lsqlite3 -o Build/server Server/PacketHandler.cpp Server/CardHandler.cpp Server/MiscHandler.cpp Server/ChatHandler.cpp Server/Card.cpp Server/StaticHelper.cpp Server/DataHolder.cpp Server/Game.cpp Server/Player.cpp Server/Server.cpp Server/serverGame.cpp Server/serverNetwork.cpp Server/Guid.cpp Server/networkServices.cpp Server/Packet.cpp Crypto/Aes.cpp Crypto/Rsa.cpp Crypto/Sha.cpp
