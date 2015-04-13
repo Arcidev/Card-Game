@@ -1,0 +1,18 @@
+language: cpp
+
+git:
+  depth: 1
+
+branches:
+  only:
+    - master
+
+compiler:
+  - gcc
+
+before_install:
+  - sudo apt-get install sqlite3 libsqlite3-dev
+  - sudo apt-get install openssl libssl-dev
+  
+script:
+  - Server/Build
