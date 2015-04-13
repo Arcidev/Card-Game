@@ -15,4 +15,5 @@ before_install:
   - sudo apt-get install libssl-dev
   
 script:
-  - Server/Build
+  - cd Server
+  - ./BUILD

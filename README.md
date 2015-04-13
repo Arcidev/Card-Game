@@ -8,7 +8,7 @@ Card-Game
 + MS Visual Studio = 12 (2013) (Windows only)
 
 ## Build Status
-# [![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game)
+[![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game)
 
 ##How to build and run:
   <b>Windows:</b>
