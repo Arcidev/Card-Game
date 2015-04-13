@@ -16,5 +16,5 @@ before_install:
   
 script:
   - cd Server
-  - sudo su
+  - chmod u+rx BUILD
   - ./BUILD
