@@ -16,4 +16,4 @@ before_install:
   
 script:
   - cd Server
-  - ./BUILD
+  - sudo ./BUILD
