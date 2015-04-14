@@ -5,20 +5,23 @@ git:
 
 branches:
   only:
-    - travis
+    - master
 
 compiler:
-  - clang
+  - g++
 
 before_install:
+  - echo "yes" | sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update
   - sudo apt-get install sqlite3 libsqlite3-dev
-  - sudo apt-get install libssl-dev
-  
-instal:
-  - sudo apt-get install -qq gcc-4.8 g++-4.8 
-  # We want to compile with g++ 4.8 when rather than the default g++
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+  - sudo apt-get install openssl libssl-dev
+  - sudo apt-get install build-essential libtool gcc-4.8 g++-4.8
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
+  - sudo update-alternatives --config gcc
+  - sudo update-alternatives --config g++
 script:
   - cd Server
+  - mkdir Build
   - chmod u+rx BUILD
   - ./BUILD
