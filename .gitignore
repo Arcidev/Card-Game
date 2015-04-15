@@ -1,7 +1,7 @@
 #Ignore files build by Visual Studio
 *.suo
 *.sdf
-[Bb]uild*/
+Server/[Bb]uild*/
 [Ii]pch*/
 [Dd]ebug*/
 [Rr]elease*/
