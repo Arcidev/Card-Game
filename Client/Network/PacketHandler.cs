@@ -26,6 +26,12 @@ namespace CardGameWPF.Network
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    }
         };
 
+        // Returns function to handle packet
+        public static Action<Packet, ClientGame> GetPacketHandler(SMSGPackets packetType)
+        {
+            return packetHandlers[packetType];
+        }
+
         // Handle SMSG_INIT_RESPONSE packet
         private static void HandleInitResponse(Packet packet, ClientGame game)
         {
@@ -54,9 +60,9 @@ namespace CardGameWPF.Network
         {
             UInt16 cardsCount = packet.ReadUInt16();
 
-            List<Card> cards = new List<Card>();
+            List<SelectableCard> cards = new List<SelectableCard>();
             for (UInt16 i = 0; i < cardsCount; i++)
-                cards.Add(new Card(packet.ReadUInt32(), (CreatureTypes)packet.ReadByte(), packet.ReadByte(), packet.ReadByte(), packet.ReadByte(), packet.ReadByte()));
+                cards.Add(new SelectableCard(packet.ReadUInt32(), (CreatureTypes)packet.ReadByte(), packet.ReadByte(), packet.ReadByte(), packet.ReadByte(), packet.ReadByte()));
 
             DataHolder.LoadData(cards);
             game.MainWindow.SlideShow.LoadItems();
@@ -121,10 +127,10 @@ namespace CardGameWPF.Network
             Player player1 = (game.Player.Id == senderId) ? game.Player : game.Opponent;
             Player player2 = (game.Player.Id == senderId) ? game.Opponent : game.Player;
 
-            List<Card> cards1 = new List<Card>();
-            List<Card> cards2 = new List<Card>();
+            List<PlayableCard> cards1 = new List<PlayableCard>();
+            List<PlayableCard> cards2 = new List<PlayableCard>();
 
-            for (var i = 0; i < count1; i++ )
+            for (var i = 0; i < count1; i++)
             {
                 packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0);
 
@@ -140,7 +146,7 @@ namespace CardGameWPF.Network
                 packet.ReadGuidByteStreamInOrder(guids1[i], 3);
 
                 byte mana = packet.ReadByte();
-                Card card = new Card(guids1[i], id, type, health, damage, mana, defense);
+                PlayableCard card = PlayableCard.Create(guids1[i], id, type, health, damage, mana, defense);
                 cards1.Add(card);
             }
 
@@ -158,7 +164,7 @@ namespace CardGameWPF.Network
 
                 packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
 
-                Card card = new Card(guids2[i], id, type, health, damage, mana, defense);
+                PlayableCard card = PlayableCard.Create(guids2[i], id, type, health, damage, mana, defense);
                 cards2.Add(card);
             }
 
@@ -203,20 +209,14 @@ namespace CardGameWPF.Network
             Player nonActivePlayer = (game.Player.Id == activePlayerId) ? game.Opponent : game.Player;
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
-            activePlayer.SetActivateState(cardGuid);
-            nonActivePlayer.DeselectAllCards();
+            nonActivePlayer.SetWaitingState();
+            activePlayer.SetActiveState(cardGuid);
         }
 
         // Handle SMSG_PLAYER_DISCONNECTED packet
         private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
         {
             game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
-        }
-
-        // Returns function to handle packet
-        public static Action<Packet, ClientGame> GetPacketHandler(SMSGPackets packetType)
-        {
-            return packetHandlers[packetType];
         }
     }
 }

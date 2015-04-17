@@ -20,6 +20,7 @@ before_install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
   - sudo update-alternatives --config gcc
   - sudo update-alternatives --config g++
+
 script:
   - cd Server
   - mkdir Build

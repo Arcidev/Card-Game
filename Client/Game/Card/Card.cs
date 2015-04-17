@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace CardGameWPF.Game
 {
-    public class Card
+    public abstract class Card
     {
         private BitmapSource cardTemplateImage;
         private BitmapSource image;
@@ -34,8 +34,45 @@ namespace CardGameWPF.Game
         private static Point hpPosition = new Point(35.0, 920.0);
         private static Point defensePosition = new Point(640.0, 920.0);
 
+        public bool Selected { get; set; }
+        public UInt32 Id { get; private set; }
+        public string Name { get; set; }
+        public CreatureTypes Type { get; private set; }
+        public byte Hp { get; private set; }
+        public byte Damage { get; private set; }
+        public byte Mana { get; private set; }
+        public byte Defense { get; private set; }
+        public string ImageUri { get; set; }
+        public BitmapSource Image
+        {
+            get
+            {
+                if (image == null)
+                    ReloadStats();
+
+                return Selected ? SelectedCard() : image;
+            }
+        }
+
+        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
+        {
+            Id = id;
+            Type = type;
+            Hp = hp;
+            Damage = damage;
+            Mana = mana;
+            Defense = defense;
+        }
+
+        // Unloads images from memory
+        public void UnloadImages()
+        {
+            cardTemplateImage = null;
+            image = null;
+        }
+
         // Creates card template
-        private void createCardTemplateImage()
+        private void CreateCardTemplateImage()
         {
             BitmapFrame cardTemplate = BitmapFrame.Create(new Uri("Assets/CardTemplate.png", UriKind.Relative));
             BitmapFrame creature = BitmapFrame.Create(new Uri(ImageUri, UriKind.Relative));
@@ -64,10 +101,10 @@ namespace CardGameWPF.Game
         }
 
         // Reloads stats on card
-        private void reloadStats()
+        private void ReloadStats()
         {
             if (cardTemplateImage == null)
-                createCardTemplateImage();
+                CreateCardTemplateImage();
 
             // Draws the images into a DrawingVisual component
             DrawingVisual drawingVisual = new DrawingVisual();
@@ -112,52 +149,5 @@ namespace CardGameWPF.Game
 
             return bmp;
         }
-
-        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
-        {
-            Id = id;
-            Type = type;
-            Hp = hp;
-            Damage = damage;
-            Mana = mana;
-            Defense = defense;
-        }
-
-        public Card(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
-            : this(id, type, hp, damage, mana, defense)
-        {
-            Guid = guid;
-        }
-
-        public UInt64 Guid { get; private set; }
-        public UInt32 Id { get; private set; }
-        public CreatureTypes Type { get; private set; }
-        public byte Hp { get; private set; }
-        public byte Damage { get; private set; }
-        public byte Mana { get; private set; }
-        public byte Defense { get; private set; }
-
-        public string ImageUri { get; set; }
-        public BitmapSource Image
-        {
-            get 
-            {
-                if (image == null)
-                    reloadStats();
-
-                return Selected ? SelectedCard() : image;
-            }
-        }
-
-        public string Name { get; set; }
-
-        // Unloads images from memory
-        public void UnloadImages()
-        {
-            cardTemplateImage = null;
-            image = null;
-        }
-
-        public bool Selected { get; set; }
     }
 }

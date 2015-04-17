@@ -20,27 +20,10 @@ namespace CardGameWPF.Game
         private MainWindow mainWindow;
         private ChatHandler chat;
 
-        // Checks every 50ms for new packets form server in separated thread
-        private void Update(Object source, ElapsedEventArgs e)
-        {
-            byte[] networkData = network.ReceiveData();
-            if (networkData != null)
-            {
-                while (networkData.Any())
-                {
-                    var length = BitConverter.ToUInt16(networkData, 0);
-                    networkData = networkData.Skip(sizeof(UInt16)).ToArray();
-                    Packet packet = new Packet(networkData, length);
-                    var packetHandler = PacketHandler.GetPacketHandler((SMSGPackets)packet.ReadUInt16());
-                    packetHandler(packet, this);
-                    packet.Dispose();
-
-                    networkData = networkData.Skip(length).ToArray();
-                }
-            }
-
-            timer.Start();
-        }
+        public MainWindow MainWindow { get { return mainWindow; } }
+        public ChatHandler Chat { get { return chat; } }
+        public Player Player { get; set; }
+        public Player Opponent { get; set; }
 
         public ClientGame(string name, MainWindow window)
         {
@@ -66,11 +49,6 @@ namespace CardGameWPF.Game
             timer.Start();
         }
 
-        public MainWindow MainWindow { get { return mainWindow; } }
-        public ChatHandler Chat { get { return chat; } }
-        public Player Player { get; set; }
-        public Player Opponent { get; set; }
-
         // Gets player by id
         public Player GetPlayer(UInt32 playerId)
         {
@@ -79,6 +57,21 @@ namespace CardGameWPF.Game
                 return null;
 
             return (Player.Id == playerId) ? Player : Opponent;
+        }
+
+        // Gets opponent to player by id
+        public Player GetOpponent(UInt32 playerId)
+        {
+            var player = Player ?? Opponent;
+            if (player == null)
+                return null;
+
+            return (Player.Id == playerId) ? Opponent : Player;
+        }
+
+        public bool IsOpponent(UInt32 playerId)
+        {
+            return (Opponent != null) && (Opponent.Id == playerId);
         }
 
         // Sends packet to server
@@ -152,6 +145,28 @@ namespace CardGameWPF.Game
         {
             MainWindow.SlideShow.UnloadItems();
             DataHolder.UnloadData();
+        }
+
+        // Checks every 50ms for new packets form server in separated thread
+        private void Update(Object source, ElapsedEventArgs e)
+        {
+            byte[] networkData = network.ReceiveData();
+            if (networkData != null)
+            {
+                while (networkData.Any())
+                {
+                    var length = BitConverter.ToUInt16(networkData, 0);
+                    networkData = networkData.Skip(sizeof(UInt16)).ToArray();
+                    Packet packet = new Packet(networkData, length);
+                    var packetHandler = PacketHandler.GetPacketHandler((SMSGPackets)packet.ReadUInt16());
+                    packetHandler(packet, this);
+                    packet.Dispose();
+
+                    networkData = networkData.Skip(length).ToArray();
+                }
+            }
+
+            timer.Start();
         }
     }
 }

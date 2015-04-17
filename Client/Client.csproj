@@ -73,6 +73,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Game\Card\DefensiveCard.cs" />
+    <Compile Include="Game\Card\MeleeCard.cs" />
+    <Compile Include="Game\Card\PlayableCard.cs" />
+    <Compile Include="Game\Card\RangedCard.cs" />
+    <Compile Include="Game\Card\SelectableCard.cs" />
     <Compile Include="Misc\GenericNumberMethodTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -97,7 +102,7 @@
     <Compile Include="Enums\EnumExtension.cs" />
     <Compile Include="Enums\SelectCardFailReason.cs" />
     <Compile Include="Enums\SMSGPackets.cs" />
-    <Compile Include="Game\Card.cs" />
+    <Compile Include="Game\Card\Card.cs" />
     <Compile Include="Game\ChatHandler.cs" />
     <Compile Include="Game\ClientGame.cs" />
     <Compile Include="Game\CommandHandler.cs" />

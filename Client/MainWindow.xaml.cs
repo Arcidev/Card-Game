@@ -30,6 +30,8 @@ namespace CardGameWPF
         private ClientGame game;
         private int selectedCardCount;
 
+        public SlideShow SlideShow { get; private set; }
+
         public MainWindow()
         {
             userName = "";
@@ -38,7 +40,18 @@ namespace CardGameWPF
             InitializeComponent();
         }
 
-        public SlideShow SlideShow { get; private set; }
+        public void Invoke(Action action)
+        {
+            Dispatcher.Invoke(action);
+        }
+
+        public void SetSelectCard(bool selected)
+        {
+            if (!SelectCardButton.IsVisible)
+                SelectCardButton.Visibility = Visibility.Visible;
+
+            SelectCardButton.Content = selected ? "Unselect" : "Select";
+        }
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
         {
@@ -90,11 +103,6 @@ namespace CardGameWPF
                 game.SendChatMessage(ChatTextBox.Text, ChatTypes.AutoSelect);
 
             ChatTextBox.Text = String.Empty;
-        }
-
-        public void Invoke(Action action)
-        {
-            Dispatcher.Invoke(action);
         }
 
         private void ChatTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -157,12 +165,20 @@ namespace CardGameWPF
             HandleSelectCardCount();
         }
 
-        public void SetSelectCard(bool selected)
+        private void OnMouseEnterOpponentCard(object sender, MouseEventArgs e)
         {
-            if (!SelectCardButton.IsVisible)
-                SelectCardButton.Visibility = Visibility.Visible;
+            if (!game.Player.IsActive)
+                return;
 
-            SelectCardButton.Content = selected ? "Unselect" : "Select";
+            Image image = sender as Image;
+            Card card = game.Opponent.GetCardByImageControlName(image.Name);
+            if ((card != null) && card.Selected)
+                Cursor = Cursors.Hand;
+        }
+
+        private void OnMouseLeaveOpponentCard(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Arrow;
         }
     }
 }
