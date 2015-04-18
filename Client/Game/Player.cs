@@ -1,5 +1,5 @@
-﻿using CardGameWPF.Data;
-using CardGameWPF.Enums;
+﻿using Client.Data;
+using Client.Enums;
 using Client.Misc;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public class Player
     {

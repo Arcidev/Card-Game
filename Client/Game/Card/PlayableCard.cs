@@ -1,11 +1,11 @@
-﻿using CardGameWPF.Enums;
+﻿using Client.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public abstract class PlayableCard : Card
     {

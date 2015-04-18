@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-namespace CardGameWPF.Network
+namespace Client.Network
 {
 	public partial class Packet
 	{

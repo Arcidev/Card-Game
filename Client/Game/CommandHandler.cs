@@ -1,4 +1,4 @@
-﻿using CardGameWPF.Enums;
+﻿using Client.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public static class CommandHandler
     {

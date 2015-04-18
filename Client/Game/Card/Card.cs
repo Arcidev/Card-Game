@@ -1,5 +1,5 @@
-﻿using CardGameWPF.Data;
-using CardGameWPF.Enums;
+﻿using Client.Data;
+using Client.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public abstract class Card
     {

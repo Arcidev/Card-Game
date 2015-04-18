@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CardGameWPF.Network;
-using CardGameWPF.Security;
-using CardGameWPF.Enums;
+using Client.Network;
+using Client.Security;
+using Client.Enums;
 using System.Timers;
 using System.Windows.Controls;
-using CardGameWPF.Data;
+using Client.Data;
 using System.Windows;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public class ClientGame : IDisposable
     {

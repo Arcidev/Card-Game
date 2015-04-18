@@ -1,4 +1,4 @@
-﻿using CardGameWPF.Game;
+﻿using Client.Game;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace CardGameWPF.Data
+namespace Client.Data
 {
     public static class DataHolder
     {

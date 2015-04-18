@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGameWPF.Enums
+namespace Client.Enums
 {
     public static class EnumExtension
     {

@@ -1,5 +1,5 @@
-﻿using CardGameWPF.Enums;
-using CardGameWPF.Network;
+﻿using Client.Enums;
+using Client.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace CardGameWPF.Game
+namespace Client.Game
 {
     public class ChatHandler
     {

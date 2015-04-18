@@ -13,12 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CardGameWPF.Game;
+using Client.Game;
 using System.ComponentModel;
-using CardGameWPF.Enums;
-using CardGameWPF.UI;
+using Client.Enums;
+using Client.UI;
 
-namespace CardGameWPF
+namespace Client
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

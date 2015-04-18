@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGameWPF.Network
+namespace Client.Network
 {
     public class Guid
     {

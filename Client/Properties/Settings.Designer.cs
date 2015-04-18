@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CardGameWPF.Properties
+namespace Client.Properties
 {
 
 

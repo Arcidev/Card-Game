@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace CardGameWPF.Security
+namespace Client.Security
 {
     public static class RsaEncryptor
     {

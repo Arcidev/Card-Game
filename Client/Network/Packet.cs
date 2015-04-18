@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CardGameWPF.Enums;
-using CardGameWPF.Security;
+using Client.Enums;
+using Client.Security;
 
-namespace CardGameWPF.Network
+namespace Client.Network
 {
     public partial class Packet : IDisposable
     {

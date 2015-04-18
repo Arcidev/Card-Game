@@ -1,6 +1,6 @@
-﻿using CardGameWPF.Data;
-using CardGameWPF.Enums;
-using CardGameWPF.Game;
+﻿using Client.Data;
+using Client.Enums;
+using Client.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
-namespace CardGameWPF.UI
+namespace Client.UI
 {
     public class SlideShow
     {

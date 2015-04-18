@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGameWPF.Enums
+namespace Client.Enums
 {
     public enum ChatTypes
     {

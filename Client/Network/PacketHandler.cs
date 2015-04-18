@@ -1,6 +1,6 @@
-﻿using CardGameWPF.Data;
-using CardGameWPF.Enums;
-using CardGameWPF.Game;
+﻿using Client.Data;
+using Client.Enums;
+using Client.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace CardGameWPF.Network
+namespace Client.Network
 {
     public static class PacketHandler
     {

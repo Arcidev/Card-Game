@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 
-namespace CardGameWPF.Network
+namespace Client.Network
 {
     public class ClientNetwork : IDisposable
     {
