@@ -9,6 +9,13 @@ namespace Client.Game
 {
     public abstract class PlayableCard : Card
     {
+        private static readonly Dictionary<CreatureTypes, Type> derrivedClasses = new Dictionary<CreatureTypes, Type>()
+        {
+            { CreatureTypes.Melee,      typeof(MeleeCard)       },
+            { CreatureTypes.Ranged,     typeof(RangedCard)      },
+            { CreatureTypes.Defensive,  typeof(DefensiveCard)   }
+        };
+
         public UInt64 Guid { get; private set; }
 
         protected PlayableCard(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
@@ -19,17 +26,7 @@ namespace Client.Game
 
         public static PlayableCard Create(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
         {
-            switch(type)
-            {
-                case CreatureTypes.Melee:
-                    return new MeleeCard(guid, id, type, hp, damage, mana, defense);
-                case CreatureTypes.Ranged:
-                    return new RangedCard(guid, id, type, hp, damage, mana, defense);
-                case CreatureTypes.Defensive:
-                    return new DefensiveCard(guid, id, type, hp, damage, mana, defense);
-                default:
-                    throw new InvalidOperationException("Can't create instance of invalid type");
-            }
+            return Activator.CreateInstance(derrivedClasses[type], guid, id, type, hp, damage, mana, defense) as PlayableCard;
         }
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);
