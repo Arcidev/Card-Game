@@ -16,16 +16,10 @@ namespace CardGameWPF.Network
         private MemoryStream memoryStream;
         private bool encrypt;
 
-        int bitPos;
-        byte curBitVal;
+        private int bitPos;
+        private byte curBitVal;
 
-        public const int MaxPacketSize = 10000;
-
-        private void inicialize()
-        {
-            bitPos = 8;
-            curBitVal = 0;
-        }
+        public static readonly int MaxPacketSize = 10000;
 
         // Inicializes writeable packet
         public Packet(CMSGPackets opcodeNumber)
@@ -174,6 +168,12 @@ namespace CardGameWPF.Network
                 writeData.Close();
             if (memoryStream != null)
                 memoryStream.Close();
+        }
+
+        private void inicialize()
+        {
+            bitPos = 8;
+            curBitVal = 0;
         }
     }
 }

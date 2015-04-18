@@ -15,14 +15,14 @@ namespace CardGameWPF.Game
     {
         private ClientGame clientGame;
 
+        // Currently active chat
+        public ChatTypes ActiveChat { get; set; }
+
         public ChatHandler(ClientGame game)
         {
             clientGame = game;
             ActiveChat = ChatTypes.Global;
         }
-
-        // Currently active chat
-        public ChatTypes ActiveChat { get; set; }
 
         // Returns chat color
         public Brush GetChatColor(ChatTypes chatType)

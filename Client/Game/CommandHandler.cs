@@ -10,53 +10,13 @@ namespace CardGameWPF.Game
 {
     public static class CommandHandler
     {
-        private static string[] commands = 
+        private static readonly string[] commands = 
         { 
             "game",
             "global",
             "help",
             "whisper"
         };
-
-        // Writes syntax error into chat
-        private static void FormatSyntaxError(ClientGame game, string correctSyntax)
-        {
-            game.Chat.Write(string.Format("Invalid syntax. Use: {0}", correctSyntax), ChatTypes.Info);
-        }
-
-        // Writes invalid command into chat
-        private static void WriteInvalidCommand(ClientGame game)
-        {
-            game.Chat.Write("Invalid command", ChatTypes.Info);
-        }
-
-        // Lists all commands in chat
-        private static void ListCommands(ClientGame game)
-        {
-            game.Chat.Write(string.Format("Possible commands:{0}{1}", LineSeparator, string.Join(LineSeparator, commands)), ChatTypes.Info);
-        }
-
-        // Sends whisper message to server
-        private static void HandleWhisperCommand(ClientGame game, string arg)
-        {
-            int commandDelimiter = arg.IndexOf(" ");
-            if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
-            {
-                FormatSyntaxError(game, "/whisper [name] [message]");
-                return;
-            }
-
-            string receiverName = arg.Substring(0, commandDelimiter);
-            string message = arg.Substring(commandDelimiter).Trim();
-
-            if (!message.Any())
-            {
-                FormatSyntaxError(game, "/whisper [name] [message]");
-                return;
-            }
-
-            game.SendChatMessage(message, ChatTypes.Whisper,receiverName);
-        }
 
         // Line separator
         public static string LineSeparator { get { return "\u2028"; } }
@@ -104,6 +64,46 @@ namespace CardGameWPF.Game
                     WriteInvalidCommand(game);
                     break;
             }
+        }
+
+        // Writes syntax error into chat
+        private static void FormatSyntaxError(ClientGame game, string correctSyntax)
+        {
+            game.Chat.Write(string.Format("Invalid syntax. Use: {0}", correctSyntax), ChatTypes.Info);
+        }
+
+        // Writes invalid command into chat
+        private static void WriteInvalidCommand(ClientGame game)
+        {
+            game.Chat.Write("Invalid command", ChatTypes.Info);
+        }
+
+        // Lists all commands in chat
+        private static void ListCommands(ClientGame game)
+        {
+            game.Chat.Write(string.Format("Possible commands:{0}{1}", LineSeparator, string.Join(LineSeparator, commands)), ChatTypes.Info);
+        }
+
+        // Sends whisper message to server
+        private static void HandleWhisperCommand(ClientGame game, string arg)
+        {
+            int commandDelimiter = arg.IndexOf(" ");
+            if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
+            {
+                FormatSyntaxError(game, "/whisper [name] [message]");
+                return;
+            }
+
+            string receiverName = arg.Substring(0, commandDelimiter);
+            string message = arg.Substring(commandDelimiter).Trim();
+
+            if (!message.Any())
+            {
+                FormatSyntaxError(game, "/whisper [name] [message]");
+                return;
+            }
+
+            game.SendChatMessage(message, ChatTypes.Whisper, receiverName);
         }
     }
 }

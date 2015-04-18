@@ -129,7 +129,7 @@ namespace CardGameWPF
 
         private void HandleSelectCardCount()
         {
-            selectedCardCount += SlideShow.SelectedCard.Selected ? 1 : -1;
+            selectedCardCount += SlideShow.SelectedCard.SelectionType == SelectionType.Selected ? 1 : -1;
             if (selectedCardCount == maxCardsCount)
                 SendCardsButton.Visibility = Visibility.Visible;
             else if (SendCardsButton.IsVisible)
@@ -152,14 +152,14 @@ namespace CardGameWPF
             if (SlideShow.SelectedCard == null)
                 return;
 
-            if (!SlideShow.SelectedCard.Selected && (selectedCardCount == maxCardsCount))
+            if ((SlideShow.SelectedCard.SelectionType == SelectionType.None) && (selectedCardCount == maxCardsCount))
             {
                 game.Chat.Write(string.Format("You can't select more cards than {0}", maxCardsCount), ChatTypes.Info);
                 return;
             }
 
-            SlideShow.SelectedCard.Selected = !SlideShow.SelectedCard.Selected;
-            SetSelectCard(SlideShow.SelectedCard.Selected);
+            SlideShow.SelectedCard.SelectionType = (SlideShow.SelectedCard.SelectionType == SelectionType.None) ? SelectionType.Selected : SelectionType.None;
+            SetSelectCard(SlideShow.SelectedCard.SelectionType == SelectionType.Selected);
             SlideShow.LoadItems();
             imgMain.Source = SlideShow.SelectedCard.Image;
             HandleSelectCardCount();
@@ -172,7 +172,7 @@ namespace CardGameWPF
 
             Image image = sender as Image;
             Card card = game.Opponent.GetCardByImageControlName(image.Name);
-            if ((card != null) && card.Selected)
+            if ((card != null) && (card.SelectionType != SelectionType.None))
                 Cursor = Cursors.Hand;
         }
 

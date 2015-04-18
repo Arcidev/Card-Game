@@ -118,7 +118,7 @@ namespace CardGameWPF.Game
         public void SendSelectedCards()
         {
             Packet packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
-            var cards = DataHolder.Cards.Where(x => x.Selected);
+            var cards = DataHolder.Cards.Where(x => x.SelectionType == SelectionType.Selected);
 
             packet.Write((byte)cards.Count());
             foreach (var card in cards)

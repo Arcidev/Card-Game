@@ -1,4 +1,5 @@
 ﻿using CardGameWPF.Data;
+using CardGameWPF.Enums;
 using CardGameWPF.Game;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace CardGameWPF.UI
 {
     public class SlideShow
     {
-        private const int sliderSize = 10;
+        private static readonly int sliderSize = 10;
         private int index;
         private MainWindow mainWindow;
         private Timer timer;
+
+        public Card SelectedCard { get; private set; }
 
         public SlideShow(MainWindow window)
         {
@@ -36,13 +39,6 @@ namespace CardGameWPF.UI
                 RefreshImageList("FadeLstBox");
                 OnClickNavigationButton();
             }
-        }
-
-        private void RefreshImageList(string storyboardName)
-        {
-            Storyboard storyboard = mainWindow.FindResource(storyboardName) as Storyboard;
-            if (storyboard != null)
-                storyboard.Begin();
         }
 
         public void PreviousElements()
@@ -101,10 +97,15 @@ namespace CardGameWPF.UI
             mainWindow.CardDefense.Text = string.Format("Defense: {0}", card.Defense);
             mainWindow.imgMain.Source = card.Image;
 
-            mainWindow.SetSelectCard(card.Selected);
+            mainWindow.SetSelectCard(card.SelectionType == SelectionType.Selected);
             SelectedCard = card;
         }
 
-        public Card SelectedCard { get; private set; }
+        private void RefreshImageList(string storyboardName)
+        {
+            Storyboard storyboard = mainWindow.FindResource(storyboardName) as Storyboard;
+            if (storyboard != null)
+                storyboard.Begin();
+        }
     }
 }

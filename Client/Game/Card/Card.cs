@@ -14,27 +14,35 @@ namespace CardGameWPF.Game
 {
     public abstract class Card
     {
+        private static readonly Dictionary<SelectionType, Brush> selectionColors = new Dictionary<SelectionType,Brush>()
+        {
+            { SelectionType.None,                   null            },
+            { SelectionType.Selected,               Brushes.Yellow  },
+            { SelectionType.BasicDamageAttackable,  Brushes.Red     },
+            { SelectionType.SpellDamaeAttackable,   Brushes.Blue    }
+        };
+
         private BitmapSource cardTemplateImage;
         private BitmapSource image;
 
-        private static int creatureImageWidth = 656;
-        private static int creatureImageHeight = 480;
-        private static int creatureImageHeightOffset = 104;
+        private static readonly int creatureImageWidth = 656;
+        private static readonly int creatureImageHeight = 480;
+        private static readonly int creatureImageHeightOffset = 104;
 
-        private static CultureInfo cultureInfo = new CultureInfo("en-GB");
-        private static Typeface cardInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-        private static double cardInfofontSize = 60.0;
-        private static double cardNamePositionY = 584.0;
-        private static double cardTypePositionY = 25;
+        private static readonly CultureInfo cultureInfo = new CultureInfo("en-GB");
+        private static readonly Typeface cardInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+        private static readonly double cardInfofontSize = 60.0;
+        private static readonly double cardNamePositionY = 584.0;
+        private static readonly double cardTypePositionY = 25;
 
-        private static Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
-        private static double statsFontSize = 100.0;
-        private static Point damagePosition = new Point(35.0, 0.0);
-        private static Point manaPosition = new Point(640.0, 0.0);
-        private static Point hpPosition = new Point(35.0, 920.0);
-        private static Point defensePosition = new Point(640.0, 920.0);
+        private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
+        private static readonly double statsFontSize = 100.0;
+        private static readonly Point damagePosition = new Point(35.0, 0.0);
+        private static readonly Point manaPosition = new Point(640.0, 0.0);
+        private static readonly Point hpPosition = new Point(35.0, 920.0);
+        private static readonly Point defensePosition = new Point(640.0, 920.0);
 
-        public bool Selected { get; set; }
+        public SelectionType SelectionType { get; set; }
         public UInt32 Id { get; private set; }
         public string Name { get; set; }
         public CreatureTypes Type { get; private set; }
@@ -50,7 +58,7 @@ namespace CardGameWPF.Game
                 if (image == null)
                     ReloadStats();
 
-                return Selected ? SelectedCard() : image;
+                return (SelectionType != SelectionType.None) ? SelectedCard() : image;
             }
         }
 
@@ -130,6 +138,10 @@ namespace CardGameWPF.Game
         // Visually selects card
         private BitmapSource SelectedCard()
         {
+            Brush borderColor = selectionColors[SelectionType];
+            if (borderColor == null)
+                return image;
+
             DrawingVisual drawingVisual = new DrawingVisual();
             using (DrawingContext drawingContext = drawingVisual.RenderOpen())
             {
@@ -137,7 +149,7 @@ namespace CardGameWPF.Game
                 drawingContext.DrawImage(image, new Rect(0, 0, image.PixelWidth, image.PixelHeight));
 
                 // Draw border
-                Pen pen = new Pen(Brushes.Yellow, 50.0);
+                Pen pen = new Pen(borderColor, 50.0);
                 drawingContext.DrawLine(pen, new Point(0, 0), new Point(image.Width, 0));
                 drawingContext.DrawLine(pen, new Point(image.Width, 0), new Point(image.Width, image.Height));
                 drawingContext.DrawLine(pen, new Point(image.Width, image.Height), new Point(0, image.Height));

@@ -10,7 +10,7 @@ namespace CardGameWPF.Security
 {
     public static class RsaEncryptor
     {
-        private static byte[] modulus = 
+        private static readonly byte[] modulus = 
         {   
             0xcb,0xc0,0xdb,0xbf,0xca,0x6b,0xa4,0x9f,0xf4,0x90,0xa8,0x65,0x19,0xe2,
             0x58,0xa3,0x3a,0x36,0xb7,0xad,0x04,0x1b,0xc2,0xf4,0xe7,0xad,0x60,0xd7,0x74,
@@ -32,7 +32,7 @@ namespace CardGameWPF.Security
             0x32,0xc1
         };
 
-        private static byte[] exponent = { 1, 0, 1 };
+        private static readonly byte[] exponent = { 1, 0, 1 };
         private static RSACryptoServiceProvider rsa;
 
         // Inicializes RSA instance

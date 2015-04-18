@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\SelectionType.cs" />
     <Compile Include="Game\Card\DefensiveCard.cs" />
     <Compile Include="Game\Card\MeleeCard.cs" />
     <Compile Include="Game\Card\PlayableCard.cs" />

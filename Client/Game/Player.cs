@@ -1,4 +1,5 @@
 ﻿using CardGameWPF.Data;
+using CardGameWPF.Enums;
 using Client.Misc;
 using System;
 using System.Collections.Generic;
@@ -64,14 +65,14 @@ namespace CardGameWPF.Game
         }
 
         // Selects possible targets on opponent deck for current player
-        public void SetPossibleTargets(IEnumerable<UInt64> targetableCards)
+        public void SetPossibleBasicTargets(IEnumerable<UInt64> targetableCards)
         {
             if (!game.IsOpponent(Id))
                 return;
 
             foreach (var card in cardDeck.Where(x => (x.First != null) && targetableCards.Contains(x.First.Guid)))
             {
-                card.First.Selected = true;
+                card.First.SelectionType = SelectionType.BasicDamageAttackable;
                 Invoke(new Action(delegate()
                 {
                     card.Second.Source = card.First.Image;
@@ -89,18 +90,18 @@ namespace CardGameWPF.Game
                 if (c.First == null)
                     continue;
 
-                var select = false;
+                var select = SelectionType.None;
                 if (c.First.Guid == cardGuid)
                 {
                     var opponent = game.GetOpponent(Id);
                     if (opponent != null)
-                        opponent.SetPossibleTargets(c.First.GetPossibleTargets(opponent.cardDeck.Select(x => x.First), i));
-                    select = true;
+                        opponent.SetPossibleBasicTargets(c.First.GetPossibleTargets(opponent.cardDeck.Select(x => x.First), i));
+                    select = SelectionType.Selected;
                 }
 
-                if (c.First.Selected != select)
+                if (c.First.SelectionType != select)
                 {
-                    c.First.Selected = select;
+                    c.First.SelectionType = select;
                     Invoke(new Action(delegate()
                     {
                         c.Second.Source = c.First.Image;
@@ -115,9 +116,9 @@ namespace CardGameWPF.Game
             IsActive = false;
             foreach (var c in cardDeck)
             {
-                if ((c.First != null) && c.First.Selected)
+                if ((c.First != null) && (c.First.SelectionType != SelectionType.None))
                 {
-                    c.First.Selected = false;
+                    c.First.SelectionType = SelectionType.None;
                     Invoke(new Action(delegate()
                     {
                         c.Second.Source = c.First.Image;

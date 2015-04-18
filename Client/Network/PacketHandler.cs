@@ -12,7 +12,7 @@ namespace CardGameWPF.Network
 {
     public static class PacketHandler
     {
-        private static Dictionary<SMSGPackets, Action<Packet, ClientGame>> packetHandlers = new Dictionary<SMSGPackets, Action<Packet, ClientGame>>()
+        private static readonly Dictionary<SMSGPackets, Action<Packet, ClientGame>> packetHandlers = new Dictionary<SMSGPackets, Action<Packet, ClientGame>>()
         {
             { SMSGPackets.SMSG_INIT_RESPONSE,                           HandleInitResponse          },
             { SMSGPackets.SMSG_AVAILABLE_CARDS,                         HandleAvailableCards        },
