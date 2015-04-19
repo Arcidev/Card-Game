@@ -158,13 +158,11 @@
     <Resource Include="Assets\CardTemplate.png" />
     <Resource Include="Assets\close2.png" />
     <Resource Include="Assets\IconWarrior.png" />
-    <Resource Include="Assets\Loading.gif" />
     <Resource Include="Assets\Mage.png" />
     <Resource Include="Assets\nback.png" />
     <Resource Include="Assets\nforward.png" />
     <Resource Include="Assets\Paladin.png" />
     <Resource Include="Assets\thisimage.png" />
-    <Resource Include="Assets\Waiting.gif" />
     <Resource Include="Assets\Warrior.png" />
     <Resource Include="Assets\Wizard.png" />
   </ItemGroup>
