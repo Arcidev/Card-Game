@@ -30,15 +30,20 @@ namespace Client
         private string userName;
         private ClientGame game;
         private int selectedCardCount;
+        private bool opponentCardClicked;
+        private string opponentCardControlName;
 
         public SlideShow SlideShow { get; private set; }
 
         public MainWindow()
         {
+            InitializeComponent();
+
             userName = "";
             selectedCardCount = 0;
+            opponentCardClicked = false;
+            opponentCardControlName = "";
             SlideShow = new SlideShow(this);
-            InitializeComponent();
         }
 
         public void Invoke(Action action)
@@ -195,6 +200,53 @@ namespace Client
         private void DefendButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void OnOpponentCardMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!game.Player.IsActive)
+                return;
+
+            var image = sender as Image;
+            if (image == null)
+                return;
+
+            var card = game.Opponent.GetCardByImageControlName(image.Name);
+            if ((card == null) || (card.SelectionType == SelectionType.None))
+                return;
+
+            opponentCardClicked = true;
+            opponentCardControlName = image.Name;
+        }
+
+        private void OnOpponentCardMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (opponentCardClicked)
+            {
+                opponentCardClicked = false;
+                opponentCardControlName = "";
+
+                ///TODO: Send attack message to server
+            }
+        }
+
+        private void OnOpponentCardMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (opponentCardClicked)
+                opponentCardClicked = false;
+        }
+
+        private void OnOpponentCardMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!opponentCardControlName.Any())
+                return;
+
+            var image = sender as Image;
+            if (image == null)
+                return;
+
+            if (opponentCardControlName == image.Name)
+                opponentCardClicked = true;
         }
     }
 }
