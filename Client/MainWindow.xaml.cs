@@ -17,6 +17,7 @@ using Client.Game;
 using System.ComponentModel;
 using Client.Enums;
 using Client.UI;
+using Client.Misc;
 
 namespace Client
 {
@@ -51,6 +52,11 @@ namespace Client
                 SelectCardButton.Visibility = Visibility.Visible;
 
             SelectCardButton.Content = selected ? "Unselect" : "Select";
+        }
+
+        public void ResetCardCursor()
+        {
+            Cursor = Cursors.Arrow;
         }
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
@@ -165,20 +171,30 @@ namespace Client
             HandleSelectCardCount();
         }
 
-        private void OnMouseEnterOpponentCard(object sender, MouseEventArgs e)
+        private void BasicAttackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!game.Player.IsActive)
-                return;
+            var activeCard = game.Player.ActiveCard;
+            var opponent = game.Opponent;
+            Cursor = CardAttackCursors.GetCursor(activeCard.Type == CreatureTypes.Melee ? CardAttackCursorTypes.Sword : CardAttackCursorTypes.Arrow);
 
-            Image image = sender as Image;
-            Card card = game.Opponent.GetCardByImageControlName(image.Name);
-            if ((card != null) && (card.SelectionType != SelectionType.None))
-                Cursor = Cursors.Hand;
+            opponent.SetPossibleTargets(
+                activeCard.GetPossibleTargets(opponent.CardDeck, game.Player.ActiveCardPosition),
+                SelectionType.BasicDamageAttackable);
         }
 
-        private void OnMouseLeaveOpponentCard(object sender, MouseEventArgs e)
+        private void SpellAttackButton_Click(object sender, RoutedEventArgs e)
         {
-            Cursor = Cursors.Arrow;
+            var opponent = game.Opponent;
+            Cursor = CardAttackCursors.GetCursor(CardAttackCursorTypes.Staff);
+
+            opponent.SetPossibleTargets(
+                opponent.CardDeck.Select(x => x.Guid),
+                SelectionType.SpellDamageAttackable);
+        }
+
+        private void DefendButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

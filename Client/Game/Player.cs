@@ -19,6 +19,9 @@ namespace Client.Game
         public UInt32 Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; private set; }
+        public int ActiveCardPosition { get; private set; }
+        public PlayableCard ActiveCard { get { return cardDeck[ActiveCardPosition].First; } }
+        public IEnumerable<PlayableCard> CardDeck { get { return cardDeck.Select(x => x.First); } }
 
         public Player(ClientGame clientGame, params Image[] imageLocations)
         {
@@ -64,15 +67,15 @@ namespace Client.Game
             }
         }
 
-        // Selects possible targets on opponent deck for current player
-        public void SetPossibleBasicTargets(IEnumerable<UInt64> targetableCards)
+        // Selects possible targets attackable by basic attack on opponent deck for current player
+        public void SetPossibleTargets(IEnumerable<UInt64> targetableCards, SelectionType selection)
         {
             if (!game.IsOpponent(Id))
                 return;
 
             foreach (var card in cardDeck.Where(x => (x.First != null) && targetableCards.Contains(x.First.Guid)))
             {
-                card.First.SelectionType = SelectionType.BasicDamageAttackable;
+                card.First.SelectionType = selection;
                 Invoke(new Action(delegate()
                 {
                     card.Second.Source = card.First.Image;
@@ -93,9 +96,7 @@ namespace Client.Game
                 var select = SelectionType.None;
                 if (c.First.Guid == cardGuid)
                 {
-                    var opponent = game.GetOpponent(Id);
-                    if (opponent != null)
-                        opponent.SetPossibleBasicTargets(c.First.GetPossibleTargets(opponent.cardDeck.Select(x => x.First), i));
+                    ActiveCardPosition = i;
                     select = SelectionType.Selected;
                 }
 

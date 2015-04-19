@@ -12,6 +12,8 @@ packages/* linguist-vendored
 # strict (no trailing, no tabs)
 *.cpp        whitespace=trailing-space,space-before-tab,tab-in-indent,cr-at-eol
 *.h          whitespace=trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+*.cs         whitespace=trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+*.xaml       whitespace=trailing-space,space-before-tab,tab-in-indent,cr-at-eol
 
 # normal (no trailing)
 *.sql        whitespace=trailing-space,space-before-tab,cr-at-eol

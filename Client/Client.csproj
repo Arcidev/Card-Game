@@ -73,12 +73,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
     <Compile Include="Game\Card\DefensiveCard.cs" />
     <Compile Include="Game\Card\MeleeCard.cs" />
     <Compile Include="Game\Card\PlayableCard.cs" />
     <Compile Include="Game\Card\RangedCard.cs" />
     <Compile Include="Game\Card\SelectableCard.cs" />
+    <Compile Include="Misc\CardAttackCursors.cs" />
     <Compile Include="Misc\GenericNumberMethodTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -172,6 +174,11 @@
   <ItemGroup>
     <Resource Include="Assets\Demon.png" />
     <Resource Include="Assets\Lich.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Cursors\Cursor_Arrow.cur" />
+    <Resource Include="Assets\Cursors\Cursor_Staff.cur" />
+    <Resource Include="Assets\Cursors\Cursor_Sword.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.96.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.96.0\build\net45\System.Data.SQLite.Core.targets')" />

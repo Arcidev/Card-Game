@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Client.Enums
 {
-    public enum SelectionType
+    public enum CardAttackCursorTypes
     {
-        None,
-        Selected,
-        BasicDamageAttackable,
-        SpellDamageAttackable
+        Sword,
+        Arrow,
+        Staff
     }
 }

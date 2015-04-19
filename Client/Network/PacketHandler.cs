@@ -95,7 +95,7 @@ namespace Client.Network
         private static void HandleSelectCardsWait(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
-            game.ShowCardDeck(true);
+            game.ShowCardDeck();
             game.Chat.Write("Waiting for another player to pick his cards", ChatTypes.Info);
         }
 
@@ -103,7 +103,7 @@ namespace Client.Network
         private static void HandleSelectCards(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
-            game.ShowCardDeck(false);
+            game.ShowCardDeck();
 
             var count1 = packet.ReadByte();
             var count2 = packet.ReadByte();
@@ -211,6 +211,7 @@ namespace Client.Network
             packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
             nonActivePlayer.SetWaitingState();
             activePlayer.SetActiveState(cardGuid);
+            game.SetActiveCardActionGrid(game.Player.Id == activePlayerId);
         }
 
         // Handle SMSG_PLAYER_DISCONNECTED packet

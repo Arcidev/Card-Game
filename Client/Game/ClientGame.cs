@@ -131,12 +131,20 @@ namespace Client.Game
         }
 
         // Shows card deck
-        public void ShowCardDeck(bool showWaitGrid)
+        public void ShowCardDeck()
         {
             Invoke(new Action(delegate()
             {
                 MainWindow.CardDeckGrid.Visibility = Visibility.Visible;
-                MainWindow.WaitingGrid.Visibility = showWaitGrid ? Visibility.Visible : Visibility.Hidden;
+                MainWindow.CardActionGrid.Visibility = Visibility.Visible;
+            }));
+        }
+
+        public void SetActiveCardActionGrid(bool active)
+        {
+            Invoke(new Action(delegate()
+            {
+                MainWindow.CardActionGrid.IsEnabled = active;
             }));
         }
 

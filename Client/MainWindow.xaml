@@ -138,14 +138,16 @@
                 <Image Source="Assets/CardBack.png" Name="PlayerCard4" Width="158" Margin="0,0,-471,0"/>
             </Grid>
             <Grid Name="OpponentCardDeck" Margin="0,10,313,310" Height="252">
-                <Image Source="Assets/CardBack.png" MouseLeave="OnMouseLeaveOpponentCard" MouseEnter="OnMouseEnterOpponentCard" Name="OpponentCard1" Width="158" Margin="0,0,527,0"/>
-                <Image Source="Assets/CardBack.png" MouseLeave="OnMouseLeaveOpponentCard" MouseEnter="OnMouseEnterOpponentCard" Name="OpponentCard2" Width="158" Margin="0,0,195,0"/>
-                <Image Source="Assets/CardBack.png" MouseLeave="OnMouseLeaveOpponentCard" MouseEnter="OnMouseEnterOpponentCard" Name="OpponentCard3" Width="158" Margin="0,0,-137,0"/>
-                <Image Source="Assets/CardBack.png" MouseLeave="OnMouseLeaveOpponentCard" MouseEnter="OnMouseEnterOpponentCard" Name="OpponentCard4" Width="158" Margin="0,0,-471,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard1" Width="158" Margin="0,0,527,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard2" Width="158" Margin="0,0,195,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard3" Width="158" Margin="0,0,-137,0"/>
+                <Image Source="Assets/CardBack.png" Name="OpponentCard4" Width="158" Margin="0,0,-471,0"/>
             </Grid>
         </Grid>
-        <Grid Visibility="Hidden" Name="WaitingGrid" Margin="722,10,10,271">
-            <Image gif:ImageBehavior.AnimatedSource="Assets/Waiting.gif" />
+        <Grid Visibility="Hidden" Name="CardActionGrid" Margin="722,10,10,271" IsEnabled="False">
+            <Button Name="BasicAttackButton" Content="Attack" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="BasicAttackButton_Click" Margin="90,28,0,0" Height="35"/>
+            <Button Name="SpellAttackButton" Content="Spell attack" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="SpellAttackButton_Click" Margin="90,68,0,0" Height="35"/>
+            <Button Name="DefendButton" Content="Defend" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="DefendButton_Click" Margin="90,108,0,0" Height="35"/>
         </Grid>
         <Grid Name="ChatTabGrid" Visibility="Hidden">
             <TabControl Name="ChatTabControl" HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="332" Margin="674,330,0,0">
