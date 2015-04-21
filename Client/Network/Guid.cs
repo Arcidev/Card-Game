@@ -20,6 +20,11 @@ namespace Client.Network
             byteVal = BitConverter.GetBytes(guid);
         }
 
+        public static implicit operator Guid(UInt64 guid)
+        {
+            return new Guid(guid);
+        }
+
         public byte this[int index]
         {
             get { return byteVal[index]; }

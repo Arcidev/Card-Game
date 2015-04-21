@@ -223,10 +223,12 @@ namespace Client
         {
             if (opponentCardClicked)
             {
+                var card = game.Opponent.GetCardByImageControlName(opponentCardControlName);
                 opponentCardClicked = false;
                 opponentCardControlName = "";
 
-                ///TODO: Send attack message to server
+                if (card != null)
+                    game.SendAttackCard(card);
             }
         }
 

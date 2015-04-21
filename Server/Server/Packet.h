@@ -9,7 +9,8 @@ enum CMSGPackets
 {
     CMSG_INIT_PACKET = 1,
     CMSG_CHAT_MESSAGE,
-    CMSG_SELECTED_CARDS
+    CMSG_SELECTED_CARDS,
+    CMSG_ATTACK_CARD
 };
 
 enum SMSGPackets
@@ -44,8 +45,11 @@ class Packet
         void FlushBits();
         bool WriteBit(uint32_t bit);
         void WriteGuidByte(uint8_t b);
-        void WriteGuidBitStreamInOrder(Guid guid, std::vector<uint8_t> indexOrder);
-        void WriteGuidByteStreamInOrder(Guid guid, std::vector<uint8_t> indexOrder);
+        void ReadGuidByte(uint8_t& byte);
+        void WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder);
+        void WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder);
+        void ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder);
+        void ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder);
 
         bool ReadBit();
         size_t GetReadPosition() const { return m_rpos; }

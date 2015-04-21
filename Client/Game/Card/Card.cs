@@ -70,6 +70,7 @@ namespace Client.Game
             Damage = damage;
             Mana = mana;
             Defense = defense;
+            SelectionType = SelectionType.None;
         }
 
         // Unloads images from memory

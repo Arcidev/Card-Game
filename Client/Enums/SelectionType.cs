@@ -8,7 +8,7 @@ namespace Client.Enums
 {
     public enum SelectionType
     {
-        None,
+        None = 1,
         Selected,
         BasicDamageAttackable,
         SpellDamageAttackable

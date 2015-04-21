@@ -88,8 +88,15 @@ void Packet::WriteGuidByte(uint8_t byte)
         append<uint8_t>(byte);
 }
 
+// Reads byte value of guid if byte has value. If not its ignored
+void Packet::ReadGuidByte(uint8_t& byte)
+{
+    if (byte)
+        byte = read<uint8_t>(m_rpos);
+}
+
 // Writes if exist byte values of guid in passed order
-void Packet::WriteGuidBitStreamInOrder(Guid guid, std::vector<uint8_t> indexOrder)
+void Packet::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -102,7 +109,7 @@ void Packet::WriteGuidBitStreamInOrder(Guid guid, std::vector<uint8_t> indexOrde
 }
 
 // Writes byte values of guid if bytes has value. Bytes without value are ignored
-void Packet::WriteGuidByteStreamInOrder(Guid guid, std::vector<uint8_t> indexOrder)
+void Packet::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -111,6 +118,32 @@ void Packet::WriteGuidByteStreamInOrder(Guid guid, std::vector<uint8_t> indexOrd
             throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
 
         WriteGuidByte(guid[indexOrder[i]]);
+    }
+}
+
+// Reads if exist byte values of guid in passed order
+void Packet::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+{
+    uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
+    for (uint8_t i = 0; i < size; i++)
+    {
+        if (indexOrder[i] > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+
+        guid[indexOrder[i]] = ReadBit();
+    }
+}
+
+// Reads byte values of guid if bytes has value. Bytes without value are ignored
+void Packet::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+{
+    uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
+    for (uint8_t i = 0; i < size; i++)
+    {
+        if (indexOrder[i] > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+
+        ReadGuidByte(guid[indexOrder[i]]);
     }
 }
 

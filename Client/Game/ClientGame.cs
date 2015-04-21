@@ -102,7 +102,7 @@ namespace Client.Game
             chat.SendChatMessage(text, chatType, customParams);
         }
 
-        // Handle command written in chat
+        // Handles command written in chat
         public void HandleCommand(string command)
         {
             CommandHandler.HandleCommand(command, this);
@@ -114,7 +114,7 @@ namespace Client.Game
             mainWindow.Invoke(action);
         }
 
-        // Send selected cards to server
+        // Sends selected cards to server
         public void SendSelectedCards()
         {
             Packet packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
@@ -126,6 +126,24 @@ namespace Client.Game
                 packet.Write(card.Id);
                 card.UnloadImages();
             }
+
+            SendPacket(packet);
+        }
+
+        // Sends card to attack to server
+        public void SendAttackCard(PlayableCard card)
+        {
+            if (card.SelectionType == SelectionType.None)
+                return;
+
+            SetActiveCardActionGrid(false);
+            Packet packet = new Packet(CMSGPackets.CMSG_ATTACK_CARD);
+            packet.WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5);
+            packet.FlushBits();
+
+            packet.WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0);
+            packet.Write((byte)card.SelectionType);
+            packet.WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4);
 
             SendPacket(packet);
         }

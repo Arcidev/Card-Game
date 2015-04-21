@@ -1,6 +1,12 @@
 #include <stdexcept>
 #include "Guid.h"
 
+// Inicializes new instance of Guid
+Guid::Guid()
+{
+    setByteValues(0);
+}
+
 // Inicialize Guid object from uint64_t value
 Guid::Guid(uint64_t guid)
 {
@@ -16,6 +22,15 @@ void Guid::setByteValues(uint64_t guid)
 
 // Allows to use class as array
 uint8_t& Guid::operator[](uint8_t index)
+{
+    if (index > 7)
+        throw std::out_of_range("Index must be lower than 8. You've requested " + index);
+
+    return m_byte[index];
+}
+
+// Allows to use class as array
+uint8_t const& Guid::operator[](uint8_t index) const
 {
     if (index > 7)
         throw std::out_of_range("Index must be lower than 8. You've requested " + index);

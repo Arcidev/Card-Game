@@ -86,3 +86,16 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     player->GetOpponent()->HandleDeckCards(true);
     player->GetGame()->ActivateSecondPlayer();
 }
+
+void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
+{
+    Guid guid;
+    uint8_t attackType;
+    packet->ReadGuidBitStreamInOrder(guid, std::vector<uint8_t> { 4, 3, 2, 7, 1, 6, 0, 5 });
+
+    packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 6, 2, 7, 1, 0 });
+    *packet >> attackType;
+    packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
+
+    /// TODO: check attack and attack card
+}

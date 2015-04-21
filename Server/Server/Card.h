@@ -11,6 +11,14 @@ enum CardType
     CARD_TYPE_DEFENSE
 };
 
+enum AttackType
+{
+    ATTACK_TYPE_NONE = 1,
+    ATTACK_TYPE_DEFEND,
+    ATTACK_TYPE_BASIC_ATTACK,
+    ATTACK_TYPE_SPELL_ATTACK
+};
+
 enum FailReson
 {
     INVALID_CARD_COUNT = 1,

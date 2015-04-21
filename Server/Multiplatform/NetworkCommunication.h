@@ -24,7 +24,7 @@
 #define InitWinsock(word, data) 0
 #define CloseWinsock [] () { }
 #define GetSockError() errno
-#define ZeroMemory(destination, length) memset((destination),0,(length))
+#define ZeroMemory(destination, length) memset(destination, 0, length)
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR   -1
 #define IoctlSocket ioctl
