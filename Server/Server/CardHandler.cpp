@@ -1,3 +1,4 @@
+#include <cinttypes>
 #include "PacketHandler.h"
 #include "Packet.h"
 #include "Player.h"
@@ -47,37 +48,37 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     pck << (uint8_t)player->GetOpponent()->GetCards().size();
 
     for (CardsMap::const_iterator iter = player->GetOpponent()->GetCards().begin(); iter != player->GetOpponent()->GetCards().end(); ++iter)
-        pck.WriteGuidBitStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 1, 2, 7, 0, 5, 3, 4, 6 });
+        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t> { 1, 2, 7, 0, 5, 3, 4, 6 });
 
     for (CardsMap::const_iterator iter = player->GetCards().begin(); iter != player->GetCards().end(); ++iter)
-        pck.WriteGuidBitStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 7, 1, 2, 4, 6, 0, 3, 5 });
+        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t>{ 7, 1, 2, 4, 6, 0, 3, 5 });
 
     pck.FlushBits();
     pck << player->GetId();
 
     for (CardsMap::const_iterator iter = player->GetCards().begin(); iter != player->GetCards().end(); ++iter)
     {
-        pck.WriteGuidByteStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 7, 2, 0 });
-        pck << iter->second.GetDamage();
-        pck << iter->second.GetHealth();
-        pck.WriteGuidByteStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 1, 6, 4, 5 });
-        pck << iter->second.GetId();
-        pck << iter->second.GetDefense();
-        pck << iter->second.GetType();
-        pck.WriteGuidByteStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 3 });
-        pck << iter->second.GetMana();
+        pck.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 7, 2, 0 });
+        pck << iter->second->GetDamage();
+        pck << iter->second->GetHealth();
+        pck.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 1, 6, 4, 5 });
+        pck << iter->second->GetId();
+        pck << iter->second->GetDefense();
+        pck << iter->second->GetType();
+        pck.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 3 });
+        pck << iter->second->GetMana();
     }
 
     for (CardsMap::const_iterator iter = player->GetOpponent()->GetCards().begin(); iter != player->GetOpponent()->GetCards().end(); ++iter)
     {
-        pck << iter->second.GetType();
-        pck << iter->second.GetDefense();
-        pck << iter->second.GetDamage();
-        pck.WriteGuidByteStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 4, 2, 6, 1, 7, 0 });
-        pck << iter->second.GetMana();
-        pck << iter->second.GetHealth();
-        pck << iter->second.GetId();
-        pck.WriteGuidByteStreamInOrder(iter->second.GetGuid(), std::vector<uint8_t> { 3, 5 });
+        pck << iter->second->GetType();
+        pck << iter->second->GetDefense();
+        pck << iter->second->GetDamage();
+        pck.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t> { 4, 2, 6, 1, 7, 0 });
+        pck << iter->second->GetMana();
+        pck << iter->second->GetHealth();
+        pck << iter->second->GetId();
+        pck.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t> { 3, 5 });
     }
 
     player->GetGame()->BroadcastPacket(&pck);
@@ -87,6 +88,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     player->GetGame()->ActivateSecondPlayer();
 }
 
+// Handles CMSG_ATTACK_CARD packet
 void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
 {
     Guid guid;
@@ -97,5 +99,6 @@ void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
     *packet >> attackType;
     packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
 
-    /// TODO: check attack and attack card
+    DEBUG_LOG("CMSG_ATTACK_CARD:\n\tGuid: %ju\n\tattackType: %d\n", (uint64_t)guid, attackType);
+    player->Attack(guid, attackType);
 }

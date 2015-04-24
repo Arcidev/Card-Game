@@ -77,7 +77,11 @@
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
-    <ClInclude Include="Server\Card.h" />
+    <ClInclude Include="Server\Card\Card.h" />
+    <ClInclude Include="Server\Card\DefensiveCard.h" />
+    <ClInclude Include="Server\Card\MeleeCard.h" />
+    <ClInclude Include="Server\Card\PlayableCard.h" />
+    <ClInclude Include="Server\Card\RangedCard.h" />
     <ClInclude Include="Server\DataHolder.h" />
     <ClInclude Include="Server\Game.h" />
     <ClInclude Include="Server\Guid.h" />
@@ -94,8 +98,12 @@
     <ClCompile Include="Crypto\Aes.cpp" />
     <ClCompile Include="Crypto\Rsa.cpp" />
     <ClCompile Include="Crypto\Sha.cpp" />
-    <ClCompile Include="Server\Card.cpp" />
     <ClCompile Include="Server\CardHandler.cpp" />
+    <ClCompile Include="Server\Card\Card.cpp" />
+    <ClCompile Include="Server\Card\DefensiveCard.cpp" />
+    <ClCompile Include="Server\Card\MeleeCard.cpp" />
+    <ClCompile Include="Server\Card\PlayableCard.cpp" />
+    <ClCompile Include="Server\Card\RangedCard.cpp" />
     <ClCompile Include="Server\ChatHandler.cpp" />
     <ClCompile Include="Server\DataHolder.cpp" />
     <ClCompile Include="Server\Game.cpp" />

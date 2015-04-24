@@ -24,9 +24,6 @@
     <ClInclude Include="Shared\SharedDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server\DataHolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,11 +69,23 @@
     <ClInclude Include="Crypto\Keys\RSAPrivateKey.h">
       <Filter>Crypto</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Card\Card.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Card\PlayableCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Card\MeleeCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Card\DefensiveCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Card\RangedCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Server\Card.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Server\DataHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +136,21 @@
     </ClCompile>
     <ClCompile Include="Crypto\Sha.cpp">
       <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Card\Card.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Card\PlayableCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Card\MeleeCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Card\DefensiveCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Card\RangedCard.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

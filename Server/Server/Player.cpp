@@ -11,6 +11,12 @@
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
 
+Player::~Player()
+{
+    for (CardsMap::iterator iter = m_cards.begin(); iter != m_cards.end(); ++iter)
+        delete iter->second;
+}
+
 // Set player state to disconnected
 void Player::Disconnect()
 {
@@ -21,13 +27,32 @@ void Player::Disconnect()
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
-// Attacks enemy player
-void Player::Attack(Player* victim, uint64_t victimCardGuid)
+void Player::SendInvalidTarget() const
 {
-    Card* victimCard = victim->GetCard(victimCardGuid);
+    Packet packet(SMSG_INVALID_TARGET);
+    SendPacket(&packet);
+}
+
+// Attacks enemy player
+void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
+{
+    Player* victim = GetGame()->GetOpponent(this);
+    if (!victim)
+        return;
+
+    PlayableCard* victimCard = victim->GetCard(victimCardGuid);
 
     if (!victimCard || !GetCurrentCard())
         return;
+
+    if ((attackType != ATTACK_TYPE_BASIC_ATTACK) || (attackType != ATTACK_TYPE_SPELL_ATTACK))
+        return;
+
+    if (!GetCurrentCard()->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
+    {
+        SendInvalidTarget();
+        return;
+    }
 
     uint32_t damage = GetCurrentCard()->GetDamage() - victimCard->GetDefense();
     victimCard->DealDamage(damage);
@@ -39,18 +64,24 @@ void Player::Attack(Player* victim, uint64_t victimCardGuid)
 // Removes card from player deck
 void Player::DestroyCard(uint64_t cardGuid)
 {
-    CardsMap::iterator iter = m_cards.find(cardGuid);
-    if (iter == m_cards.end())
-        return;
+    for (uint32_t i = 0; i < m_currentCards.size(); ++i)
+    {
+        if (m_currentCards[i]->GetGuid() == cardGuid)
+        {
+            m_currentCards.erase(m_currentCards.begin() + i);
 
-    m_cards.erase(iter);
+            if (i >= m_currentCardIndex)
+                --m_currentCardIndex;
+            break;
+        }
+    }
 }
 
 // Gets card from player deck
-inline Card* Player::GetCard(uint64_t cardGuid)
+PlayableCard* Player::GetCard(uint64_t cardGuid)
 {
     CardsMap::iterator iter = m_cards.find(cardGuid);
-    return (iter == m_cards.end()) ? nullptr : &iter->second;
+    return (iter == m_cards.end()) ? nullptr : iter->second;
 }
 
 // Receive encrypted packet from client
@@ -171,11 +202,10 @@ void Player::SendPacket(Packet const* packet) const
 // Adds card into deck from existing template
 void Player::CreateCard(Card const& cardTemplate)
 {
-    Card card(cardTemplate.GetId(), cardTemplate.GetType(), cardTemplate.GetHealth(), cardTemplate.GetDamage(), cardTemplate.GetMana(), cardTemplate.GetDefense());
-    card.SetGuid(m_game->GetNextCardGuid());
+    PlayableCard* card = PlayableCard::Create(m_game->GetNextCardGuid(), cardTemplate);
 
-    m_cards.insert(std::make_pair(card.GetGuid(), card));
-    m_cardOrder.push_back(GetCard(card.GetGuid()));
+    m_cards.insert(std::make_pair(card->GetGuid(), card));
+    m_cardOrder.push_back(card);
 }
 
 // Set player state to prepared to play
@@ -208,7 +238,7 @@ void Player::HandleDeckCards(bool addCard)
     m_game->BroadcastPacket(&packet);
 }
 
-Card* Player::GetCurrentCard()
+PlayableCard* Player::GetCurrentCard()
 {
     if (m_currentCards.empty())
         return nullptr;

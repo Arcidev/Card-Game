@@ -23,7 +23,8 @@ namespace Client.Network
             { SMSGPackets.SMSG_SELECT_CARDS,                            HandleSelectCards           },
             { SMSGPackets.SMSG_DECK_CARDS,                              HandleDeckCards             },
             { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          },
-            { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    }
+            { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    },
+            { SMSGPackets.SMSG_INVALID_TARGET,                          HandleInvalidTarget         }
         };
 
         // Returns function to handle packet
@@ -218,6 +219,12 @@ namespace Client.Network
         private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
         {
             game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
+        }
+
+        // Handle SMSG_INVALID_TARGET packet
+        private static void HandleInvalidTarget(Packet packet, ClientGame game)
+        {
+            game.Chat.Write("You cannot attack that target", ChatTypes.Info);
         }
     }
 }

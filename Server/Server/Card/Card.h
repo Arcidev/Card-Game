@@ -30,7 +30,8 @@ class Card
     private:
         uint32_t m_id;
         uint8_t m_type;
-        uint64_t m_guid;
+
+    protected:
         uint8_t m_hp;
         uint8_t m_damage;
         uint8_t m_mana;
@@ -40,11 +41,11 @@ class Card
 
     public:
         Card(uint32_t id, uint8_t type, uint8_t hp, uint8_t damage, uint8_t mana, uint8_t defense);
+        virtual ~Card() { }
 
         void Die();
         void Defend();
         void StopDefending();
-        void DealDamage(uint32_t damage) { m_hp -= damage; }
 
         bool IsDefending() const { return m_isDefending; }
         bool IsAlive() const { return m_hp > 0; }
@@ -54,8 +55,5 @@ class Card
         uint8_t GetDefense() const { return m_defense; }
         uint8_t GetMana() const { return m_mana; }
         uint8_t GetHealth() const { return m_hp; }
-        uint64_t GetGuid() const { return m_guid; }
-        
-        void SetGuid(uint64_t guid) { m_guid = guid; }
 };
 

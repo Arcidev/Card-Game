@@ -93,7 +93,7 @@ void Game::ActivateSecondPlayer()
     else
         m_activePlayerId = (rand() % 2) ? m_player1->GetId() : m_player2->GetId();
 
-    Card* currentCard = GetActivePlayer()->GetCurrentCard();
+    PlayableCard* currentCard = GetActivePlayer()->GetCurrentCard();
     if (!currentCard)
         return;
 

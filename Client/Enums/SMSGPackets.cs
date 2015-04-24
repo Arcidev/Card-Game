@@ -17,6 +17,7 @@ namespace Client.Enums
         SMSG_SELECT_CARDS,
         SMSG_DECK_CARDS,
         SMSG_ACTIVE_PLAYER,
-        SMSG_PLAYER_DISCONNECTED
+        SMSG_PLAYER_DISCONNECTED,
+        SMSG_INVALID_TARGET
     }
 }

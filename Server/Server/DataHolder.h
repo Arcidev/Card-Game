@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <cstdint>
-#include "Card.h"
+#include "Card/Card.h"
 
 typedef std::map<uint32_t, Card> CardsDataMap;
 

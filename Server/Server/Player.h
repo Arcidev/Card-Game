@@ -2,11 +2,11 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "Card.h"
+#include "Card/PlayableCard.h"
 #include "Game.h"
 #include "../Multiplatform/NetworkCommunication.h"
 
-typedef std::map<uint64_t, Card> CardsMap;
+typedef std::map<uint64_t, PlayableCard*> CardsMap;
 
 class Packet;
 class ServerNetwork;
@@ -14,8 +14,8 @@ class ServerNetwork;
 class Player
 {
     private:
-        std::vector<Card*> m_cardOrder;
-        std::vector<Card*> m_currentCards;
+        std::vector<PlayableCard*> m_cardOrder;
+        std::vector<PlayableCard*> m_currentCards;
         bool m_isPrepared;
         bool m_isDisconnected;
         uint32_t m_id;
@@ -29,6 +29,7 @@ class Player
 
     public:
         Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
+        ~Player();
 
         void SetEncryptionKey(std::string const& key) { m_AesKey = key; }
         void SetName(std::string const& name) { m_name = name; }
@@ -38,7 +39,8 @@ class Player
         void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
         void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;
-        void Attack(Player* victim, uint64_t victimCardGuid);
+        void SendInvalidTarget() const;
+        void Attack(uint64_t victimCardGuid, uint8_t attackType);
         void Defense() { GetCurrentCard()->Defend(); }
         void Prepare();
         void DestroyCard(uint64_t cardGuid);
@@ -50,9 +52,10 @@ class Player
         void HandleDeckCards(bool addCard);
 
         Player* GetOpponent() const { return m_game->GetOpponent(this); }
-        Card* GetCurrentCard();
+        PlayableCard* GetCurrentCard();
         CardsMap const& GetCards() { return m_cards; }
-        Card* GetCard(uint64_t cardGuid);
+        std::vector<PlayableCard*> const& GetCurrentCards() { return m_currentCards; }
+        PlayableCard* GetCard(uint64_t cardGuid);
         SOCKET GetSocket() const { return m_socket; }
         Game* GetGame() const { return m_game; }
         uint32_t GetId() const { return m_id; }
