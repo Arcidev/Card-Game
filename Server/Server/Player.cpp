@@ -77,7 +77,6 @@ void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
     }
 
     victimCard->DealDamage(damage);
-    SendAttackResult(victimCard->IsAlive() ? ATTACK_RESULT_CARD_ATTACKED : ATTACK_RESULT_CARD_DESTROYED, victimCard);
 
     if (!victimCard->IsAlive())
     {
