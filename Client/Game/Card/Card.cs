@@ -42,11 +42,21 @@ namespace Client.Game
         private static readonly Point hpPosition = new Point(35.0, 920.0);
         private static readonly Point defensePosition = new Point(640.0, 920.0);
 
+        private byte hp;
+
         public SelectionType SelectionType { get; set; }
         public UInt32 Id { get; private set; }
         public string Name { get; set; }
         public CreatureTypes Type { get; private set; }
-        public byte Hp { get; private set; }
+        public byte Hp 
+        { 
+            get { return hp; }
+            set 
+            {
+                hp = value;
+                ReloadStats();
+            }
+        }
         public byte Damage { get; private set; }
         public byte Mana { get; private set; }
         public byte Defense { get; private set; }
@@ -66,7 +76,7 @@ namespace Client.Game
         {
             Id = id;
             Type = type;
-            Hp = hp;
+            this.hp = hp;
             Damage = damage;
             Mana = mana;
             Defense = defense;
@@ -110,7 +120,7 @@ namespace Client.Game
         }
 
         // Reloads stats on card
-        private void ReloadStats()
+        public void ReloadStats()
         {
             if (cardTemplateImage == null)
                 CreateCardTemplateImage();

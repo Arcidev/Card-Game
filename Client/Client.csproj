@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\AttackResult.cs" />
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
     <Compile Include="Game\Card\DefensiveCard.cs" />

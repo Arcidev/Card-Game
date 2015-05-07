@@ -89,6 +89,7 @@
     <ClInclude Include="Server\Packet.h" />
     <ClInclude Include="Server\PacketHandler.h" />
     <ClInclude Include="Server\Player.h" />
+    <ClInclude Include="Server\PlayerDefines.h" />
     <ClInclude Include="Server\serverGame.h" />
     <ClInclude Include="Server\serverNetwork.h" />
     <ClInclude Include="Server\StaticHelper.h" />

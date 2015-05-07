@@ -7,6 +7,7 @@
 #include "PacketHandler.h"
 #include "../Crypto/Aes.h"
 #include "Packet.h"
+#include "PlayerDefines.h"
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
@@ -27,10 +28,22 @@ void Player::Disconnect()
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
-void Player::SendInvalidTarget() const
+void Player::SendAttackResult(uint8_t result, PlayableCard const* card) const
 {
-    Packet packet(SMSG_INVALID_TARGET);
-    SendPacket(&packet);
+    Packet packet(SMSG_ATTACK_RESULT);
+    packet << result;
+    if (result == ATTACK_RESULT_CARD_ATTACKED)
+    {
+        packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 6, 2, 1, 7, 3, 0, 4, 5 });
+        packet.FlushBits();
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 2, 6, 7 });
+        packet << m_id;
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 1, 3, 0 });
+        packet << card->GetHealth();
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 5, 4 });
+    }
+
+    result ? GetGame()->BroadcastPacket(&packet) : SendPacket(&packet);
 }
 
 // Attacks enemy player
@@ -45,20 +58,37 @@ void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
     if (!victimCard || !GetCurrentCard())
         return;
 
-    if ((attackType != ATTACK_TYPE_BASIC_ATTACK) || (attackType != ATTACK_TYPE_SPELL_ATTACK))
+    if ((attackType != ATTACK_TYPE_BASIC_ATTACK) && (attackType != ATTACK_TYPE_SPELL_ATTACK))
         return;
 
     if (!GetCurrentCard()->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
     {
-        SendInvalidTarget();
+        SendAttackResult(ATTACK_RESULT_INVALID_TARGET, nullptr);
         return;
     }
 
-    uint32_t damage = GetCurrentCard()->GetDamage() - victimCard->GetDefense();
+    uint32_t damage = GetCurrentCard()->GetDamage();
+    float reduction = (float)(victim->GetCurrentCard()->GetDefense() * DEFENSE_PERCENT_PER_POINT);
+    if (reduction)
+    {
+        reduction /= 100;
+        reduction += 1.0f;
+        damage = (uint32_t)(damage / reduction);
+    }
+
     victimCard->DealDamage(damage);
+    SendAttackResult(victimCard->IsAlive() ? ATTACK_RESULT_CARD_ATTACKED : ATTACK_RESULT_CARD_DESTROYED, victimCard);
 
     if (!victimCard->IsAlive())
+    {
         victim->DestroyCard(victimCardGuid);
+        SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, nullptr);
+        HandleDeckCards(false);
+    }
+    else
+        SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCard);
+
+    GetGame()->ActivateSecondPlayer();
 }
 
 // Removes card from player deck

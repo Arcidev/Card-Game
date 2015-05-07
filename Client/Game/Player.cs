@@ -132,5 +132,18 @@ namespace Client.Game
         {
             return cardDeck.First(x => x.Second.Name == name).First;
         }
+
+        public void AttackCard(UInt64 guid, byte newHealth)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == guid);
+            if (cardPair == null)
+                return;
+
+            Invoke(new Action(delegate()
+                {
+                    cardPair.First.Hp = newHealth;
+                    cardPair.Second.Source = cardPair.First.Image;
+                }));
+        }
     }
 }

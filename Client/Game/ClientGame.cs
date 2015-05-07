@@ -10,6 +10,7 @@ using System.Timers;
 using System.Windows.Controls;
 using Client.Data;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Client.Game
 {
@@ -162,6 +163,7 @@ namespace Client.Game
         {
             Invoke(new Action(delegate()
             {
+                MainWindow.Cursor = Cursors.Arrow;
                 MainWindow.CardActionGrid.IsEnabled = active;
             }));
         }

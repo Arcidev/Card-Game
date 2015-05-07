@@ -1,0 +1,13 @@
+#pragma once
+
+enum AttackResult
+{
+    ATTACK_RESULT_INVALID_TARGET = 0,
+    ATTACK_RESULT_CARD_ATTACKED,
+    ATTACK_RESULT_CARD_DESTROYED
+};
+
+enum StatStystem
+{
+    DEFENSE_PERCENT_PER_POINT = 6
+};

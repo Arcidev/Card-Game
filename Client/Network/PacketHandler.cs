@@ -24,7 +24,7 @@ namespace Client.Network
             { SMSGPackets.SMSG_DECK_CARDS,                              HandleDeckCards             },
             { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          },
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    },
-            { SMSGPackets.SMSG_INVALID_TARGET,                          HandleInvalidTarget         }
+            { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          }
         };
 
         // Returns function to handle packet
@@ -221,10 +221,28 @@ namespace Client.Network
             game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
         }
 
-        // Handle SMSG_INVALID_TARGET packet
-        private static void HandleInvalidTarget(Packet packet, ClientGame game)
+        // Handle SMSG_ATTACK_RESULT packet
+        private static void HandleAttackResult(Packet packet, ClientGame game)
         {
-            game.Chat.Write("You cannot attack that target", ChatTypes.Info);
+            AttackResult result = (AttackResult)packet.ReadByte();
+            if (result == AttackResult.InvalidTarget)
+            {
+                game.Chat.Write("You cannot attack that target", ChatTypes.Info);
+                return;
+            }
+
+            if (result == AttackResult.CardAttacked)
+            {
+                Guid cardGuid = new Guid();
+                packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
+                packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
+                UInt32 attackerId = packet.ReadUInt32();
+                packet.ReadGuidByteStreamInOrder(cardGuid, 1, 3, 0);
+                byte newHealth = packet.ReadByte();
+                packet.ReadGuidByteStreamInOrder(cardGuid, 5, 4);
+
+                game.GetOpponent(attackerId).AttackCard(cardGuid, newHealth);
+            }
         }
     }
 }

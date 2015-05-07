@@ -39,7 +39,7 @@ class Player
         void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
         void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;
-        void SendInvalidTarget() const;
+        void SendAttackResult(uint8_t result, PlayableCard const* card) const;
         void Attack(uint64_t victimCardGuid, uint8_t attackType);
         void Defense() { GetCurrentCard()->Defend(); }
         void Prepare();

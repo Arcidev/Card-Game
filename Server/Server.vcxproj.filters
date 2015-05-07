@@ -84,6 +84,9 @@
     <ClInclude Include="Server\Card\RangedCard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\PlayerDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
