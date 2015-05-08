@@ -14,8 +14,8 @@ namespace Client.Network
         
         public ClientNetwork()
         {
-            //tcpClnt = new TcpClient("calista.mine.sk", 6881);
-            tcpClnt = new TcpClient("localhost", 6881);
+            //tcpClnt = new TcpClient("calista.mine.sk", 10751);
+            tcpClnt = new TcpClient("localhost", 10751);
             stream = tcpClnt.GetStream();
         }
 

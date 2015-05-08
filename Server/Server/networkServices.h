@@ -3,7 +3,7 @@
 #include "../Multiplatform/NetworkCommunication.h"
 
 // port to connect sockets through 
-#define DEFAULT_PORT "6881"
+#define DEFAULT_PORT "10751"
 
 class NetworkServices
 {
