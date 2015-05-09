@@ -28,26 +28,27 @@ void Player::Disconnect()
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
-void Player::SendAttackResult(uint8_t result, PlayableCard const* card) const
+void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const
 {
     Packet packet(SMSG_ATTACK_RESULT);
     packet << result;
-    if (result == ATTACK_RESULT_CARD_ATTACKED)
+    if (result)
     {
-        packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 6, 2, 1, 7, 3, 0, 4, 5 });
+        packet.WriteGuidBitStreamInOrder(cardGuid, std::vector<uint8_t> { 6, 2, 1, 7, 3, 0, 4, 5 });
         packet.FlushBits();
-        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 2, 6, 7 });
+        packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 2, 6, 7 });
         packet << m_id;
-        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 1, 3, 0 });
-        packet << card->GetHealth();
-        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 5, 4 });
+        packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 1, 3, 0 });
+        packet << damage;
+        packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 5, 4 });
+        GetGame()->BroadcastPacket(&packet);
     }
-
-    result ? GetGame()->BroadcastPacket(&packet) : SendPacket(&packet);
+    else
+        SendPacket(&packet);
 }
 
 // Attacks enemy player
-void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
+void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
 {
     Player* victim = GetGame()->GetOpponent(this);
     if (!victim)
@@ -63,7 +64,7 @@ void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
 
     if (!GetCurrentCard()->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
     {
-        SendAttackResult(ATTACK_RESULT_INVALID_TARGET, nullptr);
+        SendAttackResult(ATTACK_RESULT_INVALID_TARGET, 0, 0);
         return;
     }
 
@@ -71,7 +72,7 @@ void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
     float reduction = (float)(victim->GetCurrentCard()->GetDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
-        reduction /= 100;
+        reduction /= 100.0f;
         reduction += 1.0f;
         damage = (uint32_t)(damage / reduction);
     }
@@ -81,17 +82,17 @@ void Player::Attack(uint64_t victimCardGuid, uint8_t attackType)
     if (!victimCard->IsAlive())
     {
         victim->DestroyCard(victimCardGuid);
-        SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, nullptr);
-        HandleDeckCards(false);
+        SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
+        victim->HandleDeckCards(false);
     }
     else
-        SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCard);
+        SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
 
     GetGame()->ActivateSecondPlayer();
 }
 
 // Removes card from player deck
-void Player::DestroyCard(uint64_t cardGuid)
+void Player::DestroyCard(uint64_t const& cardGuid)
 {
     for (uint32_t i = 0; i < m_currentCards.size(); ++i)
     {
@@ -114,7 +115,7 @@ PlayableCard* Player::GetCard(uint64_t cardGuid)
 }
 
 // Receive encrypted packet from client
-void Player::ReceivePacket(uint32_t dataLength, char const* data)
+void Player::ReceivePacket(uint32_t const& dataLength, char const* data)
 {
     uint32_t readedData = 0;
     
@@ -184,7 +185,7 @@ void Player::SendChatWhisperResponse(std::string const& message, std::string con
 }
 
 // Sends selection card has failed
-void Player::SendSelectCardsFailed(uint8_t failReason) const
+void Player::SendSelectCardsFailed(uint8_t const& failReason) const
 {
     Packet packet(SMSG_SELECT_CARDS_FAILED);
     packet << failReason;

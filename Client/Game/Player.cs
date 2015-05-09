@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Client.Game
 {
@@ -53,17 +54,33 @@ namespace Client.Game
             game.Invoke(action);
         }
 
-        // Put card on deck
-        public void PutCardOnDeck(UInt64 cardGuid, byte position)
+        // put cards on deck
+        public void PutCardsOnDeck(UInt64[] cardGuids)
         {
-            PlayableCard card;
-            if (cards.TryGetValue(cardGuid, out card))
+            for (int i = 0; i < cardGuids.Length; i++)
             {
-                cardDeck[position].First = card;
-                Invoke(new Action(delegate() 
+                PlayableCard card;
+                if (cards.TryGetValue(cardGuids[i], out card))
                 {
-                    cardDeck[position].Second.Source = card.Image;
-                }));
+                    Invoke(new Action(delegate()
+                    {
+                        cardDeck[i].First = card;
+                        cardDeck[i].Second.Source = card.Image;
+                    }));
+                }
+            }
+
+            var availableCardsCount = cards.Count;
+            for (int i = cardGuids.Length; i < cardDeck.Length; i++)
+            {
+                if (cardDeck[i].First != null)
+                {
+                    Invoke(new Action(delegate()
+                    {
+                        cardDeck[i].First = null;
+                        cardDeck[i].Second.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
+                    }));
+                }
             }
         }
 
@@ -75,9 +92,9 @@ namespace Client.Game
 
             foreach (var card in cardDeck.Where(x => (x.First != null) && targetableCards.Contains(x.First.Guid)))
             {
-                card.First.SelectionType = selection;
                 Invoke(new Action(delegate()
                 {
+                    card.First.SelectionType = selection;
                     card.Second.Source = card.First.Image;
                 }));
             }
@@ -102,9 +119,9 @@ namespace Client.Game
 
                 if (c.First.SelectionType != select)
                 {
-                    c.First.SelectionType = select;
                     Invoke(new Action(delegate()
                     {
+                        c.First.SelectionType = select;
                         c.Second.Source = c.First.Image;
                     }));
                 }
@@ -119,9 +136,9 @@ namespace Client.Game
             {
                 if ((c.First != null) && (c.First.SelectionType != SelectionType.None))
                 {
-                    c.First.SelectionType = SelectionType.None;
                     Invoke(new Action(delegate()
                     {
+                        c.First.SelectionType = SelectionType.None;
                         c.Second.Source = c.First.Image;
                     }));
                 }
@@ -133,17 +150,28 @@ namespace Client.Game
             return cardDeck.First(x => x.Second.Name == name).First;
         }
 
-        public void AttackCard(UInt64 guid, byte newHealth)
+        public void AttackCard(UInt64 guid, byte damage)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == guid);
             if (cardPair == null)
                 return;
 
+            //TODO: log damage
             Invoke(new Action(delegate()
-                {
-                    cardPair.First.Hp = newHealth;
-                    cardPair.Second.Source = cardPair.First.Image;
-                }));
+            {
+                cardPair.First.Hp -= damage;
+                cardPair.Second.Source = cardPair.First.Image;
+            }));
+        }
+
+        public void DestroyCard(UInt64 guid, byte damage)
+        {
+            PlayableCard card = null;
+            if (cards.TryGetValue(guid, out card))
+            {
+                //TODO: log damage
+                cards.Remove(guid);
+            }
         }
     }
 }

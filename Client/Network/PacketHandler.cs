@@ -192,10 +192,9 @@ namespace Client.Network
                 return;
 
             for (byte i = 0; i < cardsCount; i++)
-            {
                 packet.ReadGuidByteStreamInOrder(guids[i], 2, 1, 7, 6, 0, 5, 3, 4);
-                player.PutCardOnDeck(guids[i], i);
-            }
+
+            player.PutCardsOnDeck(Array.ConvertAll(guids, guid => (UInt64)guid));
         }
 
         // Handle SMSG_ACTIVE_PLAYER packet
@@ -230,18 +229,21 @@ namespace Client.Network
                 game.Chat.Write("You cannot attack that target", ChatTypes.Info);
                 return;
             }
-
-            if (result == AttackResult.CardAttacked)
+            else
             {
                 Guid cardGuid = new Guid();
                 packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
                 packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
                 UInt32 attackerId = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(cardGuid, 1, 3, 0);
-                byte newHealth = packet.ReadByte();
+                byte damage = packet.ReadByte();
                 packet.ReadGuidByteStreamInOrder(cardGuid, 5, 4);
 
-                game.GetOpponent(attackerId).AttackCard(cardGuid, newHealth);
+                Player opponent = game.GetOpponent(attackerId);
+                if (result == AttackResult.CardAttacked)
+                    opponent.AttackCard(cardGuid, damage);
+                else
+                    opponent.DestroyCard(cardGuid, damage);
             }
         }
     }

@@ -37,16 +37,16 @@ class Player
         void SendInitResponse() const;
         void SendAvailableCards() const;
         void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
-        void SendSelectCardsFailed(uint8_t failReason) const;
+        void SendSelectCardsFailed(uint8_t const& failReason) const;
         void SendPlayerDisconnected() const;
-        void SendAttackResult(uint8_t result, PlayableCard const* card) const;
-        void Attack(uint64_t victimCardGuid, uint8_t attackType);
+        void SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const;
+        void Attack(uint64_t const& victimCardGuid, uint8_t const& attackType);
         void Defense() { GetCurrentCard()->Defend(); }
         void Prepare();
-        void DestroyCard(uint64_t cardGuid);
+        void DestroyCard(uint64_t const& cardGuid);
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const& cardTemplate);
-        void ReceivePacket(uint32_t length, char const* packetData);
+        void ReceivePacket(uint32_t const& length, char const* packetData);
         void SendPacket(Packet const* packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
