@@ -83,11 +83,17 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
     {
         victim->DestroyCard(victimCardGuid);
         SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
-        victim->HandleDeckCards(false);
+        //if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
+            // GetGame()->SendVictory(this);
+        victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
     else
         SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
 
+    if ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty())
+        HandleDeckCards(true);
+
+    ++m_currentCardIndex;
     GetGame()->ActivateSecondPlayer();
 }
 
