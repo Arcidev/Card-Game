@@ -13,6 +13,7 @@ namespace Client.Enums
         SMSG_DECK_CARDS,
         SMSG_ACTIVE_PLAYER,
         SMSG_PLAYER_DISCONNECTED,
-        SMSG_ATTACK_RESULT
+        SMSG_ATTACK_RESULT,
+        SMSG_END_GAME
     }
 }

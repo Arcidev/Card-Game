@@ -83,9 +83,10 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
     {
         victim->DestroyCard(victimCardGuid);
         SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
-        //if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
-            // GetGame()->SendVictory(this);
-        victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
+        if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
+            SendEndGame();
+        else
+            victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
     else
         SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
@@ -281,4 +282,12 @@ PlayableCard* Player::GetCurrentCard()
 
     m_currentCardIndex = m_currentCardIndex % m_currentCards.size();
     return m_currentCards[m_currentCardIndex];
+}
+
+void Player::SendEndGame() const
+{
+    Packet packet(SMSG_END_GAME);
+    packet << m_id;
+
+    GetGame()->BroadcastPacket(&packet);
 }

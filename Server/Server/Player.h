@@ -40,6 +40,7 @@ class Player
         void SendSelectCardsFailed(uint8_t const& failReason) const;
         void SendPlayerDisconnected() const;
         void SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const;
+        void SendEndGame() const;
         void Attack(uint64_t const& victimCardGuid, uint8_t const& attackType);
         void Defense() { GetCurrentCard()->Defend(); }
         void Prepare();

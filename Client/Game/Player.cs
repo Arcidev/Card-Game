@@ -73,14 +73,11 @@ namespace Client.Game
             var availableCardsCount = cards.Count;
             for (int i = cardGuids.Length; i < cardDeck.Length; i++)
             {
-                if (cardDeck[i].First != null)
+                Invoke(new Action(delegate()
                 {
-                    Invoke(new Action(delegate()
-                    {
-                        cardDeck[i].First = null;
-                        cardDeck[i].Second.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
-                    }));
-                }
+                    cardDeck[i].First = null;
+                    cardDeck[i].Second.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
+                }));
             }
         }
 

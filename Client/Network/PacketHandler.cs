@@ -24,7 +24,8 @@ namespace Client.Network
             { SMSGPackets.SMSG_DECK_CARDS,                              HandleDeckCards             },
             { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          },
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    },
-            { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          }
+            { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          },
+            { SMSGPackets.SMSG_END_GAME,                                HandleEndGame               }
         };
 
         // Returns function to handle packet
@@ -96,7 +97,7 @@ namespace Client.Network
         private static void HandleSelectCardsWait(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
-            game.ShowCardDeck();
+            game.ShowCardDeck(true);
             game.Chat.Write("Waiting for another player to pick his cards", ChatTypes.Info);
         }
 
@@ -104,7 +105,7 @@ namespace Client.Network
         private static void HandleSelectCards(Packet packet, ClientGame game)
         {
             game.MainWindow.SlideShow.SetVisible(false);
-            game.ShowCardDeck();
+            game.ShowCardDeck(true);
 
             var count1 = packet.ReadByte();
             var count2 = packet.ReadByte();
@@ -226,6 +227,7 @@ namespace Client.Network
             AttackResult result = (AttackResult)packet.ReadByte();
             if (result == AttackResult.InvalidTarget)
             {
+                game.SetActiveCardActionGrid(true);
                 game.Chat.Write("You cannot attack that target", ChatTypes.Info);
                 return;
             }
@@ -245,6 +247,13 @@ namespace Client.Network
                 else
                     opponent.DestroyCard(cardGuid, damage);
             }
+        }
+
+        // Handle SMSG_END_GAME packet
+        private static void HandleEndGame(Packet packet, ClientGame game)
+        {
+            var winnerId = packet.ReadUInt32();
+            game.EndGame(game.Player.Id == winnerId);
         }
     }
 }

@@ -150,12 +150,13 @@ namespace Client.Game
         }
 
         // Shows card deck
-        public void ShowCardDeck()
+        public void ShowCardDeck(bool visible)
         {
+            Visibility visibility = visible ? Visibility.Visible : Visibility.Hidden;
             Invoke(new Action(delegate()
             {
-                MainWindow.CardDeckGrid.Visibility = Visibility.Visible;
-                MainWindow.CardActionGrid.Visibility = Visibility.Visible;
+                MainWindow.CardDeckGrid.Visibility = visibility;
+                MainWindow.CardActionGrid.Visibility = visibility;
             }));
         }
 
@@ -173,6 +174,13 @@ namespace Client.Game
         {
             MainWindow.SlideShow.UnloadItems();
             DataHolder.UnloadData();
+        }
+
+        // Ends game
+        public void EndGame(bool win)
+        {
+            ShowCardDeck(false);
+            MessageBox.Show(win ? "You have won... You are amazing" : "You have lost... You sucks");
         }
 
         // Checks every 50ms for new packets form server in separated thread
