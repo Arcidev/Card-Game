@@ -153,7 +153,7 @@ namespace Client.Game
             if (cardPair == null)
                 return;
 
-            //TODO: log damage
+            game.Chat.LogDamage(CombatLogTypes.MeleeDamage, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
             Invoke(new Action(delegate()
             {
                 cardPair.First.Hp -= damage;
@@ -166,7 +166,7 @@ namespace Client.Game
             PlayableCard card = null;
             if (cards.TryGetValue(guid, out card))
             {
-                //TODO: log damage
+                game.Chat.LogDamage(CombatLogTypes.MeleeDamage, game.GetOpponent(Id).ActiveCard, card, damage, false);
                 cards.Remove(guid);
             }
         }

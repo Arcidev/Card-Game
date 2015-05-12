@@ -68,13 +68,13 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
         return;
     }
 
-    uint32_t damage = GetCurrentCard()->GetDamage();
+    uint8_t damage = GetCurrentCard()->GetDamage();
     float reduction = (float)(victim->GetCurrentCard()->GetDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
         reduction /= 100.0f;
         reduction += 1.0f;
-        damage = (uint32_t)(damage / reduction);
+        damage = (uint8_t)(damage / reduction);
     }
 
     victimCard->DealDamage(damage);

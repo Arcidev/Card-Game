@@ -156,6 +156,11 @@
                         <RichTextBox IsDocumentEnabled="True" Name="GeneralChatTab" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
                     </Grid>
                 </TabItem>
+                <TabItem Header="CombatLog">
+                    <Grid Background="#FFE5E5E5">
+                        <RichTextBox IsDocumentEnabled="True" Name="CombatLogChatTab" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                    </Grid>
+                </TabItem>
             </TabControl>
             <TextBox Name="ChatTextBox" HorizontalAlignment="Left" Height="25" Margin="725,535,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="226" KeyDown="ChatTextBox_KeyDown"/>
             <Button Name="ChatButton" Content="Send" HorizontalAlignment="Left" Margin="956,535,0,0" VerticalAlignment="Top" Width="50" Click="ChatButton_Click"/>

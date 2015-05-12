@@ -24,25 +24,6 @@ namespace Client.Game
             ActiveChat = ChatTypes.Global;
         }
 
-        // Returns chat color
-        public Brush GetChatColor(ChatTypes chatType)
-        {
-            switch (chatType)
-            {
-                case ChatTypes.Game:
-                    return Brushes.Blue;
-                case ChatTypes.Global:
-                    return Brushes.Green;
-                case ChatTypes.Whisper:
-                case ChatTypes.WhisperResponse:
-                    return Brushes.Purple;
-                case ChatTypes.Info:
-                    return Brushes.Orange;
-                default:
-                    return Brushes.Black;
-            }
-        }
-
         // Writes message into chat
         public void Write(string message, ChatTypes chatType)
         {
@@ -87,6 +68,54 @@ namespace Client.Game
                 clientGame.MainWindow.ChatActiveLabel.Content = chatType;
                 clientGame.MainWindow.ChatActiveLabel.Foreground = GetChatColor(chatType);
             }));
+        }
+
+        // Write info about damage into combat log chat tab
+        public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
+        {
+            Brush brush = GetCombatLogColor(combatLogType);
+            RichTextBox rtb = clientGame.MainWindow.CombatLogChatTab;
+            var log = alive ? string.Format("{0} dealt {1} damage to {2}{3}", attacker.Name, damage, victim.Name, CommandHandler.LineSeparator) : string.Format("{0} killed {1} with {2}{3}", attacker.Name, victim.Name, damage, CommandHandler.LineSeparator);
+            clientGame.Invoke(new Action(delegate()
+            {
+                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
+                tr.Text = log;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                rtb.ScrollToEnd();
+            }));
+        }
+
+        // Returns chat color
+        private Brush GetChatColor(ChatTypes chatType)
+        {
+            switch (chatType)
+            {
+                case ChatTypes.Game:
+                    return Brushes.Blue;
+                case ChatTypes.Global:
+                    return Brushes.Green;
+                case ChatTypes.Whisper:
+                case ChatTypes.WhisperResponse:
+                    return Brushes.Purple;
+                case ChatTypes.Info:
+                    return Brushes.Orange;
+                default:
+                    return Brushes.Black;
+            }
+        }
+
+        // Returns combat log color
+        private Brush GetCombatLogColor(CombatLogTypes combatLogType)
+        {
+            switch (combatLogType)
+            {
+                case CombatLogTypes.MeleeDamage:
+                    return Brushes.Red;
+                case CombatLogTypes.SpellDamage:
+                    return Brushes.Blue;
+                default:
+                    return Brushes.Black;
+            }
         }
     }
 }
