@@ -2,14 +2,15 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "Card/PlayableCard.h"
 #include "Game.h"
 #include "../Multiplatform/NetworkCommunication.h"
 
-typedef std::map<uint64_t, PlayableCard*> CardsMap;
-
+class Card;
 class Packet;
 class ServerNetwork;
+class PlayableCard;
+
+typedef std::map<uint64_t, PlayableCard*> CardsMap;
 
 class Player
 {
@@ -27,13 +28,15 @@ class Player
         std::string m_name;
         std::string m_AesKey;
 
+        void destroyCard(uint64_t const& cardGuid);
+        void endTurn();
+
     public:
         Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
         ~Player();
 
         void SetEncryptionKey(std::string const& key) { m_AesKey = key; }
         void SetName(std::string const& name) { m_name = name; }
-        void IncreaseCurrentCardIndex() { ++m_currentCardIndex; };
         void SendInitResponse() const;
         void SendAvailableCards() const;
         void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
@@ -41,17 +44,18 @@ class Player
         void SendPlayerDisconnected() const;
         void SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const;
         void SendEndGame() const;
+        void SendCardStatChanged(uint64_t const& cardGuid, uint8_t const& cardStat, int8_t const& value) const;
         void Attack(uint64_t const& victimCardGuid, uint8_t const& attackType);
-        void Defense() { GetCurrentCard()->Defend(); }
+        void DefendSelf();
         void Prepare();
-        void DestroyCard(uint64_t const& cardGuid);
+        
         void ClearCards() { m_cards.clear(); }
-        void CreateCard(Card const& cardTemplate);
+        void CreateCard(Card const* cardTemplate);
         void ReceivePacket(uint32_t const& length, char const* packetData);
         void SendPacket(Packet const* packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
-
+        
         Player* GetOpponent() const { return m_game->GetOpponent(this); }
         PlayableCard* GetCurrentCard();
         CardsMap const& GetCards() { return m_cards; }
@@ -65,4 +69,5 @@ class Player
         ServerNetwork const* GetNetwork() const { return m_network; }
         bool IsPrepared() const { return m_isPrepared; }
         bool IsDisconnected() const { return m_isDisconnected; }
+        bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }
 };

@@ -199,7 +199,7 @@ namespace Client
 
         private void DefendButton_Click(object sender, RoutedEventArgs e)
         {
-
+            game.SendDefendSelf();
         }
 
         private void OnOpponentCardMouseDown(object sender, MouseButtonEventArgs e)

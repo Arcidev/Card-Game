@@ -30,5 +30,20 @@ namespace Client.Game
         }
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);
+
+        public void ApplyModifier(CardStats cardStat, sbyte value)
+        {
+            switch(cardStat)
+            {
+                case CardStats.Defense:
+                    DefenseModifier = value;
+                    return;
+                case CardStats.Damage:
+                    DamageModifier = value;
+                    return;
+                default:
+                    return;
+            }
+        }
     }
 }

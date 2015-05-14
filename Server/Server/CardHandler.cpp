@@ -3,6 +3,7 @@
 #include "Packet.h"
 #include "Player.h"
 #include "DataHolder.h"
+#include "Card/PlayableCard.h"
 #include "../Shared/SharedDefines.h"
 
 // Handle CMSG_SELECTED_CARDS packet
@@ -32,7 +33,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
             return;
         }
 
-        player->CreateCard(cardIter->second);
+        player->CreateCard(&cardIter->second);
     }
 
     player->Prepare();
@@ -101,4 +102,11 @@ void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
 
     DEBUG_LOG("CMSG_ATTACK_CARD:\n\tGuid: %ju\n\tattackType: %d\n", (uint64_t)guid, attackType);
     player->Attack(guid, attackType);
+}
+
+// Handles CMSG_DEFEND_SELF packet
+void PacketHandler::handleDefendSelfPacket(Player* player, Packet* /*packet*/)
+{
+    DEBUG_LOG("CMSG_DEFEND_SELF\n");
+    player->DefendSelf();
 }

@@ -1,6 +1,6 @@
 #include "RangedCard.h"
 
-RangedCard::RangedCard(uint64_t guid, Card const& card) : PlayableCard(guid, card) { }
+RangedCard::RangedCard(uint64_t guid, Card const* card, Player const* owner) : PlayableCard(guid, card, owner) { }
 
 bool RangedCard::CanAttackCard(uint64_t guid, std::vector<PlayableCard*> opponentCards, uint32_t /*position*/)
 {

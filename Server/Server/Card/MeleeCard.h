@@ -4,7 +4,7 @@
 class MeleeCard : public PlayableCard
 {
     public:
-        MeleeCard(uint64_t guid, Card const& card);
+        MeleeCard(uint64_t guid, Card const* card, Player const* owner);
 
         bool CanAttackCard(uint64_t guid, std::vector<PlayableCard*> opponentCards, uint32_t position) override;
 };

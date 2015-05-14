@@ -4,7 +4,7 @@
 class DefensiveCard : public PlayableCard
 {
     public:
-        DefensiveCard(uint64_t guid, Card const& card);
+        DefensiveCard(uint64_t guid, Card const* card, Player const* owner);
 
         bool CanAttackCard(uint64_t /*guid*/, std::vector<PlayableCard*> /*opponentCards*/, uint32_t /*position*/) override { return false; }
 };

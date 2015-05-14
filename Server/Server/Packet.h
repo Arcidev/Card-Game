@@ -10,7 +10,8 @@ enum CMSGPackets
     CMSG_INIT_PACKET = 1,
     CMSG_CHAT_MESSAGE,
     CMSG_SELECTED_CARDS,
-    CMSG_ATTACK_CARD
+    CMSG_ATTACK_CARD,
+    CMSG_DEFEND_SELF
 };
 
 enum SMSGPackets
@@ -26,7 +27,8 @@ enum SMSGPackets
     SMSG_ACTIVE_PLAYER,
     SMSG_PLAYER_DISCONNECTED,
     SMSG_ATTACK_RESULT,
-    SMSG_END_GAME
+    SMSG_END_GAME,
+    SMSG_CARD_STAT_CHANGED
 };
 
 class Packet
@@ -58,11 +60,14 @@ class Packet
 
         std::vector<uint8_t> const& GetStorage() const { return m_storage; }
 
-        Packet& operator << (uint32_t value);
-        Packet& operator << (uint16_t value);
-        Packet& operator << (uint8_t value);
-        Packet& operator << (float value);
-        Packet& operator << (std::string value);
+        Packet& operator << (uint32_t const& value);
+        Packet& operator << (int32_t const& value) { return operator<<((uint32_t)value); }
+        Packet& operator << (uint16_t const& value);
+        Packet& operator << (int16_t const& value) { return operator<<((uint16_t)value); }
+        Packet& operator << (uint8_t const& value);
+        Packet& operator << (int8_t const& value) { return operator<<((uint8_t)value); }
+        Packet& operator << (float const& value);
+        Packet& operator << (std::string const& value);
 
         Packet& operator >> (uint32_t& value);
         Packet& operator >> (uint16_t& value);

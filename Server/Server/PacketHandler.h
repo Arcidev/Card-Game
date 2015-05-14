@@ -17,6 +17,7 @@ class PacketHandler
         static void handleChatPacket(Player* player, Packet* packet);
         static void handleSelectedCardsPacket(Player* player, Packet* packet);
         static void handleAttackCardPacket(Player* player, Packet* packet);
+        static void handleDefendSelfPacket(Player* player, Packet* packet);
 
     public:
         static PacketHandlerFunc GetPacketHandler(uint16_t packetId);

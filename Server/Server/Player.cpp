@@ -5,6 +5,7 @@
 #include "serverNetwork.h"
 #include "DataHolder.h"
 #include "PacketHandler.h"
+#include "Card/PlayableCard.h"
 #include "../Crypto/Aes.h"
 #include "Packet.h"
 #include "PlayerDefines.h"
@@ -28,6 +29,7 @@ void Player::Disconnect()
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 
+// Sends attack result
 void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const
 {
     Packet packet(SMSG_ATTACK_RESULT);
@@ -50,6 +52,9 @@ void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, u
 // Attacks enemy player
 void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
 {
+    if (!IsActive())
+        return;
+
     Player* victim = GetGame()->GetOpponent(this);
     if (!victim)
         return;
@@ -69,7 +74,7 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
     }
 
     uint8_t damage = GetCurrentCard()->GetDamage();
-    float reduction = (float)(victim->GetCurrentCard()->GetDefense() * DEFENSE_PERCENT_PER_POINT);
+    float reduction = (float)(victim->GetCurrentCard()->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
         reduction /= 100.0f;
@@ -81,7 +86,7 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
 
     if (!victimCard->IsAlive())
     {
-        victim->DestroyCard(victimCardGuid);
+        victim->destroyCard(victimCardGuid);
         SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
             SendEndGame();
@@ -91,15 +96,11 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
     else
         SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
 
-    if ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty())
-        HandleDeckCards(true);
-
-    ++m_currentCardIndex;
-    GetGame()->ActivateSecondPlayer();
+    endTurn();
 }
 
 // Removes card from player deck
-void Player::DestroyCard(uint64_t const& cardGuid)
+void Player::destroyCard(uint64_t const& cardGuid)
 {
     for (uint32_t i = 0; i < m_currentCards.size(); ++i)
     {
@@ -237,9 +238,12 @@ void Player::SendPacket(Packet const* packet) const
 }
 
 // Adds card into deck from existing template
-void Player::CreateCard(Card const& cardTemplate)
+void Player::CreateCard(Card const* cardTemplate)
 {
-    PlayableCard* card = PlayableCard::Create(m_game->GetNextCardGuid(), cardTemplate);
+    if (!cardTemplate)
+        return;
+
+    PlayableCard* card = PlayableCard::Create(m_game->GetNextCardGuid(), cardTemplate, this);
 
     m_cards.insert(std::make_pair(card->GetGuid(), card));
     m_cardOrder.push_back(card);
@@ -275,6 +279,7 @@ void Player::HandleDeckCards(bool addCard)
     m_game->BroadcastPacket(&packet);
 }
 
+// Gets current card
 PlayableCard* Player::GetCurrentCard()
 {
     if (m_currentCards.empty())
@@ -284,10 +289,46 @@ PlayableCard* Player::GetCurrentCard()
     return m_currentCards[m_currentCardIndex];
 }
 
+// Informs player that game has ended
 void Player::SendEndGame() const
 {
     Packet packet(SMSG_END_GAME);
     packet << m_id;
 
     GetGame()->BroadcastPacket(&packet);
+}
+
+// Sets active defend statte on current card
+void Player::DefendSelf()
+{
+    if (!IsActive() || !GetCurrentCard())
+        return;
+
+    GetCurrentCard()->SetDefendState(true);
+    endTurn();
+}
+
+// Sends new card stat modifiers
+void Player::SendCardStatChanged(uint64_t const& cardGuid, uint8_t const& cardStat, int8_t const& value) const
+{
+    Packet packet(SMSG_CARD_STAT_CHANGED);
+    packet.WriteGuidBitStreamInOrder(cardGuid, std::vector<uint8_t> { 2, 6, 7, 1, 0, 3, 5, 4 });
+    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 5, 7 });
+    packet << value;
+    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 6, 3, 1 });
+    packet << m_id;
+    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 0, 4, 2 });
+    packet << cardStat;
+
+    m_game->BroadcastPacket(&packet);
+}
+
+// Ends player turn
+void Player::endTurn()
+{
+    if ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty())
+        HandleDeckCards(true);
+
+    ++m_currentCardIndex;
+    GetGame()->ActivateSecondPlayer();
 }

@@ -25,6 +25,12 @@ enum FailReson
     INVALID_CARD_ID
 };
 
+enum CardStats
+{
+    CARD_STAT_DEFENSE = 1,
+    CARD_STAT_DAMAGE
+};
+
 class Card
 {
     private:
@@ -36,19 +42,11 @@ class Card
         uint8_t m_damage;
         uint8_t m_mana;
         uint8_t m_defense;
-        bool m_isDefending;
-        bool m_onDeck;
 
     public:
         Card(uint32_t id, uint8_t type, uint8_t hp, uint8_t damage, uint8_t mana, uint8_t defense);
         virtual ~Card() { }
 
-        void Die();
-        void Defend();
-        void StopDefending();
-
-        bool IsDefending() const { return m_isDefending; }
-        bool IsAlive() const { return m_hp > 0; }
         uint32_t GetId() const { return m_id; }
         uint8_t GetType() const { return m_type; }
         uint8_t GetDamage() const { return m_damage; }

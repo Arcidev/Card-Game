@@ -4,7 +4,7 @@
 class RangedCard : public PlayableCard
 {
     public:
-        RangedCard(uint64_t guid, Card const& card);
+        RangedCard(uint64_t guid, Card const* card, Player const* owner);
 
         bool CanAttackCard(uint64_t guid, std::vector<PlayableCard*> opponentCards, uint32_t /*position*/) override;
 };

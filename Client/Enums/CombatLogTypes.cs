@@ -4,6 +4,7 @@ namespace Client.Enums
     public enum CombatLogTypes
     {
         MeleeDamage,
-        SpellDamage
+        SpellDamage,
+        StatChange
     }
 }

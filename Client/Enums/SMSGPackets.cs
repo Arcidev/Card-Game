@@ -14,6 +14,7 @@ namespace Client.Enums
         SMSG_ACTIVE_PLAYER,
         SMSG_PLAYER_DISCONNECTED,
         SMSG_ATTACK_RESULT,
-        SMSG_END_GAME
+        SMSG_END_GAME,
+        SMSG_CARD_STAT_CHANGED
     }
 }

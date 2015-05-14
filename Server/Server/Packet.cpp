@@ -161,35 +161,35 @@ bool Packet::ReadBit()
 }
 
 // Stores uint32 value in stream
-Packet& Packet::operator << (uint32_t value)
+Packet& Packet::operator << (uint32_t const& value)
 {
     append<uint32_t>(value);
     return *this;
 }
 
 // Stores uint16 value in stream
-Packet& Packet::operator << (uint16_t value)
+Packet& Packet::operator << (uint16_t const& value)
 {
     append<uint16_t>(value);
     return *this;
 }
 
 // Stores uint8 value in stream
-Packet& Packet::operator << (uint8_t value)
+Packet& Packet::operator << (uint8_t const& value)
 {
     append<uint8_t>(value);
     return *this;
 }
 
 // Stores float value in stream
-Packet& Packet::operator << (float value)
+Packet& Packet::operator << (float const& value)
 {
     append<float>(value);
     return *this;
 }
 
 // Stores string and string length in stream
-Packet& Packet::operator << (std::string value)
+Packet& Packet::operator << (std::string const& value)
 {
     *this << (uint16_t)value.size();
     append((uint8_t*)value.c_str(), value.size());

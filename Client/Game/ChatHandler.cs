@@ -29,13 +29,7 @@ namespace Client.Game
         {
             Brush brush = GetChatColor(chatType);
             RichTextBox rtb = clientGame.MainWindow.GeneralChatTab;
-            clientGame.Invoke(new Action(delegate()
-            {
-                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
-                tr.Text = string.Format("{0}{1}", message, CommandHandler.LineSeparator);
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
-                rtb.ScrollToEnd();
-            }));
+            InvokeToChat(message, rtb, brush);
         }
 
         // Writes message as channel message into chat
@@ -70,19 +64,25 @@ namespace Client.Game
             }));
         }
 
-        // Write info about damage into combat log chat tab
-        public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
+        // Writes message into combat log
+        public void WriteLog(string message, CombatLogTypes combatLogType)
         {
             Brush brush = GetCombatLogColor(combatLogType);
             RichTextBox rtb = clientGame.MainWindow.CombatLogChatTab;
-            var log = alive ? string.Format("{0} dealt {1} damage to {2}{3}", attacker.Name, damage, victim.Name, CommandHandler.LineSeparator) : string.Format("{0} killed {1} with {2}{3}", attacker.Name, victim.Name, damage, CommandHandler.LineSeparator);
-            clientGame.Invoke(new Action(delegate()
-            {
-                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
-                tr.Text = log;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
-                rtb.ScrollToEnd();
-            }));
+            InvokeToChat(message, rtb, brush);
+        }
+
+        // Write info about damage into combat log chat tab
+        public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
+        {
+            var message = alive ? string.Format("{0} dealt {1} damage to {2}", attacker.Name, damage, victim.Name) : string.Format("{0} killed {1} with {2}{3}", attacker.Name, victim.Name, damage);
+            WriteLog(message, combatLogType);
+        }
+
+        public void LogStatChange(CardStats stat, PlayableCard card, sbyte value)
+        {
+            var message = string.Format("{0}'s {1} has been changed by {2}", card.Name, stat.GetDescription(), value);
+            WriteLog(message, CombatLogTypes.StatChange);
         }
 
         // Returns chat color
@@ -113,9 +113,22 @@ namespace Client.Game
                     return Brushes.Red;
                 case CombatLogTypes.SpellDamage:
                     return Brushes.Blue;
+                case CombatLogTypes.StatChange:
+                    return Brushes.Orange;
                 default:
                     return Brushes.Black;
             }
+        }
+
+        private void InvokeToChat(string message, RichTextBox rtb, Brush brush)
+        {
+            clientGame.Invoke(new Action(delegate()
+            {
+                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
+                tr.Text = string.Format("{0}{1}", message, CommandHandler.LineSeparator);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                rtb.ScrollToEnd();
+            }));
         }
     }
 }

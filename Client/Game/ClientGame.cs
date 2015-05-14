@@ -149,6 +149,14 @@ namespace Client.Game
             SendPacket(packet);
         }
 
+        // Sends defend action to server
+        public void SendDefendSelf()
+        {
+            SetActiveCardActionGrid(false);
+            Packet packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
+            SendPacket(packet);
+        }
+
         // Shows card deck
         public void ShowCardDeck(bool visible)
         {
@@ -160,6 +168,7 @@ namespace Client.Game
             }));
         }
 
+        // Activates/deactivates card action grid
         public void SetActiveCardActionGrid(bool active)
         {
             Invoke(new Action(delegate()

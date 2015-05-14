@@ -25,7 +25,8 @@ namespace Client.Network
             { SMSGPackets.SMSG_ACTIVE_PLAYER,                           HandleActivePlayer          },
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    },
             { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          },
-            { SMSGPackets.SMSG_END_GAME,                                HandleEndGame               }
+            { SMSGPackets.SMSG_END_GAME,                                HandleEndGame               },
+            { SMSGPackets.SMSG_CARD_STAT_CHANGED,                       HandleCardStatChanged       }
         };
 
         // Returns function to handle packet
@@ -247,6 +248,21 @@ namespace Client.Network
                 else
                     opponent.DestroyCard(cardGuid, damage);
             }
+        }
+
+        // Handle SMSG_CARD_STAT_CHANGED packet
+        private static void HandleCardStatChanged(Packet packet, ClientGame game)
+        {
+            Guid guid = new Guid();
+            packet.ReadGuidBitStreamInOrder(guid, 2, 6, 7, 1, 0, 3, 5, 4);
+            packet.ReadGuidByteStreamInOrder(guid, 5, 7);
+            sbyte value = packet.ReadSByte();
+            packet.ReadGuidByteStreamInOrder(guid, 6, 3, 1);
+            UInt32 playerId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 0, 4, 2);
+            CardStats cardStat = (CardStats)packet.ReadByte();
+
+            game.GetPlayer(playerId).ModifyCardStat(guid, cardStat, value);
         }
 
         // Handle SMSG_END_GAME packet

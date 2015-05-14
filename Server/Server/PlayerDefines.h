@@ -9,5 +9,6 @@ enum AttackResult
 
 enum StatStystem
 {
-    DEFENSE_PERCENT_PER_POINT = 6
+    DEFENSE_PERCENT_PER_POINT   = 6,
+    DEFENSE_BONUS_ON_DEFEND     = 2
 };

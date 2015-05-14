@@ -127,6 +127,9 @@ namespace Client.Network
         // Reads byte
         public byte ReadByte() { return readData.ReadByte(); }
 
+        // Reads sbyte
+        public sbyte ReadSByte() { return readData.ReadSByte(); }
+
         // Reads multiple bytes
         public byte[] ReadBytes()
         {

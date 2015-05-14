@@ -142,11 +142,13 @@ namespace Client.Game
             }
         }
 
+        // Gets card by control name
         public PlayableCard GetCardByImageControlName(string name)
         {
             return cardDeck.First(x => x.Second.Name == name).First;
         }
 
+        // Attacks card
         public void AttackCard(UInt64 guid, byte damage)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == guid);
@@ -161,6 +163,7 @@ namespace Client.Game
             }));
         }
 
+        // Destroys card
         public void DestroyCard(UInt64 guid, byte damage)
         {
             PlayableCard card = null;
@@ -169,6 +172,21 @@ namespace Client.Game
                 game.Chat.LogDamage(CombatLogTypes.MeleeDamage, game.GetOpponent(Id).ActiveCard, card, damage, false);
                 cards.Remove(guid);
             }
+        }
+
+        // Modifies card stat
+        public void ModifyCardStat(UInt64 cardGuid, CardStats cardStat, sbyte value)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
+            if (cardPair == null)
+                return;
+
+            game.Chat.LogStatChange(cardStat, cardPair.First, value);
+            Invoke(new Action(delegate()
+            {
+                cardPair.First.ApplyModifier(cardStat, value);
+                cardPair.Second.Source = cardPair.First.Image;
+            }));
         }
     }
 }

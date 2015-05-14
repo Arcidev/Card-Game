@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Packet.h"
+#include "Card/PlayableCard.h"
 
 Game::Game() : m_activePlayerId(0), m_player1(nullptr), m_player2(nullptr), m_nextCardGuid(1) {}
 
@@ -96,6 +97,9 @@ void Game::ActivateSecondPlayer()
     PlayableCard* currentCard = GetActivePlayer()->GetCurrentCard();
     if (!currentCard)
         return;
+
+    // Stop defending if is in defend state
+    currentCard->SetDefendState(false);
 
     Packet packet(SMSG_ACTIVE_PLAYER);
     packet.WriteGuidBitStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 7, 1, 2, 0, 3, 5, 4, 6 });

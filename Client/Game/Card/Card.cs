@@ -43,6 +43,8 @@ namespace Client.Game
         private static readonly Point defensePosition = new Point(640.0, 920.0);
 
         private byte health;
+        private sbyte defenseModifier;
+        private sbyte damageModifier;
 
         public SelectionType SelectionType { get; set; }
         public UInt32 Id { get; private set; }
@@ -58,8 +60,48 @@ namespace Client.Game
             }
         }
         public byte Damage { get; private set; }
+        public sbyte DamageModifier
+        {
+            get { return damageModifier; }
+            set
+            {
+                damageModifier = value;
+                ReloadStats();
+            }
+        }
+        public byte DamageModified
+        {
+            get
+            {
+                if (damageModifier < 0)
+                    if (Damage < -damageModifier)
+                        return 0;
+
+                return (byte)(Damage + damageModifier);
+            }
+        }
         public byte Mana { get; private set; }
         public byte Defense { get; private set; }
+        public sbyte DefenseModifier
+        {
+            get { return defenseModifier; }
+            set
+            {
+                defenseModifier = value;
+                ReloadStats();
+            }
+        }
+        public byte DefenseModified
+        {
+            get
+            {
+                if (defenseModifier < 0)
+                    if (Defense < -defenseModifier)
+                        return 0;
+
+                return (byte)(Defense + defenseModifier);
+            }
+        }
         public string ImageUri { get; set; }
         public BitmapSource Image
         {
@@ -81,6 +123,8 @@ namespace Client.Game
             Mana = mana;
             Defense = defense;
             SelectionType = SelectionType.None;
+            defenseModifier = 0;
+            damageModifier = 0;
         }
 
         // Unloads images from memory
@@ -133,10 +177,10 @@ namespace Client.Game
                 drawingContext.DrawImage(cardTemplateImage, new Rect(0, 0, cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight));
 
                 // Card stats
-                drawingContext.DrawText(new FormattedText(Damage.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), damagePosition);
+                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage)), damagePosition);
                 drawingContext.DrawText(new FormattedText(Mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
                 drawingContext.DrawText(new FormattedText(Hp.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
-                drawingContext.DrawText(new FormattedText(Defense.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), defensePosition);
+                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense)), defensePosition);
             }
 
             // Converts the Visual (DrawingVisual) into a BitmapSource
@@ -171,6 +215,31 @@ namespace Client.Game
             bmp.Render(drawingVisual);
 
             return bmp;
+        }
+
+        private Brush GetStatBrush(CardStats cardStat)
+        {
+            sbyte modifier = 0;
+            byte stat = 0;
+
+            switch (cardStat)
+            {
+                case CardStats.Defense:
+                    modifier = defenseModifier;
+                    stat = Defense;
+                    break;
+                case CardStats.Damage:
+                    modifier = damageModifier;
+                    stat = Damage;
+                    break;
+                default:
+                    return Brushes.White;
+            }
+
+            if (modifier == 0 || stat == 0)
+                return Brushes.White;
+
+            return modifier > 0 ? Brushes.Green : Brushes.Red;
         }
     }
 }
