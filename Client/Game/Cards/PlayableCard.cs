@@ -18,15 +18,15 @@ namespace Client.Game
 
         public UInt64 Guid { get; private set; }
 
-        protected PlayableCard(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
-            : base(id, type, hp, damage, mana, defense)
+        protected PlayableCard(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
+            : base(id, type, hp, damage, mana, defense, spell)
         {
             Guid = guid;
         }
 
-        public static PlayableCard Create(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
+        public static PlayableCard Create(UInt64 guid, UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
-            return Activator.CreateInstance(derrivedClasses[type], guid, id, type, hp, damage, mana, defense) as PlayableCard;
+            return Activator.CreateInstance(derrivedClasses[type], guid, id, type, hp, damage, mana, defense, spell) as PlayableCard;
         }
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);

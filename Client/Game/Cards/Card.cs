@@ -113,8 +113,9 @@ namespace Client.Game
                 return (SelectionType != SelectionType.None) ? SelectedCard() : image;
             }
         }
+        public Spell spell;
 
-        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
+        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
             Id = id;
             Type = type;

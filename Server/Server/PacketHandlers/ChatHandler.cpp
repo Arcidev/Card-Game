@@ -1,8 +1,8 @@
 #include "PacketHandler.h"
 #include "Packet.h"
-#include "Player.h"
-#include "serverNetwork.h"
-#include "../Shared/SharedDefines.h"
+#include "../Player.h"
+#include "../serverNetwork.h"
+#include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_CHAT_MESSAGE packet
 void PacketHandler::handleChatPacket(Player* player, Packet* packet)

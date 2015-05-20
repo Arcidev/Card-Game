@@ -9,7 +9,7 @@ namespace Client.Game
 {
     public class SelectableCard : Card
     {
-        public SelectableCard(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense)
-            : base(id, type, hp, damage, mana, defense) { }
+        public SelectableCard(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
+            : base(id, type, hp, damage, mana, defense, spell) { }
     }
 }

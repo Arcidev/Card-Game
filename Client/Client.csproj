@@ -78,11 +78,13 @@
     <Compile Include="Enums\CombatLogTypes.cs" />
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
-    <Compile Include="Game\Card\DefensiveCard.cs" />
-    <Compile Include="Game\Card\MeleeCard.cs" />
-    <Compile Include="Game\Card\PlayableCard.cs" />
-    <Compile Include="Game\Card\RangedCard.cs" />
-    <Compile Include="Game\Card\SelectableCard.cs" />
+    <Compile Include="Game\Cards\DefensiveCard.cs" />
+    <Compile Include="Game\Cards\MeleeCard.cs" />
+    <Compile Include="Game\Cards\PlayableCard.cs" />
+    <Compile Include="Game\Cards\RangedCard.cs" />
+    <Compile Include="Game\Cards\SelectableCard.cs" />
+    <Compile Include="Game\Spells\Spell.cs" />
+    <Compile Include="Game\Spells\SpellEffect.cs" />
     <Compile Include="Misc\CardAttackCursors.cs" />
     <Compile Include="Misc\GenericNumberMethodTemplate.cs">
       <AutoGen>True</AutoGen>
@@ -108,7 +110,7 @@
     <Compile Include="Enums\EnumExtension.cs" />
     <Compile Include="Enums\SelectCardFailReason.cs" />
     <Compile Include="Enums\SMSGPackets.cs" />
-    <Compile Include="Game\Card\Card.cs" />
+    <Compile Include="Game\Cards\Card.cs" />
     <Compile Include="Game\ChatHandler.cs" />
     <Compile Include="Game\ClientGame.cs" />
     <Compile Include="Game\CommandHandler.cs" />

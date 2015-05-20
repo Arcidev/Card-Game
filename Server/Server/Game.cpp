@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "Player.h"
-#include "Packet.h"
+#include "PacketHandlers/Packet.h"
 #include "Cards/PlayableCard.h"
 
 Game::Game() : m_activePlayerId(0), m_player1(nullptr), m_player2(nullptr), m_nextCardGuid(1) {}

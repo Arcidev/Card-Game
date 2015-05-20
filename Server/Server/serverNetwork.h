@@ -2,7 +2,7 @@
 #include <map>
 #include "../Multiplatform/NetworkCommunication.h"
 #include "networkServices.h"
-#include "Packet.h"
+#include "PacketHandlers/Packet.h"
 
 class Player;
 class Packet;

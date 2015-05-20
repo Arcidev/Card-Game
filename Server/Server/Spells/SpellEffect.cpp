@@ -1,6 +1,6 @@
 #include "SpellEffect.h"
 #include "../Cards/PlayableCard.h"
-#include "../Packet.h"
+#include "../PacketHandlers/Packet.h"
 #include "../Player.h"
 
 SpellEffectMap SpellEffect::m_spellEffects = 

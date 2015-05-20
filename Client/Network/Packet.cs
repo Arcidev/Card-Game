@@ -137,6 +137,12 @@ namespace Client.Network
             return readData.ReadBytes(length);
         }
 
+        // Reads multiple bytes
+        public byte[] ReadBytes(int length)
+        {
+            return readData.ReadBytes(length);
+        }
+
         // Reads string
         public string ReadString()
         {

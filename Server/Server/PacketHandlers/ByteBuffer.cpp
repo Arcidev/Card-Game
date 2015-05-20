@@ -1,31 +1,11 @@
 #include <cstring>
 #include <stdexcept>
-#include "Packet.h"
+#include "ByteBuffer.h"
 
-// Inicializes writeable packet
-Packet::Packet(uint32_t opcodeNumber) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
-{
-    append<uint16_t>(opcodeNumber);
-}
-
-// Inicializes readable packet
-Packet::Packet(std::string const& data) : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0)
-{
-    append((uint8_t const*)data.c_str(), data.size());
-}
-
-// Inicializes data in packet
-void Packet::Initialize(uint32_t opcodeNumber)
-{
-    m_wpos = 0;
-    m_bitpos = 8;
-    m_curbitval = 0;
-    m_storage.clear();
-    append<uint16_t>(opcodeNumber);
-}
+ByteBuffer::ByteBuffer() : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0) { }
 
 // Adds all bits stored in curbitval into stream as byte
-void Packet::FlushBits()
+void ByteBuffer::FlushBits()
 {
     if (m_bitpos == 8)
         return;
@@ -35,8 +15,8 @@ void Packet::FlushBits()
     m_bitpos = 8;
 }
 
-// Appends data into packet stream
-void Packet::append(uint8_t const* src, size_t cnt)
+// Appends data into ByteBuffer stream
+void ByteBuffer::append(uint8_t const* src, size_t cnt)
 {
     if (m_storage.size() < m_wpos + cnt)
         m_storage.resize(m_wpos + cnt);
@@ -46,7 +26,7 @@ void Packet::append(uint8_t const* src, size_t cnt)
 }
 
 // Writes one bit into curbitval
-bool Packet::WriteBit(uint32_t bit)
+bool ByteBuffer::WriteBit(uint32_t bit)
 {
     --m_bitpos;
     if (bit)
@@ -64,7 +44,7 @@ bool Packet::WriteBit(uint32_t bit)
 
 // Appends specified type as byte values
 template <typename T>
-void Packet::append(T value)
+void ByteBuffer::append(T value)
 {
     FlushBits();
     append((uint8_t *)&value, sizeof(value));
@@ -72,7 +52,7 @@ void Packet::append(T value)
 
 // Gets specified type from byte values
 template <typename T>
-T Packet::read(size_t pos)
+T ByteBuffer::read(size_t pos)
 {
     if (pos + sizeof(T) > m_storage.size())
         throw std::out_of_range("Reading out of Range");
@@ -82,21 +62,21 @@ T Packet::read(size_t pos)
 }
 
 // Writes byte value of guid if byte has value. If not its ignored
-void Packet::WriteGuidByte(uint8_t byte)
+void ByteBuffer::WriteGuidByte(uint8_t byte)
 {
     if (byte)
         append<uint8_t>(byte);
 }
 
 // Reads byte value of guid if byte has value. If not its ignored
-void Packet::ReadGuidByte(uint8_t& byte)
+void ByteBuffer::ReadGuidByte(uint8_t& byte)
 {
     if (byte)
         byte = read<uint8_t>(m_rpos);
 }
 
 // Writes if exist byte values of guid in passed order
-void Packet::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -109,7 +89,7 @@ void Packet::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> in
 }
 
 // Writes byte values of guid if bytes has value. Bytes without value are ignored
-void Packet::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -122,7 +102,7 @@ void Packet::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> i
 }
 
 // Reads if exist byte values of guid in passed order
-void Packet::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -135,7 +115,7 @@ void Packet::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrde
 }
 
 // Reads byte values of guid if bytes has value. Bytes without value are ignored
-void Packet::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : indexOrder.size();
     for (uint8_t i = 0; i < size; i++)
@@ -148,7 +128,7 @@ void Packet::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrd
 }
 
 // Reads 1 bit from stream
-bool Packet::ReadBit()
+bool ByteBuffer::ReadBit()
 {
     ++m_bitpos;
     if (m_bitpos > 7)
@@ -161,35 +141,35 @@ bool Packet::ReadBit()
 }
 
 // Stores uint32 value in stream
-Packet& Packet::operator << (uint32_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint32_t const& value)
 {
     append<uint32_t>(value);
     return *this;
 }
 
 // Stores uint16 value in stream
-Packet& Packet::operator << (uint16_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint16_t const& value)
 {
     append<uint16_t>(value);
     return *this;
 }
 
 // Stores uint8 value in stream
-Packet& Packet::operator << (uint8_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint8_t const& value)
 {
     append<uint8_t>(value);
     return *this;
 }
 
 // Stores float value in stream
-Packet& Packet::operator << (float const& value)
+ByteBuffer& ByteBuffer::operator << (float const& value)
 {
     append<float>(value);
     return *this;
 }
 
 // Stores string and string length in stream
-Packet& Packet::operator << (std::string const& value)
+ByteBuffer& ByteBuffer::operator << (std::string const& value)
 {
     *this << (uint16_t)value.size();
     append((uint8_t*)value.c_str(), value.size());
@@ -197,28 +177,28 @@ Packet& Packet::operator << (std::string const& value)
 }
 
 // Reads uint32 value from stream
-Packet& Packet::operator >> (uint32_t &value)
+ByteBuffer& ByteBuffer::operator >> (uint32_t &value)
 {
     value = read<uint32_t>(m_rpos);
     return *this;
 }
 
 // Reads uint16 value from stream
-Packet& Packet::operator >> (uint16_t &value)
+ByteBuffer& ByteBuffer::operator >> (uint16_t &value)
 {
     value = read<uint16_t>(m_rpos);
     return *this;
 }
 
 // Reads uint8 value from stream
-Packet& Packet::operator >> (uint8_t &value)
+ByteBuffer& ByteBuffer::operator >> (uint8_t &value)
 {
     value = read<uint8_t>(m_rpos);
     return *this;
 }
 
 // Reads string and string length from stream
-Packet& Packet::operator >> (std::string& value)
+ByteBuffer& ByteBuffer::operator >> (std::string& value)
 {
     uint16_t length;
     *this >> length;

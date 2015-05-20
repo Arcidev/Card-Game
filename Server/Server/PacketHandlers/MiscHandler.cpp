@@ -1,10 +1,10 @@
 #include "PacketHandler.h"
 #include "Packet.h"
-#include "Player.h"
-#include "../Shared/SharedDefines.h"
-#include "../Crypto/Aes.h"
-#include "../Crypto/Rsa.h"
-#include "../Crypto/Keys/RSAPrivateKey.h"
+#include "../Player.h"
+#include "../../Shared/SharedDefines.h"
+#include "../../Crypto/Aes.h"
+#include "../../Crypto/Rsa.h"
+#include "../../Crypto/Keys/RSAPrivateKey.h"
 
 // Handle CMSG_INIT_PACKET packet
 void PacketHandler::handleInitPacket(Player* player, Packet* packet)

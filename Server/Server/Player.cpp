@@ -4,13 +4,14 @@
 #include "Player.h"
 #include "serverNetwork.h"
 #include "DataHolder.h"
-#include "PacketHandler.h"
+#include "PacketHandlers/PacketHandler.h"
 #include "Cards/PlayableCard.h"
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
 #include "../Crypto/Aes.h"
-#include "Packet.h"
+#include "PacketHandlers/Packet.h"
 #include "PlayerDefines.h"
+#include "StaticHelper.h"
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
@@ -196,15 +197,26 @@ void Player::SendAvailableCards() const
     CardsDataMap cards = DataHolder::GetCards();
     Packet packet(SMSG_AVAILABLE_CARDS);
     packet << (uint16_t)cards.size();
+
+    ByteBuffer buffer;
     for (CardsDataMap::const_iterator iter = cards.begin(); iter != cards.end(); ++iter)
     {
-        packet << iter->second.GetId();
-        packet << iter->second.GetType();
-        packet << iter->second.GetHealth();
-        packet << iter->second.GetDamage();
-        packet << iter->second.GetMana();
-        packet << iter->second.GetDefense();
+        Spell const* spell = iter->second.GetSpell();
+        packet.WriteBit(spell ? true : false);
+
+        buffer << iter->second.GetId();
+        buffer << iter->second.GetType();
+        buffer << iter->second.GetHealth();
+
+        StaticHelper::PackSpell(&buffer, spell);
+
+        buffer << iter->second.GetDamage();
+        buffer << iter->second.GetMana();
+        buffer << iter->second.GetDefense();
     }
+
+    packet.FlushBits();
+    packet.AppendBuffer(buffer);
 
     SendPacket(&packet);
 }

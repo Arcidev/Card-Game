@@ -34,8 +34,6 @@ enum CardStats
 class Spell;
 class Card
 {
-    friend class DataHolder;
-
     private:
         uint32_t m_id;
         uint8_t m_type;

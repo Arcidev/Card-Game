@@ -26,4 +26,7 @@ class Spell
         Spell(uint32_t id, uint8_t manaCost);
 
         uint8_t Cast(Player* caster, Player* victim, uint64_t const& selectedCardGuid) const;
+        uint8_t const& GetManaCost() const { return m_manaCost; }
+        uint32_t const& GetId() const { return m_id; }
+        std::list<SpellEffectPair> const& GetSpellEffects() const { return m_spellEffects; }
 };

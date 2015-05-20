@@ -32,13 +32,7 @@
     <ClInclude Include="Server\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Guid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server\networkServices.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\Packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Server\Player.h">
@@ -55,9 +49,6 @@
     </ClInclude>
     <ClInclude Include="Multiplatform\NetworkCommunication.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\PacketHandler.h">
-      <Filter>PacketHandlers</Filter>
     </ClInclude>
     <ClInclude Include="Crypto\Aes.h">
       <Filter>Crypto</Filter>
@@ -104,6 +95,18 @@
     <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h">
       <Filter>Spells</Filter>
     </ClInclude>
+    <ClInclude Include="Server\PacketHandlers\ByteBuffer.h">
+      <Filter>PacketHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\PacketHandlers\Guid.h">
+      <Filter>PacketHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\PacketHandlers\Packet.h">
+      <Filter>PacketHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\PacketHandlers\PacketHandler.h">
+      <Filter>PacketHandlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -112,13 +115,7 @@
     <ClCompile Include="Server\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Guid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Server\networkServices.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server\Player.cpp">
@@ -135,18 +132,6 @@
     </ClCompile>
     <ClCompile Include="Server\StaticHelper.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\PacketHandler.cpp">
-      <Filter>PacketHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\ChatHandler.cpp">
-      <Filter>PacketHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\MiscHandler.cpp">
-      <Filter>PacketHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\CardHandler.cpp">
-      <Filter>PacketHandlers</Filter>
     </ClCompile>
     <ClCompile Include="Crypto\Aes.cpp">
       <Filter>Crypto</Filter>
@@ -186,6 +171,27 @@
     </ClCompile>
     <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
       <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\ByteBuffer.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\CardHandler.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\Guid.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\ChatHandler.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\MiscHandler.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\Packet.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\PacketHandler.cpp">
+      <Filter>PacketHandlers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
