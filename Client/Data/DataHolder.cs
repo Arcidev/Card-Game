@@ -11,10 +11,12 @@ namespace Client.Data
 {
     public static class DataHolder
     {
-        public static IEnumerable<SelectableCard> Cards { get; private set; }
+        private static IDictionary<UInt32, SelectableCard> cardsMap;
 
+        public static IEnumerable<SelectableCard> Cards { get { return cardsMap != null ? cardsMap.Values : null; } }
+        
         // Loads cards from database
-        public static void LoadData(IEnumerable<SelectableCard> cards)
+        public static void LoadData(IDictionary<UInt32, SelectableCard> cards)
         {
             using (SQLiteConnection connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))
             {
@@ -26,8 +28,8 @@ namespace Client.Data
 
                     while (result.Read())
                     {
-                        var card = cards.FirstOrDefault(x => x.Id == Convert.ToInt32(result["id"]));
-                        if (card != null)
+                        SelectableCard card;
+                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out card))
                         {
                             card.Name = Convert.ToString(result["name"]);
                             card.ImageUri = string.Format("{0}/{1}", "Assets", Convert.ToString(result["imagePath"]));
@@ -37,10 +39,19 @@ namespace Client.Data
                 }
             }
 
-            Cards = cards;
+            cardsMap = cards;
+        }
+
+        public static SelectableCard GetCard(UInt32 id)
+        {
+            SelectableCard card;
+            if (cardsMap.TryGetValue(id, out card))
+                return card;
+
+            return null;
         }
 
         // Unloads data from memory
-        public static void UnloadData() { Cards = null; }
+        public static void UnloadData() { cardsMap = null; }
     }
 }

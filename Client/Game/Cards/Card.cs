@@ -113,7 +113,7 @@ namespace Client.Game
                 return (SelectionType != SelectionType.None) ? SelectedCard() : image;
             }
         }
-        public Spell spell;
+        public Spell Spell { get; private set; }
 
         public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
@@ -126,6 +126,7 @@ namespace Client.Game
             SelectionType = SelectionType.None;
             defenseModifier = 0;
             damageModifier = 0;
+            Spell = spell;
         }
 
         // Unloads images from memory

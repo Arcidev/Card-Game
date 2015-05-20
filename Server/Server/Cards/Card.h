@@ -37,6 +37,7 @@ class Card
     private:
         uint32_t m_id;
         uint8_t m_type;
+        uint8_t m_price;
         Spell const* m_spell;
 
     protected:
@@ -46,7 +47,7 @@ class Card
         uint8_t m_defense;
 
     public:
-        Card(uint32_t id, uint8_t type, uint8_t hp, uint8_t damage, uint8_t mana, uint8_t defense, Spell const* spell);
+        Card(uint32_t id, uint8_t type, uint8_t hp, uint8_t damage, uint8_t mana, uint8_t defense, uint8_t price, Spell const* spell);
         virtual ~Card() { }
 
         uint32_t const& GetId() const { return m_id; }
@@ -55,6 +56,7 @@ class Card
         uint8_t const& GetDefense() const { return m_defense; }
         uint8_t const& GetMana() const { return m_mana; }
         uint8_t const& GetHealth() const { return m_hp; }
+        uint8_t const& GetPrice() const { return m_price; }
         Spell const* GetSpell() const { return m_spell; }
 };
 

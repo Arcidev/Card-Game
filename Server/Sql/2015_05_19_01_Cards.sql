@@ -8,7 +8,7 @@ CREATE TABLE Cards
 	BaseDamage tinyint not null,
 	BaseMana tinyint not null,
 	BaseDefense tinyint not null,
-	Cost tinyint not null,
+	Price tinyint not null,
 	SpellId int,
 	FOREIGN KEY (SpellId) REFERENCES Spells(Id)
 );

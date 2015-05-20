@@ -54,39 +54,20 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 
     for (CardsMap::const_iterator iter = player->GetOpponent()->GetCards().begin(); iter != player->GetOpponent()->GetCards().end(); ++iter)
     {
-        Spell const* spell = iter->second->GetSpell();
-        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t> { 1, 2, 7, 0 });
-        pck.WriteBit(spell ? true : false);
-        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t> { 5, 3, 4, 6 });
+        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t>{ 1, 2, 7, 0, 5, 3, 4, 6 });
 
-        opponentBuffer << iter->second->GetType();
-        opponentBuffer << iter->second->GetDefense();
-        opponentBuffer << iter->second->GetDamage();
         opponentBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 4, 2, 6, 1, 7, 0 });
-        opponentBuffer << iter->second->GetMana();
-        StaticHelper::PackSpell(&opponentBuffer, spell);
-        opponentBuffer << iter->second->GetHealth();
         opponentBuffer << iter->second->GetId();
         opponentBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 3, 5 });
     }
 
     for (CardsMap::const_iterator iter = player->GetCards().begin(); iter != player->GetCards().end(); ++iter)
     {
-        Spell const* spell = iter->second->GetSpell();
-        pck.WriteBit(spell ? true : false);
         pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t> { 7, 1, 2, 4, 6, 0, 3, 5 });
 
-        playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 7, 2, 0 });
-        playerBuffer << iter->second->GetDamage();
-
-        StaticHelper::PackSpell(&playerBuffer, spell);
-        playerBuffer << iter->second->GetHealth();
-        playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 1, 6, 4, 5 });
+        playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 7, 2, 0, 1, 6, 4, 5 });
         playerBuffer << iter->second->GetId();
-        playerBuffer << iter->second->GetDefense();
-        playerBuffer << iter->second->GetType();
         playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 3 });
-        playerBuffer << iter->second->GetMana();
     }
 
     pck.FlushBits();

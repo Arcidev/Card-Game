@@ -208,11 +208,26 @@ void Player::SendAvailableCards() const
         buffer << iter->second.GetType();
         buffer << iter->second.GetHealth();
 
-        StaticHelper::PackSpell(&buffer, spell);
+        if (spell)
+        {
+            buffer << spell->GetManaCost();
+            buffer << spell->GetId();
+            buffer << (uint8_t)spell->GetSpellEffects().size();
+            for (std::list<SpellEffectPair>::const_iterator iter = spell->GetSpellEffects().begin(); iter != spell->GetSpellEffects().end(); ++iter)
+            {
+
+                buffer << iter->second.Target;
+                buffer << iter->second.Value1;
+                buffer << iter->second.Value2;
+                buffer << iter->second.Value3;
+                buffer << iter->second.Value4;
+            }
+        }
 
         buffer << iter->second.GetDamage();
         buffer << iter->second.GetMana();
         buffer << iter->second.GetDefense();
+        buffer << iter->second.GetPrice();
     }
 
     packet.FlushBits();

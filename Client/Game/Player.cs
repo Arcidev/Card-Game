@@ -38,13 +38,6 @@ namespace Client.Game
         // Adds cards to player card deck
         public void AddCards(IEnumerable<PlayableCard> cardsData)
         {
-            foreach(var card in cardsData)
-            {
-                var cardTemplate = DataHolder.Cards.First(x => x.Id == card.Id);
-                card.ImageUri = cardTemplate.ImageUri;
-                card.Name = cardTemplate.Name;
-            }
-
             cards = cardsData.ToDictionary(x => x.Guid);
         }
 

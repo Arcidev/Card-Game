@@ -38,18 +38,18 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
 // Callback for selecting cards
 int DataHolder::loadCardsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/)
 {
-    if (argc != 7)
+    if (argc != 8)
         return 1;
 
     Spell const* spell = nullptr;
-    if (argv[6])
+    if (argv[7])
     {
-        SpellsDataMap::const_iterator spellIter = m_spells.find(atoi(argv[6]));
+        SpellsDataMap::const_iterator spellIter = m_spells.find(atoi(argv[7]));
         if (spellIter != m_spells.end())
             spell = &spellIter->second;
     }
 
-    Card card(atoi(argv[0]), atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), spell);
+    Card card(atoi(argv[0]), atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), atoi(argv[6]), spell);
     m_cards.insert(std::make_pair(card.GetId(), card));
     return 0;
 }
@@ -67,7 +67,7 @@ void DataHolder::loadSpells(sqlite3* db)
 void DataHolder::loadCards(sqlite3* db)
 {
     char* errorMsg;
-    std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense, SpellId FROM Cards";
+    std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense, Price, SpellId FROM Cards";
     if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, 0, &errorMsg) != SQLITE_OK)
         printf("Error while loading cards\n");
 }

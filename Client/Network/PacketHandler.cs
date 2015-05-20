@@ -35,19 +35,6 @@ namespace Client.Network
             return packetHandlers[packetType];
         }
 
-        // Unpacks spell from packet
-        private static Spell UnpackSpell(Packet packet)
-        {
-            byte manaCost = packet.ReadByte();
-            UInt32 spellId = packet.ReadUInt32();
-            byte spellEffectsCount = packet.ReadByte();
-            SpellEffect[] spellEffects = new SpellEffect[spellEffectsCount];
-            for (int j = 0; j < spellEffectsCount; j++)
-                spellEffects[j] = new SpellEffect(packet.ReadByte(), packet.ReadBytes(SpellEffect.SpellEffectsCount));
-
-            return new Spell(spellId, manaCost, spellEffects);
-        }
-
         // Handle SMSG_INIT_RESPONSE packet
         private static void HandleInitResponse(Packet packet, ClientGame game)
         {
@@ -76,7 +63,7 @@ namespace Client.Network
         {
             UInt16 cardsCount = packet.ReadUInt16();
 
-            List<SelectableCard> cards = new List<SelectableCard>();
+            Dictionary<UInt32, SelectableCard> cards = new Dictionary<UInt32, SelectableCard>();
             bool[] hasSpell = new bool[cardsCount];
             for (UInt16 i = 0; i < cardsCount; i++)
                 hasSpell[i] = packet.ReadBit();
@@ -86,11 +73,23 @@ namespace Client.Network
                 UInt32 id = packet.ReadUInt32();
                 CreatureTypes type = (CreatureTypes)packet.ReadByte();
                 byte health = packet.ReadByte();
-                Spell spell = hasSpell[i] ? UnpackSpell(packet) : null;
+                Spell spell = null;
+                if (hasSpell[i])
+                {
+                    byte manaCost = packet.ReadByte();
+                    UInt32 spellId = packet.ReadUInt32();
+                    byte spellEffectsCount = packet.ReadByte();
+                    SpellEffect[] spellEffects = new SpellEffect[spellEffectsCount];
+                    for (int j = 0; j < spellEffectsCount; j++)
+                        spellEffects[j] = new SpellEffect(packet.ReadByte(), packet.ReadBytes(SpellEffect.SpellEffectsCount));
+
+                    spell = new Spell(spellId, manaCost, spellEffects);
+                }
                 byte damage = packet.ReadByte();
                 byte mana = packet.ReadByte();
                 byte defense = packet.ReadByte();
-                cards.Add(new SelectableCard(id, type, health, damage, mana, defense, spell));
+                byte price = packet.ReadByte();
+                cards.Add(id, new SelectableCard(id, type, health, damage, mana, defense, price, spell));
             }
 
             DataHolder.LoadData(cards);
@@ -139,21 +138,16 @@ namespace Client.Network
 
             Guid[] guids1 = new Guid[count1];
             Guid[] guids2 = new Guid[count2];
-            bool[] hasSpell1 = new bool[count1];
-            bool[] hasSpell2 = new bool[count2];
 
             for (var i = 0; i < count2; i++)
             {
                 guids2[i] = new Guid();
-                packet.ReadGuidBitStreamInOrder(guids2[i], 1, 2, 7, 0);
-                hasSpell2[i] = packet.ReadBit();
-                packet.ReadGuidBitStreamInOrder(guids2[i], 5, 3, 4, 6);
+                packet.ReadGuidBitStreamInOrder(guids2[i], 1, 2, 7, 0, 5, 3, 4, 6);
             }
 
             for (var i = 0; i < count1; i++)
             {
                 guids1[i] = new Guid();
-                hasSpell1[i] = packet.ReadBit();
                 packet.ReadGuidBitStreamInOrder(guids1[i], 7, 1, 2, 4, 6, 0, 3, 5);
             }
 
@@ -166,40 +160,18 @@ namespace Client.Network
 
             for (var i = 0; i < count1; i++)
             {
-                packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0);
-
-                byte damage = packet.ReadByte();
-                Spell spell = hasSpell1[i] ? UnpackSpell(packet) : null;
-                byte health = packet.ReadByte();
-
-                packet.ReadGuidByteStreamInOrder(guids1[i], 1, 6, 4, 5);
-
+                packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0, 1, 6, 4, 5);
                 UInt32 id = packet.ReadUInt32();
-                byte defense = packet.ReadByte();
-                CreatureTypes type = (CreatureTypes)packet.ReadByte();
-
                 packet.ReadGuidByteStreamInOrder(guids1[i], 3);
-
-                byte mana = packet.ReadByte();
-                cards1[i] = PlayableCard.Create(guids1[i], id, type, health, damage, mana, defense, spell);
+                cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id));
             }
 
             for (var i = 0; i < count2; i++)
             {
-                CreatureTypes type = (CreatureTypes)packet.ReadByte();
-                byte defense = packet.ReadByte();
-                byte damage = packet.ReadByte();
-
                 packet.ReadGuidByteStreamInOrder(guids2[i], 4, 2, 6, 1, 7, 0);
-
-                byte mana = packet.ReadByte();
-                Spell spell = hasSpell2[i] ? UnpackSpell(packet) : null;
-                byte health = packet.ReadByte();
                 UInt32 id = packet.ReadUInt32();
-
                 packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
-
-                cards2[i] = PlayableCard.Create(guids2[i], id, type, health, damage, mana, defense, spell);
+                cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id));
             }
 
             player1.AddCards(cards1);
