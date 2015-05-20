@@ -146,7 +146,7 @@
         </Grid>
         <Grid Visibility="Hidden" Name="CardActionGrid" Margin="722,10,10,271" IsEnabled="False">
             <Button Name="BasicAttackButton" Content="Attack" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="BasicAttackButton_Click" Margin="90,28,0,0" Height="35"/>
-            <Button Name="SpellAttackButton" Content="Spell attack" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="SpellAttackButton_Click" Margin="90,68,0,0" Height="35"/>
+            <Button Name="UseSpellButton" Content="Use spell" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="UseSpellButton_Click" Margin="90,68,0,0" Height="35"/>
             <Button Name="DefendButton" Content="Defend" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124" Click="DefendButton_Click" Margin="90,108,0,0" Height="35"/>
         </Grid>
         <Grid Name="ChatTabGrid" Visibility="Hidden">

@@ -19,7 +19,7 @@ namespace Client.Game
             { SelectionType.None,                   null            },
             { SelectionType.Selected,               Brushes.Yellow  },
             { SelectionType.BasicDamageAttackable,  Brushes.Red     },
-            { SelectionType.SpellDamageAttackable,  Brushes.Blue    }
+            { SelectionType.SpellUsable,            Brushes.Blue    }
         };
 
         private BitmapSource cardTemplateImage;

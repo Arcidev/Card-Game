@@ -132,13 +132,13 @@ namespace Client.Game
         }
 
         // Sends card to attack to server
-        public void SendAttackCard(PlayableCard card)
+        public void SendCardAction(PlayableCard card)
         {
             if (card.SelectionType == SelectionType.None)
                 return;
 
             SetActiveCardActionGrid(false);
-            Packet packet = new Packet(CMSGPackets.CMSG_ATTACK_CARD);
+            Packet packet = new Packet(CMSGPackets.CMSG_CARD_ACTION);
             packet.WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5);
             packet.FlushBits();
 
@@ -175,6 +175,8 @@ namespace Client.Game
             {
                 MainWindow.Cursor = Cursors.Arrow;
                 MainWindow.CardActionGrid.IsEnabled = active;
+                if (active)
+                    MainWindow.UseSpellButton.IsEnabled = Player.CanCastSpell(); ;
             }));
         }
 

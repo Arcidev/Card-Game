@@ -187,14 +187,14 @@ namespace Client
                 SelectionType.BasicDamageAttackable);
         }
 
-        private void SpellAttackButton_Click(object sender, RoutedEventArgs e)
+        private void UseSpellButton_Click(object sender, RoutedEventArgs e)
         {
             var opponent = game.Opponent;
             Cursor = CardAttackCursors.GetCursor(CardAttackCursorTypes.Staff);
 
             opponent.SetPossibleTargets(
                 opponent.CardDeck.Select(x => x.Guid),
-                SelectionType.SpellDamageAttackable);
+                SelectionType.SpellUsable);
         }
 
         private void DefendButton_Click(object sender, RoutedEventArgs e)
@@ -228,7 +228,7 @@ namespace Client
                 opponentCardControlName = "";
 
                 if (card != null)
-                    game.SendAttackCard(card);
+                    game.SendCardAction(card);
             }
         }
 

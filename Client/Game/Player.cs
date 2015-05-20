@@ -142,13 +142,13 @@ namespace Client.Game
         }
 
         // Attacks card
-        public void AttackCard(UInt64 guid, byte damage)
+        public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == guid);
             if (cardPair == null)
                 return;
 
-            game.Chat.LogDamage(CombatLogTypes.MeleeDamage, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
+            game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
             Invoke(new Action(delegate()
             {
                 cardPair.First.Hp -= damage;
@@ -157,12 +157,12 @@ namespace Client.Game
         }
 
         // Destroys card
-        public void DestroyCard(UInt64 guid, byte damage)
+        public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType)
         {
             PlayableCard card = null;
             if (cards.TryGetValue(guid, out card))
             {
-                game.Chat.LogDamage(CombatLogTypes.MeleeDamage, game.GetOpponent(Id).ActiveCard, card, damage, false);
+                game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, card, damage, false);
                 cards.Remove(guid);
             }
         }
@@ -180,6 +180,21 @@ namespace Client.Game
                 cardPair.First.ApplyModifier(cardStat, value);
                 cardPair.Second.Source = cardPair.First.Image;
             }));
+        }
+
+        // Checks if is posible to cast spell
+        public bool CanCastSpell()
+        {
+            if (ActiveCard == null || ActiveCard.Spell == null)
+                return false;
+
+            return ActiveCard.Spell.ManaCost <= ActiveCard.Mana;
+        }
+
+        // Adds aura to creature
+        public void ApplyAura(UInt64 cardGuid, UInt32 spellId)
+        {
+            /// TODO: add some graphics effect
         }
     }
 }

@@ -26,7 +26,11 @@ namespace Client.Network
             { SMSGPackets.SMSG_PLAYER_DISCONNECTED,                     HandlePlayerDisconnected    },
             { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          },
             { SMSGPackets.SMSG_END_GAME,                                HandleEndGame               },
-            { SMSGPackets.SMSG_CARD_STAT_CHANGED,                       HandleCardStatChanged       }
+            { SMSGPackets.SMSG_CARD_STAT_CHANGED,                       HandleCardStatChanged       },
+            { SMSGPackets.SMSG_SPELL_CAST_FAILED,                       HandleSpellCastFailed       },
+            { SMSGPackets.SMSG_SPELL_DAMAGE,                            HandleSpellDamage           },
+            { SMSGPackets.SMSG_APPLY_AURA,                              HandleApplyAura             },
+            { SMSGPackets.SMSG_SPELL_PERIODIC_DAMAGE,                   HandleSpellPeriodicDamage   }
         };
 
         // Returns function to handle packet
@@ -81,7 +85,7 @@ namespace Client.Network
                     byte spellEffectsCount = packet.ReadByte();
                     SpellEffect[] spellEffects = new SpellEffect[spellEffectsCount];
                     for (int j = 0; j < spellEffectsCount; j++)
-                        spellEffects[j] = new SpellEffect(packet.ReadByte(), packet.ReadBytes(SpellEffect.SpellEffectsCount));
+                        spellEffects[j] = new SpellEffect(packet.ReadByte());
 
                     spell = new Spell(spellId, manaCost, spellEffects);
                 }
@@ -247,9 +251,9 @@ namespace Client.Network
 
                 Player opponent = game.GetOpponent(attackerId);
                 if (result == AttackResult.CardAttacked)
-                    opponent.AttackCard(cardGuid, damage);
+                    opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage);
                 else
-                    opponent.DestroyCard(cardGuid, damage);
+                    opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage);
             }
         }
 
@@ -271,8 +275,75 @@ namespace Client.Network
         // Handle SMSG_END_GAME packet
         private static void HandleEndGame(Packet packet, ClientGame game)
         {
-            var winnerId = packet.ReadUInt32();
+            UInt32 winnerId = packet.ReadUInt32();
             game.EndGame(game.Player.Id == winnerId);
+        }
+
+        // Handle SMSG_SPELL_CAST_FAILED packet
+        private static void HandleSpellCastFailed(Packet packet, ClientGame game)
+        {
+            SpellFailReason reason = (SpellFailReason)packet.ReadByte();
+            game.SetActiveCardActionGrid(true);
+            game.Chat.Write(reason.GetDescription(), ChatTypes.Info);
+        }
+
+        // Handle SMSG_SPELL_DAMAGE packet
+        private static void HandleSpellDamage(Packet packet, ClientGame game)
+        {
+            byte targetsCount = packet.ReadByte();
+            Guid[] targets = new Guid[targetsCount];
+            bool[] isAlive = new bool[targetsCount];
+
+            for (int i = 0; i < targetsCount; i++)
+            {
+                targets[i] = new Guid();
+                isAlive[i] = packet.ReadBit();
+                packet.ReadGuidBitStreamInOrder(targets[i], 6, 3, 1, 7, 0, 2, 5, 4);
+            }
+
+            Player opponent = game.GetOpponent(packet.ReadUInt32());
+            for (int i = 0; i < targetsCount; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(targets[i], 4, 3, 5);
+                byte damage = packet.ReadByte();
+                packet.ReadGuidByteStreamInOrder(targets[i], 2, 0, 1, 6, 7);
+
+                if (isAlive[i])
+                    opponent.AttackCard(targets[i], damage, CombatLogTypes.SpellUsage);
+                else
+                    opponent.DestroyCard(targets[i], damage, CombatLogTypes.SpellUsage);
+            }
+        }
+
+        // Handle SMSG_APPLY_AURA packet
+        private static void HandleApplyAura(Packet packet, ClientGame game)
+        {
+            Guid guid = new Guid();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 1, 3, 5, 4, 0, 6);
+
+            Player player = game.GetPlayer(packet.ReadUInt32());
+            packet.ReadGuidByteStreamInOrder(guid, 0, 5, 2, 1, 7, 6, 4, 3);
+            UInt32 spellId = packet.ReadUInt32();
+
+            player.ApplyAura(guid, spellId);
+        }
+
+        // Handle SMSG_SPELL_PERIODIC_DAMAGE packet
+        private static void HandleSpellPeriodicDamage(Packet packet, ClientGame game)
+        {
+            Guid guid = new Guid();
+            packet.ReadGuidBitStreamInOrder(guid, 6, 4, 1);
+            bool isAlive = packet.ReadBit();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 3, 5, 0);
+
+            Player player = game.GetPlayer(packet.ReadUInt32());
+            packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 7, 5, 4, 6);
+            byte damage = packet.ReadByte();
+
+            if (isAlive)
+                player.AttackCard(guid, damage, CombatLogTypes.SpellUsage);
+            else
+                player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage);
         }
     }
 }

@@ -15,24 +15,7 @@ bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t 
     if (targets.empty())
         return false;
 
-    Packet packet(SMSG_SPELL_DAMAGE);
-    packet << (uint8_t)targets.size();
-
-    for (std::list<PlayableCard*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
-        packet.WriteGuidBitStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 6, 3, 1, 7, 0, 2, 5, 4 });
-
-    packet.FlushBits();
-    packet << attacker->GetId();
-    for (std::list<PlayableCard*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
-    {
-        (*iter)->DealDamage(effectValues->Value1);
-
-        packet.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 4, 3, 5 });
-        packet << effectValues->Value1;
-        packet.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 2, 0, 1, 6, 7 });
-    }
-
-    attacker->GetGame()->BroadcastPacket(&packet);
+    attacker->SpellAttack(targets, effectValues->Value1);
     return true;
 }
 

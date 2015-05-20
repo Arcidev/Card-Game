@@ -109,9 +109,9 @@ namespace Client.Game
         {
             switch (combatLogType)
             {
-                case CombatLogTypes.MeleeDamage:
+                case CombatLogTypes.BasicDamage:
                     return Brushes.Red;
-                case CombatLogTypes.SpellDamage:
+                case CombatLogTypes.SpellUsage:
                     return Brushes.Blue;
                 case CombatLogTypes.StatChange:
                     return Brushes.Orange;

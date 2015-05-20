@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <list>
 #include "Game.h"
 #include "../Multiplatform/NetworkCommunication.h"
 
@@ -49,6 +50,7 @@ class Player
         void SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const;
         void SendSpellCastFailed(uint8_t const& reason) const;
         void Attack(uint64_t const& victimCardGuid);
+        void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage);
         void UseSpell(uint64_t const& selectedCardGuid);
         void DefendSelf();
         void Prepare();

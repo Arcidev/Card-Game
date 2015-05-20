@@ -82,8 +82,8 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     player->GetGame()->ActivateSecondPlayer();
 }
 
-// Handles CMSG_ATTACK_CARD packet
-void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
+// Handles CMSG_CARD_ACTION packet
+void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
 {
     Guid guid;
     uint8_t attackType;
@@ -93,10 +93,10 @@ void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
     *packet >> attackType;
     packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
 
-    DEBUG_LOG("CMSG_ATTACK_CARD:\n\tGuid: %ju\n\tattackType: %d\n", (uint64_t)guid, attackType);
-    if (attackType == ATTACK_TYPE_BASIC_ATTACK)
+    DEBUG_LOG("CMSG_CARD_ACTION:\n\tGuid: %ju\n\tcardAction: %d\n", (uint64_t)guid, attackType);
+    if (attackType == CARD_ACTION_BASIC_ATTACK)
         player->Attack(guid);
-    else if (attackType == ATTACK_TYPE_SPELL_ATTACK)
+    else if (attackType == CARD_ACTION_SPELL_USE)
         player->UseSpell(guid);
 }
 

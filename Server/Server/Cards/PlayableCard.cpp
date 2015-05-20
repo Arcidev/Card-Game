@@ -47,7 +47,7 @@ int8_t PlayableCard::GetDefenseModifier() const
     for (SpellAuraEffectsMap::const_iterator iter = m_auras.begin(); iter != m_auras.end(); ++iter)
         if (iter->second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
             if (iter->second.GetValue1() == CARD_STAT_DEFENSE)
-                modifier += iter->second.GetValue2();
+                modifier += (int8_t)iter->second.GetValue2();
 
     if (m_isDefending)
         modifier += DEFENSE_BONUS_ON_DEFEND;
@@ -71,7 +71,7 @@ int8_t PlayableCard::GetDamageModifier() const
     for (SpellAuraEffectsMap::const_iterator iter = m_auras.begin(); iter != m_auras.end(); ++iter)
         if (iter->second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
             if (iter->second.GetValue1() == CARD_STAT_DAMAGE)
-                modifier += iter->second.GetValue2();
+                modifier += (int8_t)iter->second.GetValue2();
 
     return modifier;
 }

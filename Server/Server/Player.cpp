@@ -99,6 +99,53 @@ void Player::Attack(uint64_t const& victimCardGuid)
     endTurn();
 }
 
+void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage)
+{
+    Player* victim = GetGame()->GetOpponent(this);
+    if (!victim)
+        return;
+
+    bool sendOpponentCardDeck = false;
+    Packet packet(SMSG_SPELL_DAMAGE);
+    ByteBuffer buffer;
+
+    packet << (uint8_t)targets.size();
+    for (std::list<PlayableCard*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
+    {
+        (*iter)->DealDamage(damage);
+        if ((*iter)->IsAlive())
+            packet.WriteBit(true);
+        else
+        {
+            if (!sendOpponentCardDeck)
+                sendOpponentCardDeck = true;
+            victim->destroyCard((*iter)->GetGuid());
+
+            packet.WriteBit(false);
+        }
+        
+        packet.WriteGuidBitStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 6, 3, 1, 7, 0, 2, 5, 4 });
+
+        buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 4, 3, 5 });
+        buffer << damage;
+        buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 2, 0, 1, 6, 7 });
+    }
+
+    packet.FlushBits();
+    packet << m_id;
+    packet.AppendBuffer(buffer);
+
+    GetGame()->BroadcastPacket(&packet);
+
+    if (sendOpponentCardDeck)
+    {
+        if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
+            SendEndGame(m_id);
+        else
+            victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
+    }
+}
+
 // Sends information about failed spell cast to client
 void Player::SendSpellCastFailed(uint8_t const& reason) const
 {
@@ -214,14 +261,7 @@ void Player::SendAvailableCards() const
             buffer << spell->GetId();
             buffer << (uint8_t)spell->GetSpellEffects().size();
             for (std::list<SpellEffectPair>::const_iterator iter = spell->GetSpellEffects().begin(); iter != spell->GetSpellEffects().end(); ++iter)
-            {
-
                 buffer << iter->second.Target;
-                buffer << iter->second.Value1;
-                buffer << iter->second.Value2;
-                buffer << iter->second.Value3;
-                buffer << iter->second.Value4;
-            }
         }
 
         buffer << iter->second.GetDamage();

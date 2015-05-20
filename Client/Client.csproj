@@ -78,6 +78,7 @@
     <Compile Include="Enums\CombatLogTypes.cs" />
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
+    <Compile Include="Enums\SpellFailReason.cs" />
     <Compile Include="Game\Cards\DefensiveCard.cs" />
     <Compile Include="Game\Cards\MeleeCard.cs" />
     <Compile Include="Game\Cards\PlayableCard.cs" />
