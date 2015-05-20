@@ -77,11 +77,11 @@
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
-    <ClInclude Include="Server\Card\Card.h" />
-    <ClInclude Include="Server\Card\DefensiveCard.h" />
-    <ClInclude Include="Server\Card\MeleeCard.h" />
-    <ClInclude Include="Server\Card\PlayableCard.h" />
-    <ClInclude Include="Server\Card\RangedCard.h" />
+    <ClInclude Include="Server\Cards\Card.h" />
+    <ClInclude Include="Server\Cards\DefensiveCard.h" />
+    <ClInclude Include="Server\Cards\MeleeCard.h" />
+    <ClInclude Include="Server\Cards\PlayableCard.h" />
+    <ClInclude Include="Server\Cards\RangedCard.h" />
     <ClInclude Include="Server\DataHolder.h" />
     <ClInclude Include="Server\Game.h" />
     <ClInclude Include="Server\Guid.h" />
@@ -92,6 +92,11 @@
     <ClInclude Include="Server\PlayerDefines.h" />
     <ClInclude Include="Server\serverGame.h" />
     <ClInclude Include="Server\serverNetwork.h" />
+    <ClInclude Include="Server\Spells\Spell.h" />
+    <ClInclude Include="Server\Spells\SpellAuraEffect.h" />
+    <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h" />
+    <ClInclude Include="Server\Spells\SpellEffect.h" />
+    <ClInclude Include="Server\Spells\SpellTargetSelector.h" />
     <ClInclude Include="Server\StaticHelper.h" />
     <ClInclude Include="Shared\SharedDefines.h" />
   </ItemGroup>
@@ -100,11 +105,11 @@
     <ClCompile Include="Crypto\Rsa.cpp" />
     <ClCompile Include="Crypto\Sha.cpp" />
     <ClCompile Include="Server\CardHandler.cpp" />
-    <ClCompile Include="Server\Card\Card.cpp" />
-    <ClCompile Include="Server\Card\DefensiveCard.cpp" />
-    <ClCompile Include="Server\Card\MeleeCard.cpp" />
-    <ClCompile Include="Server\Card\PlayableCard.cpp" />
-    <ClCompile Include="Server\Card\RangedCard.cpp" />
+    <ClCompile Include="Server\Cards\Card.cpp" />
+    <ClCompile Include="Server\Cards\DefensiveCard.cpp" />
+    <ClCompile Include="Server\Cards\MeleeCard.cpp" />
+    <ClCompile Include="Server\Cards\PlayableCard.cpp" />
+    <ClCompile Include="Server\Cards\RangedCard.cpp" />
     <ClCompile Include="Server\ChatHandler.cpp" />
     <ClCompile Include="Server\DataHolder.cpp" />
     <ClCompile Include="Server\Game.cpp" />
@@ -117,6 +122,11 @@
     <ClCompile Include="Server\Server.cpp" />
     <ClCompile Include="Server\serverGame.cpp" />
     <ClCompile Include="Server\serverNetwork.cpp" />
+    <ClCompile Include="Server\Spells\Spell.cpp" />
+    <ClCompile Include="Server\Spells\SpellAuraEffect.cpp" />
+    <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp" />
+    <ClCompile Include="Server\Spells\SpellEffect.cpp" />
+    <ClCompile Include="Server\Spells\SpellTargetSelector.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

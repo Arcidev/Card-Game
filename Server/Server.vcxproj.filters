@@ -9,15 +9,17 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="PacketHandlers">
       <UniqueIdentifier>{bcbfbbb4-2917-490a-b36d-cbd25285cb29}</UniqueIdentifier>
     </Filter>
     <Filter Include="Crypto">
       <UniqueIdentifier>{b7f534cb-92fe-482e-9968-1c34b365e7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cards">
+      <UniqueIdentifier>{8f72b14a-9c95-463a-9db3-c650b274cf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Spells">
+      <UniqueIdentifier>{fe0b8a3b-c12c-479c-ae89-def2ecf8a982}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,23 +71,38 @@
     <ClInclude Include="Crypto\Keys\RSAPrivateKey.h">
       <Filter>Crypto</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Card\Card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\Card\PlayableCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\Card\MeleeCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\Card\DefensiveCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\Card\RangedCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server\PlayerDefines.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\Spell.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellEffect.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellTargetSelector.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Cards\Card.h">
+      <Filter>Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Cards\DefensiveCard.h">
+      <Filter>Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Cards\MeleeCard.h">
+      <Filter>Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Cards\PlayableCard.h">
+      <Filter>Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Cards\RangedCard.h">
+      <Filter>Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellAuraEffect.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h">
+      <Filter>Spells</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,20 +157,35 @@
     <ClCompile Include="Crypto\Sha.cpp">
       <Filter>Crypto</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Card\Card.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Server\Spells\Spell.cpp">
+      <Filter>Spells</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Card\PlayableCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Server\Spells\SpellEffect.cpp">
+      <Filter>Spells</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Card\MeleeCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Server\Spells\SpellTargetSelector.cpp">
+      <Filter>Spells</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Card\DefensiveCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Server\Cards\Card.cpp">
+      <Filter>Cards</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Card\RangedCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Server\Cards\DefensiveCard.cpp">
+      <Filter>Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Cards\MeleeCard.cpp">
+      <Filter>Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Cards\PlayableCard.cpp">
+      <Filter>Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Cards\RangedCard.cpp">
+      <Filter>Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Spells\SpellAuraEffect.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
+      <Filter>Spells</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

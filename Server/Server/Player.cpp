@@ -5,7 +5,9 @@
 #include "serverNetwork.h"
 #include "DataHolder.h"
 #include "PacketHandler.h"
-#include "Card/PlayableCard.h"
+#include "Cards/PlayableCard.h"
+#include "Spells/Spell.h"
+#include "Spells/SpellAuraEffect.h"
 #include "../Crypto/Aes.h"
 #include "Packet.h"
 #include "PlayerDefines.h"
@@ -50,7 +52,7 @@ void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, u
 }
 
 // Attacks enemy player
-void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
+void Player::Attack(uint64_t const& victimCardGuid)
 {
     if (!IsActive())
         return;
@@ -60,21 +62,18 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
         return;
 
     PlayableCard* victimCard = victim->GetCard(victimCardGuid);
-
-    if (!victimCard || !GetCurrentCard())
+    PlayableCard* currentCard = GetCurrentCard();
+    if (!victimCard || !currentCard)
         return;
 
-    if ((attackType != ATTACK_TYPE_BASIC_ATTACK) && (attackType != ATTACK_TYPE_SPELL_ATTACK))
-        return;
-
-    if (!GetCurrentCard()->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
+    if (!currentCard->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
     {
         SendAttackResult(ATTACK_RESULT_INVALID_TARGET, 0, 0);
         return;
     }
 
-    uint8_t damage = GetCurrentCard()->GetDamage();
-    float reduction = (float)(victim->GetCurrentCard()->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
+    uint8_t damage = currentCard->GetDamage();
+    float reduction = (float)(victimCard->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
         reduction /= 100.0f;
@@ -89,12 +88,47 @@ void Player::Attack(uint64_t const& victimCardGuid, uint8_t const& attackType)
         victim->destroyCard(victimCardGuid);
         SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
-            SendEndGame();
+            SendEndGame(m_id);
         else
             victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
     else
         SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
+
+    endTurn();
+}
+
+// Sends information about failed spell cast to client
+void Player::SendSpellCastFailed(uint8_t const& reason) const
+{
+    Packet packet(SMSG_SPELL_CAST_FAILED);
+    packet << reason;
+    SendPacket(&packet);
+}
+
+// Uses card spell
+void Player::UseSpell(uint64_t const& selectedCardGuid)
+{
+    if (!IsActive())
+        return;
+
+    PlayableCard* currentCard = GetCurrentCard();
+    Player* victim = GetGame()->GetOpponent(this);
+    if (!victim || !currentCard)
+        return;
+
+    if (!currentCard->GetSpell())
+    {
+        SendSpellCastFailed(SPELL_FAIL_CANT_CAST_SPELLS);
+        return;
+    }
+
+    uint8_t failedCastReason = currentCard->GetSpell()->Cast(this, victim, selectedCardGuid);
+    if (failedCastReason)
+    {
+        SendSpellCastFailed(failedCastReason);
+        return;
+    }
 
     endTurn();
 }
@@ -290,10 +324,10 @@ PlayableCard* Player::GetCurrentCard()
 }
 
 // Informs player that game has ended
-void Player::SendEndGame() const
+void Player::SendEndGame(uint32_t const& winnerId) const
 {
     Packet packet(SMSG_END_GAME);
-    packet << m_id;
+    packet << winnerId;
 
     GetGame()->BroadcastPacket(&packet);
 }
@@ -309,18 +343,33 @@ void Player::DefendSelf()
 }
 
 // Sends new card stat modifiers
-void Player::SendCardStatChanged(uint64_t const& cardGuid, uint8_t const& cardStat, int8_t const& value) const
+void Player::SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const
 {
     Packet packet(SMSG_CARD_STAT_CHANGED);
-    packet.WriteGuidBitStreamInOrder(cardGuid, std::vector<uint8_t> { 2, 6, 7, 1, 0, 3, 5, 4 });
-    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 5, 7 });
-    packet << value;
-    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 6, 3, 1 });
+    packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 2, 6, 7, 1, 0, 3, 5, 4 });
+    packet.FlushBits();
+
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 5, 7 });
+    packet << card->GetStatModifierValue(cardStat);
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 6, 3, 1 });
     packet << m_id;
-    packet.WriteGuidByteStreamInOrder(cardGuid, std::vector<uint8_t> { 0, 4, 2 });
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 0, 4, 2 });
     packet << cardStat;
 
     m_game->BroadcastPacket(&packet);
+}
+
+void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const
+{
+    Packet packet(SMSG_APPLY_AURA);
+    packet.WriteGuidBitStreamInOrder(targetGuid, std::vector<uint8_t> { 7, 2, 1, 3, 5, 4, 0, 6 });
+    packet.FlushBits();
+
+    packet << m_id;
+    packet.WriteGuidByteStreamInOrder(targetGuid, std::vector < uint8_t > { 0, 5, 2, 1, 7, 6, 4, 3 });
+    packet << aura->GetSpellId();
+
+    GetGame()->BroadcastPacket(&packet);
 }
 
 // Ends player turn
@@ -331,4 +380,30 @@ void Player::endTurn()
 
     ++m_currentCardIndex;
     GetGame()->ActivateSecondPlayer();
+}
+
+void Player::DealPeriodicDamage(PlayableCard* card, uint32_t const& damage)
+{
+    card->DealDamage(damage);
+
+    Packet packet(SMSG_SPELL_PERIODIC_DAMAGE);
+    packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 6, 4, 1 });
+    packet.WriteBit(card->IsAlive());
+    packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 7, 2, 3, 5, 0 });
+    packet.FlushBits();
+
+    packet << m_id;
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 0, 1, 2, 3, 7, 5, 4, 6 });
+    packet << damage;
+    GetGame()->BroadcastPacket(&packet);
+
+    if (!card->IsAlive())
+    {
+        destroyCard(card->GetGuid());
+
+        if (m_cardOrder.empty() && m_currentCards.empty())
+            SendEndGame(GetOpponent() ? GetOpponent()->GetId() : 0);
+        else
+            HandleDeckCards(m_currentCards.empty() ? true : false);
+    }
 }

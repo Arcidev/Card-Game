@@ -3,7 +3,7 @@
 #include "Packet.h"
 #include "Player.h"
 #include "DataHolder.h"
-#include "Card/PlayableCard.h"
+#include "Cards/PlayableCard.h"
 #include "../Shared/SharedDefines.h"
 
 // Handle CMSG_SELECTED_CARDS packet
@@ -101,7 +101,10 @@ void PacketHandler::handleAttackCardPacket(Player* player, Packet* packet)
     packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
 
     DEBUG_LOG("CMSG_ATTACK_CARD:\n\tGuid: %ju\n\tattackType: %d\n", (uint64_t)guid, attackType);
-    player->Attack(guid, attackType);
+    if (attackType == ATTACK_TYPE_BASIC_ATTACK)
+        player->Attack(guid);
+    else if (attackType == ATTACK_TYPE_SPELL_ATTACK)
+        player->UseSpell(guid);
 }
 
 // Handles CMSG_DEFEND_SELF packet

@@ -1,8 +1,8 @@
 #include "RangedCard.h"
 
-RangedCard::RangedCard(uint64_t guid, Card const* card, Player const* owner) : PlayableCard(guid, card, owner) { }
+RangedCard::RangedCard(uint64_t const& guid, Card const* card, Player* owner) : PlayableCard(guid, card, owner) { }
 
-bool RangedCard::CanAttackCard(uint64_t guid, std::vector<PlayableCard*> opponentCards, uint32_t /*position*/)
+bool RangedCard::CanAttackCard(uint64_t const& guid, std::vector<PlayableCard*> const& opponentCards, uint32_t const& /*position*/)
 {
     bool canAttack = true;
     for (std::vector<PlayableCard*>::const_iterator iter = opponentCards.begin(); iter != opponentCards.end(); ++iter)

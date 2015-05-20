@@ -9,6 +9,7 @@ class Card;
 class Packet;
 class ServerNetwork;
 class PlayableCard;
+class SpellAuraEffect;
 
 typedef std::map<uint64_t, PlayableCard*> CardsMap;
 
@@ -43,11 +44,15 @@ class Player
         void SendSelectCardsFailed(uint8_t const& failReason) const;
         void SendPlayerDisconnected() const;
         void SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const;
-        void SendEndGame() const;
-        void SendCardStatChanged(uint64_t const& cardGuid, uint8_t const& cardStat, int8_t const& value) const;
-        void Attack(uint64_t const& victimCardGuid, uint8_t const& attackType);
+        void SendEndGame(uint32_t const& winnerId) const;
+        void SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const;
+        void SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const;
+        void SendSpellCastFailed(uint8_t const& reason) const;
+        void Attack(uint64_t const& victimCardGuid);
+        void UseSpell(uint64_t const& selectedCardGuid);
         void DefendSelf();
         void Prepare();
+        void DealPeriodicDamage(PlayableCard* card, uint32_t const& damage);
         
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const* cardTemplate);
