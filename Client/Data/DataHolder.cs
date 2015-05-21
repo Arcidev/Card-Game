@@ -21,27 +21,11 @@ namespace Client.Data
             using (SQLiteConnection connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))
             {
                 connection.Open();
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT id, name, imagePath FROM cards";
-                    var result = cmd.ExecuteReader();
-
-                    while (result.Read())
-                    {
-                        SelectableCard card;
-                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out card))
-                        {
-                            card.Name = Convert.ToString(result["name"]);
-                            card.ImageUri = string.Format("{0}/{1}", "Assets", Convert.ToString(result["imagePath"]));
-                        }
-
-                    }
-                }
+                LoadCards(connection, cards);
             }
-
-            cardsMap = cards;
         }
 
+        // Returns card by id
         public static SelectableCard GetCard(UInt32 id)
         {
             SelectableCard card;
@@ -52,6 +36,59 @@ namespace Client.Data
         }
 
         // Unloads data from memory
-        public static void UnloadData() { cardsMap = null; }
+        public static void UnloadData() 
+        { 
+            cardsMap = null;
+        }
+
+        private static IDictionary<UInt32, SpellData> LoadSpellsData(SQLiteConnection connection)
+        {
+            var spellsData = new Dictionary<UInt32, SpellData>();
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT id, name, description, spellEffectPath FROM Spells";
+                using (SQLiteDataReader result = cmd.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        SpellData spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]), Convert.ToString(result["spellEffectPath"]));
+                        spellsData.Add(spellData.SpellId, spellData);
+                    }
+                }
+            }
+
+            return spellsData;
+        }
+
+        // Loads cards
+        private static void LoadCards(SQLiteConnection connection, IDictionary<UInt32, SelectableCard> cards)
+        {
+            IDictionary<UInt32, SpellData> spellsData = LoadSpellsData(connection);
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT id, name, imagePath FROM Cards";
+                using (SQLiteDataReader result = cmd.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        SelectableCard card;
+                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out card))
+                        {
+                            card.Name = Convert.ToString(result["name"]);
+                            card.ImageUri = string.Format("{0}/{1}", "Assets", Convert.ToString(result["imagePath"]));
+                        }
+
+                        if (card.Spell != null)
+                        {
+                            SpellData spellData = null;
+                            if (spellsData.TryGetValue(card.Spell.Id, out spellData))
+                                card.Spell.SpellData = spellData;
+                        }
+                    }
+                }
+            }
+
+            cardsMap = cards;
+        }
     }
 }

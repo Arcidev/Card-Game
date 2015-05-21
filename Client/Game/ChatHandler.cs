@@ -75,7 +75,7 @@ namespace Client.Game
         // Write info about damage into combat log chat tab
         public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
         {
-            var message = alive ? string.Format("{0} dealt {1} damage to {2}", attacker.Name, damage, victim.Name) : string.Format("{0} killed {1} with {2}{3}", attacker.Name, victim.Name, damage);
+            var message = alive ? string.Format("{0} dealt {1} damage to {2}", attacker.Name, damage, victim.Name) : string.Format("{0} killed {1} with {2}", attacker.Name, victim.Name, damage);
             WriteLog(message, combatLogType);
         }
 

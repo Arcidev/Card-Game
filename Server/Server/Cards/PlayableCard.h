@@ -26,8 +26,10 @@ class PlayableCard : public Card
         void DealDamage(uint8_t const& damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
         void SetDefendState(bool const& defend);
         void ApplyAura(SpellAuraEffect const& aura);
+        std::list<uint32_t> HandleTickOnAuras();
 
         bool IsAlive() const { return GetHealth() > 0; }
+        bool HasAuras() const { return !m_auras.empty(); }
         uint8_t GetModifiedDefense() const;
         int8_t GetDefenseModifier() const;
         uint8_t GetModifiedDamage() const;

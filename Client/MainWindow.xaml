@@ -132,16 +132,16 @@
         <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="412,374,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" MaxLength="16" TextChanged="UserNameBox_Changed"/>
         <Grid Visibility="Hidden" Name="CardDeckGrid">
             <Grid Name="PlayerCardDeck" Margin="0,283,313,37">
-                <Image Source="Assets/CardBack.png" Name="PlayerCard1" Width="158" Margin="0,0,527,0"/>
-                <Image Source="Assets/CardBack.png" Name="PlayerCard2" Width="158" Margin="0,0,195,0"/>
-                <Image Source="Assets/CardBack.png" Name="PlayerCard3" Width="158" Margin="0,0,-137,0"/>
-                <Image Source="Assets/CardBack.png" Name="PlayerCard4" Width="158" Margin="0,0,-471,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="PlayerCard1" Width="158" Margin="0,0,527,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="PlayerCard2" Width="158" Margin="0,0,195,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="PlayerCard3" Width="158" Margin="0,0,-137,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="PlayerCard4" Width="158" Margin="0,0,-471,0"/>
             </Grid>
             <Grid Name="OpponentCardDeck" Margin="0,10,313,310" Height="252">
-                <Image Source="Assets/CardBack.png" MouseEnter="OnOpponentCardMouseEnter" MouseLeave="OnOpponentCardMouseLeave" MouseUp="OnOpponentCardMouseUp" MouseDown="OnOpponentCardMouseDown" Name="OpponentCard1" Width="158" Margin="0,0,527,0"/>
-                <Image Source="Assets/CardBack.png" MouseEnter="OnOpponentCardMouseEnter" MouseLeave="OnOpponentCardMouseLeave" MouseUp="OnOpponentCardMouseUp" MouseDown="OnOpponentCardMouseDown" Name="OpponentCard2" Width="158" Margin="0,0,195,0"/>
-                <Image Source="Assets/CardBack.png" MouseEnter="OnOpponentCardMouseEnter" MouseLeave="OnOpponentCardMouseLeave" MouseUp="OnOpponentCardMouseUp" MouseDown="OnOpponentCardMouseDown" Name="OpponentCard3" Width="158" Margin="0,0,-137,0"/>
-                <Image Source="Assets/CardBack.png" MouseEnter="OnOpponentCardMouseEnter" MouseLeave="OnOpponentCardMouseLeave" MouseUp="OnOpponentCardMouseUp" MouseDown="OnOpponentCardMouseDown" Name="OpponentCard4" Width="158" Margin="0,0,-471,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="OpponentCard1" Width="158" Margin="0,0,527,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="OpponentCard2" Width="158" Margin="0,0,195,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="OpponentCard3" Width="158" Margin="0,0,-137,0"/>
+                <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="OpponentCard4" Width="158" Margin="0,0,-471,0"/>
             </Grid>
         </Grid>
         <Grid Visibility="Hidden" Name="CardActionGrid" Margin="722,10,10,271" IsEnabled="False">

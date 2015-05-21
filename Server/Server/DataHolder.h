@@ -13,7 +13,7 @@ class DataHolder
     private:
         static SpellsDataMap m_spells;
         static CardsDataMap m_cards;
-
+        
         static void loadSpells(sqlite3* db);
         static void loadCards(sqlite3* db);
         static int loadSpellsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/);
@@ -22,5 +22,6 @@ class DataHolder
     public:
         static bool LoadData();
         static CardsDataMap const& GetCards() { return m_cards; }
+        static Card const* GetCard(uint32_t const& cardId);
 };
 

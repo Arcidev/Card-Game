@@ -102,3 +102,21 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 
     m_owner->SendApplyAura(m_guid, &aura);
 }
+
+std::list<uint32_t> PlayableCard::HandleTickOnAuras()
+{
+    std::list<uint32_t> spellIds;
+    for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
+    {
+        iter->second.Tick();
+        if (!iter->second.GetDuration())
+        {
+            spellIds.push_back(iter->second.GetId());
+            iter = m_auras.erase(iter);
+        }
+        else
+            ++iter;
+    }
+
+    return spellIds;
+}

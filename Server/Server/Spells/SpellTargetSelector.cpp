@@ -4,8 +4,9 @@
 
 SpellTargetSelectorMap SpellTargetSelector::m_spellTargetSelectors =
 {
-    { TARGET_UNIT_CASTER,       handleTargetUnitCaster      },
-    { TARGET_UNIT_TARGET_ENEMY, handleTargetUnitTargetEnemy }
+    { TARGET_UNIT_CASTER,           handleTargetUnitCaster          },
+    { TARGET_UNIT_TARGET_ENEMY,     handleTargetUnitTargetEnemy     },
+    { TARGET_UNIT_TARGET_FRIEND,    handleTargetUnitTargetFriend    }
 };
 
 std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCaster(Player* attacker, Player* /*victim*/, uint64_t const& /*targetGuid*/)
@@ -13,9 +14,9 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCaster(Player* att
     return std::list<PlayableCard*> { attacker->GetCurrentCard() };
 }
 
-std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetEnemy(Player* /*attacker*/, Player* victim, uint64_t const& targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t const& targetGuid)
 {
-    for (std::vector<PlayableCard*>::const_iterator iter = victim->GetCurrentCards().begin(); iter != victim->GetCurrentCards().end(); ++iter)
+    for (std::vector<PlayableCard*>::const_iterator iter = player->GetCurrentCards().begin(); iter != player->GetCurrentCards().end(); ++iter)
     {
         if (targetGuid == (*iter)->GetGuid())
             return std::list<PlayableCard*>{ (*iter) };

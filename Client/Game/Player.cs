@@ -75,12 +75,32 @@ namespace Client.Game
         }
 
         // Selects possible targets attackable by basic attack on opponent deck for current player
-        public void SetPossibleTargets(IEnumerable<UInt64> targetableCards, SelectionType selection)
+        public void SetPossibleTargets(IEnumerable<UInt64> targetableCards)
         {
             if (!game.IsOpponent(Id))
                 return;
 
-            foreach (var card in cardDeck.Where(x => (x.First != null) && targetableCards.Contains(x.First.Guid)))
+            SelectPossibleTargets(targetableCards, SelectionType.BasicDamageAttackable);
+        }
+
+        // Selects active target
+        public void SelectActiveCard()
+        {
+            var activeCardDeck = cardDeck[ActiveCardPosition];
+            if (activeCardDeck.First.SelectionType != SelectionType.Selected)
+            {
+                Invoke(new Action(delegate()
+                {
+                    activeCardDeck.First.SelectionType = SelectionType.Selected;
+                    activeCardDeck.Second.Source = activeCardDeck.First.Image;
+                }));
+            }
+        }
+
+        // Selects possible targets
+        public void SelectPossibleTargets(IEnumerable<UInt64> targetableCards, SelectionType selection)
+        {
+            foreach (var card in cardDeck.Where(x => x.First != null && targetableCards.Contains(x.First.Guid)))
             {
                 Invoke(new Action(delegate()
                 {
@@ -136,9 +156,9 @@ namespace Client.Game
         }
 
         // Gets card by control name
-        public PlayableCard GetCardByImageControlName(string name)
+        public Pair<PlayableCard, Image> GetCardByImageControlName(string name)
         {
-            return cardDeck.First(x => x.Second.Name == name).First;
+            return cardDeck.FirstOrDefault(x => x.Second.Name == name);
         }
 
         // Attacks card

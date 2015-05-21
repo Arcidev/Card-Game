@@ -79,13 +79,16 @@
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
     <Compile Include="Enums\SpellFailReason.cs" />
+    <Compile Include="Enums\SpellTargets.cs" />
     <Compile Include="Game\Cards\DefensiveCard.cs" />
     <Compile Include="Game\Cards\MeleeCard.cs" />
     <Compile Include="Game\Cards\PlayableCard.cs" />
     <Compile Include="Game\Cards\RangedCard.cs" />
     <Compile Include="Game\Cards\SelectableCard.cs" />
     <Compile Include="Game\Spells\Spell.cs" />
+    <Compile Include="Game\Spells\SpellData.cs" />
     <Compile Include="Game\Spells\SpellEffect.cs" />
+    <Compile Include="Game\Spells\SpellTargetSelector.cs" />
     <Compile Include="Misc\CardAttackCursors.cs" />
     <Compile Include="Misc\GenericNumberMethodTemplate.cs">
       <AutoGen>True</AutoGen>

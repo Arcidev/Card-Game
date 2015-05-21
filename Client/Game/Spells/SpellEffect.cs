@@ -8,11 +8,19 @@ namespace Client.Game
 {
     public class SpellEffect
     {
-        private byte targetId;
+        private Func<Player, Player, IEnumerable<UInt64>> targetSelector;
 
-        public SpellEffect(byte target)
+        public SpellEffect(byte targetId)
         {
-            targetId = target;
+            targetSelector = SpellTargetSelector.GetTargetSelector(targetId);
+        }
+
+        public IEnumerable<UInt64> GetPossibleTargets(Player player, Player opponent)
+        {
+            if (targetSelector == null)
+                return new List<UInt64>();
+
+            return targetSelector(player, opponent);
         }
     }
 }

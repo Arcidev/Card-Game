@@ -22,4 +22,5 @@ class SpellAuraEffect
         uint8_t const& GetId() const { return m_id; }
         uint8_t const& GetValue1() const { return m_value1; }
         uint8_t const& GetValue2() const { return m_value2; }
+        uint8_t const& GetDuration() const { return m_duration; }
 };

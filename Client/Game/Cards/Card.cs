@@ -31,9 +31,14 @@ namespace Client.Game
 
         private static readonly CultureInfo cultureInfo = new CultureInfo("en-GB");
         private static readonly Typeface cardInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-        private static readonly double cardInfofontSize = 60.0;
+        private static readonly double cardInfoFontSize = 60.0;
         private static readonly double cardNamePositionY = 584.0;
         private static readonly double cardTypePositionY = 25;
+
+        private static readonly Typeface spellInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.UltraBold, FontStretches.Normal);
+        private static readonly double spellInfoFontSize = 45.0;
+        private static readonly double spellInfoTextWidth = 670;
+        private static readonly Point spellInfoPosition = new Point(50, 675);
 
         private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
         private static readonly double statsFontSize = 100.0;
@@ -151,12 +156,20 @@ namespace Client.Game
                 drawingContext.DrawImage(cardTemplate, new Rect(0, 0, cardTemplate.PixelWidth, cardTemplate.PixelHeight));
 
                 // Type
-                var type = new FormattedText(Type.ToString(), cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfofontSize, Brushes.Black);
+                var type = new FormattedText(Type.ToString(), cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black);
                 drawingContext.DrawText(type, new Point(cardTemplate.PixelWidth / 2 - type.Width / 2, cardTypePositionY));
 
                 // Name
-                var name = new FormattedText(Name, cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfofontSize, Brushes.Black);
+                var name = new FormattedText(Name, cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black);
                 drawingContext.DrawText(name, new Point(cardTemplate.PixelWidth / 2 - name.Width / 2, cardNamePositionY));
+
+                // Spell
+                if (Spell != null)
+                {
+                    var spell = new FormattedText(Spell.Info, cultureInfo, FlowDirection.LeftToRight, spellInfoTypeface, spellInfoFontSize, Brushes.Black);
+                    spell.MaxTextWidth = spellInfoTextWidth;
+                    drawingContext.DrawText(spell, spellInfoPosition);
+                }
             }
 
             RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplate.PixelWidth, cardTemplate.PixelHeight, 96, 96, PixelFormats.Pbgra32);

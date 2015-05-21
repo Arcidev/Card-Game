@@ -5,13 +5,19 @@ SpellAuraEffect::SpellAuraEffect(PlayableCard* card, uint32_t const& spellId, ui
 {
     if (!m_SpellAuraEffectHandler)
         m_duration = 0;
+
+    if (!m_value1)
+        m_value1 = 1;
 }
 
 void SpellAuraEffect::Tick()
 {
-    if (!m_SpellAuraEffectHandler)
+    if (!m_SpellAuraEffectHandler || !m_duration)
         return;
 
-    if (++m_currentTick >= m_value1)
+    m_currentTick = ++m_currentTick % m_value1;
+    if (!m_currentTick)
         m_SpellAuraEffectHandler(m_card, m_value2);
+
+    --m_duration;
 }

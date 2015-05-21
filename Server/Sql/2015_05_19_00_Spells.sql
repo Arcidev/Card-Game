@@ -3,8 +3,8 @@ CREATE TABLE SpellValues
 (
 	Id INT NOT NULL PRIMARY KEY,
 	SpellEffectId TINYINT NOT NULL,
+	SpellAttributesMask INT NOT NULL,
 	Target TINYINT NOT NULL,
-	ManaCost TINYINT NOT NULL,
 	EffectValue1 TINYINT NOT NULL,
 	EffectValue2 TINYINT NOT NULL,
 	EffectValue3 TINYINT NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE Spells
 (
 	Id INT NOT NULL,
 	SpellValueId INT NOT NULL,
+	ManaCost TINYINT NOT NULL,
 	FOREIGN KEY(SpellValueId) REFERENCES SpellValues(Id),
 	PRIMARY KEY (Id, SpellValueId)
 );

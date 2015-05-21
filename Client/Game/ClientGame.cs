@@ -194,6 +194,33 @@ namespace Client.Game
             MessageBox.Show(win ? "You have won... You are amazing" : "You have lost... You sucks");
         }
 
+        // Selects targets on which is spell usable
+        public bool SetPossibleSpellTargets()
+        {
+            var spell = Player.ActiveCard.Spell;
+            if (spell == null)
+                return false;
+
+            var targets = spell.GetPossibleTargets(Player, Opponent);
+            Player.SelectPossibleTargets(targets, SelectionType.SpellUsable);
+            Opponent.SelectPossibleTargets(targets, SelectionType.SpellUsable);
+
+            return true;
+        }
+
+        public PlayableCard GetCardByImageControlName(string imageControlName)
+        {
+            var cardPair = Player.GetCardByImageControlName(imageControlName);
+            if (cardPair != null)
+                return cardPair.First;
+
+            cardPair = Opponent.GetCardByImageControlName(imageControlName);
+            if (cardPair != null)
+                return cardPair.First;
+
+            return null;
+        }
+
         // Checks every 50ms for new packets form server in separated thread
         private void Update(Object source, ElapsedEventArgs e)
         {

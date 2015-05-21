@@ -73,7 +73,7 @@ void Player::Attack(uint64_t const& victimCardGuid)
         return;
     }
 
-    uint8_t damage = currentCard->GetDamage();
+    uint8_t damage = currentCard->GetDamage() * 10;
     float reduction = (float)(victimCard->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
@@ -360,7 +360,7 @@ void Player::Prepare()
 // Sends players card deck
 void Player::HandleDeckCards(bool addCard)
 {
-    if (addCard && (!m_cardOrder.empty() || (m_currentCards.size() < MAX_CARDS_ON_DECK)))
+    if (addCard && !m_cardOrder.empty() && (m_currentCards.size() < MAX_CARDS_ON_DECK))
     {
         m_currentCards.push_back(m_cardOrder.front());
         m_cardOrder.erase(m_cardOrder.begin());
@@ -442,8 +442,38 @@ void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* au
 // Ends player turn
 void Player::endTurn()
 {
-    if ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty())
+    bool sendDeckCards = false;
+    std::list<std::pair<uint64_t, std::list<uint32_t> > > cards;
+    for (std::vector<PlayableCard*>::iterator iter = m_currentCards.begin(); iter != m_currentCards.end();)
+    {
+        if ((*iter)->HasAuras())
+        {
+            std::list<uint32_t> removedAuras = (*iter)->HandleTickOnAuras();
+
+            if (!removedAuras.empty())
+                cards.push_back(std::make_pair((*iter)->GetGuid(), removedAuras));
+
+            if (!(*iter)->IsAlive())
+            {
+                if (!sendDeckCards)
+                    sendDeckCards = true;
+                iter = m_currentCards.erase(iter);
+            }
+            else
+                ++iter;
+        }
+        else
+            ++iter;
+    }
+
+    if (sendDeckCards || ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty()))
         HandleDeckCards(true);
+
+    if (m_currentCards.empty())
+    {
+        SendEndGame(GetOpponent() ? GetOpponent()->GetId() : 0);
+        return;
+    }
 
     ++m_currentCardIndex;
     GetGame()->ActivateSecondPlayer();
@@ -463,14 +493,4 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t const& damage)
     packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 0, 1, 2, 3, 7, 5, 4, 6 });
     packet << damage;
     GetGame()->BroadcastPacket(&packet);
-
-    if (!card->IsAlive())
-    {
-        destroyCard(card->GetGuid());
-
-        if (m_cardOrder.empty() && m_currentCards.empty())
-            SendEndGame(GetOpponent() ? GetOpponent()->GetId() : 0);
-        else
-            HandleDeckCards(m_currentCards.empty() ? true : false);
-    }
 }

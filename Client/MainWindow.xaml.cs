@@ -30,8 +30,8 @@ namespace Client
         private string userName;
         private ClientGame game;
         private int selectedCardCount;
-        private bool opponentCardClicked;
-        private string opponentCardControlName;
+        private bool cardClicked;
+        private string cardControlName;
 
         public SlideShow SlideShow { get; private set; }
 
@@ -41,8 +41,8 @@ namespace Client
 
             userName = "";
             selectedCardCount = 0;
-            opponentCardClicked = false;
-            opponentCardControlName = "";
+            cardClicked = false;
+            cardControlName = "";
             SlideShow = new SlideShow(this);
         }
 
@@ -182,19 +182,15 @@ namespace Client
             var opponent = game.Opponent;
             Cursor = CardAttackCursors.GetCursor(activeCard.Type == CreatureTypes.Melee ? CardAttackCursorTypes.Sword : CardAttackCursorTypes.Arrow);
 
-            opponent.SetPossibleTargets(
-                activeCard.GetPossibleTargets(opponent.CardDeck, game.Player.ActiveCardPosition),
-                SelectionType.BasicDamageAttackable);
+            opponent.SetPossibleTargets(activeCard.GetPossibleTargets(opponent.CardDeck, game.Player.ActiveCardPosition));
+
+            game.Player.SelectActiveCard();
         }
 
         private void UseSpellButton_Click(object sender, RoutedEventArgs e)
         {
-            var opponent = game.Opponent;
-            Cursor = CardAttackCursors.GetCursor(CardAttackCursorTypes.Staff);
-
-            opponent.SetPossibleTargets(
-                opponent.CardDeck.Select(x => x.Guid),
-                SelectionType.SpellUsable);
+            if (game.SetPossibleSpellTargets())
+                Cursor = CardAttackCursors.GetCursor(CardAttackCursorTypes.Staff);
         }
 
         private void DefendButton_Click(object sender, RoutedEventArgs e)
@@ -202,7 +198,7 @@ namespace Client
             game.SendDefendSelf();
         }
 
-        private void OnOpponentCardMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnCardMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (!game.Player.IsActive)
                 return;
@@ -211,44 +207,44 @@ namespace Client
             if (image == null)
                 return;
 
-            var card = game.Opponent.GetCardByImageControlName(image.Name);
-            if ((card == null) || (card.SelectionType == SelectionType.None))
+            var card = game.GetCardByImageControlName(image.Name);
+            if ((card == null) || ((card.SelectionType != SelectionType.BasicDamageAttackable) && (card.SelectionType != SelectionType.SpellUsable)))
                 return;
 
-            opponentCardClicked = true;
-            opponentCardControlName = image.Name;
+            cardClicked = true;
+            cardControlName = image.Name;
         }
 
-        private void OnOpponentCardMouseUp(object sender, MouseButtonEventArgs e)
+        private void OnCardMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (opponentCardClicked)
+            if (cardClicked)
             {
-                var card = game.Opponent.GetCardByImageControlName(opponentCardControlName);
-                opponentCardClicked = false;
-                opponentCardControlName = "";
+                var card = game.GetCardByImageControlName(cardControlName);
+                cardClicked = false;
+                cardControlName = "";
 
                 if (card != null)
                     game.SendCardAction(card);
             }
         }
 
-        private void OnOpponentCardMouseLeave(object sender, MouseEventArgs e)
+        private void OnCardMouseLeave(object sender, MouseEventArgs e)
         {
-            if (opponentCardClicked)
-                opponentCardClicked = false;
+            if (cardClicked)
+                cardClicked = false;
         }
 
-        private void OnOpponentCardMouseEnter(object sender, MouseEventArgs e)
+        private void OnCardMouseEnter(object sender, MouseEventArgs e)
         {
-            if (!opponentCardControlName.Any())
+            if (!cardControlName.Any())
                 return;
 
             var image = sender as Image;
             if (image == null)
                 return;
 
-            if (opponentCardControlName == image.Name)
-                opponentCardClicked = true;
+            if (cardControlName == image.Name)
+                cardClicked = true;
         }
     }
 }

@@ -19,22 +19,21 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     // In case it failed in packet sended before
     player->ClearCards();
     DEBUG_LOG("CMSG_SELECTED_CARDS:\n\tCardCount: %d\n", cardCount);
-    CardsDataMap const& cards = DataHolder::GetCards();
 
     for (uint8_t i = 0; i < MAX_CARDS_COUNT; i++)
     {
         *packet >> cardId;
         DEBUG_LOG("\tCardId: %d\n", cardId);
 
-        CardsDataMap::const_iterator cardIter = cards.find(cardId);
-        if (cardIter == cards.end())
+        Card const* card = DataHolder::GetCard(cardId);
+        if (!card)
         {
             // Rest of packet is ignored
             player->SendSelectCardsFailed(INVALID_CARD_ID);
             return;
         }
 
-        player->CreateCard(&cardIter->second);
+        player->CreateCard(card);
     }
 
     player->Prepare();
@@ -93,7 +92,7 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
     *packet >> attackType;
     packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
 
-    DEBUG_LOG("CMSG_CARD_ACTION:\n\tGuid: %ju\n\tcardAction: %d\n", (uint64_t)guid, attackType);
+    DEBUG_LOG("CMSG_CARD_ACTION:\n\tcardAction: %d\n", attackType);
     if (attackType == CARD_ACTION_BASIC_ATTACK)
         player->Attack(guid);
     else if (attackType == CARD_ACTION_SPELL_USE)
