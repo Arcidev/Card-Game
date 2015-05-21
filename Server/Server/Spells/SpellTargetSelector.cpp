@@ -4,15 +4,9 @@
 
 SpellTargetSelectorMap SpellTargetSelector::m_spellTargetSelectors =
 {
-    { TARGET_UNIT_CASTER,           handleTargetUnitCaster          },
     { TARGET_UNIT_TARGET_ENEMY,     handleTargetUnitTargetEnemy     },
     { TARGET_UNIT_TARGET_FRIEND,    handleTargetUnitTargetFriend    }
 };
-
-std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCaster(Player* attacker, Player* /*victim*/, uint64_t const& /*targetGuid*/)
-{
-    return std::list<PlayableCard*> { attacker->GetCurrentCard() };
-}
 
 std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t const& targetGuid)
 {

@@ -79,10 +79,32 @@ namespace Client.Game
             WriteLog(message, combatLogType);
         }
 
+        // Write info about periodic damage into combat log chat tab
+        public void LogPeriodicDamage(PlayableCard victim, byte damage, bool alive)
+        {
+            var message = alive ? string.Format("{0} suffered {1} damage", victim.Name, damage) : string.Format("{0} has been killed with {1} damage", victim.Name, damage);
+            WriteLog(message, CombatLogTypes.SpellUsage);
+        }
+
+        // Logs stat change into chat
         public void LogStatChange(CardStats stat, PlayableCard card, sbyte value)
         {
             var message = string.Format("{0}'s {1} has been changed by {2}", card.Name, stat.GetDescription(), value);
             WriteLog(message, CombatLogTypes.StatChange);
+        }
+
+        // Logs apply aura
+        public void LogApplyAura(PlayableCard card, SpellData spell)
+        {
+            var message = string.Format("{0} is now aflicted by {1}", card.Name, spell.Name);
+            WriteLog(message, CombatLogTypes.SpellUsage);
+        }
+
+        // Logs heal from spell
+        public void LogHeal(PlayableCard card, byte amount)
+        {
+            var message = string.Format("{0} has been healed by {1}", card.Name, amount);
+            WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Returns chat color

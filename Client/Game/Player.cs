@@ -162,13 +162,17 @@ namespace Client.Game
         }
 
         // Attacks card
-        public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType)
+        public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == guid);
             if (cardPair == null)
                 return;
 
-            game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
+            if (isPeriodicDamage)
+                game.Chat.LogPeriodicDamage(cardPair.First, damage, true);
+            else
+                game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
+            
             Invoke(new Action(delegate()
             {
                 cardPair.First.Hp -= damage;
@@ -177,12 +181,16 @@ namespace Client.Game
         }
 
         // Destroys card
-        public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType)
+        public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
             PlayableCard card = null;
             if (cards.TryGetValue(guid, out card))
             {
-                game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, card, damage, false);
+                if (isPeriodicDamage)
+                    game.Chat.LogPeriodicDamage(card, damage, false);
+                else
+                    game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, card, damage, false);
+
                 cards.Remove(guid);
             }
         }
@@ -214,7 +222,28 @@ namespace Client.Game
         // Adds aura to creature
         public void ApplyAura(UInt64 cardGuid, UInt32 spellId)
         {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
+            if (cardPair == null)
+                return;
+
+            SpellData spellData = DataHolder.GetSpellData(spellId);
+            game.Chat.LogApplyAura(cardPair.First, spellData);
+
             /// TODO: add some graphics effect
+        }
+
+        public void HealCard(UInt64 cardGuid, byte health, byte amount)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
+            if (cardPair == null)
+                return;
+
+            game.Chat.LogHeal(cardPair.First, amount);
+            Invoke(new Action(delegate()
+            {
+                cardPair.First.Hp = health;
+                cardPair.Second.Source = cardPair.First.Image;
+            }));
         }
     }
 }

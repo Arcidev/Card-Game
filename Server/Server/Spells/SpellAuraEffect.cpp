@@ -15,7 +15,7 @@ void SpellAuraEffect::Tick()
     if (!m_SpellAuraEffectHandler || !m_duration)
         return;
 
-    m_currentTick = ++m_currentTick % m_value1;
+    m_currentTick = (m_currentTick + 1) % m_value1;
     if (!m_currentTick)
         m_SpellAuraEffectHandler(m_card, m_value2);
 

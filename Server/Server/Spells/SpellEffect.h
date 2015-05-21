@@ -4,12 +4,12 @@
 enum SpellEffects
 {
     SPELL_EFFECT_DIRECT_DAMAGE = 1,
-    SPELL_EFFECT_APPLY_AURA
+    SPELL_EFFECT_APPLY_AURA,
+    SPELL_EFFECT_HEAL
 };
 
 enum SpellAttributes
 {
-
 };
 
 struct SpellEffectValues
@@ -37,6 +37,7 @@ class SpellEffect
 
         static bool handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
         static bool handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
+        static bool handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
 
     public:
         static SpellEffectFunc GetSpellEffectFunc(uint8_t const& spellEffectId);

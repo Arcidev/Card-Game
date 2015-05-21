@@ -6,7 +6,8 @@
 SpellEffectMap SpellEffect::m_spellEffects = 
 {
     { SPELL_EFFECT_DIRECT_DAMAGE,   handleDirectDamage  },
-    { SPELL_EFFECT_APPLY_AURA,      handleApplyAura     }
+    { SPELL_EFFECT_APPLY_AURA,      handleApplyAura     },
+    { SPELL_EFFECT_HEAL,            handleHeal          }
 };
 
 bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
@@ -30,6 +31,18 @@ bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t tar
         SpellAuraEffect auraEffect(*iter, effectValues->SpellId, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4);
         (*iter)->ApplyAura(auraEffect);
     }
+
+    return true;
+}
+
+bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
+{
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid);
+    if (targets.empty())
+        return false;
+
+    for (std::list<PlayableCard*>::iterator iter = targets.begin(); iter != targets.end(); ++iter)
+        (*iter)->Heal(effectValues->Value1);
 
     return true;
 }

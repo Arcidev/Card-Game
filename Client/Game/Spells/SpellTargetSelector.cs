@@ -11,15 +11,9 @@ namespace Client.Game
     {
         private static readonly Func<Player, Player, IEnumerable<UInt64>>[] targetSelectors =
         {
-            handleTargetUnitCaster,         // TARGET_UNIT_CASTER
             handleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
             handleTargetUnitFriend          // TARGET_UNIT_TARGET_FRIEND
         };
-
-        private static IEnumerable<UInt64> handleTargetUnitCaster(Player player, Player enemy)
-        {
-            return new[] { player.ActiveCard.Guid };
-        }
 
         private static IEnumerable<UInt64> handleTargetUnitTargetEnemy(Player player, Player enemy)
         {

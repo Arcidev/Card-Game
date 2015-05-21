@@ -49,6 +49,7 @@ class Player
         void SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const;
         void SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const;
         void SendSpellCastFailed(uint8_t const& reason) const;
+        void SendCardHealed(PlayableCard const* card, uint8_t const& amount) const;
         void Attack(uint64_t const& victimCardGuid);
         void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage);
         void UseSpell(uint64_t const& selectedCardGuid);

@@ -19,6 +19,7 @@ namespace Client.Enums
         SMSG_SPELL_CAST_FAILED,
         SMSG_SPELL_DAMAGE,
         SMSG_APPLY_AURA,
-        SMSG_SPELL_PERIODIC_DAMAGE
+        SMSG_SPELL_PERIODIC_DAMAGE,
+        SMSG_CARD_HEALED
     }
 }

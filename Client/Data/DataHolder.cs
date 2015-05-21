@@ -12,6 +12,7 @@ namespace Client.Data
     public static class DataHolder
     {
         private static IDictionary<UInt32, SelectableCard> cardsMap;
+        private static IDictionary<UInt32, SpellData> spellsDataMap;
 
         public static IEnumerable<SelectableCard> Cards { get { return cardsMap != null ? cardsMap.Values : null; } }
         
@@ -21,6 +22,7 @@ namespace Client.Data
             using (SQLiteConnection connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))
             {
                 connection.Open();
+                LoadSpellsData(connection);
                 LoadCards(connection, cards);
             }
         }
@@ -35,15 +37,22 @@ namespace Client.Data
             return null;
         }
 
-        // Unloads data from memory
-        public static void UnloadData() 
-        { 
-            cardsMap = null;
+        // Returns spells data
+        public static SpellData GetSpellData(UInt32 id)
+        {
+            SpellData spellData;
+            if (spellsDataMap.TryGetValue(id, out spellData))
+                return spellData;
+
+            return new SpellData(id, "", "", null);
         }
 
-        private static IDictionary<UInt32, SpellData> LoadSpellsData(SQLiteConnection connection)
+        // Unloads data from memory
+        public static void UnloadCards() { cardsMap = null; }
+
+        private static void LoadSpellsData(SQLiteConnection connection)
         {
-            var spellsData = new Dictionary<UInt32, SpellData>();
+            spellsDataMap = new Dictionary<UInt32, SpellData>();
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT id, name, description, spellEffectPath FROM Spells";
@@ -52,18 +61,15 @@ namespace Client.Data
                     while (result.Read())
                     {
                         SpellData spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]), Convert.ToString(result["spellEffectPath"]));
-                        spellsData.Add(spellData.SpellId, spellData);
+                        spellsDataMap.Add(spellData.SpellId, spellData);
                     }
                 }
             }
-
-            return spellsData;
         }
 
         // Loads cards
         private static void LoadCards(SQLiteConnection connection, IDictionary<UInt32, SelectableCard> cards)
         {
-            IDictionary<UInt32, SpellData> spellsData = LoadSpellsData(connection);
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT id, name, imagePath FROM Cards";
@@ -79,11 +85,7 @@ namespace Client.Data
                         }
 
                         if (card.Spell != null)
-                        {
-                            SpellData spellData = null;
-                            if (spellsData.TryGetValue(card.Spell.Id, out spellData))
-                                card.Spell.SpellData = spellData;
-                        }
+                            card.Spell.SpellData = GetSpellData(card.Spell.Id);
                     }
                 }
             }

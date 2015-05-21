@@ -37,7 +37,7 @@ namespace Client.Game
 
         private static readonly Typeface spellInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.UltraBold, FontStretches.Normal);
         private static readonly double spellInfoFontSize = 45.0;
-        private static readonly double spellInfoTextWidth = 670;
+        private static readonly double spellInfoTextWidth = 660;
         private static readonly Point spellInfoPosition = new Point(50, 675);
 
         private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);

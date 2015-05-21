@@ -30,7 +30,8 @@ namespace Client.Network
             { SMSGPackets.SMSG_SPELL_CAST_FAILED,                       HandleSpellCastFailed       },
             { SMSGPackets.SMSG_SPELL_DAMAGE,                            HandleSpellDamage           },
             { SMSGPackets.SMSG_APPLY_AURA,                              HandleApplyAura             },
-            { SMSGPackets.SMSG_SPELL_PERIODIC_DAMAGE,                   HandleSpellPeriodicDamage   }
+            { SMSGPackets.SMSG_SPELL_PERIODIC_DAMAGE,                   HandleSpellPeriodicDamage   },
+            { SMSGPackets.SMSG_CARD_HEALED,                             HandleCardHealed            }
         };
 
         // Returns function to handle packet
@@ -251,9 +252,9 @@ namespace Client.Network
 
                 Player opponent = game.GetOpponent(attackerId);
                 if (result == AttackResult.CardAttacked)
-                    opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage);
+                    opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
                 else
-                    opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage);
+                    opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
             }
         }
 
@@ -309,9 +310,9 @@ namespace Client.Network
                 packet.ReadGuidByteStreamInOrder(targets[i], 2, 0, 1, 6, 7);
 
                 if (isAlive[i])
-                    opponent.AttackCard(targets[i], damage, CombatLogTypes.SpellUsage);
+                    opponent.AttackCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
                 else
-                    opponent.DestroyCard(targets[i], damage, CombatLogTypes.SpellUsage);
+                    opponent.DestroyCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
             }
         }
 
@@ -341,9 +342,24 @@ namespace Client.Network
             byte damage = packet.ReadByte();
 
             if (isAlive)
-                player.AttackCard(guid, damage, CombatLogTypes.SpellUsage);
+                player.AttackCard(guid, damage, CombatLogTypes.SpellUsage, true);
             else
-                player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage);
+                player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage, true);
+        }
+
+        // Handle SMSG_CARD_HEALED packet
+        private static void HandleCardHealed(Packet packet, ClientGame game)
+        {
+            Guid guid = new Guid();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 6, 1, 3, 0, 5, 4);
+
+            packet.ReadGuidByteStreamInOrder(guid, 5, 2, 7, 1);
+            Player player = game.GetPlayer(packet.ReadUInt32());
+            byte health = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 4, 0, 3, 6);
+            byte amount = packet.ReadByte();
+
+            player.HealCard(guid, health, amount);
         }
     }
 }

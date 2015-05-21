@@ -73,7 +73,7 @@ void Player::Attack(uint64_t const& victimCardGuid)
         return;
     }
 
-    uint8_t damage = currentCard->GetDamage() * 10;
+    uint8_t damage = currentCard->GetDamage();
     float reduction = (float)(victimCard->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {
@@ -152,6 +152,24 @@ void Player::SendSpellCastFailed(uint8_t const& reason) const
     Packet packet(SMSG_SPELL_CAST_FAILED);
     packet << reason;
     SendPacket(&packet);
+}
+
+void Player::SendCardHealed(PlayableCard const* card, uint8_t const& amount) const
+{
+    if (!card)
+        return;
+
+    Packet packet(SMSG_CARD_HEALED);
+    packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 7, 2, 6, 1, 3, 0, 5, 4 });
+    packet.FlushBits();
+
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 5, 2, 7, 1 });
+    packet << m_id;
+    packet << card->GetHealth();
+    packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 4, 0, 3, 6 });
+    packet << amount;
+
+    GetGame()->BroadcastPacket(&packet);
 }
 
 // Uses card spell

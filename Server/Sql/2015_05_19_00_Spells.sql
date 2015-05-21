@@ -14,9 +14,16 @@ CREATE TABLE SpellValues
 DROP TABLE IF EXISTS Spells;
 CREATE TABLE Spells
 (
-	Id INT NOT NULL,
+	Id INT NOT NULL PRIMARY KEY,
+	ManaCost TINYINT NOT NULL
+);
+
+DROP TABLE IF EXISTS SpellsSpellValues;
+CREATE TABLE SpellsSpellValues
+(
+	SpellId INT NOT NULL,
 	SpellValueId INT NOT NULL,
-	ManaCost TINYINT NOT NULL,
+	FOREIGN KEY(SpellId) REFERENCES Spells(Id),
 	FOREIGN KEY(SpellValueId) REFERENCES SpellValues(Id),
-	PRIMARY KEY (Id, SpellValueId)
+	PRIMARY KEY (SpellId, SpellValueId)
 );

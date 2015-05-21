@@ -5,8 +5,7 @@
 
 enum SpellTargets
 {
-    TARGET_UNIT_CASTER = 0,
-    TARGET_UNIT_TARGET_ENEMY,
+    TARGET_UNIT_TARGET_ENEMY = 0,
     TARGET_UNIT_TARGET_FRIEND,
     MAX_SPELL_EFFECT_TARGET
 };
@@ -24,7 +23,6 @@ class SpellTargetSelector
         static std::list<PlayableCard*> getTargetFromDeck(Player* player, uint64_t const& targetGuid);
 
         // target handlers
-        static std::list<PlayableCard*> handleTargetUnitCaster(Player* attacker, Player* /*victim*/, uint64_t const& /*targetGuid*/);
         static std::list<PlayableCard*> handleTargetUnitTargetEnemy(Player* /*attacker*/, Player* victim, uint64_t const& targetGuid) { return getTargetFromDeck(victim, targetGuid); }
         static std::list<PlayableCard*> handleTargetUnitTargetFriend(Player* attacker, Player* /*victim*/, uint64_t const& targetGuid) { return getTargetFromDeck(attacker, targetGuid); }
 

@@ -58,7 +58,7 @@ int DataHolder::loadCardsCallback(void* /*data*/, int argc, char** argv, char** 
 void DataHolder::loadSpells(sqlite3* db)
 {
     char* errorMsg;
-    std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM Spells JOIN SpellValues ON SpellValueId = SpellValues.Id";
+    std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
     if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, 0, &errorMsg) != SQLITE_OK)
         printf("Error while loading cards\n");
 }

@@ -2,6 +2,7 @@
 #include "MeleeCard.h"
 #include "RangedCard.h"
 #include "DefensiveCard.h"
+#include "../DataHolder.h"
 #include "../Player.h"
 #include "../PlayerDefines.h"
 
@@ -101,6 +102,16 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
         m_owner->SendCardStatChanged(this, aura.GetValue1());
 
     m_owner->SendApplyAura(m_guid, &aura);
+}
+
+void PlayableCard::Heal(uint8_t const& amount)
+{
+    Card const* card = DataHolder::GetCard(GetId());
+    m_hp += amount;
+    if (m_hp > card->GetHealth())
+        m_hp = card->GetHealth();
+
+    m_owner->SendCardHealed(this, amount);
 }
 
 std::list<uint32_t> PlayableCard::HandleTickOnAuras()
