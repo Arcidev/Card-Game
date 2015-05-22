@@ -54,6 +54,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Crypto\libeay32.lib;DataBase\SQLite\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" /E /PURGE
+IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
+
+:copydll
+ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)\"
+IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -70,6 +78,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>Crypto\libeay32.lib;DataBase\SQLite\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" /E /PURGE
+IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
+
+:copydll
+ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)\"
+IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Crypto\Aes.h" />

@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -78,7 +81,7 @@
     <Compile Include="Enums\CombatLogTypes.cs" />
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
-    <Compile Include="Enums\SpellFailReason.cs" />
+    <Compile Include="Enums\SpellCastResult.cs" />
     <Compile Include="Enums\SpellTargets.cs" />
     <Compile Include="Game\Cards\DefensiveCard.cs" />
     <Compile Include="Game\Cards\MeleeCard.cs" />
@@ -195,6 +198,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.96.0\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.96.0\build\net45\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>ROBOCOPY "$(ProjectDir)Assets" "$(TargetDir)Assets" /E /PURGE
+IF %25ERRORLEVEL%25 LSS 8 exit 0 else exit %25ERRORLEVEL%25</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

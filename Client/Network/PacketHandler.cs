@@ -27,11 +27,12 @@ namespace Client.Network
             { SMSGPackets.SMSG_ATTACK_RESULT,                           HandleAttackResult          },
             { SMSGPackets.SMSG_END_GAME,                                HandleEndGame               },
             { SMSGPackets.SMSG_CARD_STAT_CHANGED,                       HandleCardStatChanged       },
-            { SMSGPackets.SMSG_SPELL_CAST_FAILED,                       HandleSpellCastFailed       },
+            { SMSGPackets.SMSG_SPELL_CAST_RESULT,                       HandleSpellCastResult       },
             { SMSGPackets.SMSG_SPELL_DAMAGE,                            HandleSpellDamage           },
             { SMSGPackets.SMSG_APPLY_AURA,                              HandleApplyAura             },
             { SMSGPackets.SMSG_SPELL_PERIODIC_DAMAGE,                   HandleSpellPeriodicDamage   },
-            { SMSGPackets.SMSG_CARD_HEALED,                             HandleCardHealed            }
+            { SMSGPackets.SMSG_CARD_HEALED,                             HandleCardHealed            },
+            { SMSGPackets.SMSG_MANA_REPLENISHMENT,                      HandleManaReplenishment     }
         };
 
         // Returns function to handle packet
@@ -280,12 +281,28 @@ namespace Client.Network
             game.EndGame(game.Player.Id == winnerId);
         }
 
-        // Handle SMSG_SPELL_CAST_FAILED packet
-        private static void HandleSpellCastFailed(Packet packet, ClientGame game)
+        // Handle SMSG_SPELL_CAST_RESULT packet
+        private static void HandleSpellCastResult(Packet packet, ClientGame game)
         {
-            SpellFailReason reason = (SpellFailReason)packet.ReadByte();
+            SpellCastResult result = (SpellCastResult)packet.ReadByte();
+            if (result == SpellCastResult.Success)
+            {
+                Guid guid = new Guid();
+                packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
+
+                byte mana = packet.ReadByte();
+                packet.ReadGuidByteStreamInOrder(guid, 7, 2);
+                byte manaCost = packet.ReadByte();
+                packet.ReadGuidByteStreamInOrder(guid, 4, 0, 1);
+                Player player = game.GetPlayer(packet.ReadUInt32());
+                UInt32 spellId = packet.ReadUInt32();
+                packet.ReadGuidByteStreamInOrder(guid, 3, 6, 5);
+
+                player.HandleSuccessfulSpellCast(guid, spellId, mana, manaCost);
+                return;
+            }
             game.SetActiveCardActionGrid(true);
-            game.Chat.Write(reason.GetDescription(), ChatTypes.Info);
+            game.Chat.Write(result.GetDescription(), ChatTypes.Info);
         }
 
         // Handle SMSG_SPELL_DAMAGE packet
@@ -360,6 +377,32 @@ namespace Client.Network
             byte amount = packet.ReadByte();
 
             player.HealCard(guid, health, amount);
+        }
+
+        // Handle SMSG_MANA_REPLENISHMENT packet
+        private static void HandleManaReplenishment(Packet packet, ClientGame game)
+        {
+            byte cardCount = packet.ReadByte();
+            Guid[] guids = new Guid[cardCount];
+
+            for (byte i = 0; i < cardCount; i++)
+            {
+                guids[i] = new Guid();
+                packet.ReadGuidBitStreamInOrder(guids[i], 5, 0, 1, 2, 3, 7, 4, 6);
+            }
+
+            Player player = game.GetPlayer(packet.ReadUInt32());
+            byte manaReplenished = packet.ReadByte();
+
+            for (byte i = 0; i < cardCount; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(guids[i], 2, 6, 0, 7, 1, 4, 3, 5);
+                byte mana = packet.ReadByte();
+
+                player.SetCardMana(guids[i], mana);
+            }
+
+            game.Chat.LogManaReplenishment(player, manaReplenished);
         }
     }
 }

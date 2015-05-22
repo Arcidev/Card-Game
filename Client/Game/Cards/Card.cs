@@ -48,6 +48,7 @@ namespace Client.Game
         private static readonly Point defensePosition = new Point(640.0, 920.0);
 
         private byte health;
+        private byte mana;
         private sbyte defenseModifier;
         private sbyte damageModifier;
 
@@ -85,7 +86,15 @@ namespace Client.Game
                 return (byte)(Damage + damageModifier);
             }
         }
-        public byte Mana { get; private set; }
+        public byte Mana
+        {
+            get { return mana; }
+            set
+            {
+                mana = value;
+                ReloadStats();
+            }
+        }
         public byte Defense { get; private set; }
         public sbyte DefenseModifier
         {
@@ -125,8 +134,8 @@ namespace Client.Game
             Id = id;
             Type = type;
             health = hp;
+            this.mana = mana;
             Damage = damage;
-            Mana = mana;
             Defense = defense;
             SelectionType = SelectionType.None;
             defenseModifier = 0;
@@ -193,8 +202,8 @@ namespace Client.Game
 
                 // Card stats
                 drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage)), damagePosition);
-                drawingContext.DrawText(new FormattedText(Mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
-                drawingContext.DrawText(new FormattedText(Hp.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
+                drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
+                drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
                 drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense)), defensePosition);
             }
 

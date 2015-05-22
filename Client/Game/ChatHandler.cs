@@ -107,6 +107,20 @@ namespace Client.Game
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
+        // Logs consuming mana from spell
+        public void LogManaConsume(PlayableCard card, SpellData spellData, byte manaCost)
+        {
+            var message = string.Format("{0} consumes {1} mana from {2}", spellData.Name, manaCost, card.Name);
+            WriteLog(message, CombatLogTypes.SpellUsage);
+        }
+
+        // Logs mana replenishment
+        public void LogManaReplenishment(Player player, byte mana)
+        {
+            var message = string.Format("{0}'s cards have replenished {1} mana", player.Name, mana);
+            WriteLog(message, CombatLogTypes.StatChange);
+        }
+
         // Returns chat color
         private Brush GetChatColor(ChatTypes chatType)
         {
@@ -142,6 +156,7 @@ namespace Client.Game
             }
         }
 
+        // Invokes chat message to UI thread
         private void InvokeToChat(string message, RichTextBox rtb, Brush brush)
         {
             clientGame.Invoke(new Action(delegate()

@@ -8,6 +8,7 @@
 
 class Card;
 class Packet;
+class Spell;
 class ServerNetwork;
 class PlayableCard;
 class SpellAuraEffect;
@@ -21,6 +22,7 @@ class Player
         std::vector<PlayableCard*> m_currentCards;
         bool m_isPrepared;
         bool m_isDisconnected;
+        uint8_t m_replenishmentMoveCount;
         uint32_t m_id;
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
@@ -31,6 +33,7 @@ class Player
         std::string m_AesKey;
 
         void destroyCard(uint64_t const& cardGuid);
+        void replenishMana();
         void endTurn();
 
     public:
@@ -48,7 +51,7 @@ class Player
         void SendEndGame(uint32_t const& winnerId) const;
         void SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const;
         void SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const;
-        void SendSpellCastFailed(uint8_t const& reason) const;
+        void SendSpellCastResult(uint8_t const& reason, PlayableCard const* card, Spell const* amount) const;
         void SendCardHealed(PlayableCard const* card, uint8_t const& amount) const;
         void Attack(uint64_t const& victimCardGuid);
         void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage);

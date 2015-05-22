@@ -27,6 +27,7 @@ class PlayableCard : public Card
         void SetDefendState(bool const& defend);
         void ApplyAura(SpellAuraEffect const& aura);
         void Heal(uint8_t const& amount);
+        void ModifyMana(int8_t const& amount);
         std::list<uint32_t> HandleTickOnAuras();
 
         bool IsAlive() const { return GetHealth() > 0; }

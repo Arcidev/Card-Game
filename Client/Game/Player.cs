@@ -232,6 +232,7 @@ namespace Client.Game
             /// TODO: add some graphics effect
         }
 
+        // Heals card
         public void HealCard(UInt64 cardGuid, byte health, byte amount)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
@@ -242,6 +243,40 @@ namespace Client.Game
             Invoke(new Action(delegate()
             {
                 cardPair.First.Hp = health;
+                cardPair.Second.Source = cardPair.First.Image;
+            }));
+        }
+
+        // Consumes mana from card and logs it into comba log
+        public void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
+            if (cardPair == null)
+                return;
+
+            SpellData spellData = DataHolder.GetSpellData(spellId);
+            game.Chat.LogManaConsume(cardPair.First, spellData, manaCost);
+
+            SetCardMana(cardPair, mana);
+        }
+
+        // Sets cards mana
+        public void SetCardMana(UInt64 cardGuid, byte mana)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.First.Guid == cardGuid);
+            if (cardPair == null)
+                return;
+
+            SetCardMana(cardPair, mana);
+        }
+
+        // Sets card mana
+        private void SetCardMana(Pair<PlayableCard, Image> cardPair, byte mana)
+        {
+
+            Invoke(new Action(delegate()
+            {
+                cardPair.First.Mana = mana;
                 cardPair.Second.Source = cardPair.First.Image;
             }));
         }

@@ -14,7 +14,8 @@
 #include "StaticHelper.h"
 #include "../Shared/SharedDefines.h"
 
-Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network) : m_isPrepared(false), m_isDisconnected(false), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
+Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
+    : m_isPrepared(false), m_isDisconnected(false), m_replenishmentMoveCount(0), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
 
 Player::~Player()
 {
@@ -147,13 +148,32 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const&
 }
 
 // Sends information about failed spell cast to client
-void Player::SendSpellCastFailed(uint8_t const& reason) const
+void Player::SendSpellCastResult(uint8_t const& reason, PlayableCard const* card, Spell const* spell) const
 {
-    Packet packet(SMSG_SPELL_CAST_FAILED);
+    Packet packet(SMSG_SPELL_CAST_RESULT);
     packet << reason;
-    SendPacket(&packet);
+    if (!reason)
+    {
+        if (!card || !spell)
+            return;
+
+        packet.WriteGuidBitStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 5, 7, 0, 1, 4, 3, 2, 6 });
+        packet.FlushBits();
+
+        packet << card->GetMana();
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 7, 2 });
+        packet << spell->GetManaCost();
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 4, 0, 1 });
+        packet << m_id;
+        packet << spell->GetId();
+        packet.WriteGuidByteStreamInOrder(card->GetGuid(), std::vector<uint8_t> { 3, 6, 5 });
+        GetGame()->BroadcastPacket(&packet);
+    }
+    else
+        SendPacket(&packet);
 }
 
+// Sends information that card has been healed
 void Player::SendCardHealed(PlayableCard const* card, uint8_t const& amount) const
 {
     if (!card)
@@ -185,16 +205,19 @@ void Player::UseSpell(uint64_t const& selectedCardGuid)
 
     if (!currentCard->GetSpell())
     {
-        SendSpellCastFailed(SPELL_FAIL_CANT_CAST_SPELLS);
+        SendSpellCastResult(SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS, nullptr, 0);
         return;
     }
 
-    uint8_t failedCastReason = currentCard->GetSpell()->Cast(this, victim, selectedCardGuid);
-    if (failedCastReason)
+    uint8_t result = currentCard->GetSpell()->Cast(this, victim, selectedCardGuid);
+    if (result)
     {
-        SendSpellCastFailed(failedCastReason);
+        SendSpellCastResult(result, nullptr, 0);
         return;
     }
+
+    currentCard->ModifyMana(-currentCard->GetSpell()->GetManaCost());
+    SendSpellCastResult(result, currentCard, currentCard->GetSpell());
 
     endTurn();
 }
@@ -444,6 +467,7 @@ void Player::SendCardStatChanged(PlayableCard const* card, uint8_t const& cardSt
     m_game->BroadcastPacket(&packet);
 }
 
+// Sends information about aura application
 void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const
 {
     Packet packet(SMSG_APPLY_AURA);
@@ -455,6 +479,36 @@ void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* au
     packet << aura->GetSpellId();
 
     GetGame()->BroadcastPacket(&packet);
+}
+
+// Replenishes mana
+void Player::replenishMana()
+{
+    m_replenishmentMoveCount = (m_replenishmentMoveCount + 1) % MANA_REPLENISHMENT_MOVES;
+    if (!m_replenishmentMoveCount)
+    {
+        Packet packet(SMSG_MANA_REPLENISHMENT);
+        ByteBuffer buffer;
+
+        packet << (uint8_t)m_currentCards.size();
+        buffer << m_id;
+        buffer << (uint8_t)MANA_REPLENISHMENT_VALUE;
+
+        for (std::vector<PlayableCard*>::iterator iter = m_currentCards.begin(); iter != m_currentCards.end(); ++iter)
+        {
+            (*iter)->ModifyMana(MANA_REPLENISHMENT_VALUE);
+
+            packet.WriteGuidBitStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 5, 0, 1, 2, 3, 7, 4, 6 });
+
+            buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 2, 6, 0, 7, 1, 4, 3, 5 });
+            buffer << (*iter)->GetMana();
+        }
+
+        packet.FlushBits();
+        packet.AppendBuffer(buffer);
+
+        GetGame()->BroadcastPacket(&packet);
+    }
 }
 
 // Ends player turn
@@ -493,10 +547,12 @@ void Player::endTurn()
         return;
     }
 
+    replenishMana();
     ++m_currentCardIndex;
     GetGame()->ActivateSecondPlayer();
 }
 
+// Handles periodic damage from aura
 void Player::DealPeriodicDamage(PlayableCard* card, uint32_t const& damage)
 {
     card->DealDamage(damage);

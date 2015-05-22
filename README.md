@@ -12,13 +12,13 @@ Card-Game
 
 [![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (MSVC12)
 ##How to build and run:
-  <b>Windows:</b>
+  <b>Windows (Automated for MS Visual Studio 12):</b>
   
     Server:
-      Copy DLL files from directory Server/DLL to directory where you have builded executable (by default Server/Build/RealeaseOrDebug)
+      Copy DLL files from directory Server/DLL to directory where you have built executable (by default Server/Build/RealeaseOrDebug)
       Copy directory Server/Database to directory above an executable (by default Server/Build)
     Client:
-      Copy directory Client/Assets to directory where you have builded an executable (by default Client/Build/RealeaseOrDebug)
+      Copy directory Client/Assets to directory where you have built an executable (by default Client/Build/RealeaseOrDebug)
   <b>UNIX-like systems:</b>
   
     Server:
@@ -31,3 +31,6 @@ Card-Game
 <b>License:</b> GPL 3.0
 
 Read file [LICENSE](LICENSE.md)
+
+## Links
+[Wiki](https://github.com/Arcidev/Card-Game/wiki)

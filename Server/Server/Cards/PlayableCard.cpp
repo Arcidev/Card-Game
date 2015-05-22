@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 #include "MeleeCard.h"
 #include "RangedCard.h"
 #include "DefensiveCard.h"
@@ -107,9 +108,7 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 void PlayableCard::Heal(uint8_t const& amount)
 {
     Card const* card = DataHolder::GetCard(GetId());
-    m_hp += amount;
-    if (m_hp > card->GetHealth())
-        m_hp = card->GetHealth();
+    m_hp = (std::min)((uint8_t)(m_hp + amount), DataHolder::GetCard(GetId())->GetHealth());
 
     m_owner->SendCardHealed(this, amount);
 }
@@ -130,4 +129,12 @@ std::list<uint32_t> PlayableCard::HandleTickOnAuras()
     }
 
     return spellIds;
+}
+
+void PlayableCard::ModifyMana(int8_t const& amount)
+{ 
+    if (amount > 0)
+        m_mana = (std::min)((uint8_t)(m_mana + amount), DataHolder::GetCard(GetId())->GetMana());
+    else
+        m_mana = (uint8_t)(std::max)(m_mana + amount, 0);
 }
