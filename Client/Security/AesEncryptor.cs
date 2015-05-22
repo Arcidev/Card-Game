@@ -12,8 +12,9 @@ namespace Client.Security
     {
         private static Aes aes;
         private static byte[] ivec = { 255, 254, 253, 252, 251, 250, 249, 248, 60, 61, 62, 63, 64, 65, 66, 67 };
+        private static byte[] key = new byte[16];
 
-        public static string Key { get; private set; }
+        public static byte[] Key { get { return key; } }
 
         // Incializes AES instance
         public static void Inicialize()
@@ -22,9 +23,13 @@ namespace Client.Security
                 aes.Clear();
 
             aes = Aes.Create();
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(key);
+            }
+
             aes.IV = ivec;
-            Key = "yayayaIamLordeya";
-            aes.Key = System.Text.Encoding.ASCII.GetBytes(Key);
+            aes.Key = key;
             aes.Padding = PaddingMode.Zeros;
         }
 

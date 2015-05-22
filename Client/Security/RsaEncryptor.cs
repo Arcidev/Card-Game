@@ -49,12 +49,12 @@ namespace Client.Security
         }
 
         // Encrypts data
-        public static byte[] Encrypt(string toEncrypt)
+        public static byte[] Encrypt(byte[] toEncrypt)
         {
             if (rsa == null)
                 return null;
 
-            return rsa.Encrypt(System.Text.Encoding.ASCII.GetBytes(toEncrypt), false);
+            return rsa.Encrypt(toEncrypt, false);
         }
 
         // Clears allocated resources
