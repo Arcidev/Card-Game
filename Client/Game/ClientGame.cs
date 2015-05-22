@@ -50,6 +50,7 @@ namespace Client.Game
             timer.Start();
         }
 
+        // Creates new instance of game
         public static ClientGame Create(string name, string server, MainWindow window)
         {
             ClientNetwork network = ClientNetwork.Create(server);
@@ -200,7 +201,7 @@ namespace Client.Game
         public void EndGame(bool win)
         {
             ShowCardDeck(false);
-            MessageBox.Show(win ? "You have won... You are amazing" : "You have lost... You sucks");
+            MessageBox.Show(win ? "You have won the match!" : "You have lost the match!");
         }
 
         // Selects targets on which is spell usable

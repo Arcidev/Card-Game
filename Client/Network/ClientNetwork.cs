@@ -18,6 +18,7 @@ namespace Client.Network
             "calista.mine.sk"
         };
 
+        // Returns available servers list
         public static string[] Servers { get { return servers; } }
 
         private ClientNetwork(TcpClient client)
@@ -26,6 +27,7 @@ namespace Client.Network
             stream = tcpClnt.GetStream();
         }
 
+        // Creates new network instance
         public static ClientNetwork Create(string server)
         {
             TcpClient client = null;

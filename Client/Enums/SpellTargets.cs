@@ -12,5 +12,4 @@ namespace Client.Enums
         TARGET_UNIT_TARGET_FRIEND,
         MAX_SPELL_EFFECT_TARGET
     };
-
 }
