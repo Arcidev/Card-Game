@@ -26,10 +26,10 @@ namespace Client.Game
         public Player Player { get; set; }
         public Player Opponent { get; set; }
 
-        public ClientGame(string name, MainWindow window)
+        private ClientGame(string name, MainWindow window, ClientNetwork network)
         {
             mainWindow = window;
-            network = new ClientNetwork();
+            this.network = network;
             chat = new ChatHandler(this);
             Player = new Player(this, MainWindow.PlayerCard1, MainWindow.PlayerCard2, MainWindow.PlayerCard3, MainWindow.PlayerCard4) { Name = name };
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
@@ -48,6 +48,15 @@ namespace Client.Game
             timer.AutoReset = false;
             timer.Elapsed += Update;
             timer.Start();
+        }
+
+        public static ClientGame Create(string name, string server, MainWindow window)
+        {
+            ClientNetwork network = ClientNetwork.Create(server);
+            if (network == null)
+                return null;
+
+            return new ClientGame(name, window, network);
         }
 
         // Gets player by id

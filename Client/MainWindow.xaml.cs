@@ -18,6 +18,7 @@ using System.ComponentModel;
 using Client.Enums;
 using Client.UI;
 using Client.Misc;
+using Client.Network;
 
 namespace Client
 {
@@ -44,6 +45,8 @@ namespace Client
             cardClicked = false;
             cardControlName = "";
             SlideShow = new SlideShow(this);
+            ServerComboBox.ItemsSource = ClientNetwork.Servers;
+            ServerComboBox.SelectedIndex = 0;
         }
 
         public void Invoke(Action action)
@@ -72,9 +75,14 @@ namespace Client
                 return;
             }
 
-            LoginBox.Visibility = Visibility.Hidden;
-            UserNameBox.Visibility = Visibility.Hidden;
-            game = new ClientGame(userName, this);
+            game = ClientGame.Create(userName, ServerComboBox.SelectedItem.ToString(), this);
+            if (game == null)
+            {
+                MessageBox.Show("Server is offline");
+                return;
+            }
+
+            LoginGrid.Visibility = Visibility.Hidden;
 
             ShowChat(true);
         }

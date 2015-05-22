@@ -11,12 +11,36 @@ namespace Client.Network
     {
         private TcpClient tcpClnt;
         private NetworkStream stream;
-        
-        public ClientNetwork()
+        private static readonly int port = 10751;
+        private static readonly string[] servers =
         {
-            //tcpClnt = new TcpClient("calista.mine.sk", 10751);
-            tcpClnt = new TcpClient("localhost", 10751);
+            "localhost",
+            "calista.mine.sk"
+        };
+
+        public static string[] Servers { get { return servers; } }
+
+        private ClientNetwork(TcpClient client)
+        {
+            tcpClnt = client;
             stream = tcpClnt.GetStream();
+        }
+
+        public static ClientNetwork Create(string server)
+        {
+            TcpClient client = null;
+
+            // check connection
+            try
+            {
+                client = new TcpClient(server, port);
+            }
+            catch(SocketException)
+            {
+                return null;
+            }
+
+            return new ClientNetwork(client);
         }
 
         // Sends packet to server

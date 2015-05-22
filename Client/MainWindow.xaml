@@ -128,8 +128,13 @@
             <Button Content="" Visibility="Hidden" Name="SelectCardButton" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="0, 125" VerticalAlignment="Top" Width="74" Click="SelectCardButton_Click"/>
             <Button Content="Send" Visibility="Hidden" Name="SendCardsButton" HorizontalAlignment="Left" Margin="0,154,0,0" VerticalAlignment="Top" Width="74" Click="SendCardsButton_Click" Height="20" Grid.Row="3" Grid.Column="1"/>
         </Grid>
-        <Button Name="LoginBox" Content="Login" HorizontalAlignment="Left" Height="60" Margin="412,450,0,0" VerticalAlignment="Top" Width="200" Click="LoginButtonClick"/>
-        <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="412,374,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" MaxLength="16" TextChanged="UserNameBox_Changed"/>
+        <Grid Name="LoginGrid">
+            <ComboBox Name="ServerComboBox" Margin="444,386,386,149"/>
+            <Label Margin="387,344,579,191" VerticalAlignment="Center" Height="37" RenderTransformOrigin="1.288,0.459">Name:</Label>
+            <Label Margin="387,386,579,149" VerticalAlignment="Center" Height="37" RenderTransformOrigin="1.288,0.459">Server:</Label>
+            <Button Name="LoginBox" Content="Login" HorizontalAlignment="Left" Height="60" Margin="412,450,0,0" VerticalAlignment="Top" Width="200" Click="LoginButtonClick"/>
+            <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="444,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="188" MaxLength="16" TextChanged="UserNameBox_Changed"/>
+        </Grid>
         <Grid Visibility="Hidden" Name="CardDeckGrid">
             <Grid Name="PlayerCardDeck" Margin="0,283,313,37">
                 <Image Source="Assets/CardBack.png" MouseEnter="OnCardMouseEnter" MouseLeave="OnCardMouseLeave" MouseUp="OnCardMouseUp" MouseDown="OnCardMouseDown" Name="PlayerCard1" Width="158" Margin="0,0,527,0"/>
