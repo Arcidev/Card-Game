@@ -108,7 +108,6 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 void PlayableCard::Heal(uint8_t const& amount)
 {
     m_hp = (std::min)((uint8_t)(m_hp + amount), DataHolder::GetCard(GetId())->GetHealth());
-
     m_owner->SendCardHealed(this, amount);
 }
 

@@ -10,7 +10,8 @@ typedef std::map<uint8_t, SpellAuraEffectHandlerFunc> SpellAuraEffectTickHandler
 enum SpellAuraEffects
 {
     SPELL_AURA_EFFECT_DAMAGE = 1,
-    SPELL_AURA_EFFECT_MODIFY_STAT
+    SPELL_AURA_EFFECT_MODIFY_STAT,
+    SPELL_AURA_EFFECT_HEAL
 };
 
 class SpellAuraEffectHandler
@@ -19,6 +20,7 @@ class SpellAuraEffectHandler
         static SpellAuraEffectTickHandlersMap m_spellAuraEffectHandlers;
 
         static void handleDamageOnTick(PlayableCard* card, uint8_t const& damage);
+        static void handleHealOnTick(PlayableCard* card, uint8_t const& damage);
 
     public:
         static SpellAuraEffectHandlerFunc GetAuraEffectTickHandler(uint8_t spellAuraEffect);
