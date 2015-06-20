@@ -83,8 +83,8 @@ namespace Client.Game
             SelectPossibleTargets(targetableCards, SelectionType.BasicDamageAttackable);
         }
 
-        // Selects active target
-        public void SelectActiveCard()
+        // Deselects friendly spell targets
+        public void DeselectSpellFriendlyTargets()
         {
             var activeCardDeck = cardDeck[ActiveCardPosition];
             if (activeCardDeck.First.SelectionType != SelectionType.Selected)
@@ -93,6 +93,31 @@ namespace Client.Game
                 {
                     activeCardDeck.First.SelectionType = SelectionType.Selected;
                     activeCardDeck.Second.Source = activeCardDeck.First.Image;
+                }));
+
+                foreach(var card in cardDeck.Where(x => x.First != null))
+                {
+                    if (card.First.SelectionType == SelectionType.SpellUsable)
+                    {
+                        Invoke(new Action(delegate()
+                        {
+                            card.First.SelectionType = SelectionType.None;
+                            card.Second.Source = card.First.Image;
+                        }));
+                    }
+                }
+            }
+        }
+
+        // Remove selection
+        public void RemoveSelectionFromCards()
+        {
+            foreach (var card in cardDeck.Where(x => x.First != null && x.First.SelectionType != SelectionType.None))
+            {
+                Invoke(new Action(delegate()
+                {
+                    card.First.SelectionType = SelectionType.None;
+                    card.Second.Source = card.First.Image;
                 }));
             }
         }
@@ -142,17 +167,7 @@ namespace Client.Game
         public void SetWaitingState()
         {
             IsActive = false;
-            foreach (var c in cardDeck)
-            {
-                if ((c.First != null) && (c.First.SelectionType != SelectionType.None))
-                {
-                    Invoke(new Action(delegate()
-                    {
-                        c.First.SelectionType = SelectionType.None;
-                        c.Second.Source = c.First.Image;
-                    }));
-                }
-            }
+            RemoveSelectionFromCards();
         }
 
         // Gets card by control name

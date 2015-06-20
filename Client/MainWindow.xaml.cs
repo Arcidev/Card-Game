@@ -190,9 +190,9 @@ namespace Client
             var opponent = game.Opponent;
             Cursor = CardAttackCursors.GetCursor(activeCard.Type == CreatureTypes.Melee ? CardAttackCursorTypes.Sword : CardAttackCursorTypes.Arrow);
 
+            opponent.RemoveSelectionFromCards();
             opponent.SetPossibleTargets(activeCard.GetPossibleTargets(opponent.CardDeck, game.Player.ActiveCardPosition));
-
-            game.Player.SelectActiveCard();
+            game.Player.DeselectSpellFriendlyTargets();
         }
 
         private void UseSpellButton_Click(object sender, RoutedEventArgs e)
