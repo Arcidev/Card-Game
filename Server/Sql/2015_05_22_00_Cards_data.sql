@@ -2,7 +2,7 @@ INSERT INTO Spells (Id, ManaCost) VALUES
 (6, 4);
 
 INSERT INTO SpellValues (Id, SpellEffectId, SpellAttributesMask, Target, EffectValue1, EffectValue2, EffectValue3, EffectValue4) VALUES
-(6, 2/*SPELL_EFFECT_APPLY_AURA*/, 0, 1/*TARGET_UNIT_TARGET_FRIEND*/, 3/*SPELL_AURA_EFFECT_HEAL*/, 5, 1, 2);
+(6, 1/*SPELL_EFFECT_APPLY_AURA*/, 0, 1/*TARGET_UNIT_TARGET_FRIEND*/, 2/*SPELL_AURA_EFFECT_HEAL*/, 5, 1, 2);
 
 INSERT INTO SpellsSpellValues (SpellId, SpellValueId) VALUES
 (6, 6),

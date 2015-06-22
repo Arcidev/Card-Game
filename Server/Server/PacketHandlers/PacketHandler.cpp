@@ -1,18 +1,17 @@
 #include "PacketHandler.h"
 #include "Packet.h"
 
-PacketHandlerMap const PacketHandler::packetHandlers =
+PacketHandlerFunc const PacketHandler::packetHandlers[] =
 {
-    { CMSG_INIT_PACKET,     handleInitPacket            },
-    { CMSG_CHAT_MESSAGE,    handleChatPacket            },
-    { CMSG_SELECTED_CARDS,  handleSelectedCardsPacket   },
-    { CMSG_CARD_ACTION,     handleCardActionPacket      },
-    { CMSG_DEFEND_SELF,     handleDefendSelfPacket      }
+    handleInitPacket,           // CMSG_INIT_PACKET
+    handleChatPacket,           // CMSG_CHAT_MESSAGE
+    handleSelectedCardsPacket,  // CMSG_SELECTED_CARDS
+    handleCardActionPacket,     // CMSG_CARD_ACTION
+    handleDefendSelfPacket      // CMSG_DEFEND_SELF
 };
 
 // Returns function that handle sended packet
-PacketHandlerFunc PacketHandler::GetPacketHandler(uint16_t packetId)
+PacketHandlerFunc PacketHandler::GetPacketHandler(uint16_t const& packetId)
 {
-    PacketHandlerMap::const_iterator iter = packetHandlers.find(packetId);
-    return (iter != packetHandlers.end()) ? iter->second : nullptr;
+    return packetId < CMSG_MAX_PACKET_VALUE ? packetHandlers[packetId] : nullptr;
 }

@@ -3,11 +3,11 @@
 #include "../PacketHandlers/Packet.h"
 #include "../Player.h"
 
-SpellEffectMap SpellEffect::m_spellEffects = 
+SpellEffectFunc const SpellEffect::m_spellEffects[] =
 {
-    { SPELL_EFFECT_DIRECT_DAMAGE,   handleDirectDamage  },
-    { SPELL_EFFECT_APPLY_AURA,      handleApplyAura     },
-    { SPELL_EFFECT_HEAL,            handleHeal          }
+    handleDirectDamage, // SPELL_EFFECT_DIRECT_DAMAGE
+    handleApplyAura,    // SPELL_EFFECT_APPLY_AURA
+    handleHeal          // SPELL_EFFECT_HEAL
 };
 
 bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
@@ -49,6 +49,5 @@ bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGu
 
 SpellEffectFunc SpellEffect::GetSpellEffectFunc(uint8_t const& spellEffectId)
 {
-    SpellEffectMap::const_iterator iter = m_spellEffects.find(spellEffectId);
-    return iter != m_spellEffects.end() ? iter->second : nullptr;
+    return spellEffectId < MAX_SPELL_EFFECT_VALUE ? m_spellEffects[spellEffectId] : nullptr;
 }

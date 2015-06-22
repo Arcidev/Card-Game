@@ -3,9 +3,10 @@
 
 enum SpellEffects
 {
-    SPELL_EFFECT_DIRECT_DAMAGE = 1,
+    SPELL_EFFECT_DIRECT_DAMAGE = 0,
     SPELL_EFFECT_APPLY_AURA,
-    SPELL_EFFECT_HEAL
+    SPELL_EFFECT_HEAL,
+    MAX_SPELL_EFFECT_VALUE
 };
 
 enum SpellAttributes
@@ -28,12 +29,11 @@ struct SpellEffectValues
 
 class Player;
 typedef bool(*SpellEffectFunc)(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
-typedef std::map<uint8_t, SpellEffectFunc> SpellEffectMap;
 
 class SpellEffect
 {
     private:
-        static SpellEffectMap m_spellEffects;
+        static SpellEffectFunc const m_spellEffects[];
 
         static bool handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
         static bool handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);

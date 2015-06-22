@@ -2,11 +2,11 @@
 #include "../Player.h"
 #include "../Cards/PlayableCard.h"
 
-SpellAuraEffectTickHandlersMap SpellAuraEffectHandler::m_spellAuraEffectHandlers =
+SpellAuraEffectHandlerFunc const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
 {
-    { SPELL_AURA_EFFECT_DAMAGE,         handleDamageOnTick  },
-    { SPELL_AURA_EFFECT_MODIFY_STAT,    nullptr             },
-    { SPELL_AURA_EFFECT_HEAL,           handleHealOnTick    }
+    handleDamageOnTick, // SPELL_AURA_EFFECT_DAMAGE
+    nullptr,            // SPELL_AURA_EFFECT_MODIFY_STAT
+    handleHealOnTick    // SPELL_AURA_EFFECT_HEAL
 };
 
 void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t const& damage)
@@ -21,6 +21,5 @@ void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t const&
 
 SpellAuraEffectHandlerFunc SpellAuraEffectHandler::GetAuraEffectTickHandler(uint8_t spellAuraEffect)
 {
-    SpellAuraEffectTickHandlersMap::const_iterator iter = m_spellAuraEffectHandlers.find(spellAuraEffect);
-    return iter != m_spellAuraEffectHandlers.end() ? iter->second : nullptr;
+    return spellAuraEffect < MAX_SPELL_AURA_VALUE ? m_spellAuraEffectHandlers[spellAuraEffect] : nullptr;
 }

@@ -3,7 +3,7 @@ namespace Client.Enums
 {
     public enum SMSGPackets
     {
-        SMSG_INIT_RESPONSE = 1,
+        SMSG_INIT_RESPONSE = 0,
         SMSG_AVAILABLE_CARDS,
         SMSG_CHAT_MESSAGE,
         SMSG_WHISPER_FAILED,
@@ -21,6 +21,7 @@ namespace Client.Enums
         SMSG_APPLY_AURA,
         SMSG_SPELL_PERIODIC_DAMAGE,
         SMSG_CARD_HEALED,
-        SMSG_MANA_REPLENISHMENT
+        SMSG_MANA_REPLENISHMENT,
+        SMSG_MAX_PACKET_VALUE
     }
 }

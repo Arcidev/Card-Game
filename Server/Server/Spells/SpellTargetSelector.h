@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <map>
 #include <list>
 
 enum SpellTargets
@@ -13,12 +12,11 @@ enum SpellTargets
 class PlayableCard;
 class Player;
 typedef std::list<PlayableCard*>(*SpellTargetSelectorFunc)(Player* attacker, Player* victim, uint64_t const& targetGuid);
-typedef std::map<uint8_t, SpellTargetSelectorFunc> SpellTargetSelectorMap;
 
 class SpellTargetSelector
 {
     private:
-        static SpellTargetSelectorMap m_spellTargetSelectors;
+        static SpellTargetSelectorFunc const m_spellTargetSelectors[];
 
         static std::list<PlayableCard*> getTargetFromDeck(Player* player, uint64_t const& targetGuid);
 

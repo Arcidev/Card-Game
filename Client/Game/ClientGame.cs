@@ -242,7 +242,7 @@ namespace Client.Game
                     var length = BitConverter.ToUInt16(networkData, 0);
                     networkData = networkData.Skip(sizeof(UInt16)).ToArray();
                     Packet packet = new Packet(networkData, length);
-                    var packetHandler = PacketHandler.GetPacketHandler((SMSGPackets)packet.ReadUInt16());
+                    var packetHandler = PacketHandler.GetPacketHandler(packet.ReadUInt16());
                     packetHandler(packet, this);
                     packet.Dispose();
 

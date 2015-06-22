@@ -2,10 +2,10 @@
 #include "../Cards/PlayableCard.h"
 #include "../Player.h"
 
-SpellTargetSelectorMap SpellTargetSelector::m_spellTargetSelectors =
+SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
 {
-    { TARGET_UNIT_TARGET_ENEMY,     handleTargetUnitTargetEnemy     },
-    { TARGET_UNIT_TARGET_FRIEND,    handleTargetUnitTargetFriend    }
+    handleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
+    handleTargetUnitTargetFriend    // TARGET_UNIT_TARGET_FRIEND
 };
 
 std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t const& targetGuid)
@@ -21,9 +21,5 @@ std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, 
 
 std::list<PlayableCard*> SpellTargetSelector::GetTargets(uint8_t const& spellTarget, Player* attacker, Player* victim, uint64_t  const& targetGuid)
 {
-    SpellTargetSelectorMap::const_iterator iter = m_spellTargetSelectors.find(spellTarget);
-    if (iter == m_spellTargetSelectors.end())
-        return std::list<PlayableCard*>();
-
-    return iter->second(attacker, victim, targetGuid);
+    return spellTarget < MAX_SPELL_EFFECT_TARGET ? m_spellTargetSelectors[spellTarget](attacker, victim, targetGuid) : std::list<PlayableCard*>();
 }

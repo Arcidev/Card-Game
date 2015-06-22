@@ -112,7 +112,7 @@
     </Compile>
     <Compile Include="Data\DataHolder.cs" />
     <Compile Include="Enums\ChatTypes.cs" />
-    <Compile Include="Enums\CmsgPackets.cs" />
+    <Compile Include="Enums\CMSGPackets.cs" />
     <Compile Include="Enums\CreatureTypes.cs" />
     <Compile Include="Enums\EnumExtension.cs" />
     <Compile Include="Enums\SelectCardFailReason.cs" />
