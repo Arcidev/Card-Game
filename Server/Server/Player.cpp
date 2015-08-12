@@ -372,6 +372,7 @@ void Player::SendPacket(Packet const* packet) const
 {
     std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesKey);
     uint16_t size = encrypted.length();
+    uint16_t size = (uint16_t)encrypted.length();
     std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
     std::memcpy(&toSend[0] + sizeof(uint16_t), encrypted.c_str(), size);
@@ -407,7 +408,7 @@ void Player::HandleDeckCards(bool addCard)
         m_cardOrder.erase(m_cardOrder.begin());
     }
     
-    uint8_t cardsCount = m_currentCards.size();
+    uint8_t cardsCount = (uint8_t)m_currentCards.size();
     Packet packet(SMSG_DECK_CARDS);
     packet << cardsCount;
     for (uint8_t i = 0; i < cardsCount; i++)
