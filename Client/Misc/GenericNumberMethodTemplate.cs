@@ -2,10 +2,9 @@
 
 
 using System;
-using System.IO;
 namespace Client.Network
 {
-	public partial class Packet
+	public partial class Packet : IDisposable
 	{
 					public void Write (Int16 val)
 			{

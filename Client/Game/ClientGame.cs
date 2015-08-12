@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Client.Network;
 using Client.Security;
 using Client.Enums;
 using System.Timers;
-using System.Windows.Controls;
 using Client.Data;
 using System.Windows;
 using System.Windows.Input;
