@@ -1,7 +1,5 @@
 #include <string>
 
-class ByteBuffer;
-class Spell;
 class StaticHelper
 {
     public:

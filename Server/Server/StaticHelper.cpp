@@ -1,6 +1,4 @@
 #include "StaticHelper.h"
-#include "PacketHandlers/ByteBuffer.h"
-#include "Spells/Spell.h"
 
 // Compares 2 strings
 bool StaticHelper::CompareStringCaseInsensitive(std::string const& str1, std::string const& str2)
