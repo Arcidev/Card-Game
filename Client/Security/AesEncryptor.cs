@@ -11,10 +11,10 @@ namespace Client.Security
     public static class AesEncryptor
     {
         private static Aes aes;
-        private static byte[] ivec = { 255, 254, 253, 252, 251, 250, 249, 248, 60, 61, 62, 63, 64, 65, 66, 67 };
+        private static byte[] iVec = new byte[16];
         private static byte[] key = new byte[16];
 
-        public static byte[] Key { get { return key; } }
+        public static byte[] Encryptors { get { return key.Concat(iVec).ToArray(); } }
 
         // Incializes AES instance
         public static void Inicialize()
@@ -26,9 +26,10 @@ namespace Client.Security
             using (var rng = new RNGCryptoServiceProvider())
             {
                 rng.GetBytes(key);
+                rng.GetBytes(iVec);
             }
 
-            aes.IV = ivec;
+            aes.IV = iVec;
             aes.Key = key;
             aes.Padding = PaddingMode.Zeros;
         }

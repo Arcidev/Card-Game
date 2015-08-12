@@ -38,7 +38,7 @@ namespace Client.Game
             Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
             RsaEncryptor.Inicialize();
             AesEncryptor.Inicialize();
-            packet.Write(RsaEncryptor.Encrypt(AesEncryptor.Key));
+            packet.Write(RsaEncryptor.Encrypt(AesEncryptor.Encryptors));
             packet.Write(AesEncryptor.Encrypt(name));
             RsaEncryptor.Clear();
 

@@ -15,6 +15,11 @@ class SpellAuraEffect;
 
 typedef std::map<uint64_t, PlayableCard*> CardsMap;
 
+struct AesEncryptor
+{
+    std::string Key;
+    std::vector<uint8_t> IVec;
+};
 class Player
 {
     private:
@@ -30,7 +35,7 @@ class Player
         ServerNetwork* m_network;
         SOCKET m_socket;
         std::string m_name;
-        std::string m_AesKey;
+        AesEncryptor m_AesEncryptor;
 
         void destroyCard(uint64_t const& cardGuid);
         void replenishMana();
@@ -40,7 +45,7 @@ class Player
         Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
         ~Player();
 
-        void SetEncryptionKey(std::string const& key) { m_AesKey = key; }
+        void SetAesEncryptor(std::string const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
         void SetName(std::string const& name) { m_name = name; }
         void SendInitResponse() const;
         void SendAvailableCards() const;
@@ -76,7 +81,7 @@ class Player
         Game* GetGame() const { return m_game; }
         uint32_t GetId() const { return m_id; }
         std::string const& GetName() const { return m_name; }
-        std::string const& GetEncryptionKey() const { return m_AesKey; }
+        AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         ServerNetwork const* GetNetwork() const { return m_network; }
         bool IsPrepared() const { return m_isPrepared; }
         bool IsDisconnected() const { return m_isDisconnected; }

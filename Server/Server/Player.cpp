@@ -259,7 +259,7 @@ void Player::ReceivePacket(uint32_t const& dataLength, char const* data)
         std::memcpy(&networkData[0], data + sizeof(uint16_t) + readedData, packetLength);
 
         // Inicializes readable packet with decrypted data
-        Packet packet(Aes::Decrypt(networkData, m_AesKey));
+        Packet packet(Aes::Decrypt(networkData, m_AesEncryptor.Key, m_AesEncryptor.IVec));
         try
         {
             uint16_t packetType;
@@ -370,8 +370,7 @@ void Player::SendPlayerDisconnected() const
 // Sends encrypted packet to client
 void Player::SendPacket(Packet const* packet) const
 {
-    std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesKey);
-    uint16_t size = encrypted.length();
+    std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
     uint16_t size = (uint16_t)encrypted.length();
     std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
