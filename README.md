@@ -5,7 +5,7 @@ Card-Game
 + OpenSSL 1.0.1e (included for Windows)
 + Sqlite 3.7.13 (included for Windows)
 + GCC = 4.7.2 (Linux only)
-+ MS Visual Studio = 12 (2013) (Windows only)
++ MS Visual Studio = 14 (2015) (Windows only)
 
 ## Build Status
 [![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game) (GCC 4.8 Server only)
