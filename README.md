@@ -4,15 +4,15 @@ Card-Game
 + Platform: Linux or Windows
 + OpenSSL 1.0.1e (included for Windows)
 + Sqlite 3.7.13 (included for Windows)
-+ GCC = 4.7.2 (Linux only)
++ GCC = 4.8 (Linux only)
 + MS Visual Studio = 14 (2015) (Windows only)
 
 ## Build Status
 [![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game) (GCC 4.8 Server only)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (MSVC12)
+[![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (MSVC14)
 ##How to build and run:
-  <b>Windows (Automated for MS Visual Studio 12):</b>
+  <b>Windows (Automated for MS Visual Studio 14):</b>
   
     Server:
       Copy DLL files from directory Server/DLL to directory where you have built executable (by default Server/Build/RealeaseOrDebug)
