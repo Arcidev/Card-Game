@@ -79,12 +79,12 @@ void ByteBuffer::ReadGuidByte(uint8_t& byte)
 void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
-    for (uint8_t i = 0; i < size; i++)
+    for (uint8_t const& val : indexOrder)
     {
-        if (indexOrder[i] > 7)
-            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+        if (val > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        WriteBit(guid[indexOrder[i]]);
+        WriteBit(guid[val]);
     }
 }
 
@@ -92,12 +92,12 @@ void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t
 void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
-    for (uint8_t i = 0; i < size; i++)
+    for (uint8_t const& val : indexOrder)
     {
-        if (indexOrder[i] > 7)
-            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+        if (val > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        WriteGuidByte(guid[indexOrder[i]]);
+        WriteGuidByte(guid[val]);
     }
 }
 
@@ -105,12 +105,12 @@ void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_
 void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
-    for (uint8_t i = 0; i < size; i++)
+    for (uint8_t const& val : indexOrder)
     {
-        if (indexOrder[i] > 7)
-            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+        if (val > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        guid[indexOrder[i]] = ReadBit();
+        guid[val] = ReadBit();
     }
 }
 
@@ -118,12 +118,12 @@ void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> index
 void ByteBuffer::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
     uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
-    for (uint8_t i = 0; i < size; i++)
+    for (uint8_t const& val : indexOrder)
     {
-        if (indexOrder[i] > 7)
-            throw std::out_of_range("Index must be lower than 8. You've requested " + indexOrder[i]);
+        if (val > 7)
+            throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        ReadGuidByte(guid[indexOrder[i]]);
+        ReadGuidByte(guid[val]);
     }
 }
 
@@ -172,7 +172,14 @@ ByteBuffer& ByteBuffer::operator << (float const& value)
 ByteBuffer& ByteBuffer::operator << (std::string const& value)
 {
     *this << (uint16_t)value.size();
-    append((uint8_t*)value.c_str(), value.size());
+    append((uint8_t const*)value.c_str(), value.size());
+    return *this;
+}
+
+// Stores float value in stream
+ByteBuffer& ByteBuffer::operator << (ByteBuffer const& value)
+{
+    append((uint8_t const*)&value.GetStorage()[0], value.GetStorage().size());
     return *this;
 }
 

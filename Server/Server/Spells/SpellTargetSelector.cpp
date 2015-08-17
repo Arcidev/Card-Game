@@ -10,10 +10,10 @@ SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
 
 std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t const& targetGuid)
 {
-    for (std::vector<PlayableCard*>::const_iterator iter = player->GetCurrentCards().begin(); iter != player->GetCurrentCards().end(); ++iter)
+    for (PlayableCard* card : player->GetCurrentCards())
     {
-        if (targetGuid == (*iter)->GetGuid())
-            return std::list<PlayableCard*>{ (*iter) };
+        if (targetGuid == card->GetGuid())
+            return std::list<PlayableCard*>{ card };
     }
 
     return std::list<PlayableCard*>();

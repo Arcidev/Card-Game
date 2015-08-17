@@ -5,14 +5,14 @@ RangedCard::RangedCard(uint64_t const& guid, Card const* card, Player* owner) : 
 bool RangedCard::CanAttackCard(uint64_t const& guid, std::vector<PlayableCard*> const& opponentCards, uint32_t const& /*position*/)
 {
     bool canAttack = true;
-    for (std::vector<PlayableCard*>::const_iterator iter = opponentCards.begin(); iter != opponentCards.end(); ++iter)
+    for (PlayableCard const* card : opponentCards)
     {
-        if ((*iter)->GetGuid() == guid)
+        if (card->GetGuid() == guid)
         {
-            if ((*iter)->GetType() == CARD_TYPE_DEFENSE)
+            if (card->GetType() == CARD_TYPE_DEFENSE)
                 return true;
         }
-        else if ((*iter)->GetType() == CARD_TYPE_DEFENSE)
+        else if (card->GetType() == CARD_TYPE_DEFENSE)
             canAttack = false;
     }
 

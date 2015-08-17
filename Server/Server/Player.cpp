@@ -111,30 +111,30 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const&
     ByteBuffer buffer;
 
     packet << (uint8_t)targets.size();
-    for (std::list<PlayableCard*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
+    for (PlayableCard* target : targets)
     {
-        (*iter)->DealDamage(damage);
-        if ((*iter)->IsAlive())
+        target->DealDamage(damage);
+        if (target->IsAlive())
             packet.WriteBit(true);
         else
         {
             if (!sendOpponentCardDeck)
                 sendOpponentCardDeck = true;
-            victim->destroyCard((*iter)->GetGuid());
+            victim->destroyCard(target->GetGuid());
 
             packet.WriteBit(false);
         }
         
-        packet.WriteGuidBitStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 6, 3, 1, 7, 0, 2, 5, 4 });
+        packet.WriteGuidBitStreamInOrder(target->GetGuid(), std::vector<uint8_t> { 6, 3, 1, 7, 0, 2, 5, 4 });
 
-        buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 4, 3, 5 });
+        buffer.WriteGuidByteStreamInOrder(target->GetGuid(), std::vector<uint8_t> { 4, 3, 5 });
         buffer << damage;
-        buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 2, 0, 1, 6, 7 });
+        buffer.WriteGuidByteStreamInOrder(target->GetGuid(), std::vector<uint8_t> { 2, 0, 1, 6, 7 });
     }
 
     packet.FlushBits();
     packet << m_id;
-    packet.AppendBuffer(buffer);
+    packet << buffer;
 
     GetGame()->BroadcastPacket(&packet);
 
@@ -312,7 +312,7 @@ void Player::SendAvailableCards() const
     }
 
     packet.FlushBits();
-    packet.AppendBuffer(buffer);
+    packet << buffer;
 
     SendPacket(&packet);
 }
@@ -494,18 +494,18 @@ void Player::replenishMana()
         buffer << m_id;
         buffer << (uint8_t)MANA_REPLENISHMENT_VALUE;
 
-        for (std::vector<PlayableCard*>::iterator iter = m_currentCards.begin(); iter != m_currentCards.end(); ++iter)
+        for (PlayableCard* currentCard : m_currentCards)
         {
-            (*iter)->ModifyMana(MANA_REPLENISHMENT_VALUE);
+            currentCard->ModifyMana(MANA_REPLENISHMENT_VALUE);
 
-            packet.WriteGuidBitStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 5, 0, 1, 2, 3, 7, 4, 6 });
+            packet.WriteGuidBitStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 5, 0, 1, 2, 3, 7, 4, 6 });
 
-            buffer.WriteGuidByteStreamInOrder((*iter)->GetGuid(), std::vector<uint8_t> { 2, 6, 0, 7, 1, 4, 3, 5 });
-            buffer << (*iter)->GetMana();
+            buffer.WriteGuidByteStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 2, 6, 0, 7, 1, 4, 3, 5 });
+            buffer << currentCard->GetMana();
         }
 
         packet.FlushBits();
-        packet.AppendBuffer(buffer);
+        packet << buffer;
 
         GetGame()->BroadcastPacket(&packet);
     }

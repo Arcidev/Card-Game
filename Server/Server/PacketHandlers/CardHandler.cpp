@@ -71,8 +71,8 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 
     pck.FlushBits();
     pck << player->GetId();
-    pck.AppendBuffer(playerBuffer);
-    pck.AppendBuffer(opponentBuffer);
+    pck << playerBuffer;
+    pck << opponentBuffer;
 
     player->GetGame()->BroadcastPacket(&pck);
 

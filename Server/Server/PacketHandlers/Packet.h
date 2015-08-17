@@ -44,5 +44,4 @@ class Packet : public ByteBuffer
         Packet(std::string const& data);
 
         void Initialize(uint32_t opcodeNumber);
-        void AppendBuffer(ByteBuffer const& value) { append((uint8_t const*)&value.GetStorage()[0], value.GetStorage().size()); }
 };

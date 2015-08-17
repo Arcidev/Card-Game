@@ -26,10 +26,10 @@ bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t tar
     if (targets.empty())
         return false;
 
-    for (std::list<PlayableCard*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
+    for (PlayableCard* target : targets)
     {
-        SpellAuraEffect auraEffect(*iter, effectValues->SpellId, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4);
-        (*iter)->ApplyAura(auraEffect);
+        SpellAuraEffect auraEffect(target, effectValues->SpellId, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4);
+        target->ApplyAura(auraEffect);
     }
 
     return true;
@@ -41,8 +41,8 @@ bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGu
     if (targets.empty())
         return false;
 
-    for (std::list<PlayableCard*>::iterator iter = targets.begin(); iter != targets.end(); ++iter)
-        (*iter)->Heal(effectValues->Value1);
+    for (PlayableCard* target : targets)
+        target->Heal(effectValues->Value1);
 
     return true;
 }
