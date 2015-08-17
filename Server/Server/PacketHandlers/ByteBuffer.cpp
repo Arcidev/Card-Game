@@ -78,7 +78,6 @@ void ByteBuffer::ReadGuidByte(uint8_t& byte)
 // Writes if exist byte values of guid in passed order
 void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
-    uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
@@ -91,7 +90,6 @@ void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t
 // Writes byte values of guid if bytes has value. Bytes without value are ignored
 void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
 {
-    uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
@@ -104,7 +102,6 @@ void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_
 // Reads if exist byte values of guid in passed order
 void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
-    uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
@@ -117,7 +114,6 @@ void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> index
 // Reads byte values of guid if bytes has value. Bytes without value are ignored
 void ByteBuffer::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
 {
-    uint8_t size = (indexOrder.size() > 8) ? 8 : (uint8_t)indexOrder.size();
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
