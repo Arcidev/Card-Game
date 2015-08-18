@@ -172,7 +172,7 @@ ByteBuffer& ByteBuffer::operator << (std::string const& value)
     return *this;
 }
 
-// Stores float value in stream
+// Stores stream from another buffer in this buffer
 ByteBuffer& ByteBuffer::operator << (ByteBuffer const& value)
 {
     append((uint8_t const*)&value.GetStorage()[0], value.GetStorage().size());
