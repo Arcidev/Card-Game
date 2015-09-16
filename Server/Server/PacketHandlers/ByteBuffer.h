@@ -11,19 +11,19 @@ class ByteBuffer
         std::vector<uint8_t> m_storage;
 
         void append(uint8_t const* src, size_t cnt);
-        template <typename T> void append(T value);
-        template <typename T> T read(size_t pos);
+        template <typename T> void append(T const& value);
+        template <typename T> T read(size_t const& pos);
 
     public:
         ByteBuffer();
         void FlushBits();
-        bool WriteBit(uint32_t bit);
-        void WriteGuidByte(uint8_t b);
-        void ReadGuidByte(uint8_t& byte);
-        void WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder);
-        void WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder);
-        void ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder);
-        void ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder);
+        bool WriteBit(uint32_t const& bit);
+        void WriteByte(uint8_t const& b);
+        void ReadByte(uint8_t& byte);
+        void WriteBitStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder);
+        void WriteByteStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder);
+        void ReadBitStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder);
+        void ReadByteStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder);
 
         bool ReadBit();
         size_t GetReadPosition() const { return m_rpos; }

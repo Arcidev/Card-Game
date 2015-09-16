@@ -26,7 +26,7 @@ void ByteBuffer::append(uint8_t const* src, size_t cnt)
 }
 
 // Writes one bit into curbitval
-bool ByteBuffer::WriteBit(uint32_t bit)
+bool ByteBuffer::WriteBit(uint32_t const& bit)
 {
     --m_bitpos;
     if (bit)
@@ -44,7 +44,7 @@ bool ByteBuffer::WriteBit(uint32_t bit)
 
 // Appends specified type as byte values
 template <typename T>
-void ByteBuffer::append(T value)
+void ByteBuffer::append(T const& value)
 {
     FlushBits();
     append((uint8_t *)&value, sizeof(value));
@@ -52,7 +52,7 @@ void ByteBuffer::append(T value)
 
 // Gets specified type from byte values
 template <typename T>
-T ByteBuffer::read(size_t pos)
+T ByteBuffer::read(size_t const& pos)
 {
     if (pos + sizeof(T) > m_storage.size())
         throw std::out_of_range("Reading out of Range");
@@ -62,21 +62,21 @@ T ByteBuffer::read(size_t pos)
 }
 
 // Writes byte value of guid if byte has value. If not its ignored
-void ByteBuffer::WriteGuidByte(uint8_t byte)
+void ByteBuffer::WriteByte(uint8_t const& byte)
 {
     if (byte)
         append<uint8_t>(byte);
 }
 
 // Reads byte value of guid if byte has value. If not its ignored
-void ByteBuffer::ReadGuidByte(uint8_t& byte)
+void ByteBuffer::ReadByte(uint8_t& byte)
 {
     if (byte)
         byte = read<uint8_t>(m_rpos);
 }
 
-// Writes if exist byte values of guid in passed order
-void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
+// Writes if exist byte value of guid in passed order
+void ByteBuffer::WriteBitStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
     for (uint8_t const& val : indexOrder)
     {
@@ -88,19 +88,19 @@ void ByteBuffer::WriteGuidBitStreamInOrder(Guid const& guid, std::vector<uint8_t
 }
 
 // Writes byte values of guid if bytes has value. Bytes without value are ignored
-void ByteBuffer::WriteGuidByteStreamInOrder(Guid const& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::WriteByteStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        WriteGuidByte(guid[val]);
+        WriteByte(guid[val]);
     }
 }
 
 // Reads if exist byte values of guid in passed order
-void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::ReadBitStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
     for (uint8_t const& val : indexOrder)
     {
@@ -112,14 +112,14 @@ void ByteBuffer::ReadGuidBitStreamInOrder(Guid& guid, std::vector<uint8_t> index
 }
 
 // Reads byte values of guid if bytes has value. Bytes without value are ignored
-void ByteBuffer::ReadGuidByteStreamInOrder(Guid& guid, std::vector<uint8_t> indexOrder)
+void ByteBuffer::ReadByteStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
     for (uint8_t const& val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
 
-        ReadGuidByte(guid[val]);
+        ReadByte(guid[val]);
     }
 }
 

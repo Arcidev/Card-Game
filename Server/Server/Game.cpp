@@ -102,12 +102,12 @@ void Game::ActivateSecondPlayer()
     currentCard->SetDefendState(false);
 
     Packet packet(SMSG_ACTIVE_PLAYER);
-    packet.WriteGuidBitStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 7, 1, 2, 0, 3, 5, 4, 6 });
+    packet.WriteBitStreamInOrder(currentCard->GetGuid(), { 7, 1, 2, 0, 3, 5, 4, 6 });
     packet.FlushBits();
 
-    packet.WriteGuidByteStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 7, 5, 4, 2, 6 });
+    packet.WriteByteStreamInOrder(currentCard->GetGuid(), { 7, 5, 4, 2, 6 });
     packet << m_activePlayerId;
-    packet.WriteGuidByteStreamInOrder(currentCard->GetGuid(), std::vector<uint8_t> { 1, 0, 3 });
+    packet.WriteByteStreamInOrder(currentCard->GetGuid(), { 1, 0, 3 });
 
     BroadcastPacket(&packet);
 }

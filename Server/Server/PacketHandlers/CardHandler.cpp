@@ -53,20 +53,20 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 
     for (CardsMap::const_iterator iter = player->GetOpponent()->GetCards().begin(); iter != player->GetOpponent()->GetCards().end(); ++iter)
     {
-        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t>{ 1, 2, 7, 0, 5, 3, 4, 6 });
+        pck.WriteBitStreamInOrder(iter->first, { 1, 2, 7, 0, 5, 3, 4, 6 });
 
-        opponentBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 4, 2, 6, 1, 7, 0 });
+        opponentBuffer.WriteByteStreamInOrder(iter->first, { 4, 2, 6, 1, 7, 0 });
         opponentBuffer << iter->second->GetId();
-        opponentBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 3, 5 });
+        opponentBuffer.WriteByteStreamInOrder(iter->first, { 3, 5 });
     }
 
     for (CardsMap::const_iterator iter = player->GetCards().begin(); iter != player->GetCards().end(); ++iter)
     {
-        pck.WriteGuidBitStreamInOrder(iter->first, std::vector<uint8_t> { 7, 1, 2, 4, 6, 0, 3, 5 });
+        pck.WriteBitStreamInOrder(iter->first, { 7, 1, 2, 4, 6, 0, 3, 5 });
 
-        playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 7, 2, 0, 1, 6, 4, 5 });
+        playerBuffer.WriteByteStreamInOrder(iter->first, { 7, 2, 0, 1, 6, 4, 5 });
         playerBuffer << iter->second->GetId();
-        playerBuffer.WriteGuidByteStreamInOrder(iter->first, std::vector<uint8_t>{ 3 });
+        playerBuffer.WriteByteStreamInOrder(iter->first, { 3 });
     }
 
     pck.FlushBits();
@@ -86,11 +86,11 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
 {
     Guid guid;
     uint8_t attackType;
-    packet->ReadGuidBitStreamInOrder(guid, std::vector<uint8_t> { 4, 3, 2, 7, 1, 6, 0, 5 });
+    packet->ReadBitStreamInOrder(guid, { 4, 3, 2, 7, 1, 6, 0, 5 });
 
-    packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 6, 2, 7, 1, 0 });
+    packet->ReadByteStreamInOrder(guid, { 6, 2, 7, 1, 0 });
     *packet >> attackType;
-    packet->ReadGuidByteStreamInOrder(guid, std::vector<uint8_t> { 5, 3, 4 });
+    packet->ReadByteStreamInOrder(guid, { 5, 3, 4 });
 
     DEBUG_LOG("CMSG_CARD_ACTION:\n\tcardAction: %d\n", attackType);
     if (attackType == CARD_ACTION_BASIC_ATTACK)
