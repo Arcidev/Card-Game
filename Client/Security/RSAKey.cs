@@ -1,11 +1,10 @@
-﻿using System.Security.Cryptography;
-
+﻿
 namespace Client.Security
 {
-    public static class RsaEncryptor
+    public static class RSAKey
     {
-        private static readonly byte[] modulus = 
-        {   
+        public static readonly byte[] Modulus =
+        {
             0xcb,0xc0,0xdb,0xbf,0xca,0x6b,0xa4,0x9f,0xf4,0x90,0xa8,0x65,0x19,0xe2,
             0x58,0xa3,0x3a,0x36,0xb7,0xad,0x04,0x1b,0xc2,0xf4,0xe7,0xad,0x60,0xd7,0x74,
             0x76,0xf4,0xbb,0xcc,0x47,0x98,0x72,0xbc,0x66,0x65,0x18,0x9a,0x66,0x9f,0xae,
@@ -26,39 +25,6 @@ namespace Client.Security
             0x32,0xc1
         };
 
-        private static readonly byte[] exponent = { 1, 0, 1 };
-        private static RSACryptoServiceProvider rsa;
-
-        // Inicializes RSA instance
-        public static void Inicialize()
-        {
-            if (rsa != null)
-                rsa.Clear();
-
-            rsa = new RSACryptoServiceProvider();
-            RSAParameters rsaParams = new RSAParameters();
-            rsaParams.Exponent = exponent;
-            rsaParams.Modulus = modulus;
-            rsa.ImportParameters(rsaParams);
-        }
-
-        // Encrypts data
-        public static byte[] Encrypt(byte[] toEncrypt)
-        {
-            if (rsa == null)
-                return null;
-
-            return rsa.Encrypt(toEncrypt, false);
-        }
-
-        // Clears allocated resources
-        public static void Clear()
-        {
-            if (rsa != null)
-            {
-                rsa.Clear();
-                rsa = null;
-            }
-        }
+        public static readonly byte[] Exponent = { 1, 0, 1 };
     }
 }

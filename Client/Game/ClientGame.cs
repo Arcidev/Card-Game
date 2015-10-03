@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Arci.Networking.Data;
+using Arci.Networking.Security;
+using System;
 using System.Linq;
 using Client.Network;
-using Client.Security;
 using Client.Enums;
+using Client.Security;
 using System.Timers;
 using Client.Data;
 using System.Windows;
 using System.Windows.Input;
+using ClientNetwork = Arci.Networking.Client;
 
 namespace Client.Game
 {
@@ -16,7 +19,14 @@ namespace Client.Game
         private Timer timer;
         private MainWindow mainWindow;
         private ChatHandler chat;
+        private static readonly string[] servers =
+        {
+            "localhost",
+            "calista.mine.sk"
+        };
+        private static readonly int port = 10751;
 
+        public static string[] Servers { get { return servers; } }
         public MainWindow MainWindow { get { return mainWindow; } }
         public ChatHandler Chat { get { return chat; } }
         public Player Player { get; set; }
@@ -32,13 +42,13 @@ namespace Client.Game
 
             // Sends init packet to server
             Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
-            RsaEncryptor.Inicialize();
+            RsaEncryptor.Inicialize(RSAKey.Modulus, RSAKey.Exponent);
             AesEncryptor.Inicialize();
             packet.Write(RsaEncryptor.Encrypt(AesEncryptor.Encryptors));
             packet.Write(AesEncryptor.Encrypt(name));
             RsaEncryptor.Clear();
 
-            SendPacket(packet);
+            SendPacket(packet, false);
             
             timer = new System.Timers.Timer(50);
             timer.AutoReset = false;
@@ -49,7 +59,7 @@ namespace Client.Game
         // Creates new instance of game
         public static ClientGame Create(string name, string server, MainWindow window)
         {
-            ClientNetwork network = ClientNetwork.Create(server);
+            ClientNetwork network = ClientNetwork.Create(server, port);
             if (network == null)
                 return null;
 
@@ -82,10 +92,10 @@ namespace Client.Game
         }
 
         // Sends packet to server
-        public void SendPacket(Packet packet) 
+        public void SendPacket(Packet packet, bool encrypt = true) 
         { 
             if (network != null)
-                network.SendPacket(packet);
+                network.SendPacket(packet, encrypt);
         }
 
         // Removes all resources

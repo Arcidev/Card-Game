@@ -1,8 +1,10 @@
-﻿using Client.Data;
+﻿using Arci.Networking.Data;
+using Client.Data;
 using Client.Enums;
 using Client.Game;
 using System;
 using System.Collections.Generic;
+using Guid = Arci.Networking.Data.Guid;
 
 namespace Client.Network
 {

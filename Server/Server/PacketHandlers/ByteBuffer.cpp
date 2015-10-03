@@ -57,8 +57,9 @@ T ByteBuffer::read(size_t const& pos)
     if (pos + sizeof(T) > m_storage.size())
         throw std::out_of_range("Reading out of Range");
 
+    T val = *((T const*)&m_storage[pos]);
     m_rpos += sizeof(T);
-    return *((T const*)&m_storage[pos]);
+    return val;
 }
 
 // Writes byte value of guid if byte has value. If not its ignored

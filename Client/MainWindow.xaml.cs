@@ -35,7 +35,7 @@ namespace Client
             cardClicked = false;
             cardControlName = "";
             SlideShow = new SlideShow(this);
-            ServerComboBox.ItemsSource = ClientNetwork.Servers;
+            ServerComboBox.ItemsSource = ClientGame.Servers;
             ServerComboBox.SelectedIndex = 0;
         }
 

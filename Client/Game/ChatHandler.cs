@@ -1,5 +1,5 @@
-﻿using Client.Enums;
-using Client.Network;
+﻿using Arci.Networking.Data;
+using Client.Enums;
 using System;
 using System.Windows.Controls;
 using System.Windows.Documents;
