@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Arci.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arci.Networking.1.0.4\lib\net45\Arci.Networking.dll</HintPath>
+      <HintPath>..\packages\Arci.Networking.1.1.0\lib\net45\Arci.Networking.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework">

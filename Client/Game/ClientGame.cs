@@ -42,14 +42,16 @@ namespace Client.Game
 
             // Sends init packet to server
             Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
-            RsaEncryptor.Inicialize(RSAKey.Modulus, RSAKey.Exponent);
-            AesEncryptor.Inicialize();
-            packet.Write(RsaEncryptor.Encrypt(AesEncryptor.Encryptors));
-            packet.Write(AesEncryptor.Encrypt(name));
-            RsaEncryptor.Clear();
+            RsaEncryptor rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
+            AesEncryptor aes = new AesEncryptor();
+            network.AesEncryptor = aes;
+            packet.Write(rsa.Encrypt(aes.Encryptors));
+            packet.Write(aes.Encrypt(name));
+            rsa.Dispose();
 
             SendPacket(packet, false);
-            
+            packet.Dispose();
+
             timer = new System.Timers.Timer(50);
             timer.AutoReset = false;
             timer.Elapsed += Update;
@@ -104,10 +106,9 @@ namespace Client.Game
             if (network != null)
             {
                 timer.Stop();
+                network.AesEncryptor.Dispose();
                 network.Dispose();
             }
-
-            AesEncryptor.Clear();
         }
 
         // Sends chat message packet to server
@@ -145,6 +146,7 @@ namespace Client.Game
             }
 
             SendPacket(packet);
+            packet.Dispose();
         }
 
         // Sends card to attack to server
@@ -163,6 +165,7 @@ namespace Client.Game
             packet.WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4);
 
             SendPacket(packet);
+            packet.Dispose();
         }
 
         // Sends defend action to server
@@ -171,6 +174,7 @@ namespace Client.Game
             SetActiveCardActionGrid(false);
             Packet packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
             SendPacket(packet);
+            packet.Dispose();
         }
 
         // Shows card deck
@@ -240,19 +244,14 @@ namespace Client.Game
         // Checks every 50ms for new packets form server in separated thread
         private void Update(Object source, ElapsedEventArgs e)
         {
-            byte[] networkData = network.ReceiveData();
-            if (networkData != null)
+            var packets = network.ReceiveData(true);
+            if (packets != null)
             {
-                while (networkData.Any())
+                foreach(var packet in packets)
                 {
-                    var length = BitConverter.ToUInt16(networkData, 0);
-                    networkData = networkData.Skip(sizeof(UInt16)).ToArray();
-                    Packet packet = new Packet(networkData, length);
-                    var packetHandler = PacketHandler.GetPacketHandler(packet.ReadUInt16());
+                    var packetHandler = PacketHandler.GetPacketHandler(packet.OpcodeNumber);
                     packetHandler(packet, this);
                     packet.Dispose();
-
-                    networkData = networkData.Skip(length).ToArray();
                 }
             }
 

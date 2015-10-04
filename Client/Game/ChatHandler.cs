@@ -47,6 +47,7 @@ namespace Client.Game
                 packet.Write(p);
 
             clientGame.SendPacket(packet);
+            packet.Dispose();
         }
 
         // Sets active chat
