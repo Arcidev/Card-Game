@@ -60,7 +60,7 @@ void DataHolder::loadSpells(sqlite3* db)
     char* errorMsg;
     std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
     if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, 0, &errorMsg) != SQLITE_OK)
-        printf("Error while loading cards\n");
+        printf("Error while loading spels\n");
 }
 
 // Loads cards info from database

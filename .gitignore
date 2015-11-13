@@ -2,9 +2,10 @@
 *.suo
 *.sdf
 *.opensdf
-Server/[Bb]uild*/
+[Bb]uild*/
 [Ii]pch*/
 [Dd]ebug*/
 [Rr]elease*/
 [Bb]in*/
 [Oo]bj*/
+[Pp]ackages*/
