@@ -176,6 +176,9 @@ ByteBuffer& ByteBuffer::operator << (std::string const& value)
 // Stores stream from another buffer in this buffer
 ByteBuffer& ByteBuffer::operator << (ByteBuffer const& value)
 {
+    if (value.GetStorage().empty())
+        return *this;
+
     append((uint8_t const*)&value.GetStorage()[0], value.GetStorage().size());
     return *this;
 }

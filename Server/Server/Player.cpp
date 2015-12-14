@@ -74,7 +74,7 @@ void Player::Attack(uint64_t const& victimCardGuid)
         return;
     }
 
-    uint8_t damage = currentCard->GetDamage();
+    uint8_t damage = currentCard->GetModifiedDamage();
     float reduction = (float)(victimCard->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
     if (reduction)
     {

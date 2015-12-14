@@ -35,7 +35,7 @@ void PlayableCard::SetDefendState(bool const& defend)
 
 uint8_t PlayableCard::GetModifiedDefense() const
 {
-    int8_t defenseModifier = GetDefenseModifier();
+    int8_t defenseModifier = GetStatModifierValue(CARD_STAT_DEFENSE);
     if (defenseModifier < 0)
         if (m_defense < -defenseModifier)
             return 0;
@@ -43,23 +43,9 @@ uint8_t PlayableCard::GetModifiedDefense() const
     return m_defense + defenseModifier;
 }
 
-int8_t PlayableCard::GetDefenseModifier() const
-{
-    int8_t modifier = 0;
-    for (SpellAuraEffectsMap::const_iterator iter = m_auras.begin(); iter != m_auras.end(); ++iter)
-        if (iter->second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-            if (iter->second.GetValue1() == CARD_STAT_DEFENSE)
-                modifier += (int8_t)iter->second.GetValue2();
-
-    if (m_isDefending)
-        modifier += DEFENSE_BONUS_ON_DEFEND;
-
-    return modifier;
-}
-
 uint8_t PlayableCard::GetModifiedDamage() const
 {
-    int8_t damageModifier = GetDamageModifier();
+    int8_t damageModifier = GetStatModifierValue(CARD_STAT_DAMAGE);
     if (damageModifier < 0)
         if (m_damage < -damageModifier)
             return 0;
@@ -67,28 +53,18 @@ uint8_t PlayableCard::GetModifiedDamage() const
     return m_damage + damageModifier;
 }
 
-int8_t PlayableCard::GetDamageModifier() const
+int8_t PlayableCard::GetStatModifierValue(uint8_t const& stat) const
 {
     int8_t modifier = 0;
     for (SpellAuraEffectsMap::const_iterator iter = m_auras.begin(); iter != m_auras.end(); ++iter)
         if (iter->second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-            if (iter->second.GetValue1() == CARD_STAT_DAMAGE)
+            if (iter->second.GetValue1() == stat)
                 modifier += (int8_t)iter->second.GetValue2();
 
-    return modifier;
-}
+    if ((stat == CARD_STAT_DEFENSE) && m_isDefending)
+        modifier += DEFENSE_BONUS_ON_DEFEND;
 
-int8_t PlayableCard::GetStatModifierValue(uint8_t const& stat) const
-{
-    switch (stat)
-    {
-        case CARD_STAT_DEFENSE:
-            return GetDefenseModifier();
-        case CARD_STAT_DAMAGE:
-            return GetDamageModifier();
-        default:
-            return 0;
-    }
+    return modifier;
 }
 
 void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
