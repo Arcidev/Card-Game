@@ -10,6 +10,7 @@ using Client.Data;
 using System.Windows;
 using System.Windows.Input;
 using ClientNetwork = Arci.Networking.Client;
+using System.Threading.Tasks;
 
 namespace Client.Game
 {
@@ -59,9 +60,9 @@ namespace Client.Game
         }
 
         // Creates new instance of game
-        public static ClientGame Create(string name, string server, MainWindow window)
+        public static async Task<ClientGame> CreateAsync(string name, string server, MainWindow window)
         {
-            ClientNetwork network = ClientNetwork.Create(server, port);
+            ClientNetwork network = await ClientNetwork.CreateAsync(server, port);
             if (network == null)
                 return null;
 

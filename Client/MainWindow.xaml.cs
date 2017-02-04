@@ -9,6 +9,7 @@ using Client.Enums;
 using Client.UI;
 using Client.Misc;
 using Client.Network;
+using System.Threading.Tasks;
 
 namespace Client
 {
@@ -57,7 +58,7 @@ namespace Client
             Cursor = Cursors.Arrow;
         }
 
-        private void LoginButtonClick(object sender, RoutedEventArgs e)
+        private async void LoginButtonClick(object sender, RoutedEventArgs e)
         {
             if (!UserNameBox.Text.Any())
             {
@@ -65,7 +66,7 @@ namespace Client
                 return;
             }
 
-            game = ClientGame.Create(userName, ServerComboBox.SelectedItem.ToString(), this);
+            game = await ClientGame.CreateAsync(userName, ServerComboBox.SelectedItem.ToString(), this);
             if (game == null)
             {
                 MessageBox.Show("Server is offline");
