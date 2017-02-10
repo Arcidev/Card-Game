@@ -4,7 +4,6 @@ using Client.Enums;
 using Client.Game;
 using System;
 using System.Collections.Generic;
-using Guid = Arci.Networking.Data.Guid;
 
 namespace Client.Network
 {
@@ -140,18 +139,18 @@ namespace Client.Network
             var count1 = packet.ReadByte();
             var count2 = packet.ReadByte();
 
-            Guid[] guids1 = new Guid[count1];
-            Guid[] guids2 = new Guid[count2];
+            var guids1 = new PacketGuid[count1];
+            var guids2 = new PacketGuid[count2];
 
             for (var i = 0; i < count2; i++)
             {
-                guids2[i] = new Guid();
+                guids2[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids2[i], 1, 2, 7, 0, 5, 3, 4, 6);
             }
 
             for (var i = 0; i < count1; i++)
             {
-                guids1[i] = new Guid();
+                guids1[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids1[i], 7, 1, 2, 4, 6, 0, 3, 5);
             }
 
@@ -189,10 +188,10 @@ namespace Client.Network
         private static void HandleDeckCards(Packet packet, ClientGame game)
         {
             var cardsCount = packet.ReadByte();
-            Guid[] guids = new Guid[cardsCount];
+            var guids = new PacketGuid[cardsCount];
             for (byte i = 0; i < cardsCount; i++)
             {
-                guids[i] = new Guid();
+                guids[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids[i], 7, 2, 1, 4, 5, 0, 6, 3);
             }
 
@@ -209,7 +208,7 @@ namespace Client.Network
         // Handle SMSG_ACTIVE_PLAYER packet
         private static void HandleActivePlayer(Packet packet, ClientGame game)
         {
-            Guid cardGuid = new Guid();
+            var cardGuid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(cardGuid, 7, 1, 2, 0, 3, 5, 4, 6);
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
@@ -241,7 +240,7 @@ namespace Client.Network
             }
             else
             {
-                Guid cardGuid = new Guid();
+                var cardGuid = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
                 packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
                 UInt32 attackerId = packet.ReadUInt32();
@@ -260,7 +259,7 @@ namespace Client.Network
         // Handle SMSG_CARD_STAT_CHANGED packet
         private static void HandleCardStatChanged(Packet packet, ClientGame game)
         {
-            Guid guid = new Guid();
+            var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 2, 6, 7, 1, 0, 3, 5, 4);
             packet.ReadGuidByteStreamInOrder(guid, 5, 7);
             sbyte value = packet.ReadSByte();
@@ -285,7 +284,7 @@ namespace Client.Network
             SpellCastResult result = (SpellCastResult)packet.ReadByte();
             if (result == SpellCastResult.Success)
             {
-                Guid guid = new Guid();
+                var guid = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
 
                 byte mana = packet.ReadByte();
@@ -307,12 +306,12 @@ namespace Client.Network
         private static void HandleSpellDamage(Packet packet, ClientGame game)
         {
             byte targetsCount = packet.ReadByte();
-            Guid[] targets = new Guid[targetsCount];
-            bool[] isAlive = new bool[targetsCount];
+            var targets = new PacketGuid[targetsCount];
+            var isAlive = new bool[targetsCount];
 
             for (int i = 0; i < targetsCount; i++)
             {
-                targets[i] = new Guid();
+                targets[i] = new PacketGuid();
                 isAlive[i] = packet.ReadBit();
                 packet.ReadGuidBitStreamInOrder(targets[i], 6, 3, 1, 7, 0, 2, 5, 4);
             }
@@ -334,7 +333,7 @@ namespace Client.Network
         // Handle SMSG_APPLY_AURA packet
         private static void HandleApplyAura(Packet packet, ClientGame game)
         {
-            Guid guid = new Guid();
+            var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 1, 3, 5, 4, 0, 6);
 
             Player player = game.GetPlayer(packet.ReadUInt32());
@@ -347,7 +346,7 @@ namespace Client.Network
         // Handle SMSG_SPELL_PERIODIC_DAMAGE packet
         private static void HandleSpellPeriodicDamage(Packet packet, ClientGame game)
         {
-            Guid guid = new Guid();
+            var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 6, 4, 1);
             bool isAlive = packet.ReadBit();
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 3, 5, 0);
@@ -365,7 +364,7 @@ namespace Client.Network
         // Handle SMSG_CARD_HEALED packet
         private static void HandleCardHealed(Packet packet, ClientGame game)
         {
-            Guid guid = new Guid();
+            var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 6, 1, 3, 0, 5, 4);
 
             packet.ReadGuidByteStreamInOrder(guid, 5, 2, 7, 1);
@@ -381,11 +380,11 @@ namespace Client.Network
         private static void HandleManaReplenishment(Packet packet, ClientGame game)
         {
             byte cardCount = packet.ReadByte();
-            Guid[] guids = new Guid[cardCount];
+            var guids = new PacketGuid[cardCount];
 
             for (byte i = 0; i < cardCount; i++)
             {
-                guids[i] = new Guid();
+                guids[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids[i], 5, 0, 1, 2, 3, 7, 4, 6);
             }
 
