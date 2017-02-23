@@ -13,7 +13,7 @@ void PacketHandler::handleInitPacket(Player* player, Packet* packet)
     std::string keys;
     *packet >> keys;
     keys = Rsa::Decrypt(keys, privateKey, false);
-    player->SetAesEncryptor(keys.substr(0, AES_BLOCK_SIZE), std::vector<uint8_t>(keys.begin() + AES_BLOCK_SIZE, keys.begin() + 2 * AES_BLOCK_SIZE ));
+    player->SetAesEncryptor(keys.substr(0, AES_BLOCK_SIZE * 2), std::vector<uint8_t>(keys.begin() + AES_BLOCK_SIZE * 2, keys.begin() + 3 * AES_BLOCK_SIZE ));
 
     std::string name;
     *packet >> name;
@@ -21,7 +21,7 @@ void PacketHandler::handleInitPacket(Player* player, Packet* packet)
     player->SendInitResponse();
     player->SendAvailableCards();
 
-    DEBUG_LOG("CMSG_INIT_PACKET:\n\tName: %s\n", player->GetName().c_str());
+    DEBUG_LOG("CMSG_INIT_PACKET:\r\n\tName: %s\r\n", player->GetName().c_str());
     if (player->GetGame()->IsFull())
         player->GetOpponent()->SendInitResponse();
 }

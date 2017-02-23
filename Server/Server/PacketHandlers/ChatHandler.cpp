@@ -12,7 +12,7 @@ void PacketHandler::handleChatPacket(Player* player, Packet* packet)
     *packet >> chatId;
     *packet >> message;
 
-    DEBUG_LOG("CMSG_CHAT_MESSAGE:\n\tChatId: %d\n\tMessage: %s\n", chatId, message.c_str());
+    DEBUG_LOG("CMSG_CHAT_MESSAGE:\r\n\tChatId: %d\r\n\tMessage: %s\r\n", chatId, message.c_str());
     Packet pck(SMSG_CHAT_MESSAGE);
     pck << chatId;
     pck << player->GetName();

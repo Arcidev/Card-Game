@@ -179,7 +179,7 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
                 locker.unlock();
             }
 
-            DEBUG_LOG("Thread of player %d has ended.", playerId);
+            DEBUG_LOG("Thread of player %d has ended.\r\n", playerId);
             return;
         }
 

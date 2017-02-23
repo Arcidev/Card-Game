@@ -10,7 +10,7 @@ void ServerGame::update()
     // get new clients
     if (m_network.AcceptNewClient(m_clientId))
     {
-        DEBUG_LOG("Client %d has been connected to the server\n", m_clientId);
+        DEBUG_LOG("Client %d has been connected to the server\r\n", m_clientId);
         m_clientId++;
     }
 }

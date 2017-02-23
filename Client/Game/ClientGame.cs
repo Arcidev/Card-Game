@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Input;
 using ClientNetwork = Arci.Networking.Client;
 using System.Threading.Tasks;
+using Arci.Networking.Security.AesOptions;
+using System.Security.Cryptography;
 
 namespace Client.Game
 {
@@ -44,7 +46,7 @@ namespace Client.Game
             // Sends init packet to server
             Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
             RsaEncryptor rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
-            AesEncryptor aes = new AesEncryptor();
+            AesEncryptor aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
             network.AesEncryptor = aes;
             packet.Write(rsa.Encrypt(aes.Encryptors));
             packet.Write(aes.Encrypt(name));

@@ -18,12 +18,12 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 
     // In case it failed in packet sended before
     player->ClearCards();
-    DEBUG_LOG("CMSG_SELECTED_CARDS:\n\tCardCount: %d\n", cardCount);
+    DEBUG_LOG("CMSG_SELECTED_CARDS:\r\n\tCardCount: %d\r\n", cardCount);
 
     for (uint8_t i = 0; i < MAX_CARDS_COUNT; i++)
     {
         *packet >> cardId;
-        DEBUG_LOG("\tCardId: %d\n", cardId);
+        DEBUG_LOG("\tCardId: %d\r\n", cardId);
 
         Card const* card = DataHolder::GetCard(cardId);
         if (!card)
@@ -92,7 +92,7 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
     *packet >> attackType;
     packet->ReadByteStreamInOrder(guid, { 5, 3, 4 });
 
-    DEBUG_LOG("CMSG_CARD_ACTION:\n\tcardAction: %d\n", attackType);
+    DEBUG_LOG("CMSG_CARD_ACTION:\r\n\tcardAction: %d\r\n", attackType);
     if (attackType == CARD_ACTION_BASIC_ATTACK)
         player->Attack(guid);
     else if (attackType == CARD_ACTION_SPELL_USE)
@@ -102,6 +102,6 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
 // Handles CMSG_DEFEND_SELF packet
 void PacketHandler::handleDefendSelfPacket(Player* player, Packet* /*packet*/)
 {
-    DEBUG_LOG("CMSG_DEFEND_SELF\n");
+    DEBUG_LOG("CMSG_DEFEND_SELF\r\n");
     player->DefendSelf();
 }

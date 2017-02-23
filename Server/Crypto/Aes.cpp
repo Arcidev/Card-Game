@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <cstring>
 #include "Aes.h"
-#include "OpenSSL/aes.h"
+#include "OpenSSL/evp.h"
 
 #define BIT_SIZE 128
 
@@ -11,20 +11,17 @@ std::string Aes::Encrypt(std::string const& data, std::string const& key, std::v
     if (data.empty() || key.empty())
         return data;
 
-    unsigned char encryptionIvec[AES_BLOCK_SIZE];
-    std::memcpy(encryptionIvec, &iVec[0], AES_BLOCK_SIZE);
-
-    AES_KEY AESkey;
-    AES_set_encrypt_key((unsigned const char*)key.c_str(), BIT_SIZE, &AESkey);
-    unsigned char buffer[AES_BLOCK_SIZE];
+    std::vector<uint8_t> outdata(data.length() + 16);
+    int outLen = 0, outLen2 = 0;
+    EVP_CIPHER_CTX ctx;
+    EVP_EncryptInit(&ctx, EVP_aes_256_cbc(), (uint8_t const*)key.c_str(), &iVec[0]);
+    EVP_EncryptUpdate(&ctx, &outdata[0], &outLen, (uint8_t const*)data.c_str(), data.length());
+    EVP_EncryptFinal(&ctx, &outdata[outLen], &outLen2);
     std::string value;
+    value.resize(outLen + outLen2);
+    std::memcpy(&value[0], &outdata[0], outLen + outLen2);
 
-    for (uint32_t i = 0; i < data.size(); i += AES_BLOCK_SIZE)
-    {
-        AES_cbc_encrypt((unsigned const char*)data.c_str() + i, buffer, ((i + AES_BLOCK_SIZE) < data.size()) ? AES_BLOCK_SIZE : (data.size() - i), &AESkey, encryptionIvec, AES_ENCRYPT);
-        value.resize(value.size() + AES_BLOCK_SIZE);
-        std::memcpy(&value[i], buffer, AES_BLOCK_SIZE);
-    }
+    EVP_CIPHER_CTX_cleanup(&ctx);
 
     return value;
 }
@@ -35,20 +32,19 @@ std::string Aes::Decrypt(std::string const& data, std::string const& key, std::v
     if (data.empty() || key.empty())
         return data;
 
-    unsigned char decryptionIvec[AES_BLOCK_SIZE];
-    std::memcpy(decryptionIvec, &iVec[0], AES_BLOCK_SIZE);
+    std::vector<uint8_t> outdata(data.length());
+    int outLen = 0, outLen2 = 0;
 
-    AES_KEY AESkey;
-    AES_set_decrypt_key((unsigned const char*)key.c_str(), BIT_SIZE, &AESkey);
-    unsigned char buffer[AES_BLOCK_SIZE];
+    EVP_CIPHER_CTX ctx;
+    EVP_DecryptInit(&ctx, EVP_aes_256_cbc(), (uint8_t const*)key.c_str(), &iVec[0]);
+    EVP_DecryptUpdate(&ctx, &outdata[0], &outLen, (uint8_t const*)data.c_str(), data.length());
+    EVP_DecryptFinal(&ctx, &outdata[outLen], &outLen2);
+
     std::string value;
+    value.resize(outLen + outLen2);
+    std::memcpy(&value[0], &outdata[0], outLen + outLen2);
 
-    for (uint32_t i = 0; i < data.size(); i += AES_BLOCK_SIZE)
-    {
-        AES_cbc_encrypt((unsigned const char*)data.c_str() + i, buffer, AES_BLOCK_SIZE, &AESkey, decryptionIvec, AES_DECRYPT);
-        value.resize(value.size() + AES_BLOCK_SIZE);
-        std::memcpy(&value[i], buffer, AES_BLOCK_SIZE);
-    }
+    EVP_CIPHER_CTX_cleanup(&ctx);
 
     return value;
 }
