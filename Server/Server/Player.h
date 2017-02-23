@@ -71,7 +71,7 @@ class Player
         void SendPacket(Packet const* packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
-        
+
         Player* GetOpponent() const { return m_game->GetOpponent(this); }
         PlayableCard* GetCurrentCard();
         CardsMap const& GetCards() { return m_cards; }
@@ -83,6 +83,7 @@ class Player
         std::string const& GetName() const { return m_name; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         ServerNetwork const* GetNetwork() const { return m_network; }
+        ServerNetwork* GetNetwork() { return m_network; }
         bool IsPrepared() const { return m_isPrepared; }
         bool IsDisconnected() const { return m_isDisconnected; }
         bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }

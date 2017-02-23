@@ -32,16 +32,7 @@
     <ClInclude Include="Server\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server\networkServices.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\serverGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server\serverNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Server\StaticHelper.h">
@@ -107,6 +98,15 @@
     <ClInclude Include="Server\PacketHandlers\PacketHandler.h">
       <Filter>PacketHandlers</Filter>
     </ClInclude>
+    <ClInclude Include="Server\ServerNetwork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\ServerGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\NetworkServices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -115,19 +115,10 @@
     <ClCompile Include="Server\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Server\networkServices.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Server\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server\Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\serverGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\serverNetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server\StaticHelper.cpp">
@@ -192,6 +183,15 @@
     </ClCompile>
     <ClCompile Include="Server\PacketHandlers\PacketHandler.cpp">
       <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\NetworkServices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\ServerGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\ServerNetwork.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

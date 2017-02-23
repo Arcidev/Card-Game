@@ -8,7 +8,7 @@
 class NetworkServices
 {
     public:
-        static int sendMessage(SOCKET const& curSocket, uint8_t const* message, int messageSize);
-        static int receiveMessage(SOCKET const& curSocket, char* buffer, int bufSize);
+        static int SendMessage(SOCKET const& curSocket, uint8_t const* message, int messageSize);
+        static int ReceiveMessage(SOCKET const& curSocket, char* buffer, int bufSize);
 };
 

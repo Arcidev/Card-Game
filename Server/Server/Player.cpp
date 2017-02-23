@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <random>
 #include "Player.h"
-#include "serverNetwork.h"
+#include "ServerNetwork.h"
 #include "DataHolder.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "Cards/PlayableCard.h"
@@ -15,7 +15,7 @@
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
-    : m_isPrepared(false), m_isDisconnected(false), m_replenishmentMoveCount(0), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>"){}
+    : m_isPrepared(false), m_isDisconnected(false), m_replenishmentMoveCount(0), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>") { }
 
 Player::~Player()
 {
@@ -376,7 +376,7 @@ void Player::SendPacket(Packet const* packet) const
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
     std::memcpy(&toSend[0] + sizeof(uint16_t), encrypted.c_str(), size);
 
-    NetworkServices::sendMessage(m_socket, &toSend[0], toSend.size());
+    NetworkServices::SendMessage(m_socket, &toSend[0], toSend.size());
 }
 
 // Adds card into deck from existing template

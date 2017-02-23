@@ -1,5 +1,5 @@
 #include "time.h" 
-#include "serverGame.h"
+#include "ServerGame.h"
 #include "DataHolder.h"
 
 int main()

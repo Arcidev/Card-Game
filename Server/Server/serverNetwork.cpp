@@ -1,10 +1,11 @@
 #include "Game.h"
 #include "Player.h"
-#include "serverNetwork.h"
+#include "ServerNetwork.h"
 #include "StaticHelper.h"
+#include "../Shared/SharedDefines.h"
 
 // Creates network
-ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOCKET), ClientSocket(INVALID_SOCKET)
+ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOCKET), m_shuttingDown(false)
 {
     // create WSADATA object
     WSADATA wsaData;
@@ -14,7 +15,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
     struct addrinfo hints;
 
     // Initialize Winsock
-    iResult = InitWinsock(MAKEWORD(2, 2), &wsaData);
+    int iResult = InitWinsock(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0)
     {
         printf("WSAStartup failed with error: %d\r\n", iResult);
@@ -48,8 +49,8 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
         exit(1);
     }
 
-    // Set the mode of the socket to be nonblocking
-    u_long iMode = 1;
+    // Set the mode of the socket to be blocking
+    u_long iMode = 0;
     iResult = IoctlSocket(ListenSocket, FIONBIO, &iMode);
 
     if (iResult == SOCKET_ERROR)
@@ -90,10 +91,17 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), ListenSocket(INVALID_SOC
 // Removes all resources
 ServerNetwork::~ServerNetwork()
 {
-    for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
+    GetLocker().lock();
+    m_shuttingDown = true;
+    GetLocker().unlock();
+
+    for (PlayerMap::iterator iter = m_players.begin(); iter != m_players.end(); iter++)
     {
-        iter->second->GetGame()->RemovePlayer(iter->second->GetId());
-        delete iter->second;
+        iter->second.first->Disconnect();
+        iter->second.second->join();
+        delete iter->second.second;
+        iter->second.first->GetGame()->RemovePlayer(iter->second.first->GetId());
+        delete iter->second.first;
     }
 }
 
@@ -101,7 +109,7 @@ ServerNetwork::~ServerNetwork()
 bool ServerNetwork::AcceptNewClient(unsigned int& id)
 {
     // if client is waiting, accept the connection and save the socket
-    ClientSocket = accept(ListenSocket, nullptr, nullptr);
+    SOCKET ClientSocket = accept(ListenSocket, nullptr, nullptr);
     if (ClientSocket != INVALID_SOCKET)
     {
         Game* game = nullptr;
@@ -117,28 +125,83 @@ bool ServerNetwork::AcceptNewClient(unsigned int& id)
         Player* player = new Player(id, ClientSocket, game, this);
         game->AddPlayer(player);
         m_lastPlayer = player;
-        
-        // insert new client into session id table
-        m_players.insert(std::pair<unsigned int, Player*>(id, player));
 
+        std::thread* t = new std::thread(&ServerNetwork::handlePlayerNetwork, player);
+
+        // insert new client into session id table
+        m_players.insert(std::make_pair(id, std::make_pair(player, t)));
+		
         return true;
     }
 
     return false;
 }
 
-// receive incoming data
-int ServerNetwork::ReceiveData(Player* player, char* recvbuf)
+void ServerNetwork::handlePlayerNetwork(Player* player)
 {
-    iResult = NetworkServices::receiveMessage(player->GetSocket(), recvbuf, MAX_PACKET_SIZE);
-    return iResult;
+    while (true)
+    {
+        char networkData[MAX_PACKET_SIZE];
+
+        // get data for that client
+        int dataLength = player->GetNetwork()->ReceiveData(player, networkData);
+        if (!dataLength)
+        {
+            int playerId = player->GetId();
+            if (!player->GetNetwork()->IsShuttingDown())
+            {
+                std::mutex& locker = player->GetNetwork()->GetLocker();
+                locker.lock();
+
+                try
+                {
+                    if (!player->GetNetwork()->IsShuttingDown())
+                    {
+                        player->Disconnect();
+                        PlayerMap::iterator iter = player->GetNetwork()->GetPlayers().find(playerId);
+                        if (iter != player->GetNetwork()->GetPlayers().end())
+                        {
+                        iter->second.second->detach();
+                        delete iter->second.second;
+
+                        player->GetNetwork()->GetPlayers().erase(iter);
+                        }
+
+                        if (player->GetGame()->IsEmpty())
+                            delete player->GetGame();
+                    }
+                }
+                catch(...)
+                {
+                    // Prevent deadlock
+                }
+
+                locker.unlock();
+            }
+
+            DEBUG_LOG("Thread of player %d has ended.", playerId);
+            return;
+        }
+
+        // invalid packet sended
+        if (dataLength < 2)
+            continue;
+
+        player->ReceivePacket(dataLength, networkData);
+    }
+}
+
+// receive incoming data
+int ServerNetwork::ReceiveData(Player const* player, char* recvbuf) const
+{
+    return NetworkServices::ReceiveMessage(player->GetSocket(), recvbuf, MAX_PACKET_SIZE);
 }
 
 // Broadcasts packet to all clients
 void ServerNetwork::BroadcastPacket(Packet const* packet) const
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
-        iter->second->SendPacket(packet);
+        iter->second.first->SendPacket(packet);
 }
 
 // Sends packet to player searched by name
@@ -146,9 +209,9 @@ bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet con
 {
     for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
     {
-        if (StaticHelper::CompareStringCaseInsensitive(iter->second->GetName(), playerName))
+        if (StaticHelper::CompareStringCaseInsensitive(iter->second.first->GetName(), playerName))
         {
-            iter->second->SendPacket(packet);
+            iter->second.first->SendPacket(packet);
             return true;
         }
     }
@@ -157,7 +220,7 @@ bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet con
 }
 
 // Set last player to null if this player was the one last connected
-void ServerNetwork::OnPlayerDisconnected(Player* player)
+void ServerNetwork::OnPlayerDisconnected(Player const* player)
 {
     if (m_lastPlayer && (player->GetId() == m_lastPlayer->GetId()))
         m_lastPlayer = nullptr;
