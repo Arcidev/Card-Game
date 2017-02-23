@@ -1,7 +1,7 @@
 #include "PacketHandler.h"
 #include "Packet.h"
 #include "../Player.h"
-#include "../serverNetwork.h"
+#include "../ServerNetwork.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_CHAT_MESSAGE packet

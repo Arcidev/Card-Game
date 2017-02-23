@@ -1,5 +1,5 @@
 #pragma once
-#include "serverNetwork.h"
+#include "ServerNetwork.h"
 
 class ServerGame
 {

@@ -3,7 +3,7 @@
 #include <mutex>
 #include <thread>
 #include "../Multiplatform/NetworkCommunication.h"
-#include "networkServices.h"
+#include "NetworkServices.h"
 #include "PacketHandlers/Packet.h"
 
 class Player;
