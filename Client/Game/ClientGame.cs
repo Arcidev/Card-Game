@@ -5,7 +5,6 @@ using System.Linq;
 using Client.Network;
 using Client.Enums;
 using Client.Security;
-using System.Timers;
 using Client.Data;
 using System.Windows;
 using System.Windows.Input;
@@ -13,13 +12,15 @@ using ClientNetwork = Arci.Networking.Client;
 using System.Threading.Tasks;
 using Arci.Networking.Security.AesOptions;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Client.Game
 {
     public class ClientGame : IDisposable
     {
+        private Task networkConnectionTask;
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ClientNetwork network;
-        private Timer timer;
         private MainWindow mainWindow;
         private ChatHandler chat;
         private static readonly string[] servers =
@@ -55,10 +56,8 @@ namespace Client.Game
             SendPacket(packet, false);
             packet.Dispose();
 
-            timer = new System.Timers.Timer(50);
-            timer.AutoReset = false;
-            timer.Elapsed += Update;
-            timer.Start();
+            tokenSource.Token.ThrowIfCancellationRequested();
+            networkConnectionTask = Task.Run(UpdateAsync, tokenSource.Token);
         }
 
         // Creates new instance of game
@@ -108,7 +107,10 @@ namespace Client.Game
         {
             if (network != null)
             {
-                timer.Stop();
+                // Cancel task and try to wait
+                tokenSource.Cancel();
+                networkConnectionTask.Wait(250);
+
                 network.AesEncryptor.Dispose();
                 network.Dispose();
             }
@@ -244,21 +246,28 @@ namespace Client.Game
             return null;
         }
 
-        // Checks every 50ms for new packets form server in separated thread
-        private void Update(Object source, ElapsedEventArgs e)
+        private async Task UpdateAsync()
         {
-            var packets = network.ReceiveData(true);
-            if (packets != null)
+            while(!tokenSource.Token.IsCancellationRequested)
             {
-                foreach(var packet in packets)
+                try
                 {
-                    var packetHandler = PacketHandler.GetPacketHandler(packet.OpcodeNumber);
-                    packetHandler(packet, this);
-                    packet.Dispose();
+                    var packets = await network.ReceiveDataAsync(true, tokenSource.Token);
+                    if (packets != null)
+                    {
+                        foreach (var packet in packets)
+                        {
+                            var packetHandler = PacketHandler.GetPacketHandler(packet.OpcodeNumber);
+                            packetHandler(packet, this);
+                            packet.Dispose();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Prevent getting stuck
                 }
             }
-
-            timer.Start();
         }
     }
 }
