@@ -7,9 +7,9 @@ Packet::Packet(uint32_t opcodeNumber)
 }
 
 // Inicializes readable packet
-Packet::Packet(std::string const& data)
+Packet::Packet(std::vector<uint8_t> const& data)
 {
-    append((uint8_t const*)data.c_str(), data.size());
+    append(data.data(), data.size());
 }
 
 // Inicializes data in packet

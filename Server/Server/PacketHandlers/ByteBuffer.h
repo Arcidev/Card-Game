@@ -38,10 +38,12 @@ class ByteBuffer
         ByteBuffer& operator << (int8_t const& value) { return operator<<((uint8_t)value); }
         ByteBuffer& operator << (float const& value);
         ByteBuffer& operator << (std::string const& value);
+        ByteBuffer& operator << (std::vector<uint8_t> const& value);
         ByteBuffer& operator << (ByteBuffer const& value);
 
         ByteBuffer& operator >> (uint32_t& value);
         ByteBuffer& operator >> (uint16_t& value);
         ByteBuffer& operator >> (uint8_t& value);
         ByteBuffer& operator >> (std::string& value);
+        ByteBuffer& operator >> (std::vector<uint8_t>& value);
 };

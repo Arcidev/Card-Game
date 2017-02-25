@@ -17,9 +17,10 @@ typedef std::map<uint64_t, PlayableCard*> CardsMap;
 
 struct AesEncryptor
 {
-    std::string Key;
+    std::vector<uint8_t> Key;
     std::vector<uint8_t> IVec;
 };
+
 class Player
 {
     private:
@@ -45,7 +46,7 @@ class Player
         Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
         ~Player();
 
-        void SetAesEncryptor(std::string const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
+        void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
         void SetName(std::string const& name) { m_name = name; }
         void SendInitResponse() const;
         void SendAvailableCards() const;

@@ -56,7 +56,6 @@ namespace Client.Game
             SendPacket(packet, false);
             packet.Dispose();
 
-            tokenSource.Token.ThrowIfCancellationRequested();
             networkConnectionTask = Task.Run(UpdateAsync, tokenSource.Token);
         }
 

@@ -25,23 +25,23 @@ RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
 }
 
 // Encrypts data with RSA algorithm
-std::string Rsa::Encrypt(std::string const& data, unsigned char* key, bool isPublic)
+std::vector<uint8_t> Rsa::Encrypt(std::vector<uint8_t> const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())
-        return "";
+        return data;
 
-    char encrypted[4098];
+    uint8_t encrypted[4098];
     RSA* rsa = createRSA(key, isPublic);
     if (!rsa)
-        return "";
+        return data;
 
     int(*encryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_encrypt : RSA_private_encrypt;
 
-    int encryptedLength = encryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)encrypted, rsa, PADDING);
+    int encryptedLength = encryptFnc(data.size(), data.data(), encrypted, rsa, PADDING);
     if (encryptedLength == -1)
-        return "";
+        return data;
 
-    std::string value;
+    std::vector<uint8_t> value;
     value.resize(encryptedLength);
     std::memcpy(&value[0], encrypted, encryptedLength);
     
@@ -49,23 +49,23 @@ std::string Rsa::Encrypt(std::string const& data, unsigned char* key, bool isPub
 }
 
 // Decrypts data ecnrypted by RSA algorithm
-std::string Rsa::Decrypt(std::string const& data, unsigned char* key, bool isPublic)
+std::vector<uint8_t> Rsa::Decrypt(std::vector<uint8_t> const& data, unsigned char* key, bool isPublic)
 {
     if (data.empty())
-        return "";
+        return data;
 
-    char decrypted[4098];
+    uint8_t decrypted[4098];
     RSA* rsa = createRSA(key, isPublic);
     if (!rsa)
-        return "";
+        return data;
 
     int(*decryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_decrypt : RSA_private_decrypt;
 
-    int decryptedLength = decryptFnc(data.length(), (unsigned char*)&data[0], (unsigned char*)decrypted, rsa, PADDING);
+    int decryptedLength = decryptFnc(data.size(), data.data(), decrypted, rsa, PADDING);
     if (decryptedLength == -1)
-        return "";
+        return data;
 
-    std::string value;
+    std::vector<uint8_t> value;
     value.resize(decryptedLength);
     std::memcpy(&value[0], decrypted, decryptedLength);
 

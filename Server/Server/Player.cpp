@@ -254,7 +254,7 @@ void Player::ReceivePacket(uint32_t const& dataLength, char const* data)
     {
         uint16_t packetLength;
         std::memcpy(&packetLength, data + readedData, sizeof(uint16_t));
-        std::string networkData;
+        std::vector<uint8_t> networkData;
         networkData.resize(packetLength);
         std::memcpy(&networkData[0], data + sizeof(uint16_t) + readedData, packetLength);
 
@@ -370,11 +370,11 @@ void Player::SendPlayerDisconnected() const
 // Sends encrypted packet to client
 void Player::SendPacket(Packet const* packet) const
 {
-    std::string encrypted = Aes::Encrypt(std::string(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
-    uint16_t size = (uint16_t)encrypted.length();
+    std::vector<uint8_t> encrypted = Aes::Encrypt(std::vector<uint8_t>(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
+    uint16_t size = (uint16_t)encrypted.size();
     std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
-    std::memcpy(&toSend[0] + sizeof(uint16_t), encrypted.c_str(), size);
+    std::memcpy(&toSend[0] + sizeof(uint16_t), &encrypted[0], size);
 
     NetworkServices::SendMessage(m_socket, &toSend[0], toSend.size());
 }

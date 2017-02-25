@@ -10,14 +10,16 @@
 // Handle CMSG_INIT_PACKET packet
 void PacketHandler::handleInitPacket(Player* player, Packet* packet)
 {
-    std::string keys;
+    std::vector<uint8_t> keys;
     *packet >> keys;
     keys = Rsa::Decrypt(keys, privateKey, false);
-    player->SetAesEncryptor(keys.substr(0, AES_BLOCK_SIZE * 2), std::vector<uint8_t>(keys.begin() + AES_BLOCK_SIZE * 2, keys.begin() + 3 * AES_BLOCK_SIZE ));
+    player->SetAesEncryptor(std::vector<uint8_t>(keys.begin(), keys.begin() + AES_BLOCK_SIZE * 2), std::vector<uint8_t>(keys.begin() + AES_BLOCK_SIZE * 2, keys.begin() + 3 * AES_BLOCK_SIZE ));
 
-    std::string name;
+    std::vector<uint8_t> name;
     *packet >> name;
-    player->SetName(Aes::Decrypt(name, player->GetAesEncryptor().Key, player->GetAesEncryptor().IVec).c_str() /*to trim \0 at the end*/);
+    name = Aes::Decrypt(std::vector<uint8_t>(name.begin(), name.end()), player->GetAesEncryptor().Key, player->GetAesEncryptor().IVec);
+
+    player->SetName(std::string((char*)name.data(), name.size()));
     player->SendInitResponse();
     player->SendAvailableCards();
 

@@ -173,13 +173,22 @@ ByteBuffer& ByteBuffer::operator << (std::string const& value)
     return *this;
 }
 
+// Stores vector and vector length in stream
+ByteBuffer& ByteBuffer::operator << (std::vector<uint8_t> const& value)
+{
+    *this << (uint16_t)value.size();
+    append(value.data(), value.size());
+    return *this;
+}
+
+
 // Stores stream from another buffer in this buffer
 ByteBuffer& ByteBuffer::operator << (ByteBuffer const& value)
 {
     if (value.GetStorage().empty())
         return *this;
 
-    append((uint8_t const*)&value.GetStorage()[0], value.GetStorage().size());
+    append(value.GetStorage().data(), value.GetStorage().size());
     return *this;
 }
 
@@ -217,7 +226,24 @@ ByteBuffer& ByteBuffer::operator >> (std::string& value)
     value.reserve(length);
     for (uint16_t i = 0; i < length; i++)
         value += m_storage[m_rpos + i];
-    m_rpos += length;
 
+    m_rpos += length;
+    return *this;
+}
+
+// Reads vector and vector length from stream
+ByteBuffer& ByteBuffer::operator >> (std::vector<uint8_t>& value)
+{
+    uint16_t length;
+    *this >> length;
+
+    if (m_rpos + length > m_storage.size())
+        throw std::out_of_range("Reading out of Range");
+
+    value.resize(length);
+    for (uint16_t i = 0; i < length; i++)
+        value[i] = m_storage[m_rpos + i];
+
+    m_rpos += length;
     return *this;
 }

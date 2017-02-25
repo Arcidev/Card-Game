@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <vector>
 #include "OpenSSL/rsa.h"
 
 class Rsa
@@ -8,6 +8,6 @@ class Rsa
         static RSA* createRSA(unsigned char* key, bool isPublic);
 
     public:
-        static std::string Encrypt(std::string const& data, unsigned char* key, bool isPublic);
-        static std::string Decrypt(std::string const& data, unsigned char* key, bool isPublic);
+        static std::vector<uint8_t> Encrypt(std::vector<uint8_t> const& data, unsigned char* key, bool isPublic);
+        static std::vector<uint8_t> Decrypt(std::vector<uint8_t> const& data, unsigned char* key, bool isPublic);
 };
