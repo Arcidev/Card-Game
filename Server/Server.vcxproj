@@ -93,6 +93,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
+    <ClInclude Include="Multiplatform\Signals.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\DefensiveCard.h" />
     <ClInclude Include="Server\Cards\MeleeCard.h" />
@@ -109,6 +110,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Server\PlayerDefines.h" />
     <ClInclude Include="Server\ServerGame.h" />
     <ClInclude Include="Server\ServerNetwork.h" />
+    <ClInclude Include="Server\SignalHandler.h" />
     <ClInclude Include="Server\Spells\Spell.h" />
     <ClInclude Include="Server\Spells\SpellAuraEffect.h" />
     <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h" />
@@ -140,6 +142,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Server.cpp" />
     <ClCompile Include="Server\ServerGame.cpp" />
     <ClCompile Include="Server\ServerNetwork.cpp" />
+    <ClCompile Include="Server\SignalHandler.cpp" />
     <ClCompile Include="Server\Spells\Spell.cpp" />
     <ClCompile Include="Server\Spells\SpellAuraEffect.cpp" />
     <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp" />

@@ -30,6 +30,7 @@ void Player::Disconnect()
     m_game->DisconnectPlayer(m_id);
     m_network->OnPlayerDisconnected(this);
     shutdown(m_socket, SD_BOTH);
+    closesocket(m_socket);
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 

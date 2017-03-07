@@ -4,6 +4,7 @@
 class ServerGame
 {
     private:
+        bool m_isShuttingDown;
         // IDs for the clients connecting for table in ServerNetwork 
         static unsigned int m_clientId;
         // The ServerNetwork object 
@@ -12,6 +13,7 @@ class ServerGame
         void update();
 
     public:
+        ServerGame();
         void Loop();
 };
 

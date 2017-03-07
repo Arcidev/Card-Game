@@ -107,6 +107,12 @@
     <ClInclude Include="Server\NetworkServices.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\SignalHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Multiplatform\Signals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -191,6 +197,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server\ServerNetwork.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\SignalHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

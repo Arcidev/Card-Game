@@ -1,8 +1,11 @@
 #include "ServerGame.h"
+#include "SignalHandler.h"
 #include "Player.h"
 #include "../Shared/SharedDefines.h"
 
 unsigned int ServerGame::m_clientId = 1;
+
+ServerGame::ServerGame() : m_isShuttingDown(false) { }
 
 // Looking for new connections and data from connected clients
 void ServerGame::update()
@@ -18,6 +21,7 @@ void ServerGame::update()
 // Infinite server pdate loop
 void ServerGame::Loop()
 {
-    while (true)
+    SignalHandler::RegisterMethod(SIGNAL_CTRL_C, [&]() { m_isShuttingDown = true; m_network.Close(); return true; });
+    while (!m_isShuttingDown)
         update();
 }

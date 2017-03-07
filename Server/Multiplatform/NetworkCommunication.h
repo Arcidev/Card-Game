@@ -22,6 +22,7 @@
 #define SD_BOTH 2
 #define InitWinsock(word, data) 0
 #define CloseWinsock [] () { }
+#define closesocket close
 #define GetSockError() errno
 #define ZeroMemory(destination, length) memset(destination, 0, length)
 #define INVALID_SOCKET -1
