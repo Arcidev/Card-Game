@@ -16,6 +16,7 @@
 #include "netdb.h"
 #include "netinet/tcp.h"
 #include "errno.h"
+#include "unistd.h"
 #include <cstring>
 #define SOCKET int
 #define WSADATA int

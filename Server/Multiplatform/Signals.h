@@ -7,6 +7,7 @@
 #endif // !_WIN32
 
 #ifdef __unix__
-#define SIGNAL int
+#include <csignal>
+#define SIGNAL unsigned long
 #define SIGNAL_CTRL_C SIGINT
 #endif // !__unix__
