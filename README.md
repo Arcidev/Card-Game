@@ -11,7 +11,8 @@ Card-Game
 [![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game) (GCC 4.8 Server only)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (MSVC14)
-##How to build and run:
+
+## How to build and run:
   <b>Windows (Automated for MS Visual Studio 14):</b>
   
     Server:
