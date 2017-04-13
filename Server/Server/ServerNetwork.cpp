@@ -134,7 +134,7 @@ bool ServerNetwork::AcceptNewClient(unsigned int& id)
 
         // insert new client into session id table
         m_players.insert(std::make_pair(id, std::make_pair(player, t)));
-		
+
         return true;
     }
 
