@@ -29,9 +29,7 @@ Card-Game
       Not officially supported yet
       
 ## Copyright
-<b>License:</b> GPL 3.0
-
-Read file [LICENSE](LICENSE.md)
+[![license](https://img.shields.io/github/license/Arcidev/Card-Game.svg?maxAge=2592000?style=plastic)](LICENSE.md)
 
 ## Links
 [Wiki](https://github.com/Arcidev/Card-Game/wiki)
