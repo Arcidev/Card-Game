@@ -14,7 +14,7 @@ namespace Client.Network
         {
             UInt16 cardsCount = packet.ReadUInt16();
 
-            Dictionary<UInt32, SelectableCard> cards = new Dictionary<UInt32, SelectableCard>();
+            var cards = new Dictionary<UInt32, SelectableCard>();
             bool[] hasSpell = new bool[cardsCount];
             for (UInt16 i = 0; i < cardsCount; i++)
                 hasSpell[i] = packet.ReadBit();
@@ -51,7 +51,7 @@ namespace Client.Network
         // Handle SMSG_SELECT_CARDS_FAILED packet
         private static void HandleSelectCardsFailed(Packet packet, ClientGame game)
         {
-            game.Chat.Write(string.Format("Selecting cards failed: {0}", ((SelectCardFailReason)packet.ReadByte()).GetDescription()), ChatTypes.Info);
+            game.Chat.Write($"Selecting cards failed: {((SelectCardFailReason)packet.ReadByte()).GetDescription()}", ChatTypes.Info);
         }
 
         // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet

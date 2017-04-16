@@ -19,7 +19,7 @@ namespace Client.Network
             {
                 UInt32 opponentId = packet.ReadUInt32();
                 string opponentName = packet.ReadString();
-                message = string.Format("{0} has joined the game", opponentName);
+                message = $"{opponentName} has joined the game";
 
                 game.Opponent.Id = opponentId;
                 game.Opponent.Name = opponentName;

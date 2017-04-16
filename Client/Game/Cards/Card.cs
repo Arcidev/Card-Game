@@ -171,8 +171,10 @@ namespace Client.Game
                 // Spell
                 if (Spell != null)
                 {
-                    var spell = new FormattedText(Spell.Info, cultureInfo, FlowDirection.LeftToRight, spellInfoTypeface, spellInfoFontSize, Brushes.Black);
-                    spell.MaxTextWidth = spellInfoTextWidth;
+                    var spell = new FormattedText(Spell.Info, cultureInfo, FlowDirection.LeftToRight, spellInfoTypeface, spellInfoFontSize, Brushes.Black)
+                    {
+                        MaxTextWidth = spellInfoTextWidth
+                    };
                     drawingContext.DrawText(spell, spellInfoPosition);
                 }
             }
@@ -213,11 +215,11 @@ namespace Client.Game
         // Visually selects card
         private BitmapSource SelectedCard()
         {
-            Brush borderColor = selectionColors[SelectionType];
+            var borderColor = selectionColors[SelectionType];
             if (borderColor == null)
                 return image;
 
-            DrawingVisual drawingVisual = new DrawingVisual();
+            var drawingVisual = new DrawingVisual();
             using (DrawingContext drawingContext = drawingVisual.RenderOpen())
             {
                 // Card

@@ -21,26 +21,23 @@ namespace Client.Game
         private Task networkConnectionTask;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ClientNetwork network;
-        private MainWindow mainWindow;
-        private ChatHandler chat;
-        private static readonly string[] servers =
+        private static readonly int port = 10751;
+
+        public static string[] Servers { get; private set; } =
         {
             "localhost",
             "calista.mine.sk"
         };
-        private static readonly int port = 10751;
-
-        public static string[] Servers { get { return servers; } }
-        public MainWindow MainWindow { get { return mainWindow; } }
-        public ChatHandler Chat { get { return chat; } }
+        public MainWindow MainWindow { get; private set; }
+        public ChatHandler Chat { get; private set; }
         public Player Player { get; set; }
         public Player Opponent { get; set; }
 
         private ClientGame(string name, MainWindow window, ClientNetwork network)
         {
-            mainWindow = window;
+            MainWindow = window;
             this.network = network;
-            chat = new ChatHandler(this);
+            Chat = new ChatHandler(this);
             Player = new Player(this, MainWindow.PlayerCard1, MainWindow.PlayerCard2, MainWindow.PlayerCard3, MainWindow.PlayerCard4) { Name = name };
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
 
@@ -119,9 +116,9 @@ namespace Client.Game
         public void SendChatMessage(string text, ChatTypes chatType, params string[] customParams)
         {
             if (chatType == ChatTypes.AutoSelect)
-                chatType = chat.ActiveChat;
+                chatType = Chat.ActiveChat;
 
-            chat.SendChatMessage(text, chatType, customParams);
+            Chat.SendChatMessage(text, chatType, customParams);
         }
 
         // Handles command written in chat
@@ -133,7 +130,7 @@ namespace Client.Game
         // Invokes action to UI thread
         public void Invoke(Action action)
         {
-            mainWindow.Invoke(action);
+            MainWindow.Invoke(action);
         }
 
         // Sends selected cards to server

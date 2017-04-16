@@ -19,8 +19,8 @@ namespace Client.Game
         public string Name { get; set; }
         public bool IsActive { get; private set; }
         public int ActiveCardPosition { get; private set; }
-        public PlayableCard ActiveCard { get { return cardDeck[ActiveCardPosition].First; } }
-        public IEnumerable<PlayableCard> CardDeck { get { return cardDeck.Select(x => x.First); } }
+        public PlayableCard ActiveCard => cardDeck[ActiveCardPosition].First;
+        public IEnumerable<PlayableCard> CardDeck => cardDeck.Select(x => x.First);
 
         public Player(ClientGame clientGame, params Image[] imageLocations)
         {
@@ -28,8 +28,10 @@ namespace Client.Game
             cardDeck = new Pair<PlayableCard, Image>[imageLocations.Length];
             for (int i = 0; i < imageLocations.Length; i++)
             {
-                cardDeck[i] = new Pair<PlayableCard, Image>();
-                cardDeck[i].Second = imageLocations[i];
+                cardDeck[i] = new Pair<PlayableCard, Image>()
+                {
+                    Second = imageLocations[i]
+                };
             }
         }
 
@@ -50,10 +52,9 @@ namespace Client.Game
         {
             for (int i = 0; i < cardGuids.Length; i++)
             {
-                PlayableCard card;
-                if (cards.TryGetValue(cardGuids[i], out card))
+                if (cards.TryGetValue(cardGuids[i], out PlayableCard card))
                 {
-                    Invoke(new Action(delegate()
+                    Invoke(new Action(delegate ()
                     {
                         cardDeck[i].First = card;
                         cardDeck[i].Second.Source = card.Image;
@@ -196,8 +197,7 @@ namespace Client.Game
         // Destroys card
         public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
-            PlayableCard card = null;
-            if (cards.TryGetValue(guid, out card))
+            if (cards.TryGetValue(guid, out PlayableCard card))
             {
                 if (isPeriodicDamage)
                     game.Chat.LogPeriodicDamage(card, damage, false);

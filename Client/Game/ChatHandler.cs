@@ -31,7 +31,7 @@ namespace Client.Game
         // Writes message as channel message into chat
         public void WriteChannelMessage(ChatTypes chatType, string message, string sender)
         {
-            Write(string.Format("[{0}] {1}> {2}", chatType.GetDescription(), sender, message), chatType);
+            Write($"[{chatType.GetDescription()}] {sender}> {message}", chatType);
         }
 
         // Sends chat message to server
@@ -72,49 +72,49 @@ namespace Client.Game
         // Write info about damage into combat log chat tab
         public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
         {
-            var message = alive ? string.Format("{0} dealt {1} damage to {2}", attacker.Name, damage, victim.Name) : string.Format("{0} killed {1} with {2}", attacker.Name, victim.Name, damage);
+            var message = alive ? $"{attacker.Name} dealt {damage} damage to {victim.Name}" : $"{attacker.Name} killed {victim.Name} with {damage}";
             WriteLog(message, combatLogType);
         }
 
         // Write info about periodic damage into combat log chat tab
         public void LogPeriodicDamage(PlayableCard victim, byte damage, bool alive)
         {
-            var message = alive ? string.Format("{0} suffered {1} damage", victim.Name, damage) : string.Format("{0} has been killed with {1} damage", victim.Name, damage);
+            var message = alive ? $"{victim.Name} suffered {damage} damage" : $"{victim.Name} has been killed with {damage} damage";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Logs stat change into chat
         public void LogStatChange(CardStats stat, PlayableCard card, sbyte value)
         {
-            var message = string.Format("{0}'s {1} has been changed by {2}", card.Name, stat.GetDescription(), value);
+            var message = $"{card.Name}'s {stat.GetDescription()} has been changed by {value}";
             WriteLog(message, CombatLogTypes.StatChange);
         }
 
         // Logs apply aura
         public void LogApplyAura(PlayableCard card, SpellData spell)
         {
-            var message = string.Format("{0} is now aflicted by {1}", card.Name, spell.Name);
+            var message = $"{card.Name} is now aflicted by {spell.Name}";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Logs heal from spell
         public void LogHeal(PlayableCard card, byte amount)
         {
-            var message = string.Format("{0} has been healed by {1}", card.Name, amount);
+            var message = $"{card.Name} has been healed by {amount}";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Logs consuming mana from spell
         public void LogManaConsume(PlayableCard card, SpellData spellData, byte manaCost)
         {
-            var message = string.Format("{0} consumes {1} mana from {2}", spellData.Name, manaCost, card.Name);
+            var message = $"{spellData.Name} consumes {manaCost} mana from {card.Name}";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Logs mana replenishment
         public void LogManaReplenishment(Player player, byte mana)
         {
-            var message = string.Format("{0}'s cards have replenished {1} mana", player.Name, mana);
+            var message = $"{player.Name}'s cards have replenished {mana} mana";
             WriteLog(message, CombatLogTypes.StatChange);
         }
 
@@ -158,8 +158,10 @@ namespace Client.Game
         {
             clientGame.Invoke(new Action(delegate()
             {
-                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
-                tr.Text = string.Format("{0}{1}", message, CommandHandler.LineSeparator);
+                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd)
+                {
+                    Text = $"{message}{CommandHandler.LineSeparator}"
+                };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
                 rtb.ScrollToEnd();
             }));

@@ -10,8 +10,8 @@ namespace Client.Data
         private static IDictionary<UInt32, SelectableCard> cardsMap;
         private static IDictionary<UInt32, SpellData> spellsDataMap;
 
-        public static IEnumerable<SelectableCard> Cards { get { return cardsMap != null ? cardsMap.Values : null; } }
-        
+        public static IEnumerable<SelectableCard> Cards => cardsMap?.Values;
+
         // Loads cards from database
         public static void LoadData(IDictionary<UInt32, SelectableCard> cards)
         {
@@ -26,8 +26,7 @@ namespace Client.Data
         // Returns card by id
         public static SelectableCard GetCard(UInt32 id)
         {
-            SelectableCard card;
-            if (cardsMap.TryGetValue(id, out card))
+            if (cardsMap.TryGetValue(id, out SelectableCard card))
                 return card;
 
             return null;
@@ -36,8 +35,7 @@ namespace Client.Data
         // Returns spells data
         public static SpellData GetSpellData(UInt32 id)
         {
-            SpellData spellData;
-            if (spellsDataMap.TryGetValue(id, out spellData))
+            if (spellsDataMap.TryGetValue(id, out SpellData spellData))
                 return spellData;
 
             return new SpellData(id, "", "", null);
@@ -73,11 +71,10 @@ namespace Client.Data
                 {
                     while (result.Read())
                     {
-                        SelectableCard card;
-                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out card))
+                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out SelectableCard card))
                         {
                             card.Name = Convert.ToString(result["name"]);
-                            card.ImageUri = string.Format("{0}/{1}", "Assets", Convert.ToString(result["imagePath"]));
+                            card.ImageUri = $"Assets/{Convert.ToString(result["imagePath"])}";
                         }
 
                         if (card.Spell != null)

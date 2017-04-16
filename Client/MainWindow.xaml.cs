@@ -150,7 +150,7 @@ namespace Client
         {
             if (selectedCardCount != 5)
             {
-                game.Chat.Write(string.Format("You have not selected {0} cards", maxCardsCount), ChatTypes.Info);
+                game.Chat.Write($"You have not selected {maxCardsCount} cards", ChatTypes.Info);
                 return;
             }
 
@@ -164,7 +164,7 @@ namespace Client
 
             if ((SlideShow.SelectedCard.SelectionType == SelectionType.None) && (selectedCardCount == maxCardsCount))
             {
-                game.Chat.Write(string.Format("You can't select more cards than {0}", maxCardsCount), ChatTypes.Info);
+                game.Chat.Write($"You can't select more cards than {maxCardsCount}", ChatTypes.Info);
                 return;
             }
 

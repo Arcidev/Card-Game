@@ -27,7 +27,7 @@ namespace Client.Network
         // Handle SMSG_PLAYER_DISCONNECTED packet
         private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
         {
-            game.Chat.Write(string.Format("Player \"{0}\" has disconnected", game.Opponent.Name), ChatTypes.Info);
+            game.Chat.Write($"Player \"{game.Opponent.Name}\" has disconnected", ChatTypes.Info);
         }
 
         // Handle SMSG_END_GAME packet

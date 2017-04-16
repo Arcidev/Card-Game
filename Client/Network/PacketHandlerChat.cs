@@ -19,7 +19,7 @@ namespace Client.Network
         // Handle SMSG_WHISPER_FAILED packet
         private static void HandleWhisperFailed(Packet packet, ClientGame game)
         {
-            game.Chat.Write(string.Format("Player \"{0}\" not found", packet.ReadString()), ChatTypes.Info);
+            game.Chat.Write($"Player \"{packet.ReadString()}\" not found", ChatTypes.Info);
         }
     }
 }
