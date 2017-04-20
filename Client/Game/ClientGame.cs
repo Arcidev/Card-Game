@@ -157,13 +157,13 @@ namespace Client.Game
                 return;
 
             SetActiveCardActionGrid(false);
-            Packet packet = new Packet(CMSGPackets.CMSG_CARD_ACTION);
-            packet.WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5);
-            packet.FlushBits();
-
-            packet.WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0);
-            packet.Write((byte)card.SelectionType);
-            packet.WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4);
+            var packet = new Packet(CMSGPackets.CMSG_CARD_ACTION).Builder()
+                .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
+                .FlushBits()
+                .WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0)
+                .Write((byte)card.SelectionType)
+                .WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4)
+                .Build();
 
             SendPacket(packet);
             packet.Dispose();
