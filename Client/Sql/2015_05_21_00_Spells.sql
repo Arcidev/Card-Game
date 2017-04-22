@@ -3,6 +3,5 @@ CREATE TABLE Spells
 (
 	Id INT NOT NULL PRIMARY KEY,
 	Name text not null,
-	Description text not null,
-	SpellEffectPath text
+	Description text not null
 );

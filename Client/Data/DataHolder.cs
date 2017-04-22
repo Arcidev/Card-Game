@@ -38,7 +38,7 @@ namespace Client.Data
             if (spellsDataMap.TryGetValue(id, out SpellData spellData))
                 return spellData;
 
-            return new SpellData(id, "", "", null);
+            return new SpellData(id, "", "");
         }
 
         // Unloads data from memory
@@ -49,12 +49,12 @@ namespace Client.Data
             spellsDataMap = new Dictionary<UInt32, SpellData>();
             using (var cmd = connection.CreateCommand())
             {
-                cmd.CommandText = "SELECT id, name, description, spellEffectPath FROM Spells";
-                using (SQLiteDataReader result = cmd.ExecuteReader())
+                cmd.CommandText = "SELECT id, name, description FROM Spells";
+                using (var result = cmd.ExecuteReader())
                 {
                     while (result.Read())
                     {
-                        SpellData spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]), Convert.ToString(result["spellEffectPath"]));
+                        var spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]));
                         spellsDataMap.Add(spellData.SpellId, spellData);
                     }
                 }
@@ -67,7 +67,7 @@ namespace Client.Data
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT id, name, imagePath FROM Cards";
-                using (SQLiteDataReader result = cmd.ExecuteReader())
+                using (var result = cmd.ExecuteReader())
                 {
                     while (result.Read())
                     {
@@ -75,10 +75,10 @@ namespace Client.Data
                         {
                             card.Name = Convert.ToString(result["name"]);
                             card.ImageUri = $"Assets/{Convert.ToString(result["imagePath"])}";
-                        }
 
-                        if (card.Spell != null)
-                            card.Spell.SpellData = GetSpellData(card.Spell.Id);
+                            if (card.Spell != null)
+                                card.Spell.SpellData = GetSpellData(card.Spell.Id);
+                        }
                     }
                 }
             }
