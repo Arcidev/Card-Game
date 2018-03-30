@@ -1,18 +1,18 @@
 ﻿using Arci.Networking.Data;
 using Arci.Networking.Security;
-using System;
-using System.Linq;
+using Arci.Networking.Security.AesOptions;
 using Client.Network;
 using Client.Enums;
 using Client.Security;
 using Client.Data;
+using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ClientNetwork = Arci.Networking.Client;
-using System.Threading.Tasks;
-using Arci.Networking.Security.AesOptions;
-using System.Security.Cryptography;
-using System.Threading;
 
 namespace Client.Game
 {
@@ -21,16 +21,20 @@ namespace Client.Game
         private Task networkConnectionTask;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ClientNetwork network;
-        private static readonly int port = 10751;
+        private const int port = 10751;
 
         public static string[] Servers { get; private set; } =
         {
             "localhost",
             "calista.mine.sk"
         };
+
         public MainWindow MainWindow { get; private set; }
+
         public ChatHandler Chat { get; private set; }
+
         public Player Player { get; set; }
+
         public Player Opponent { get; set; }
 
         private ClientGame(string name, MainWindow window, ClientNetwork network)
@@ -42,9 +46,9 @@ namespace Client.Game
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
 
             // Sends init packet to server
-            Packet packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
-            RsaEncryptor rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
-            AesEncryptor aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
+            var packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
+            var rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
+            var aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
             network.AesEncryptor = aes;
             packet.Write(rsa.Encrypt(aes.Encryptors));
             packet.Write(aes.Encrypt(name));
@@ -59,7 +63,7 @@ namespace Client.Game
         // Creates new instance of game
         public static async Task<ClientGame> CreateAsync(string name, string server, MainWindow window)
         {
-            ClientNetwork network = await ClientNetwork.CreateAsync(server, port);
+            var network = await ClientNetwork.CreateAsync(server, port);
             if (network == null)
                 return null;
 
@@ -73,7 +77,7 @@ namespace Client.Game
             if (player == null)
                 return null;
 
-            return (Player.Id == playerId) ? Player : Opponent;
+            return Player.Id == playerId ? Player : Opponent;
         }
 
         // Gets opponent to player by id
@@ -83,12 +87,13 @@ namespace Client.Game
             if (player == null)
                 return null;
 
-            return (Player.Id == playerId) ? Opponent : Player;
+            return Player.Id == playerId ? Opponent : Player;
         }
 
+        // Determines if the player is opponent
         public bool IsOpponent(UInt32 playerId)
         {
-            return (Opponent != null) && (Opponent.Id == playerId);
+            return Opponent != null && Opponent.Id == playerId;
         }
 
         // Sends packet to server
@@ -136,7 +141,7 @@ namespace Client.Game
         // Sends selected cards to server
         public void SendSelectedCards()
         {
-            Packet packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
+            var packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
             var cards = DataHolder.Cards.Where(x => x.SelectionType == SelectionType.Selected);
 
             packet.Write((byte)cards.Count());
@@ -173,7 +178,7 @@ namespace Client.Game
         public void SendDefendSelf()
         {
             SetActiveCardActionGrid(false);
-            Packet packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
+            var packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
             SendPacket(packet);
             packet.Dispose();
         }
@@ -181,24 +186,24 @@ namespace Client.Game
         // Shows card deck
         public void ShowCardDeck(bool visible)
         {
-            Visibility visibility = visible ? Visibility.Visible : Visibility.Hidden;
-            Invoke(new Action(delegate()
+            var visibility = visible ? Visibility.Visible : Visibility.Hidden;
+            Invoke(() =>
             {
                 MainWindow.CardDeckGrid.Visibility = visibility;
                 MainWindow.CardActionGrid.Visibility = visibility;
-            }));
+            });
         }
 
         // Activates/deactivates card action grid
         public void SetActiveCardActionGrid(bool active)
         {
-            Invoke(new Action(delegate()
+            Invoke(() =>
             {
                 MainWindow.Cursor = Cursors.Arrow;
                 MainWindow.CardActionGrid.IsEnabled = active;
                 if (active)
                     MainWindow.UseSpellButton.IsEnabled = Player.CanCastSpell(); ;
-            }));
+            });
         }
 
         // Unloads data

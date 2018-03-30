@@ -121,12 +121,12 @@ namespace Client
                 ChatButton_Click(this, new EventArgs());
         }
 
-        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        private void BtnPrevious_Click(object sender, RoutedEventArgs e)
         {
             SlideShow.PreviousElements();
         }
 
-        private void btnNext_Click(object sender, RoutedEventArgs e)
+        private void BtnNext_Click(object sender, RoutedEventArgs e)
         {
             SlideShow.NextElements();
         }

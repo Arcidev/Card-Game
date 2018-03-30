@@ -7,8 +7,7 @@ namespace Client.Game
 {
     public class RangedCard : PlayableCard
     {
-        public RangedCard(UInt64 guid, Card card)
-            : base(guid, card) { }
+        public RangedCard(UInt64 guid, Card card) : base(guid, card) { }
 
         public override IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex)
         {

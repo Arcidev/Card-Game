@@ -12,34 +12,34 @@ namespace Client.Network
         // Handle SMSG_AVAILABLE_CARDS packet
         private static void HandleAvailableCards(Packet packet, ClientGame game)
         {
-            UInt16 cardsCount = packet.ReadUInt16();
-
+            var cardsCount = packet.ReadUInt16();
             var cards = new Dictionary<UInt32, SelectableCard>();
-            bool[] hasSpell = new bool[cardsCount];
-            for (UInt16 i = 0; i < cardsCount; i++)
+            var hasSpell = new bool[cardsCount];
+
+            for (var i = 0; i < cardsCount; i++)
                 hasSpell[i] = packet.ReadBit();
 
-            for (UInt16 i = 0; i < cardsCount; i++)
+            for (var i = 0; i < cardsCount; i++)
             {
-                UInt32 id = packet.ReadUInt32();
-                CreatureTypes type = (CreatureTypes)packet.ReadByte();
-                byte health = packet.ReadByte();
+                var id = packet.ReadUInt32();
+                var type = (CreatureTypes)packet.ReadByte();
+                var health = packet.ReadByte();
                 Spell spell = null;
                 if (hasSpell[i])
                 {
-                    byte manaCost = packet.ReadByte();
-                    UInt32 spellId = packet.ReadUInt32();
-                    byte spellEffectsCount = packet.ReadByte();
-                    SpellEffect[] spellEffects = new SpellEffect[spellEffectsCount];
+                    var manaCost = packet.ReadByte();
+                    var spellId = packet.ReadUInt32();
+                    var spellEffectsCount = packet.ReadByte();
+                    var spellEffects = new SpellEffect[spellEffectsCount];
                     for (int j = 0; j < spellEffectsCount; j++)
                         spellEffects[j] = new SpellEffect(packet.ReadByte());
 
                     spell = new Spell(spellId, manaCost, spellEffects);
                 }
-                byte damage = packet.ReadByte();
-                byte mana = packet.ReadByte();
-                byte defense = packet.ReadByte();
-                byte price = packet.ReadByte();
+                var damage = packet.ReadByte();
+                var mana = packet.ReadByte();
+                var defense = packet.ReadByte();
+                var price = packet.ReadByte();
                 cards.Add(id, new SelectableCard(id, type, health, damage, mana, defense, price, spell));
             }
 
@@ -87,16 +87,16 @@ namespace Client.Network
             }
 
             var senderId = packet.ReadUInt32();
-            Player player1 = (game.Player.Id == senderId) ? game.Player : game.Opponent;
-            Player player2 = (game.Player.Id == senderId) ? game.Opponent : game.Player;
+            var player1 = (game.Player.Id == senderId) ? game.Player : game.Opponent;
+            var player2 = (game.Player.Id == senderId) ? game.Opponent : game.Player;
 
-            PlayableCard[] cards1 = new PlayableCard[count1];
-            PlayableCard[] cards2 = new PlayableCard[count2];
+            var cards1 = new PlayableCard[count1];
+            var cards2 = new PlayableCard[count2];
 
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0, 1, 6, 4, 5);
-                UInt32 id = packet.ReadUInt32();
+                var id = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(guids1[i], 3);
                 cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id));
             }
@@ -104,7 +104,7 @@ namespace Client.Network
             for (var i = 0; i < count2; i++)
             {
                 packet.ReadGuidByteStreamInOrder(guids2[i], 4, 2, 6, 1, 7, 0);
-                UInt32 id = packet.ReadUInt32();
+                var id = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
                 cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id));
             }
@@ -121,7 +121,7 @@ namespace Client.Network
         {
             var cardsCount = packet.ReadByte();
             var guids = new PacketGuid[cardsCount];
-            for (byte i = 0; i < cardsCount; i++)
+            for (var i = 0; i < cardsCount; i++)
             {
                 guids[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids[i], 7, 2, 1, 4, 5, 0, 6, 3);
@@ -131,7 +131,7 @@ namespace Client.Network
             if (player == null)
                 return;
 
-            for (byte i = 0; i < cardsCount; i++)
+            for (var i = 0; i < cardsCount; i++)
                 packet.ReadGuidByteStreamInOrder(guids[i], 2, 1, 7, 6, 0, 5, 3, 4);
 
             player.PutCardsOnDeck(Array.ConvertAll(guids, guid => (UInt64)guid));
@@ -143,11 +143,11 @@ namespace Client.Network
             var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 2, 6, 7, 1, 0, 3, 5, 4);
             packet.ReadGuidByteStreamInOrder(guid, 5, 7);
-            sbyte value = packet.ReadSByte();
+            var value = packet.ReadSByte();
             packet.ReadGuidByteStreamInOrder(guid, 6, 3, 1);
-            UInt32 playerId = packet.ReadUInt32();
+            var playerId = packet.ReadUInt32();
             packet.ReadGuidByteStreamInOrder(guid, 0, 4, 2);
-            CardStats cardStat = (CardStats)packet.ReadByte();
+            var cardStat = (CardStats)packet.ReadByte();
 
             game.GetPlayer(playerId).ModifyCardStat(guid, cardStat, value);
         }
@@ -159,10 +159,10 @@ namespace Client.Network
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 6, 1, 3, 0, 5, 4);
 
             packet.ReadGuidByteStreamInOrder(guid, 5, 2, 7, 1);
-            Player player = game.GetPlayer(packet.ReadUInt32());
-            byte health = packet.ReadByte();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var health = packet.ReadByte();
             packet.ReadGuidByteStreamInOrder(guid, 4, 0, 3, 6);
-            byte amount = packet.ReadByte();
+            var amount = packet.ReadByte();
 
             player.HealCard(guid, health, amount);
         }
@@ -170,22 +170,22 @@ namespace Client.Network
         // Handle SMSG_MANA_REPLENISHMENT packet
         private static void HandleManaReplenishment(Packet packet, ClientGame game)
         {
-            byte cardCount = packet.ReadByte();
+            var cardCount = packet.ReadByte();
             var guids = new PacketGuid[cardCount];
 
-            for (byte i = 0; i < cardCount; i++)
+            for (var i = 0; i < cardCount; i++)
             {
                 guids[i] = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(guids[i], 5, 0, 1, 2, 3, 7, 4, 6);
             }
 
-            Player player = game.GetPlayer(packet.ReadUInt32());
-            byte manaReplenished = packet.ReadByte();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var manaReplenished = packet.ReadByte();
 
-            for (byte i = 0; i < cardCount; i++)
+            for (var i = 0; i < cardCount; i++)
             {
                 packet.ReadGuidByteStreamInOrder(guids[i], 2, 6, 0, 7, 1, 4, 3, 5);
-                byte mana = packet.ReadByte();
+                var mana = packet.ReadByte();
 
                 player.SetCardMana(guids[i], mana);
             }
@@ -196,7 +196,7 @@ namespace Client.Network
         // Handle SMSG_ATTACK_RESULT packet
         private static void HandleAttackResult(Packet packet, ClientGame game)
         {
-            AttackResult result = (AttackResult)packet.ReadByte();
+            var result = (AttackResult)packet.ReadByte();
             if (result == AttackResult.InvalidTarget)
             {
                 game.SetActiveCardActionGrid(true);
@@ -208,12 +208,12 @@ namespace Client.Network
                 var cardGuid = new PacketGuid();
                 packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
                 packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
-                UInt32 attackerId = packet.ReadUInt32();
+                var attackerId = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(cardGuid, 1, 3, 0);
-                byte damage = packet.ReadByte();
+                var damage = packet.ReadByte();
                 packet.ReadGuidByteStreamInOrder(cardGuid, 5, 4);
 
-                Player opponent = game.GetOpponent(attackerId);
+                var opponent = game.GetOpponent(attackerId);
                 if (result == AttackResult.CardAttacked)
                     opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
                 else

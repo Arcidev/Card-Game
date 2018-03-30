@@ -16,17 +16,22 @@ namespace Client.Game
         private Pair<PlayableCard, Image>[] cardDeck;
 
         public UInt32 Id { get; set; }
+
         public string Name { get; set; }
+
         public bool IsActive { get; private set; }
+
         public int ActiveCardPosition { get; private set; }
+
         public PlayableCard ActiveCard => cardDeck[ActiveCardPosition].First;
+
         public IEnumerable<PlayableCard> CardDeck => cardDeck.Select(x => x.First);
 
         public Player(ClientGame clientGame, params Image[] imageLocations)
         {
             game = clientGame;
             cardDeck = new Pair<PlayableCard, Image>[imageLocations.Length];
-            for (int i = 0; i < imageLocations.Length; i++)
+            for (var i = 0; i < imageLocations.Length; i++)
             {
                 cardDeck[i] = new Pair<PlayableCard, Image>()
                 {
@@ -50,26 +55,26 @@ namespace Client.Game
         // put cards on deck
         public void PutCardsOnDeck(UInt64[] cardGuids)
         {
-            for (int i = 0; i < cardGuids.Length; i++)
+            for (var i = 0; i < cardGuids.Length; i++)
             {
                 if (cards.TryGetValue(cardGuids[i], out PlayableCard card))
                 {
-                    Invoke(new Action(delegate ()
+                    Invoke(() =>
                     {
                         cardDeck[i].First = card;
                         cardDeck[i].Second.Source = card.Image;
-                    }));
+                    });
                 }
             }
 
             var availableCardsCount = cards.Count;
-            for (int i = cardGuids.Length; i < cardDeck.Length; i++)
+            for (var i = cardGuids.Length; i < cardDeck.Length; i++)
             {
-                Invoke(new Action(delegate()
+                Invoke(() =>
                 {
                     cardDeck[i].First = null;
                     cardDeck[i].Second.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
-                }));
+                });
             }
         }
 
@@ -88,21 +93,21 @@ namespace Client.Game
             var activeCardDeck = cardDeck[ActiveCardPosition];
             if (activeCardDeck.First.SelectionType != SelectionType.Selected)
             {
-                Invoke(new Action(delegate()
+                Invoke(() =>
                 {
                     activeCardDeck.First.SelectionType = SelectionType.Selected;
                     activeCardDeck.Second.Source = activeCardDeck.First.Image;
-                }));
+                });
 
                 foreach(var card in cardDeck.Where(x => x.First != null))
                 {
                     if (card.First.SelectionType == SelectionType.SpellUsable)
                     {
-                        Invoke(new Action(delegate()
+                        Invoke(() =>
                         {
                             card.First.SelectionType = SelectionType.None;
                             card.Second.Source = card.First.Image;
-                        }));
+                        });
                     }
                 }
             }
@@ -113,11 +118,11 @@ namespace Client.Game
         {
             foreach (var card in cardDeck.Where(x => x.First != null && x.First.SelectionType != SelectionType.None))
             {
-                Invoke(new Action(delegate()
+                Invoke(() =>
                 {
                     card.First.SelectionType = SelectionType.None;
                     card.Second.Source = card.First.Image;
-                }));
+                });
             }
         }
 
@@ -126,11 +131,11 @@ namespace Client.Game
         {
             foreach (var card in cardDeck.Where(x => x.First != null && targetableCards.Contains(x.First.Guid)))
             {
-                Invoke(new Action(delegate()
+                Invoke(() =>
                 {
                     card.First.SelectionType = selection;
                     card.Second.Source = card.First.Image;
-                }));
+                });
             }
         }
 
@@ -138,7 +143,7 @@ namespace Client.Game
         public void SetActiveState(UInt64 cardGuid)
         {
             IsActive = true;
-            for(int i = 0; i < cardDeck.Length; i++)
+            for(var i = 0; i < cardDeck.Length; i++)
             {
                 var c = cardDeck[i];
                 if (c.First == null)
@@ -153,11 +158,11 @@ namespace Client.Game
 
                 if (c.First.SelectionType != select)
                 {
-                    Invoke(new Action(delegate()
+                    Invoke(() =>
                     {
                         c.First.SelectionType = select;
                         c.Second.Source = c.First.Image;
-                    }));
+                    });
                 }
             }
         }
@@ -187,11 +192,11 @@ namespace Client.Game
             else
                 game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, cardPair.First, damage, true);
             
-            Invoke(new Action(delegate()
+            Invoke(() =>
             {
                 cardPair.First.Hp -= damage;
                 cardPair.Second.Source = cardPair.First.Image;
-            }));
+            });
         }
 
         // Destroys card
@@ -216,11 +221,11 @@ namespace Client.Game
                 return;
 
             game.Chat.LogStatChange(cardStat, cardPair.First, value);
-            Invoke(new Action(delegate()
+            Invoke(() =>
             {
                 cardPair.First.ApplyModifier(cardStat, value);
                 cardPair.Second.Source = cardPair.First.Image;
-            }));
+            });
         }
 
         // Checks if is posible to cast spell
@@ -239,7 +244,7 @@ namespace Client.Game
             if (cardPair == null)
                 return;
 
-            SpellData spellData = DataHolder.GetSpellData(spellId);
+            var spellData = DataHolder.GetSpellData(spellId);
             game.Chat.LogApplyAura(cardPair.First, spellData);
 
             /// TODO: add some graphics effect
@@ -253,11 +258,11 @@ namespace Client.Game
                 return;
 
             game.Chat.LogHeal(cardPair.First, amount);
-            Invoke(new Action(delegate()
+            Invoke(() =>
             {
                 cardPair.First.Hp = health;
                 cardPair.Second.Source = cardPair.First.Image;
-            }));
+            });
         }
 
         // Consumes mana from card and logs it into comba log
@@ -267,7 +272,7 @@ namespace Client.Game
             if (cardPair == null)
                 return;
 
-            SpellData spellData = DataHolder.GetSpellData(spellId);
+            var spellData = DataHolder.GetSpellData(spellId);
             game.Chat.LogManaConsume(cardPair.First, spellData, manaCost);
 
             SetCardMana(cardPair, mana);
@@ -286,12 +291,11 @@ namespace Client.Game
         // Sets card mana
         private void SetCardMana(Pair<PlayableCard, Image> cardPair, byte mana)
         {
-
-            Invoke(new Action(delegate()
+            Invoke(() =>
             {
                 cardPair.First.Mana = mana;
                 cardPair.Second.Source = cardPair.First.Image;
-            }));
+            });
         }
     }
 }

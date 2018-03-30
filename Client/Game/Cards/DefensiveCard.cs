@@ -5,8 +5,7 @@ namespace Client.Game
 {
     public class DefensiveCard : PlayableCard
     {
-        public DefensiveCard(UInt64 guid, Card card)
-            : base(guid, card) { }
+        public DefensiveCard(UInt64 guid, Card card) : base(guid, card) { }
 
         public override IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex)
         {

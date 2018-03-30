@@ -1,7 +1,6 @@
 ﻿using Client.Data;
 using Client.Enums;
 using Client.Game;
-using System;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -58,29 +57,29 @@ namespace Client.UI
 
         public void LoadItems()
         {
-            mainWindow.Invoke(new Action(delegate()
+            mainWindow.Invoke(() =>
             {
                 mainWindow.Images.DataContext = DataHolder.Cards.Skip(index * sliderSize).Take(sliderSize);
                 mainWindow.Images.SelectedIndex = -1;
-            }));
+            });
         }
 
         public void UnloadItems()
         {
-            mainWindow.Invoke(new Action(delegate()
+            mainWindow.Invoke(() =>
             {
                 mainWindow.Images.DataContext = null;
                 mainWindow.Images.SelectedIndex = -1;
                 mainWindow.imgMain = null;
-            }));
+            });
         }
 
         public void SetVisible(bool visible)
         {
-            mainWindow.Invoke(new Action(delegate()
+            mainWindow.Invoke(() =>
             {
                 mainWindow.SlideShowGrid.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
-            }));
+            });
         }
 
         public void ItemSelected(Card card)

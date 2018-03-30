@@ -104,7 +104,7 @@
             </Grid.RowDefinitions>
             <Image x:Name="imgMain" Margin="25,0,25,8" Grid.Row="3" Grid.Column="0" MaxWidth="600" MaxHeight="600"/>
             <StackPanel Margin="0" Orientation="Horizontal"  Grid.Row="1" HorizontalAlignment="Center" Width="794.668" Grid.ColumnSpan="2">
-                <Button x:Name="BtnPrevious" Background="{x:Null}" BorderBrush="{x:Null}" Click="btnPrevious_Click">
+                <Button x:Name="BtnPrevious" Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnPrevious_Click">
                     <Image Source="Assets/nback.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
                 </Button>
                 <Border Margin="0" Width="666" Background="#FF656161">
@@ -116,7 +116,7 @@
                         </ListBox>
                     </Grid>
                 </Border>
-                <Button x:Name="BtnNext" HorizontalAlignment="Center" Click="btnNext_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button x:Name="BtnNext" HorizontalAlignment="Center" Click="BtnNext_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="Assets/nforward.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" RenderTransformOrigin="0.5,0.5"/>
                 </Button>
             </StackPanel>

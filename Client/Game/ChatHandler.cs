@@ -23,8 +23,8 @@ namespace Client.Game
         // Writes message into chat
         public void Write(string message, ChatTypes chatType)
         {
-            Brush brush = GetChatColor(chatType);
-            RichTextBox rtb = clientGame.MainWindow.GeneralChatTab;
+            var brush = GetChatColor(chatType);
+            var rtb = clientGame.MainWindow.GeneralChatTab;
             InvokeToChat(message, rtb, brush);
         }
 
@@ -40,7 +40,7 @@ namespace Client.Game
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            Packet packet = new Packet(CMSGPackets.CMSG_CHAT_MESSAGE);
+            var packet = new Packet(CMSGPackets.CMSG_CHAT_MESSAGE);
             packet.Write((byte)chatType);
             packet.Write(text.Trim());
             foreach (var p in customParams)
@@ -54,18 +54,18 @@ namespace Client.Game
         public void SetActiveChat(ChatTypes chatType)
         {
             ActiveChat = chatType;
-            clientGame.Invoke(new Action(delegate()
+            clientGame.Invoke(() =>
             {
                 clientGame.MainWindow.ChatActiveLabel.Content = chatType;
                 clientGame.MainWindow.ChatActiveLabel.Foreground = GetChatColor(chatType);
-            }));
+            });
         }
 
         // Writes message into combat log
         public void WriteLog(string message, CombatLogTypes combatLogType)
         {
-            Brush brush = GetCombatLogColor(combatLogType);
-            RichTextBox rtb = clientGame.MainWindow.CombatLogChatTab;
+            var brush = GetCombatLogColor(combatLogType);
+            var rtb = clientGame.MainWindow.CombatLogChatTab;
             InvokeToChat(message, rtb, brush);
         }
 
@@ -156,15 +156,15 @@ namespace Client.Game
         // Invokes chat message to UI thread
         private void InvokeToChat(string message, RichTextBox rtb, Brush brush)
         {
-            clientGame.Invoke(new Action(delegate()
+            clientGame.Invoke(() =>
             {
-                TextRange tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd)
+                var tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd)
                 {
                     Text = $"{message}{CommandHandler.LineSeparator}"
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
                 rtb.ScrollToEnd();
-            }));
+            });
         }
     }
 }

@@ -17,27 +17,27 @@ namespace Client.Game
             { SelectionType.BasicDamageAttackable,  Brushes.Red     },
             { SelectionType.SpellUsable,            Brushes.Blue    }
         };
-
+        
         private BitmapSource cardTemplateImage;
         private BitmapSource image;
 
-        private static readonly int creatureImageWidth = 656;
-        private static readonly int creatureImageHeight = 480;
-        private static readonly int creatureImageHeightOffset = 104;
+        private const int creatureImageWidth = 656;
+        private const int creatureImageHeight = 480;
+        private const int creatureImageHeightOffset = 104;
 
         private static readonly CultureInfo cultureInfo = new CultureInfo("en-GB");
         private static readonly Typeface cardInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-        private static readonly double cardInfoFontSize = 60.0;
-        private static readonly double cardNamePositionY = 584.0;
-        private static readonly double cardTypePositionY = 25;
+        private const double cardInfoFontSize = 60.0;
+        private const double cardNamePositionY = 584.0;
+        private const double cardTypePositionY = 25;
 
         private static readonly Typeface spellInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.UltraBold, FontStretches.Normal);
-        private static readonly double spellInfoFontSize = 45.0;
-        private static readonly double spellInfoTextWidth = 660;
+        private const double spellInfoFontSize = 45.0;
+        private const double spellInfoTextWidth = 660;
         private static readonly Point spellInfoPosition = new Point(50, 675);
 
         private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
-        private static readonly double statsFontSize = 100.0;
+        private const double statsFontSize = 100.0;
         private static readonly Point damagePosition = new Point(35.0, 0.0);
         private static readonly Point manaPosition = new Point(640.0, 0.0);
         private static readonly Point hpPosition = new Point(35.0, 920.0);
@@ -49,12 +49,16 @@ namespace Client.Game
         private sbyte damageModifier;
 
         public SelectionType SelectionType { get; set; }
+
         public UInt32 Id { get; private set; }
+
         public string Name { get; set; }
+
         public CreatureTypes Type { get; private set; }
+
         public byte Hp 
         {
-            get { return health; }
+            get => health;
             set 
             {
                 health = value;
@@ -62,15 +66,17 @@ namespace Client.Game
             }
         }
         public byte Damage { get; private set; }
+
         public sbyte DamageModifier
         {
-            get { return damageModifier; }
+            get => damageModifier;
             set
             {
                 damageModifier = value;
                 ReloadStats();
             }
         }
+
         public byte DamageModified
         {
             get
@@ -82,25 +88,29 @@ namespace Client.Game
                 return (byte)(Damage + damageModifier);
             }
         }
+
         public byte Mana
         {
-            get { return mana; }
+            get => mana;
             set
             {
                 mana = value;
                 ReloadStats();
             }
         }
+
         public byte Defense { get; private set; }
+
         public sbyte DefenseModifier
         {
-            get { return defenseModifier; }
+            get => defenseModifier;
             set
             {
                 defenseModifier = value;
                 ReloadStats();
             }
         }
+
         public byte DefenseModified
         {
             get
@@ -112,7 +122,9 @@ namespace Client.Game
                 return (byte)(Defense + defenseModifier);
             }
         }
+
         public string ImageUri { get; set; }
+
         public BitmapSource Image
         {
             get
@@ -123,6 +135,7 @@ namespace Client.Game
                 return (SelectionType != SelectionType.None) ? SelectedCard() : image;
             }
         }
+
         public Spell Spell { get; private set; }
 
         public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
@@ -144,6 +157,33 @@ namespace Client.Game
         {
             cardTemplateImage = null;
             image = null;
+        }
+
+        // Reloads stats on card
+        public void ReloadStats()
+        {
+            if (cardTemplateImage == null)
+                CreateCardTemplateImage();
+
+            // Draws the images into a DrawingVisual component
+            DrawingVisual drawingVisual = new DrawingVisual();
+            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            {
+                // Card
+                drawingContext.DrawImage(cardTemplateImage, new Rect(0, 0, cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight));
+
+                // Card stats
+                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage)), damagePosition);
+                drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
+                drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
+                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense)), defensePosition);
+            }
+
+            // Converts the Visual (DrawingVisual) into a BitmapSource
+            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            bmp.Render(drawingVisual);
+
+            image = bmp;
         }
 
         // Creates card template
@@ -183,33 +223,6 @@ namespace Client.Game
             bmp.Render(drawingVisual);
 
             cardTemplateImage = bmp;
-        }
-
-        // Reloads stats on card
-        public void ReloadStats()
-        {
-            if (cardTemplateImage == null)
-                CreateCardTemplateImage();
-
-            // Draws the images into a DrawingVisual component
-            DrawingVisual drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-            {
-                // Card
-                drawingContext.DrawImage(cardTemplateImage, new Rect(0, 0, cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight));
-
-                // Card stats
-                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage)), damagePosition);
-                drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
-                drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
-                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense)), defensePosition);
-            }
-
-            // Converts the Visual (DrawingVisual) into a BitmapSource
-            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
-            bmp.Render(drawingVisual);
-
-            image = bmp;
         }
 
         // Visually selects card
