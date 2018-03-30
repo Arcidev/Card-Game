@@ -1,7 +1,6 @@
 ﻿<Window x:Class="Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         Title="Card Game" Height="600" Width="1024"
         Closing="MainWindow_Closing" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Assets/IconWarrior.png">
 
