@@ -22,6 +22,7 @@ namespace Client.Game
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ClientNetwork network;
         private const int port = 10751;
+        private readonly AesEncryptor aes;
 
         public static string[] Servers { get; private set; } =
         {
@@ -48,15 +49,13 @@ namespace Client.Game
             // Sends init packet to server
             var packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
             var rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
-            var aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
-            network.AesEncryptor = aes;
+            aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
+            network.Encryptor = aes;
             packet.Write(rsa.Encrypt(aes.Encryptors));
             packet.Write(aes.Encrypt(name));
             rsa.Dispose();
 
             SendPacket(packet, false);
-            packet.Dispose();
-
             networkConnectionTask = Task.Run(UpdateAsync, tokenSource.Token);
         }
 
@@ -97,10 +96,13 @@ namespace Client.Game
         }
 
         // Sends packet to server
-        public void SendPacket(Packet packet, bool encrypt = true) 
+        public void SendPacket(Packet packet, bool encrypt = true, bool disposePacket = true) 
         { 
             if (network != null)
                 network.SendPacket(packet, encrypt);
+
+            if (disposePacket)
+                packet.Dispose();
         }
 
         // Removes all resources
@@ -112,7 +114,7 @@ namespace Client.Game
                 tokenSource.Cancel();
                 networkConnectionTask.Wait(250);
 
-                network.AesEncryptor.Dispose();
+                aes.Dispose();
                 network.Dispose();
             }
         }
@@ -152,7 +154,6 @@ namespace Client.Game
             }
 
             SendPacket(packet);
-            packet.Dispose();
         }
 
         // Sends card to attack to server
@@ -171,7 +172,6 @@ namespace Client.Game
                 .Build();
 
             SendPacket(packet);
-            packet.Dispose();
         }
 
         // Sends defend action to server
@@ -180,7 +180,6 @@ namespace Client.Game
             SetActiveCardActionGrid(false);
             var packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
             SendPacket(packet);
-            packet.Dispose();
         }
 
         // Shows card deck
