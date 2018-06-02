@@ -18,21 +18,21 @@ namespace Client.Game
 {
     public class ClientGame : IDisposable
     {
-        private Task networkConnectionTask;
-        private CancellationTokenSource tokenSource = new CancellationTokenSource();
-        private ClientNetwork network;
+        private readonly Task networkConnectionTask;
+        private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private readonly ClientNetwork network;
         private const int port = 10751;
         private readonly AesEncryptor aes;
 
-        public static string[] Servers { get; private set; } =
+        public static string[] Servers { get; } =
         {
             "localhost",
             "calista.mine.sk"
         };
 
-        public MainWindow MainWindow { get; private set; }
+        public MainWindow MainWindow { get; }
 
-        public ChatHandler Chat { get; private set; }
+        public ChatHandler Chat { get; }
 
         public Player Player { get; set; }
 

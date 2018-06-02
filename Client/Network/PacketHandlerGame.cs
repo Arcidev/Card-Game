@@ -1,7 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Enums;
 using Client.Game;
-using System;
 
 namespace Client.Network
 {
@@ -15,8 +14,8 @@ namespace Client.Network
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
             var activePlayerId = packet.ReadUInt32();
-            Player activePlayer = (game.Player.Id == activePlayerId) ? game.Player : game.Opponent;
-            Player nonActivePlayer = (game.Player.Id == activePlayerId) ? game.Opponent : game.Player;
+            var activePlayer = (game.Player.Id == activePlayerId) ? game.Player : game.Opponent;
+            var nonActivePlayer = (game.Player.Id == activePlayerId) ? game.Opponent : game.Player;
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
             nonActivePlayer.SetWaitingState();
@@ -33,7 +32,7 @@ namespace Client.Network
         // Handle SMSG_END_GAME packet
         private static void HandleEndGame(Packet packet, ClientGame game)
         {
-            UInt32 winnerId = packet.ReadUInt32();
+            var winnerId = packet.ReadUInt32();
             game.EndGame(game.Player.Id == winnerId);
         }
     }

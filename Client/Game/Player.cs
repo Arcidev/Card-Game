@@ -11,9 +11,9 @@ namespace Client.Game
 {
     public class Player
     {
-        private ClientGame game;
+        private readonly ClientGame game;
+        private readonly Pair<PlayableCard, Image>[] cardDeck;
         private Dictionary<UInt64, PlayableCard> cards;
-        private Pair<PlayableCard, Image>[] cardDeck;
 
         public UInt32 Id { get; set; }
 

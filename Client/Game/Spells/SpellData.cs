@@ -4,9 +4,9 @@ namespace Client.Game
 {
     public class SpellData
     {
-        public UInt32 SpellId { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public UInt32 SpellId { get; }
+        public string Name { get; }
+        public string Description { get; }
 
         public SpellData(UInt32 spellId, string name, string description)
         {

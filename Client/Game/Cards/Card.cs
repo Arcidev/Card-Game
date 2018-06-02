@@ -50,11 +50,11 @@ namespace Client.Game
 
         public SelectionType SelectionType { get; set; }
 
-        public UInt32 Id { get; private set; }
+        public UInt32 Id { get; }
 
         public string Name { get; set; }
 
-        public CreatureTypes Type { get; private set; }
+        public CreatureTypes Type { get; }
 
         public byte Hp 
         {
@@ -65,7 +65,7 @@ namespace Client.Game
                 ReloadStats();
             }
         }
-        public byte Damage { get; private set; }
+        public byte Damage { get; }
 
         public sbyte DamageModifier
         {
@@ -99,7 +99,7 @@ namespace Client.Game
             }
         }
 
-        public byte Defense { get; private set; }
+        public byte Defense { get; }
 
         public sbyte DefenseModifier
         {
@@ -136,7 +136,7 @@ namespace Client.Game
             }
         }
 
-        public Spell Spell { get; private set; }
+        public Spell Spell { get; }
 
         public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
@@ -166,8 +166,8 @@ namespace Client.Game
                 CreateCardTemplateImage();
 
             // Draws the images into a DrawingVisual component
-            DrawingVisual drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            var drawingVisual = new DrawingVisual();
+            using (var drawingContext = drawingVisual.RenderOpen())
             {
                 // Card
                 drawingContext.DrawImage(cardTemplateImage, new Rect(0, 0, cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight));
@@ -180,7 +180,7 @@ namespace Client.Game
             }
 
             // Converts the Visual (DrawingVisual) into a BitmapSource
-            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(drawingVisual);
 
             image = bmp;
@@ -189,12 +189,12 @@ namespace Client.Game
         // Creates card template
         private void CreateCardTemplateImage()
         {
-            BitmapFrame cardTemplate = BitmapFrame.Create(new Uri("Assets/CardTemplate.png", UriKind.Relative));
-            BitmapFrame creature = BitmapFrame.Create(new Uri(ImageUri, UriKind.Relative));
+            var cardTemplate = BitmapFrame.Create(new Uri("Assets/CardTemplate.png", UriKind.Relative));
+            var creature = BitmapFrame.Create(new Uri(ImageUri, UriKind.Relative));
 
             // Draws the images into a DrawingVisual component
-            DrawingVisual drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            var drawingVisual = new DrawingVisual();
+            using (var drawingContext = drawingVisual.RenderOpen())
             {
                 // Card
                 drawingContext.DrawImage(creature, new Rect((cardTemplate.PixelWidth - creatureImageWidth) / 2, creatureImageHeightOffset, creatureImageWidth, creatureImageHeight));
@@ -219,7 +219,7 @@ namespace Client.Game
                 }
             }
 
-            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplate.PixelWidth, cardTemplate.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(cardTemplate.PixelWidth, cardTemplate.PixelHeight, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(drawingVisual);
 
             cardTemplateImage = bmp;
@@ -233,20 +233,20 @@ namespace Client.Game
                 return image;
 
             var drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            using (var drawingContext = drawingVisual.RenderOpen())
             {
                 // Card
                 drawingContext.DrawImage(image, new Rect(0, 0, image.PixelWidth, image.PixelHeight));
 
                 // Draw border
-                Pen pen = new Pen(borderColor, 50.0);
+                var pen = new Pen(borderColor, 50.0);
                 drawingContext.DrawLine(pen, new Point(0, 0), new Point(image.Width, 0));
                 drawingContext.DrawLine(pen, new Point(image.Width, 0), new Point(image.Width, image.Height));
                 drawingContext.DrawLine(pen, new Point(image.Width, image.Height), new Point(0, image.Height));
                 drawingContext.DrawLine(pen, new Point(0, image.Height), new Point(0, 0));
             }
 
-            RenderTargetBitmap bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(drawingVisual);
 
             return bmp;
@@ -254,8 +254,8 @@ namespace Client.Game
 
         private Brush GetStatBrush(CardStats cardStat)
         {
-            sbyte modifier = 0;
-            byte stat = 0;
+            var modifier = 0;
+            var stat = 0;
 
             switch (cardStat)
             {

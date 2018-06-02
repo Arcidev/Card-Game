@@ -1,7 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Enums;
 using Client.Game;
-using System;
 
 namespace Client.Network
 {
@@ -10,15 +9,15 @@ namespace Client.Network
         // Handle SMSG_INIT_RESPONSE packet
         private static void HandleInitResponse(Packet packet, ClientGame game)
         {
-            bool hasOpponent = packet.ReadBit();
-            UInt32 playerId = packet.ReadUInt32();
+            var hasOpponent = packet.ReadBit();
+            var playerId = packet.ReadUInt32();
             game.Player.Id = playerId;
 
             string message;
             if (hasOpponent)
             {
-                UInt32 opponentId = packet.ReadUInt32();
-                string opponentName = packet.ReadString();
+                var opponentId = packet.ReadUInt32();
+                var opponentName = packet.ReadString();
                 message = $"{opponentName} has joined the game";
 
                 game.Opponent.Id = opponentId;

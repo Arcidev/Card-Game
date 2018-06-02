@@ -5,10 +5,10 @@ namespace Client.Game
 {
     public class Spell
     {
-        private SpellEffect[] spellEffects;
+        private readonly SpellEffect[] spellEffects;
         
-        public UInt32 Id { get; private set; }
-        public byte ManaCost { get; private set; }
+        public UInt32 Id { get; }
+        public byte ManaCost { get; }
         public SpellData SpellData { get; set; }
         public string Info => SpellData != null ? $"{SpellData.Name}: {SpellData.Description} (Costs: {ManaCost}mana)" : "";
 
@@ -21,7 +21,7 @@ namespace Client.Game
 
         public IEnumerable<UInt64> GetPossibleTargets(Player player, Player opponent)
         {
-            var targets = new List<ulong>();
+            var targets = new List<UInt64>();
             foreach (var effect in spellEffects)
                 targets.AddRange(effect.GetPossibleTargets(player, opponent));
 

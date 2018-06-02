@@ -1,7 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Enums;
 using Client.Game;
-using System;
 
 namespace Client.Network
 {
@@ -11,30 +10,31 @@ namespace Client.Network
         private static void HandleSpellCastResult(Packet packet, ClientGame game)
         {
             SpellCastResult result = (SpellCastResult)packet.ReadByte();
-            if (result == SpellCastResult.Success)
+            if (result != SpellCastResult.Success)
             {
-                var guid = new PacketGuid();
-                packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
-
-                byte mana = packet.ReadByte();
-                packet.ReadGuidByteStreamInOrder(guid, 7, 2);
-                byte manaCost = packet.ReadByte();
-                packet.ReadGuidByteStreamInOrder(guid, 4, 0, 1);
-                Player player = game.GetPlayer(packet.ReadUInt32());
-                UInt32 spellId = packet.ReadUInt32();
-                packet.ReadGuidByteStreamInOrder(guid, 3, 6, 5);
-
-                player.HandleSuccessfulSpellCast(guid, spellId, mana, manaCost);
+                game.SetActiveCardActionGrid(true);
+                game.Chat.Write(result.GetDescription(), ChatTypes.Info);
                 return;
             }
-            game.SetActiveCardActionGrid(true);
-            game.Chat.Write(result.GetDescription(), ChatTypes.Info);
+
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
+
+            var mana = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 7, 2);
+            var manaCost = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 4, 0, 1);
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var spellId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 3, 6, 5);
+
+            player.HandleSuccessfulSpellCast(guid, spellId, mana, manaCost);
         }
 
         // Handle SMSG_SPELL_DAMAGE packet
         private static void HandleSpellDamage(Packet packet, ClientGame game)
         {
-            byte targetsCount = packet.ReadByte();
+            var targetsCount = packet.ReadByte();
             var targets = new PacketGuid[targetsCount];
             var isAlive = new bool[targetsCount];
 
@@ -45,7 +45,7 @@ namespace Client.Network
                 packet.ReadGuidBitStreamInOrder(targets[i], 6, 3, 1, 7, 0, 2, 5, 4);
             }
 
-            Player opponent = game.GetOpponent(packet.ReadUInt32());
+            var opponent = game.GetOpponent(packet.ReadUInt32());
             for (int i = 0; i < targetsCount; i++)
             {
                 packet.ReadGuidByteStreamInOrder(targets[i], 4, 3, 5);
@@ -65,9 +65,9 @@ namespace Client.Network
             var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 1, 3, 5, 4, 0, 6);
 
-            Player player = game.GetPlayer(packet.ReadUInt32());
+            var player = game.GetPlayer(packet.ReadUInt32());
             packet.ReadGuidByteStreamInOrder(guid, 0, 5, 2, 1, 7, 6, 4, 3);
-            UInt32 spellId = packet.ReadUInt32();
+            var spellId = packet.ReadUInt32();
 
             player.ApplyAura(guid, spellId);
         }
@@ -77,10 +77,10 @@ namespace Client.Network
         {
             var guid = new PacketGuid();
             packet.ReadGuidBitStreamInOrder(guid, 6, 4, 1);
-            bool isAlive = packet.ReadBit();
+            var isAlive = packet.ReadBit();
             packet.ReadGuidBitStreamInOrder(guid, 7, 2, 3, 5, 0);
 
-            Player player = game.GetPlayer(packet.ReadUInt32());
+            var player = game.GetPlayer(packet.ReadUInt32());
             packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 7, 5, 4, 6);
             byte damage = packet.ReadByte();
 

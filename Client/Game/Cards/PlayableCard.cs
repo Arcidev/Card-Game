@@ -13,10 +13,9 @@ namespace Client.Game
             { CreatureTypes.Defensive,  typeof(DefensiveCard)   }
         };
 
-        public UInt64 Guid { get; private set; }
+        public UInt64 Guid { get; }
 
-        protected PlayableCard(UInt64 guid, Card card)
-            : base(card.Id, card.Type, card.Hp, card.Damage, card.Mana, card.Defense, card.Spell)
+        protected PlayableCard(UInt64 guid, Card card) : base(card.Id, card.Type, card.Hp, card.Damage, card.Mana, card.Defense, card.Spell)
         {
             ImageUri = card.ImageUri;
             Name = card.Name;

@@ -1,6 +1,5 @@
 ﻿using Arci.Networking.Data;
 using Client.Enums;
-using System;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;

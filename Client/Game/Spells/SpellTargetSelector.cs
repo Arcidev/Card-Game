@@ -9,19 +9,9 @@ namespace Client.Game
     {
         private static readonly Func<Player, Player, IEnumerable<UInt64>>[] targetSelectors =
         {
-            handleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
-            handleTargetUnitFriend          // TARGET_UNIT_TARGET_FRIEND
+            HandleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
+            HandleTargetUnitFriend          // TARGET_UNIT_TARGET_FRIEND
         };
-
-        private static IEnumerable<UInt64> handleTargetUnitTargetEnemy(Player player, Player enemy)
-        {
-            return enemy.CardDeck.Where(x => x != null).Select(x => x.Guid);
-        }
-
-        private static IEnumerable<UInt64> handleTargetUnitFriend(Player player, Player enemy)
-        {
-            return player.CardDeck.Where(x => x != null).Select(x => x.Guid);
-        }
 
         public static Func<Player, Player, IEnumerable<UInt64>> GetTargetSelector(byte target)
         {
@@ -29,6 +19,16 @@ namespace Client.Game
                 return null;
 
             return targetSelectors[target];
+        }
+
+        private static IEnumerable<UInt64> HandleTargetUnitTargetEnemy(Player player, Player enemy)
+        {
+            return enemy.CardDeck.Where(x => x != null).Select(x => x.Guid);
+        }
+
+        private static IEnumerable<UInt64> HandleTargetUnitFriend(Player player, Player enemy)
+        {
+            return player.CardDeck.Where(x => x != null).Select(x => x.Guid);
         }
     }
 }

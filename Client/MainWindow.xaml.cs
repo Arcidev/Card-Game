@@ -8,8 +8,6 @@ using System.ComponentModel;
 using Client.Enums;
 using Client.UI;
 using Client.Misc;
-using Client.Network;
-using System.Threading.Tasks;
 
 namespace Client
 {
@@ -25,7 +23,7 @@ namespace Client
         private bool cardClicked;
         private string cardControlName;
 
-        public SlideShow SlideShow { get; private set; }
+        public SlideShow SlideShow { get; }
 
         public MainWindow()
         {

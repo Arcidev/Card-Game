@@ -12,8 +12,8 @@ namespace Client.UI
     {
         private static readonly int sliderSize = 10;
         private int index;
-        private MainWindow mainWindow;
-        private Timer timer;
+        private readonly MainWindow mainWindow;
+        private readonly Timer timer;
 
         public Card SelectedCard { get; private set; }
 

@@ -5,7 +5,7 @@ namespace Client.Game
 {
     public class SpellEffect
     {
-        private Func<Player, Player, IEnumerable<UInt64>> targetSelector;
+        private readonly Func<Player, Player, IEnumerable<UInt64>> targetSelector;
 
         public SpellEffect(byte targetId)
         {
