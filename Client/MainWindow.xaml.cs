@@ -200,8 +200,7 @@ namespace Client
             if (!game.Player.IsActive)
                 return;
 
-            var image = sender as Image;
-            if (image == null)
+            if (!(sender is Image image))
                 return;
 
             var card = game.GetCardByImageControlName(image.Name);
@@ -236,8 +235,7 @@ namespace Client
             if (!cardControlName.Any())
                 return;
 
-            var image = sender as Image;
-            if (image == null)
+            if (!(sender is Image image))
                 return;
 
             if (cardControlName == image.Name)

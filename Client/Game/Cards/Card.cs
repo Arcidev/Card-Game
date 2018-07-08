@@ -172,11 +172,13 @@ namespace Client.Game
                 // Card
                 drawingContext.DrawImage(cardTemplateImage, new Rect(0, 0, cardTemplateImage.PixelWidth, cardTemplateImage.PixelHeight));
 
+                var dpi = VisualTreeHelper.GetDpi(drawingVisual);
+                
                 // Card stats
-                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage)), damagePosition);
-                drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), manaPosition);
-                drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White), hpPosition);
-                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense)), defensePosition);
+                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Damage), dpi.PixelsPerDip), damagePosition);
+                drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White, dpi.PixelsPerDip), manaPosition);
+                drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, Brushes.White, dpi.PixelsPerDip), hpPosition);
+                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, statsTypeface, statsFontSize, GetStatBrush(CardStats.Defense), dpi.PixelsPerDip), defensePosition);
             }
 
             // Converts the Visual (DrawingVisual) into a BitmapSource
@@ -196,22 +198,24 @@ namespace Client.Game
             var drawingVisual = new DrawingVisual();
             using (var drawingContext = drawingVisual.RenderOpen())
             {
+                var dpi = VisualTreeHelper.GetDpi(drawingVisual);
+
                 // Card
                 drawingContext.DrawImage(creature, new Rect((cardTemplate.PixelWidth - creatureImageWidth) / 2, creatureImageHeightOffset, creatureImageWidth, creatureImageHeight));
                 drawingContext.DrawImage(cardTemplate, new Rect(0, 0, cardTemplate.PixelWidth, cardTemplate.PixelHeight));
 
                 // Type
-                var type = new FormattedText(Type.ToString(), cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black);
+                var type = new FormattedText(Type.ToString(), cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black, dpi.PixelsPerDip);
                 drawingContext.DrawText(type, new Point(cardTemplate.PixelWidth / 2 - type.Width / 2, cardTypePositionY));
 
                 // Name
-                var name = new FormattedText(Name, cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black);
+                var name = new FormattedText(Name, cultureInfo, FlowDirection.LeftToRight, cardInfoTypeface, cardInfoFontSize, Brushes.Black, dpi.PixelsPerDip);
                 drawingContext.DrawText(name, new Point(cardTemplate.PixelWidth / 2 - name.Width / 2, cardNamePositionY));
 
                 // Spell
                 if (Spell != null)
                 {
-                    var spell = new FormattedText(Spell.Info, cultureInfo, FlowDirection.LeftToRight, spellInfoTypeface, spellInfoFontSize, Brushes.Black)
+                    var spell = new FormattedText(Spell.Info, cultureInfo, FlowDirection.LeftToRight, spellInfoTypeface, spellInfoFontSize, Brushes.Black, dpi.PixelsPerDip)
                     {
                         MaxTextWidth = spellInfoTextWidth
                     };
