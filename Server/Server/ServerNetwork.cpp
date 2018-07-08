@@ -97,13 +97,13 @@ ServerNetwork::~ServerNetwork()
     m_shuttingDown = true;
     GetLocker().unlock();
 
-    for (PlayerMap::iterator iter = m_players.begin(); iter != m_players.end(); iter++)
+    for (auto const& player : m_players)
     {
-        iter->second.first->Disconnect();
-        iter->second.second->join();
-        delete iter->second.second;
-        iter->second.first->GetGame()->RemovePlayer(iter->second.first->GetId());
-        delete iter->second.first;
+        player.second.first->Disconnect();
+        player.second.second->join();
+        delete player.second.second;
+        player.second.first->GetGame()->RemovePlayer(player.second.first->GetId());
+        delete player.second.first;
     }
 
     DEBUG_LOG("Server network cleared\r\n");
@@ -207,18 +207,18 @@ int ServerNetwork::ReceiveData(Player const* player, char* recvbuf) const
 // Broadcasts packet to all clients
 void ServerNetwork::BroadcastPacket(Packet const* packet) const
 {
-    for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
-        iter->second.first->SendPacket(packet);
+    for (auto const& player : m_players)
+        player.second.first->SendPacket(packet);
 }
 
 // Sends packet to player searched by name
 bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const* packet) const
 {
-    for (PlayerMap::const_iterator iter = m_players.begin(); iter != m_players.end(); iter++)
+    for (auto const& player : m_players)
     {
-        if (StaticHelper::CompareStringCaseInsensitive(iter->second.first->GetName(), playerName))
+        if (StaticHelper::CompareStringCaseInsensitive(player.second.first->GetName(), playerName))
         {
-            iter->second.first->SendPacket(packet);
+            player.second.first->SendPacket(packet);
             return true;
         }
     }

@@ -19,8 +19,8 @@ Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
 
 Player::~Player()
 {
-    for (CardsMap::iterator iter = m_cards.begin(); iter != m_cards.end(); ++iter)
-        delete iter->second;
+    for (auto& card : m_cards)
+        delete card.second;
 }
 
 // Set player state to disconnected
@@ -288,28 +288,28 @@ void Player::SendAvailableCards() const
     packet << (uint16_t)cards.size();
 
     ByteBuffer buffer;
-    for (CardsDataMap::const_iterator iter = cards.begin(); iter != cards.end(); ++iter)
+    for (auto const& card : cards)
     {
-        Spell const* spell = iter->second.GetSpell();
+        Spell const* spell = card.second.GetSpell();
         packet.WriteBit(spell ? true : false);
 
-        buffer << iter->second.GetId();
-        buffer << iter->second.GetType();
-        buffer << iter->second.GetHealth();
+        buffer << card.second.GetId();
+        buffer << card.second.GetType();
+        buffer << card.second.GetHealth();
 
         if (spell)
         {
             buffer << spell->GetManaCost();
             buffer << spell->GetId();
             buffer << (uint8_t)spell->GetSpellEffects().size();
-            for (std::list<SpellEffectPair>::const_iterator iter = spell->GetSpellEffects().begin(); iter != spell->GetSpellEffects().end(); ++iter)
-                buffer << iter->second.Target;
+            for (auto const& spellEffect : spell->GetSpellEffects())
+                buffer << spellEffect.second.Target;
         }
 
-        buffer << iter->second.GetDamage();
-        buffer << iter->second.GetMana();
-        buffer << iter->second.GetDefense();
-        buffer << iter->second.GetPrice();
+        buffer << card.second.GetDamage();
+        buffer << card.second.GetMana();
+        buffer << card.second.GetDefense();
+        buffer << card.second.GetPrice();
     }
 
     packet.FlushBits();

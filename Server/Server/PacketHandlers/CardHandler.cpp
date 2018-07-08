@@ -51,22 +51,22 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     pck << (uint8_t)player->GetCards().size();
     pck << (uint8_t)player->GetOpponent()->GetCards().size();
 
-    for (CardsMap::const_iterator iter = player->GetOpponent()->GetCards().begin(); iter != player->GetOpponent()->GetCards().end(); ++iter)
+    for (auto const& card : player->GetOpponent()->GetCards())
     {
-        pck.WriteBitStreamInOrder(iter->first, { 1, 2, 7, 0, 5, 3, 4, 6 });
+        pck.WriteBitStreamInOrder(card.first, { 1, 2, 7, 0, 5, 3, 4, 6 });
 
-        opponentBuffer.WriteByteStreamInOrder(iter->first, { 4, 2, 6, 1, 7, 0 });
-        opponentBuffer << iter->second->GetId();
-        opponentBuffer.WriteByteStreamInOrder(iter->first, { 3, 5 });
+        opponentBuffer.WriteByteStreamInOrder(card.first, { 4, 2, 6, 1, 7, 0 });
+        opponentBuffer << card.second->GetId();
+        opponentBuffer.WriteByteStreamInOrder(card.first, { 3, 5 });
     }
 
-    for (CardsMap::const_iterator iter = player->GetCards().begin(); iter != player->GetCards().end(); ++iter)
+    for (auto const& card : player->GetCards())
     {
-        pck.WriteBitStreamInOrder(iter->first, { 7, 1, 2, 4, 6, 0, 3, 5 });
+        pck.WriteBitStreamInOrder(card.first, { 7, 1, 2, 4, 6, 0, 3, 5 });
 
-        playerBuffer.WriteByteStreamInOrder(iter->first, { 7, 2, 0, 1, 6, 4, 5 });
-        playerBuffer << iter->second->GetId();
-        playerBuffer.WriteByteStreamInOrder(iter->first, { 3 });
+        playerBuffer.WriteByteStreamInOrder(card.first, { 7, 2, 0, 1, 6, 4, 5 });
+        playerBuffer << card.second->GetId();
+        playerBuffer.WriteByteStreamInOrder(card.first, { 3 });
     }
 
     pck.FlushBits();

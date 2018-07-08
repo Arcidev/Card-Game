@@ -56,10 +56,10 @@ uint8_t PlayableCard::GetModifiedDamage() const
 int8_t PlayableCard::GetStatModifierValue(uint8_t const& stat) const
 {
     int8_t modifier = 0;
-    for (SpellAuraEffectsMap::const_iterator iter = m_auras.begin(); iter != m_auras.end(); ++iter)
-        if (iter->second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-            if (iter->second.GetValue1() == stat)
-                modifier += (int8_t)iter->second.GetValue2();
+    for (auto const& aura : m_auras)
+        if (aura.second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
+            if (aura.second.GetValue1() == stat)
+                modifier += (int8_t)aura.second.GetValue2();
 
     if ((stat == CARD_STAT_DEFENSE) && m_isDefending)
         modifier += DEFENSE_BONUS_ON_DEFEND;
