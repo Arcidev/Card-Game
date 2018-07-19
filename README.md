@@ -8,7 +8,7 @@ Card-Game
 + MS Visual Studio = 15 (2017) (Windows only)
 
 ## Build Status
-[![Build Status](https://travis-ci.org/Arcidev/Card-Game.png)](https://travis-ci.org/Arcidev/Card-Game) (GCC 4.8 Server only)
+[![Build Status](https://travis-ci.org/Arcidev/Card-Game.svg)](https://travis-ci.org/Arcidev/Card-Game) (GCC 4.8 Server only)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (MSVC15)
 
