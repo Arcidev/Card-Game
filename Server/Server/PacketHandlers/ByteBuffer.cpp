@@ -39,7 +39,7 @@ bool ByteBuffer::WriteBit(uint32_t const& bit)
         m_curbitval = 0;
     }
 
-    return (bit != 0);
+    return bit != 0;
 }
 
 // Appends specified type as byte values

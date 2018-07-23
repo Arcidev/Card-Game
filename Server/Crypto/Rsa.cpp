@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstring>
+#include <iostream>
 #include "Rsa.h"
 #include "OpenSSL/pem.h"
 
@@ -12,14 +13,14 @@ RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
     BIO* keybio = BIO_new_mem_buf(key, -1);
     if (!keybio)
     {
-        printf("Failed to create key BIO");
+        std::cerr << "Failed to create key BIO" << std::endl;
         return nullptr;
     }
 
     rsa = isPublic ? PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL) : PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
 
     if (!rsa)
-        printf("Failed to create RSA");
+        std::cerr << "Failed to create RSA" << std::endl;
 
     return rsa;
 }

@@ -29,7 +29,7 @@ class Player
         bool m_isPrepared;
         bool m_isDisconnected;
         uint8_t m_replenishmentMoveCount;
-        uint32_t m_id;
+        uint32_t const m_id;
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
@@ -78,9 +78,9 @@ class Player
         CardsMap const& GetCards() { return m_cards; }
         std::vector<PlayableCard*> const& GetCurrentCards() { return m_currentCards; }
         PlayableCard* GetCard(uint64_t cardGuid);
-        SOCKET GetSocket() const { return m_socket; }
+        SOCKET const& GetSocket() const { return m_socket; }
         Game* GetGame() const { return m_game; }
-        uint32_t GetId() const { return m_id; }
+        uint32_t const& GetId() const { return m_id; }
         std::string const& GetName() const { return m_name; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         ServerNetwork const* GetNetwork() const { return m_network; }

@@ -1,6 +1,7 @@
-#include <stdexcept>
 #include <algorithm>
+#include <iostream>
 #include <random>
+#include <stdexcept>
 #include "Player.h"
 #include "ServerNetwork.h"
 #include "DataHolder.h"
@@ -8,10 +9,10 @@
 #include "Cards/PlayableCard.h"
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
-#include "../Crypto/Aes.h"
 #include "PacketHandlers/Packet.h"
 #include "PlayerDefines.h"
 #include "StaticHelper.h"
+#include "../Crypto/Aes.h"
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
@@ -272,7 +273,7 @@ void Player::ReceivePacket(uint32_t const& dataLength, char const* data)
         }
         catch (std::out_of_range ex)
         {
-            printf("Error occured while reading packet: %s\n", ex.what());
+            std::cerr << "Error occured while reading packet: " << ex.what() << std::endl;
         }
 
         readedData += dataLength + sizeof(uint16_t);

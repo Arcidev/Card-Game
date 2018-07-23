@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include "DataHolder.h"
 #include "../DataBase/SQLite/sqlite3.h"
@@ -15,14 +16,14 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
     uint8_t targetId = atoi(argv[3]);
     if (targetId >= MAX_SPELL_EFFECT_TARGET)
     {
-        printf("Spell id %d has invalid target\n", spellId);
+        std::cerr << "Spell id " << spellId << " has invalid target" << std::endl;
         return 0;
     }
 
     SpellEffectFunc spellEffectFunc = SpellEffect::GetSpellEffectFunc(atoi(argv[1]));
     if (!spellEffectFunc)
     {
-        printf("Spell id %d has invalid spell effect\n", spellId);
+        std::cerr << "Spell id " << spellId << " has invalid spell effect" << std::endl;
         return 0;
     }
     
@@ -59,8 +60,8 @@ void DataHolder::loadSpells(sqlite3* db)
 {
     char* errorMsg;
     std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
-    if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, 0, &errorMsg) != SQLITE_OK)
-        printf("Error while loading spels\n");
+    if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, nullptr, &errorMsg) != SQLITE_OK)
+        std::cerr << "Error while loading spels: " << errorMsg << std::endl;
 }
 
 // Loads cards info from database
@@ -68,8 +69,8 @@ void DataHolder::loadCards(sqlite3* db)
 {
     char* errorMsg;
     std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense, Price, SpellId FROM Cards";
-    if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, 0, &errorMsg) != SQLITE_OK)
-        printf("Error while loading cards\n");
+    if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, nullptr, &errorMsg) != SQLITE_OK)
+        std::cerr << "Error while loading cards: " << errorMsg << std::endl;
 }
 
 // Loads all data from database

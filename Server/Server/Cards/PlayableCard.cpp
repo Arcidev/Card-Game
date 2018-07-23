@@ -1,8 +1,8 @@
-#include <stdexcept>
 #include <algorithm>
+#include <stdexcept>
+#include "DefensiveCard.h"
 #include "MeleeCard.h"
 #include "RangedCard.h"
-#include "DefensiveCard.h"
 #include "../DataHolder.h"
 #include "../Player.h"
 #include "../PlayerDefines.h"
@@ -24,7 +24,7 @@ PlayableCard* PlayableCard::Create(uint64_t const& guid, Card const* card, Playe
     }
 }
 
-void PlayableCard::SetDefendState(bool const& defend)
+void PlayableCard::SetDefendState(bool defend)
 {
     if (m_isDefending == defend)
         return;
@@ -37,20 +37,20 @@ uint8_t PlayableCard::GetModifiedDefense() const
 {
     int8_t defenseModifier = GetStatModifierValue(CARD_STAT_DEFENSE);
     if (defenseModifier < 0)
-        if (m_defense < -defenseModifier)
+        if (GetDefense() < -defenseModifier)
             return 0;
 
-    return m_defense + defenseModifier;
+    return GetDefense() + defenseModifier;
 }
 
 uint8_t PlayableCard::GetModifiedDamage() const
 {
     int8_t damageModifier = GetStatModifierValue(CARD_STAT_DAMAGE);
     if (damageModifier < 0)
-        if (m_damage < -damageModifier)
+        if (GetDamage() < -damageModifier)
             return 0;
 
-    return m_damage + damageModifier;
+    return GetDamage() + damageModifier;
 }
 
 int8_t PlayableCard::GetStatModifierValue(uint8_t const& stat) const

@@ -56,11 +56,15 @@
       <AdditionalDependencies>Crypto\libeay32.lib;DataBase\SQLite\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" /E /PURGE
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" data.db
+IF %ERRORLEVEL% LSS 8 goto copysqlite else exit %ERRORLEVEL%
+
+:copysqlite 
+ROBOCOPY "$(ProjectDir)DataBase\SQLite" "$(ProjectDir)Bin\DataBase\SQLite" /PURGE
 IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
 
 :copydll
-ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)\"
+ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

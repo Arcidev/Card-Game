@@ -1,6 +1,6 @@
 #pragma once
-#include <map>
 #include <cstdint>
+#include <map>
 #include "Spells/Spell.h"
 #include "Cards/Card.h"
 

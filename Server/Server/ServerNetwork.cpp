@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Game.h"
 #include "Player.h"
 #include "ServerNetwork.h"
@@ -18,7 +19,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
     int iResult = InitWinsock(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0)
     {
-        printf("WSAStartup failed with error: %d\r\n", iResult);
+        std::cerr << "WSAStartup failed with error: " << iResult << std::endl;
         exit(1);
     }
 
@@ -33,7 +34,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
 
     if (iResult != 0)
     {
-        printf("Getaddrinfo failed with error: %d\r\n", iResult);
+        std::cerr << "Getaddrinfo failed with error: " << iResult << std::endl;
         CloseWinsock();
         exit(1);
     }
@@ -43,7 +44,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
 
     if (m_listenSocket == INVALID_SOCKET)
     {
-        printf("Socket failed with error: %d\r\n", GetSockError());
+        std::cerr << "Socket failed with error: " << GetSockError() << std::endl;
         freeaddrinfo(result);
         CloseWinsock();
         exit(1);
@@ -55,7 +56,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
 
     if (iResult == SOCKET_ERROR)
     {
-        printf("IoctlSocket failed with error: %d\r\n", GetSockError());
+        std::cerr << "IoctlSocket failed with error: " << GetSockError() << std::endl;
         shutdown(m_listenSocket, SD_BOTH);
         CloseWinsock();
         exit(1);
@@ -66,7 +67,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
 
     if (iResult == SOCKET_ERROR)
     {
-        printf("Bind failed with error: %d\r\n", GetSockError());
+        std::cerr << "Bind failed with error: " << GetSockError() << std::endl;
         freeaddrinfo(result);
         shutdown(m_listenSocket, SD_BOTH);
         CloseWinsock();
@@ -81,7 +82,7 @@ ServerNetwork::ServerNetwork() : m_lastPlayer(nullptr), m_listenSocket(INVALID_S
 
     if (iResult == SOCKET_ERROR)
     {
-        printf("Listen failed with error: %d\r\n", GetSockError());
+        std::cerr << "Listen failed with error: " << GetSockError() << std::endl;
         shutdown(m_listenSocket, SD_BOTH);
         CloseWinsock();
         exit(1);

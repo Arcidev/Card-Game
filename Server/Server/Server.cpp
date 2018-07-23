@@ -1,4 +1,4 @@
-#include "time.h" 
+#include <ctime> 
 #include "ServerGame.h"
 #include "DataHolder.h"
 #include "SignalHandler.h"

@@ -10,7 +10,7 @@ class SignalHandler
 {
     private:
         static SignalHandlersMap m_handlers;
-        static int signalControlHandler(SIGNAL signal);
+        static bool signalControlHandler(SIGNAL signal);
 
     public:
         static void Initialize();

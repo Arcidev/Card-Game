@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <map>
+#include <vector>
 #include "Card.h"
 #include "../Spells/SpellAuraEffect.h"
 
@@ -24,7 +24,7 @@ class PlayableCard : public Card
         static PlayableCard* Create(uint64_t const& m_id, Card const* card, Player* owner);
 
         void DealDamage(uint8_t const& damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
-        void SetDefendState(bool const& defend);
+        void SetDefendState(bool defend);
         void ApplyAura(SpellAuraEffect const& aura);
         void Heal(uint8_t const& amount);
         void ModifyMana(int8_t const& amount);

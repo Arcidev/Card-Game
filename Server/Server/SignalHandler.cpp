@@ -17,7 +17,7 @@ void SignalHandler::Initialize()
 }
 #endif // !__unix__
 
-int SignalHandler::signalControlHandler(SIGNAL signal)
+bool SignalHandler::signalControlHandler(SIGNAL signal)
 {
     DEBUG_LOG("Calling signal handler from signal %lu\r\n", signal);
     SignalHandlersMap::const_iterator iter = m_handlers.find(signal);

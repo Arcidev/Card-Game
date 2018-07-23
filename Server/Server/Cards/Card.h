@@ -35,16 +35,16 @@ class Spell;
 class Card
 {
     private:
-        uint32_t m_id;
-        uint8_t m_type;
-        uint8_t m_price;
+        uint32_t const m_id;
+        uint8_t const m_type;
+        uint8_t const m_price;
+        uint8_t const m_damage;
+        uint8_t const m_defense;
         Spell const* m_spell;
 
     protected:
         uint8_t m_hp;
-        uint8_t m_damage;
         uint8_t m_mana;
-        uint8_t m_defense;
 
     public:
         Card(uint32_t id, uint8_t type, uint8_t hp, uint8_t damage, uint8_t mana, uint8_t defense, uint8_t price, Spell const* spell);
