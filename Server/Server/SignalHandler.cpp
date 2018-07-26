@@ -14,12 +14,12 @@ void SignalHandler::RegisterMethod(int signal, std::function<bool()> func)
 
 void SignalHandler::signalControlHandler(int signal)
 {
-    DEBUG_LOG("Calling signal handler from signal %lu\r\n", signal);
+    DEBUG_LOG("Calling signal handler from signal %d\r\n", signal);
     SignalHandlersMap::const_iterator iter = m_handlers.find(signal);
     if (iter == m_handlers.end())
         exit(signal);
 
-    DEBUG_LOG("Running registered handler for signal %lu\r\n", signal);
+    DEBUG_LOG("Running registered handler for signal %d\r\n", signal);
     if (!iter->second())
         exit(signal);
 }
