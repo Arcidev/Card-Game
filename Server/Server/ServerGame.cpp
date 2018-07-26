@@ -1,3 +1,4 @@
+#include <csignal>
 #include "ServerGame.h"
 #include "SignalHandler.h"
 #include "Player.h"
@@ -21,7 +22,7 @@ void ServerGame::update()
 // Infinite server pdate loop
 void ServerGame::Loop()
 {
-    SignalHandler::RegisterMethod(SIGNAL_CTRL_C, [&]() { m_isShuttingDown = true; m_network.Close(); return true; });
+    SignalHandler::RegisterMethod(SIGINT, [&]() { m_isShuttingDown = true; m_network.Close(); return true; });
     while (!m_isShuttingDown)
         update();
 }

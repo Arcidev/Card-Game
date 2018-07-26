@@ -1,19 +1,16 @@
 #pragma once
 #include <functional>
 #include <map>
-#include "../Multiplatform/NetworkCommunication.h"
-#include "../Multiplatform/Signals.h"
 
-typedef std::map<SIGNAL, std::function<bool()>> SignalHandlersMap;
+typedef std::map<int, std::function<bool()>> SignalHandlersMap;
 
 class SignalHandler
 {
     private:
         static SignalHandlersMap m_handlers;
-        static bool signalControlHandler(SIGNAL signal);
+        static void signalControlHandler(int signal);
 
     public:
-        static void Initialize();
-        static void RegisterMethod(SIGNAL signal, std::function<bool()> func) { m_handlers.insert(std::make_pair(signal, func)); }
+        static void RegisterMethod(int signal, std::function<bool()> func);
 };
 

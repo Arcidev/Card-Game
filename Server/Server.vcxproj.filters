@@ -110,9 +110,6 @@
     <ClInclude Include="Server\SignalHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Multiplatform\Signals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">

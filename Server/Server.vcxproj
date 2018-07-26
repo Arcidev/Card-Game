@@ -98,7 +98,6 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
-    <ClInclude Include="Multiplatform\Signals.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\DefensiveCard.h" />
     <ClInclude Include="Server\Cards\MeleeCard.h" />
