@@ -31,8 +31,8 @@ class ServerNetwork
         bool AcceptNewClient(unsigned int & id);
         // receive incoming data
         int ReceiveData(Player const* player, char* recvbuf) const;
-        void BroadcastPacket(Packet const* packet) const;
-        bool SendPacketToPlayer(std::string const& playerName, Packet const* packet) const;
+        void BroadcastPacket(Packet const& packet) const;
+        bool SendPacketToPlayer(std::string const& playerName, Packet const& packet) const;
         bool IsShuttingDown() const { return m_shuttingDown; };
 
         PlayerMap& GetPlayers() { return m_players; }

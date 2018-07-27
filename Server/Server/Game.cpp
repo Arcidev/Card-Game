@@ -77,7 +77,7 @@ Player* Game::GetActivePlayer() const
 }
 
 // Sends packet to all players in this game
-void Game::BroadcastPacket(Packet const* packet) const
+void Game::BroadcastPacket(Packet const& packet) const
 {
     if (m_player1)
         m_player1->SendPacket(packet);
@@ -109,5 +109,5 @@ void Game::ActivateSecondPlayer()
     packet << m_activePlayerId;
     packet.WriteByteStreamInOrder(currentCard->GetGuid(), { 1, 0, 3 });
 
-    BroadcastPacket(&packet);
+    BroadcastPacket(packet);
 }

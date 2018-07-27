@@ -49,10 +49,10 @@ void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, u
         packet.WriteByteStreamInOrder(cardGuid, { 1, 3, 0 });
         packet << damage;
         packet.WriteByteStreamInOrder(cardGuid, { 5, 4 });
-        GetGame()->BroadcastPacket(&packet);
+        GetGame()->BroadcastPacket(packet);
     }
     else
-        SendPacket(&packet);
+        SendPacket(packet);
 }
 
 // Attacks enemy player
@@ -138,7 +138,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const&
     packet << m_id;
     packet << buffer;
 
-    GetGame()->BroadcastPacket(&packet);
+    GetGame()->BroadcastPacket(packet);
 
     if (sendOpponentCardDeck)
     {
@@ -169,10 +169,10 @@ void Player::SendSpellCastResult(uint8_t const& reason, PlayableCard const* card
         packet << m_id;
         packet << spell->GetId();
         packet.WriteByteStreamInOrder(card->GetGuid(), { 3, 6, 5 });
-        GetGame()->BroadcastPacket(&packet);
+        GetGame()->BroadcastPacket(packet);
     }
     else
-        SendPacket(&packet);
+        SendPacket(packet);
 }
 
 // Sends information that card has been healed
@@ -191,7 +191,7 @@ void Player::SendCardHealed(PlayableCard const* card, uint8_t const& amount) con
     packet.WriteByteStreamInOrder(card->GetGuid(), { 4, 0, 3, 6 });
     packet << amount;
 
-    GetGame()->BroadcastPacket(&packet);
+    GetGame()->BroadcastPacket(packet);
 }
 
 // Uses card spell
@@ -316,7 +316,7 @@ void Player::SendAvailableCards() const
     packet.FlushBits();
     packet << buffer;
 
-    SendPacket(&packet);
+    SendPacket(packet);
 }
 
 // Sends whisper response to sender
@@ -333,7 +333,7 @@ void Player::SendChatWhisperResponse(std::string const& message, std::string con
     else
         pck << receiver;
     
-    SendPacket(&pck);
+    SendPacket(pck);
 }
 
 // Sends selection card has failed
@@ -342,7 +342,7 @@ void Player::SendSelectCardsFailed(uint8_t const& failReason) const
     Packet packet(SMSG_SELECT_CARDS_FAILED);
     packet << failReason;
 
-    SendPacket(&packet);
+    SendPacket(packet);
 }
 
 // Sends info about opponent if is already connected
@@ -359,20 +359,20 @@ void Player::SendInitResponse() const
         pck << GetOpponent()->GetName();
     }
 
-    SendPacket(&pck);
+    SendPacket(pck);
 }
 
 // Sends information about disconnected opponent
 void Player::SendPlayerDisconnected() const
 {
     Packet packet(SMSG_PLAYER_DISCONNECTED);
-    SendPacket(&packet);
+    SendPacket(packet);
 }
 
 // Sends encrypted packet to client
-void Player::SendPacket(Packet const* packet) const
+void Player::SendPacket(Packet const& packet) const
 {
-    std::vector<uint8_t> encrypted = Aes::Encrypt(std::vector<uint8_t>(packet->GetStorage().begin(), packet->GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
+    std::vector<uint8_t> encrypted = Aes::Encrypt(std::vector<uint8_t>(packet.GetStorage().begin(), packet.GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
     uint16_t size = (uint16_t)encrypted.size();
     std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
@@ -420,7 +420,7 @@ void Player::HandleDeckCards(bool addCard)
     for (uint8_t i = 0; i < cardsCount; i++)
         packet.WriteByteStreamInOrder(m_currentCards[i]->GetGuid(), { 2, 1, 7, 6, 0, 5, 3, 4 });
     
-    m_game->BroadcastPacket(&packet);
+    m_game->BroadcastPacket(packet);
 }
 
 // Gets current card
@@ -439,7 +439,7 @@ void Player::SendEndGame(uint32_t const& winnerId) const
     Packet packet(SMSG_END_GAME);
     packet << winnerId;
 
-    GetGame()->BroadcastPacket(&packet);
+    GetGame()->BroadcastPacket(packet);
 }
 
 // Sets active defend statte on current card
@@ -466,7 +466,7 @@ void Player::SendCardStatChanged(PlayableCard const* card, uint8_t const& cardSt
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 4, 2 });
     packet << cardStat;
 
-    m_game->BroadcastPacket(&packet);
+    m_game->BroadcastPacket(packet);
 }
 
 // Sends information about aura application
@@ -480,7 +480,7 @@ void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* au
     packet.WriteByteStreamInOrder(targetGuid, { 0, 5, 2, 1, 7, 6, 4, 3 });
     packet << aura->GetSpellId();
 
-    GetGame()->BroadcastPacket(&packet);
+    GetGame()->BroadcastPacket(packet);
 }
 
 // Replenishes mana
@@ -509,7 +509,7 @@ void Player::replenishMana()
         packet.FlushBits();
         packet << buffer;
 
-        GetGame()->BroadcastPacket(&packet);
+        GetGame()->BroadcastPacket(packet);
     }
 }
 
@@ -568,5 +568,5 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t const& damage)
     packet << m_id;
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 7, 5, 4, 6 });
     packet << damage;
-    GetGame()->BroadcastPacket(&packet);
+    GetGame()->BroadcastPacket(packet);
 }

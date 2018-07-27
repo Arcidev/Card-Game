@@ -21,16 +21,16 @@ void PacketHandler::handleChatPacket(Player* player, Packet* packet)
     switch (chatId)
     {
         case CHAT_GLOBAL:
-            player->GetNetwork()->BroadcastPacket(&pck);
+            player->GetNetwork()->BroadcastPacket(pck);
             break;
         case CHAT_LOCAL:
-            player->GetGame()->BroadcastPacket(&pck);
+            player->GetGame()->BroadcastPacket(pck);
             break;
         case CHAT_WHISPER:
         {
             std::string receiverName;
             *packet >> receiverName;
-            player->SendChatWhisperResponse(message, receiverName, player->GetNetwork()->SendPacketToPlayer(receiverName, &pck));
+            player->SendChatWhisperResponse(message, receiverName, player->GetNetwork()->SendPacketToPlayer(receiverName, pck));
             break;
         }
         default:

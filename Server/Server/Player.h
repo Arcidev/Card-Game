@@ -69,7 +69,7 @@ class Player
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const* cardTemplate);
         void ReceivePacket(uint32_t const& length, char const* packetData);
-        void SendPacket(Packet const* packet) const;
+        void SendPacket(Packet const& packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
 

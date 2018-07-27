@@ -206,14 +206,14 @@ int ServerNetwork::ReceiveData(Player const* player, char* recvbuf) const
 }
 
 // Broadcasts packet to all clients
-void ServerNetwork::BroadcastPacket(Packet const* packet) const
+void ServerNetwork::BroadcastPacket(Packet const& packet) const
 {
     for (auto const& player : m_players)
         player.second.first->SendPacket(packet);
 }
 
 // Sends packet to player searched by name
-bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const* packet) const
+bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const& packet) const
 {
     for (auto const& player : m_players)
     {

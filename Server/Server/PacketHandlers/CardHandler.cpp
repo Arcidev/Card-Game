@@ -40,7 +40,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     if (!player->GetOpponent() || !player->GetOpponent()->IsPrepared())
     {
         Packet pck(SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER);
-        player->SendPacket(&pck);
+        player->SendPacket(pck);
         return;
     }
 
@@ -74,7 +74,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
     pck << playerBuffer;
     pck << opponentBuffer;
 
-    player->GetGame()->BroadcastPacket(&pck);
+    player->GetGame()->BroadcastPacket(pck);
 
     player->HandleDeckCards(true);
     player->GetOpponent()->HandleDeckCards(true);
