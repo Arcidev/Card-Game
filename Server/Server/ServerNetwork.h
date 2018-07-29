@@ -28,7 +28,7 @@ class ServerNetwork
 
         void Close() { shutdown(m_listenSocket, SD_BOTH); closesocket(m_listenSocket); }
         // accept new connections
-        bool AcceptNewClient(unsigned int & id);
+        bool AcceptNewClient(unsigned int const& id);
         // receive incoming data
         int ReceiveData(Player const* player, char* recvbuf) const;
         void BroadcastPacket(Packet const& packet) const;

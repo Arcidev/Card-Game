@@ -111,7 +111,7 @@ ServerNetwork::~ServerNetwork()
 }
 
 // Accepts new connections
-bool ServerNetwork::AcceptNewClient(unsigned int& id)
+bool ServerNetwork::AcceptNewClient(unsigned int const& id)
 {
     // if client is waiting, accept the connection and save the socket
     SOCKET ClientSocket = accept(m_listenSocket, nullptr, nullptr);
@@ -189,7 +189,7 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
             break;
         }
 
-        // invalid packet sended
+        // invalid packet received
         if (dataLength < 2)
             continue;
 

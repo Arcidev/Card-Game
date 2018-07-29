@@ -372,7 +372,7 @@ void Player::SendPlayerDisconnected() const
 // Sends encrypted packet to client
 void Player::SendPacket(Packet const& packet) const
 {
-    std::vector<uint8_t> encrypted = Aes::Encrypt(std::vector<uint8_t>(packet.GetStorage().begin(), packet.GetStorage().end()), m_AesEncryptor.Key, m_AesEncryptor.IVec);
+    std::vector<uint8_t> encrypted = Aes::Encrypt(packet.GetStorage(), m_AesEncryptor.Key, m_AesEncryptor.IVec);
     uint16_t size = (uint16_t)encrypted.size();
     std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
