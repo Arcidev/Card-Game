@@ -57,10 +57,6 @@
     </Link>
     <PostBuildEvent>
       <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" data.db
-IF %ERRORLEVEL% LSS 8 goto copysqlite else exit %ERRORLEVEL%
-
-:copysqlite 
-ROBOCOPY "$(ProjectDir)DataBase\SQLite" "$(ProjectDir)Bin\DataBase\SQLite" /PURGE
 IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
 
 :copydll

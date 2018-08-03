@@ -191,7 +191,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>ROBOCOPY "$(ProjectDir)Assets" "$(TargetDir)Assets" /E /PURGE
+    <PostBuildEvent>ROBOCOPY "$(ProjectDir)Assets" "$(TargetDir)Assets" /E /PURGE /xf "sqlite3.*"
 IF %25ERRORLEVEL%25 LSS 8 exit 0 else exit %25ERRORLEVEL%25</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
