@@ -92,15 +92,13 @@ namespace Client.Game
         // Determines if the player is opponent
         public bool IsOpponent(UInt32 playerId)
         {
-            return Opponent != null && Opponent.Id == playerId;
+            return Opponent?.Id == playerId;
         }
 
         // Sends packet to server
         public void SendPacket(Packet packet, bool encrypt = true, bool disposePacket = true) 
         { 
-            if (network != null)
-                network.SendPacket(packet, encrypt);
-
+            network?.SendPacket(packet, encrypt);
             if (disposePacket)
                 packet.Dispose();
         }
@@ -240,10 +238,7 @@ namespace Client.Game
                 return cardPair.First;
 
             cardPair = Opponent.GetCardByImageControlName(imageControlName);
-            if (cardPair != null)
-                return cardPair.First;
-
-            return null;
+            return cardPair?.First;
         }
 
         private async Task UpdateAsync()

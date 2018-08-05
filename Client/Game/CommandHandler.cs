@@ -28,16 +28,7 @@ namespace Client.Game
             int commandDelimiter = command.IndexOf(" ");
             var cmd = commandDelimiter > 0 ? command.Substring(0, commandDelimiter).ToLower() : command;
 
-            for (int i = 0; i < commands.Length; i++ )
-            {
-                if (commands[i].StartsWith(cmd))
-                {
-                    cmd = commands[i];
-                    break;
-                }
-            }
-
-            switch (cmd)
+            switch (commands.FirstOrDefault(x => x.StartsWith(cmd)))
             {
                 case "game":
                     game.Chat.SetActiveChat(ChatTypes.Game);

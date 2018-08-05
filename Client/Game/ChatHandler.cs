@@ -22,9 +22,7 @@ namespace Client.Game
         // Writes message into chat
         public void Write(string message, ChatTypes chatType)
         {
-            var brush = GetChatColor(chatType);
-            var rtb = clientGame.MainWindow.GeneralChatTab;
-            InvokeToChat(message, rtb, brush);
+            InvokeToChat(message, clientGame.MainWindow.GeneralChatTab, GetChatColor(chatType));
         }
 
         // Writes message as channel message into chat
@@ -62,9 +60,7 @@ namespace Client.Game
         // Writes message into combat log
         public void WriteLog(string message, CombatLogTypes combatLogType)
         {
-            var brush = GetCombatLogColor(combatLogType);
-            var rtb = clientGame.MainWindow.CombatLogChatTab;
-            InvokeToChat(message, rtb, brush);
+            InvokeToChat(message, clientGame.MainWindow.CombatLogChatTab, GetCombatLogColor(combatLogType));
         }
 
         // Write info about damage into combat log chat tab
@@ -156,11 +152,11 @@ namespace Client.Game
         {
             clientGame.Invoke(() =>
             {
-                var tr = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd)
+                new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd)
                 {
                     Text = $"{message}{CommandHandler.LineSeparator}"
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                }.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+
                 rtb.ScrollToEnd();
             });
         }
