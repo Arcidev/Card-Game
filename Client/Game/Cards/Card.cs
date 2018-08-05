@@ -26,17 +26,17 @@ namespace Client.Game
         private const int creatureImageHeightOffset = 104;
 
         private static readonly CultureInfo cultureInfo = new CultureInfo("en-GB");
-        private static readonly Typeface cardInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+        private static readonly Typeface cardInfoTypeface = new Typeface(new FontFamily("Arial"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
         private const double cardInfoFontSize = 60.0;
         private const double cardNamePositionY = 584.0;
         private const double cardTypePositionY = 25;
 
-        private static readonly Typeface spellInfoTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Normal, FontWeights.UltraBold, FontStretches.Normal);
-        private const double spellInfoFontSize = 45.0;
-        private const double spellInfoTextWidth = 660;
+        private static readonly Typeface spellInfoTypeface = new Typeface(new FontFamily("Arial"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+        private const double spellInfoFontSize = 50;
+        private const double spellInfoTextWidth = 640;
         private static readonly Point spellInfoPosition = new Point(50, 675);
 
-        private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Calibri"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
+        private static readonly Typeface statsTypeface = new Typeface(new FontFamily("Arial"), FontStyles.Italic, FontWeights.Bold, FontStretches.Normal);
         private const double statsFontSize = 100.0;
         private static readonly Point damagePosition = new Point(35.0, 0.0);
         private static readonly Point manaPosition = new Point(640.0, 0.0);
@@ -223,7 +223,7 @@ namespace Client.Game
                 }
             }
 
-            var bmp = new RenderTargetBitmap(cardTemplate.PixelWidth, cardTemplate.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(cardTemplate.PixelWidth, cardTemplate.PixelHeight, 96, 96, PixelFormats.Default);
             bmp.Render(drawingVisual);
 
             cardTemplateImage = bmp;

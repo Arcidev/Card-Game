@@ -26,19 +26,13 @@ namespace Client.Data
         // Returns card by id
         public static SelectableCard GetCard(UInt32 id)
         {
-            if (cardsMap.TryGetValue(id, out SelectableCard card))
-                return card;
-
-            return null;
+            return cardsMap.TryGetValue(id, out var card) ? card : null;
         }
 
         // Returns spells data
         public static SpellData GetSpellData(UInt32 id)
         {
-            if (spellsDataMap.TryGetValue(id, out SpellData spellData))
-                return spellData;
-
-            return new SpellData(id, "", "");
+            return spellsDataMap.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, "", "");
         }
 
         // Unloads data from memory

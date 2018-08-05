@@ -14,10 +14,7 @@ namespace Client.Game
 
         public IEnumerable<UInt64> GetPossibleTargets(Player player, Player opponent)
         {
-            if (targetSelector == null)
-                return new List<UInt64>();
-
-            return targetSelector(player, opponent);
+            return targetSelector?.Invoke(player, opponent) ?? new List<UInt64>();
         }
     }
 }

@@ -120,7 +120,6 @@
     <Compile Include="Enums\CreatureTypes.cs" />
     <Compile Include="Enums\EnumExtension.cs" />
     <Compile Include="Enums\SelectCardFailReason.cs" />
-    <Compile Include="Enums\SMSGPackets.cs" />
     <Compile Include="Game\Cards\Card.cs" />
     <Compile Include="Game\ChatHandler.cs" />
     <Compile Include="Game\ClientGame.cs" />
