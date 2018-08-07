@@ -234,11 +234,10 @@ namespace Client.Game
         public PlayableCard GetCardByImageControlName(string imageControlName)
         {
             var cardPair = Player.GetCardByImageControlName(imageControlName);
-            if (cardPair != null)
-                return cardPair.First;
+            if (cardPair.Item1 != null)
+                return cardPair.Item1;
 
-            cardPair = Opponent.GetCardByImageControlName(imageControlName);
-            return cardPair?.First;
+            return Opponent.GetCardByImageControlName(imageControlName).Item1;
         }
 
         private async Task UpdateAsync()
