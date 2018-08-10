@@ -29,14 +29,9 @@ namespace Client.Game
         public Player(ClientGame clientGame, params Image[] imageLocations)
         {
             game = clientGame;
-            cardDeck = new ValueTuple<PlayableCard, Image>[imageLocations.Length];
+            cardDeck = new (PlayableCard, Image)[imageLocations.Length];
             for (var i = 0; i < imageLocations.Length; i++)
-            {
-                cardDeck[i] = new ValueTuple<PlayableCard, Image>()
-                {
-                    Item2 = imageLocations[i]
-                };
-            }
+                cardDeck[i] = (null, imageLocations[i]);
         }
 
         // Adds cards to player card deck
@@ -182,7 +177,7 @@ namespace Client.Game
         // Attacks card
         public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == guid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == guid);
             if (cardPair.Item1 == null)
                 return;
 
@@ -215,7 +210,7 @@ namespace Client.Game
         // Modifies card stat
         public void ModifyCardStat(UInt64 cardGuid, CardStats cardStat, sbyte value)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == cardGuid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
@@ -239,7 +234,7 @@ namespace Client.Game
         // Adds aura to creature
         public void ApplyAura(UInt64 cardGuid, UInt32 spellId)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == cardGuid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
@@ -252,7 +247,7 @@ namespace Client.Game
         // Heals card
         public void HealCard(UInt64 cardGuid, byte health, byte amount)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == cardGuid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
@@ -267,7 +262,7 @@ namespace Client.Game
         // Consumes mana from card and logs it into comba log
         public void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == cardGuid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
@@ -280,7 +275,7 @@ namespace Client.Game
         // Sets cards mana
         public void SetCardMana(UInt64 cardGuid, byte mana)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1.Guid == cardGuid);
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
