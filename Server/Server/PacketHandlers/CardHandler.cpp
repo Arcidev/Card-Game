@@ -1,10 +1,8 @@
-#include <cinttypes>
 #include "PacketHandler.h"
 #include "Packet.h"
 #include "../Player.h"
 #include "../DataHolder.h"
 #include "../Cards/PlayableCard.h"
-#include "../StaticHelper.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_SELECTED_CARDS packet

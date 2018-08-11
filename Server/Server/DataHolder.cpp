@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include "DataHolder.h"
 #include "../DataBase/SQLite/sqlite3.h"
 

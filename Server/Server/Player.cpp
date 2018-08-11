@@ -1,7 +1,5 @@
-#include <algorithm>
 #include <iostream>
 #include <random>
-#include <stdexcept>
 #include "Player.h"
 #include "ServerNetwork.h"
 #include "DataHolder.h"
@@ -11,7 +9,6 @@
 #include "Spells/SpellAuraEffect.h"
 #include "PacketHandlers/Packet.h"
 #include "PlayerDefines.h"
-#include "StaticHelper.h"
 #include "../Crypto/Aes.h"
 #include "../Shared/SharedDefines.h"
 

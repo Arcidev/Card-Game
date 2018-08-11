@@ -42,6 +42,4 @@ class Packet : public ByteBuffer
     public:
         Packet(uint32_t opcodeNumber);
         Packet(std::vector<uint8_t> const& data);
-
-        void Initialize(uint32_t opcodeNumber);
 };
