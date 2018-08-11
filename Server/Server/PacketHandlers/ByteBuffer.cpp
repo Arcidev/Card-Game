@@ -1,3 +1,5 @@
+#include <cstring>
+#include <stdexcept>
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer() : m_rpos(0), m_wpos(0), m_bitpos(8), m_curbitval(0) { }
