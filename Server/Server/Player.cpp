@@ -212,7 +212,7 @@ void Player::UseSpell(uint64_t const& selectedCardGuid)
     uint8_t result = currentCard->GetSpell()->Cast(this, victim, selectedCardGuid);
     if (result)
     {
-        SendSpellCastResult(result, nullptr, 0);
+        SendSpellCastResult(result, nullptr, nullptr);
         return;
     }
 
@@ -530,12 +530,11 @@ void Player::endTurn()
                 if (!sendDeckCards)
                     sendDeckCards = true;
                 iter = m_currentCards.erase(iter);
+                continue;
             }
-            else
-                ++iter;
         }
-        else
-            ++iter;
+
+        ++iter;
     }
 
     if (sendDeckCards || ((m_currentCards.size() < MAX_CARDS_ON_DECK) && !m_cardOrder.empty()))

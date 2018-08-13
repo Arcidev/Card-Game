@@ -155,7 +155,6 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
         int dataLength = network->ReceiveData(player, networkData);
         if (!dataLength)
         {
-            
             if (!network->IsShuttingDown())
             {
                 std::mutex& locker = network->GetLocker();
@@ -169,18 +168,23 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
                         PlayerMap::iterator iter = network->GetPlayers().find(playerId);
                         if (iter != network->GetPlayers().end())
                         {
-                        iter->second.second->detach();
-                        delete iter->second.second;
+                            iter->second.second->detach();
+                            delete iter->second.second;
 
-                        network->GetPlayers().erase(iter);
+                            network->GetPlayers().erase(iter);
                         }
 
                         if (player->GetGame()->IsEmpty())
                             delete player->GetGame();
                     }
                 }
+                catch (std::exception const& ex)
+                {
+                    std::cerr << "Error while disconnecting player: " << ex.what() << std::endl;
+                }
                 catch(...)
                 {
+                    std::cerr << "Unknown failure occured while disconnecting player." << std::endl;
                     // Prevent deadlock
                 }
 
