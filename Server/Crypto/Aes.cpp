@@ -1,9 +1,6 @@
 #include <cstdint>
-#include <cstring>
 #include "Aes.h"
 #include "OpenSSL/evp.h"
-
-#define BIT_SIZE 128
 
 // Encrypts data with AES algorithm
 std::vector<uint8_t> Aes::Encrypt(std::vector<uint8_t> const& data, std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec)
@@ -13,6 +10,7 @@ std::vector<uint8_t> Aes::Encrypt(std::vector<uint8_t> const& data, std::vector<
 
     std::vector<uint8_t> outdata(data.size() + 16);
     int outLen = 0, outLen2 = 0;
+
     EVP_CIPHER_CTX ctx;
     EVP_EncryptInit(&ctx, EVP_aes_256_cbc(), key.data(), iVec.data());
     EVP_EncryptUpdate(&ctx, outdata.data(), &outLen, data.data(), data.size());
