@@ -65,7 +65,7 @@ namespace Client.Data
                 {
                     while (result.Read())
                     {
-                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out SelectableCard card))
+                        if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out var card))
                         {
                             card.Name = Convert.ToString(result["name"]);
                             card.ImageUri = $"Assets/{Convert.ToString(result["imagePath"])}";

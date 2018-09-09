@@ -51,7 +51,7 @@ namespace Client.Game
         {
             for (var i = 0; i < cardGuids.Length; i++)
             {
-                if (cards.TryGetValue(cardGuids[i], out PlayableCard card))
+                if (cards.TryGetValue(cardGuids[i], out var card))
                 {
                     Invoke(() =>
                     {
@@ -196,7 +196,7 @@ namespace Client.Game
         // Destroys card
         public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
-            if (cards.TryGetValue(guid, out PlayableCard card))
+            if (cards.TryGetValue(guid, out var card))
             {
                 if (isPeriodicDamage)
                     game.Chat.LogPeriodicDamage(card, damage, false);
@@ -225,10 +225,7 @@ namespace Client.Game
         // Checks if is posible to cast spell
         public bool CanCastSpell()
         {
-            if (ActiveCard == null || ActiveCard.Spell == null)
-                return false;
-
-            return ActiveCard.Spell.ManaCost <= ActiveCard.Mana;
+            return ActiveCard?.Spell?.ManaCost <= ActiveCard.Mana;
         }
 
         // Adds aura to creature
