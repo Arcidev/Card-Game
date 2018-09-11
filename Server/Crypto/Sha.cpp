@@ -2,12 +2,12 @@
 #include "OpenSSL/sha.h"
 
 // Creates hash from data
-std::string Sha::CreateHash(std::string const& data)
+std::string Sha::CreateHash(std::string_view data)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
-    SHA256_Update(&sha256, data.c_str(), data.size());
+    SHA256_Update(&sha256, data.data(), data.size());
     SHA256_Final(hash, &sha256);
 
     char outputBuffer[SHA256_DIGEST_LENGTH * 2 + 1];

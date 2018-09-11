@@ -26,7 +26,7 @@ void ByteBuffer::append(uint8_t const* src, size_t cnt)
 }
 
 // Writes one bit into curbitval
-bool ByteBuffer::WriteBit(uint32_t const& bit)
+bool ByteBuffer::WriteBit(uint32_t bit)
 {
     --m_bitpos;
     if (bit)
@@ -44,7 +44,7 @@ bool ByteBuffer::WriteBit(uint32_t const& bit)
 
 // Appends specified type as byte values
 template <typename T>
-void ByteBuffer::append(T const& value)
+void ByteBuffer::append(T value)
 {
     FlushBits();
     append((uint8_t *)&value, sizeof(value));
@@ -52,7 +52,7 @@ void ByteBuffer::append(T const& value)
 
 // Gets specified type from byte values
 template <typename T>
-T ByteBuffer::read(size_t const& pos)
+T ByteBuffer::read(size_t pos)
 {
     if (pos + sizeof(T) > m_storage.size())
         throw std::out_of_range("Reading out of Range");
@@ -63,7 +63,7 @@ T ByteBuffer::read(size_t const& pos)
 }
 
 // Writes byte value of guid if byte has value. If not its ignored
-void ByteBuffer::WriteByte(uint8_t const& byte)
+void ByteBuffer::WriteByte(uint8_t byte)
 {
     if (byte)
         append<uint8_t>(byte);
@@ -79,7 +79,7 @@ void ByteBuffer::ReadByte(uint8_t& byte)
 // Writes if exist byte value of guid in passed order
 void ByteBuffer::WriteBitStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
-    for (uint8_t const& val : indexOrder)
+    for (uint8_t val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
@@ -91,7 +91,7 @@ void ByteBuffer::WriteBitStreamInOrder(Guid const& guid, std::initializer_list<u
 // Writes byte values of guid if bytes has value. Bytes without value are ignored
 void ByteBuffer::WriteByteStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
-    for (uint8_t const& val : indexOrder)
+    for (uint8_t val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
@@ -103,7 +103,7 @@ void ByteBuffer::WriteByteStreamInOrder(Guid const& guid, std::initializer_list<
 // Reads if exist byte values of guid in passed order
 void ByteBuffer::ReadBitStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
-    for (uint8_t const& val : indexOrder)
+    for (uint8_t val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
@@ -115,7 +115,7 @@ void ByteBuffer::ReadBitStreamInOrder(Guid& guid, std::initializer_list<uint8_t>
 // Reads byte values of guid if bytes has value. Bytes without value are ignored
 void ByteBuffer::ReadByteStreamInOrder(Guid& guid, std::initializer_list<uint8_t> const& indexOrder)
 {
-    for (uint8_t const& val : indexOrder)
+    for (uint8_t val : indexOrder)
     {
         if (val > 7)
             throw std::out_of_range("Index must be lower than 8. You've requested " + val);
@@ -138,38 +138,38 @@ bool ByteBuffer::ReadBit()
 }
 
 // Stores uint32 value in stream
-ByteBuffer& ByteBuffer::operator << (uint32_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint32_t value)
 {
     append<uint32_t>(value);
     return *this;
 }
 
 // Stores uint16 value in stream
-ByteBuffer& ByteBuffer::operator << (uint16_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint16_t value)
 {
     append<uint16_t>(value);
     return *this;
 }
 
 // Stores uint8 value in stream
-ByteBuffer& ByteBuffer::operator << (uint8_t const& value)
+ByteBuffer& ByteBuffer::operator << (uint8_t value)
 {
     append<uint8_t>(value);
     return *this;
 }
 
 // Stores float value in stream
-ByteBuffer& ByteBuffer::operator << (float const& value)
+ByteBuffer& ByteBuffer::operator << (float value)
 {
     append<float>(value);
     return *this;
 }
 
 // Stores string and string length in stream
-ByteBuffer& ByteBuffer::operator << (std::string const& value)
+ByteBuffer& ByteBuffer::operator << (std::string_view value)
 {
     *this << (uint16_t)value.size();
-    append((uint8_t const*)value.c_str(), value.size());
+    append((uint8_t const*)value.data(), value.size());
     return *this;
 }
 

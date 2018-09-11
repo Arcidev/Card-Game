@@ -18,6 +18,6 @@ class PacketHandler
         static void handleDefendSelfPacket(Player* player, Packet* packet);
 
     public:
-        static PacketHandlerFunc GetPacketHandler(uint16_t const& packetId);
+        static PacketHandlerFunc GetPacketHandler(uint16_t packetId);
 };
 

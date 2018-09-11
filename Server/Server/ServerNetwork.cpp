@@ -217,7 +217,7 @@ void ServerNetwork::BroadcastPacket(Packet const& packet) const
 }
 
 // Sends packet to player searched by name
-bool ServerNetwork::SendPacketToPlayer(std::string const& playerName, Packet const& packet) const
+bool ServerNetwork::SendPacketToPlayer(std::string_view playerName, Packet const& packet) const
 {
     for (auto const& player : m_players)
     {

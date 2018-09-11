@@ -3,5 +3,5 @@
 class StaticHelper
 {
     public:
-        static bool CompareStringCaseInsensitive(std::string const& str1, std::string const& str2);
+        static bool CompareStringCaseInsensitive(std::string_view str1, std::string_view str2);
 };

@@ -30,7 +30,7 @@ uint8_t& Guid::operator[](uint8_t index)
 }
 
 // Allows to use class as array
-uint8_t const& Guid::operator[](uint8_t index) const
+uint8_t Guid::operator[](uint8_t index) const
 {
     if (index > 7)
         throw std::out_of_range("Index must be lower than 8. You've requested " + index);

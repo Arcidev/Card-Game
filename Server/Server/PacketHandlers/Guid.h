@@ -14,7 +14,7 @@ public:
     Guid(uint64_t guid);
 
     uint8_t& operator [] (uint8_t index);
-    uint8_t const& operator [] (uint8_t index) const;
+    uint8_t operator [] (uint8_t index) const;
 
     Guid& operator = (uint64_t guid);
     operator uint64_t() const { return getGuidValue(); };

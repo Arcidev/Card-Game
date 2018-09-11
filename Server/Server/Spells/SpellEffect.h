@@ -23,7 +23,7 @@ struct SpellEffectValues
     uint8_t const Value3;
     uint8_t const Value4;
 
-    SpellEffectValues(uint32_t const& spellId, uint32_t const& spellAttributes, uint8_t const& target, uint8_t const& value1, uint8_t const& value2, uint8_t const& value3, uint8_t const& value4)
+    SpellEffectValues(uint32_t spellId, uint32_t spellAttributes, uint8_t target, uint8_t value1, uint8_t value2, uint8_t value3, uint8_t value4)
         : SpellId(spellId), SpellAttributes(spellAttributes), Target(target), Value1(value1), Value2(value2), Value3(value3), Value4(value4) { }
 };
 
@@ -40,5 +40,5 @@ class SpellEffect
         static bool handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
 
     public:
-        static SpellEffectFunc GetSpellEffectFunc(uint8_t const& spellEffectId);
+        static SpellEffectFunc GetSpellEffectFunc(uint8_t spellEffectId);
 };

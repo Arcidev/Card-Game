@@ -7,9 +7,9 @@
 #include "../Player.h"
 #include "../PlayerDefines.h"
 
-PlayableCard::PlayableCard(uint64_t const& guid, Card const* card, Player* owner) : Card(*card), m_guid(guid), m_isDefending(false), m_owner(owner) { }
+PlayableCard::PlayableCard(uint64_t guid, Card const* card, Player* owner) : Card(*card), m_guid(guid), m_isDefending(false), m_owner(owner) { }
 
-PlayableCard* PlayableCard::Create(uint64_t const& guid, Card const* card, Player* owner)
+PlayableCard* PlayableCard::Create(uint64_t guid, Card const* card, Player* owner)
 {
     switch (card->GetType())
     {
@@ -53,7 +53,7 @@ uint8_t PlayableCard::GetModifiedDamage() const
     return GetDamage() + damageModifier;
 }
 
-int8_t PlayableCard::GetStatModifierValue(uint8_t const& stat) const
+int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
 {
     int8_t modifier = 0;
     for (auto const& aura : m_auras)
@@ -81,7 +81,7 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     m_owner->SendApplyAura(m_guid, &aura);
 }
 
-void PlayableCard::Heal(uint8_t const& amount)
+void PlayableCard::Heal(uint8_t amount)
 {
     m_hp = (std::min)((uint8_t)(m_hp + amount), DataHolder::GetCard(GetId())->GetHealth());
     m_owner->SendCardHealed(this, amount);
@@ -105,7 +105,7 @@ std::list<uint32_t> PlayableCard::HandleTickOnAuras()
     return spellIds;
 }
 
-void PlayableCard::ModifyMana(int8_t const& amount)
+void PlayableCard::ModifyMana(int8_t amount)
 { 
     if (amount > 0)
         m_mana = (std::min)((uint8_t)(m_mana + amount), DataHolder::GetCard(GetId())->GetMana());

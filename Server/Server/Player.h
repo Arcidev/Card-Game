@@ -38,7 +38,7 @@ class Player
         std::string m_name;
         AesEncryptor m_AesEncryptor;
 
-        void destroyCard(uint64_t const& cardGuid);
+        void destroyCard(uint64_t cardGuid);
         void replenishMana();
         void endTurn();
 
@@ -47,28 +47,28 @@ class Player
         ~Player();
 
         void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
-        void SetName(std::string const& name) { m_name = name; }
+        void SetName(std::string_view name) { m_name = name; }
         void SendInitResponse() const;
         void SendAvailableCards() const;
-        void SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const;
-        void SendSelectCardsFailed(uint8_t const& failReason) const;
+        void SendChatWhisperResponse(std::string_view message, std::string_view receiver, bool success) const;
+        void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;
-        void SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const;
-        void SendEndGame(uint32_t const& winnerId) const;
-        void SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const;
-        void SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const;
-        void SendSpellCastResult(uint8_t const& reason, PlayableCard const* card, Spell const* amount) const;
-        void SendCardHealed(PlayableCard const* card, uint8_t const& amount) const;
-        void Attack(uint64_t const& victimCardGuid);
-        void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage);
-        void UseSpell(uint64_t const& selectedCardGuid);
+        void SendAttackResult(uint8_t result, uint64_t cardGuid, uint8_t damage) const;
+        void SendEndGame(uint32_t winnerId) const;
+        void SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) const;
+        void SendApplyAura(uint64_t targetGuid, SpellAuraEffect const* aura) const;
+        void SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* amount) const;
+        void SendCardHealed(PlayableCard const* card, uint8_t amount) const;
+        void Attack(uint64_t victimCardGuid);
+        void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage);
+        void UseSpell(uint64_t selectedCardGuid);
         void DefendSelf();
         void Prepare();
-        void DealPeriodicDamage(PlayableCard* card, uint32_t const& damage);
+        void DealPeriodicDamage(PlayableCard* card, uint32_t damage);
         
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const* cardTemplate);
-        void ReceivePacket(uint32_t const& length, char const* packetData);
+        void ReceivePacket(uint32_t length, char const* packetData);
         void SendPacket(Packet const& packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
@@ -80,8 +80,8 @@ class Player
         PlayableCard* GetCard(uint64_t cardGuid);
         SOCKET const& GetSocket() const { return m_socket; }
         Game* GetGame() const { return m_game; }
-        uint32_t const& GetId() const { return m_id; }
-        std::string const& GetName() const { return m_name; }
+        uint32_t GetId() const { return m_id; }
+        std::string_view GetName() const { return m_name; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         ServerNetwork const* GetNetwork() const { return m_network; }
         ServerNetwork* GetNetwork() { return m_network; }

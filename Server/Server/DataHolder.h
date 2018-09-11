@@ -22,6 +22,6 @@ class DataHolder
     public:
         static bool LoadData();
         static CardsDataMap const& GetCards() { return m_cards; }
-        static Card const* GetCard(uint32_t const& cardId);
+        static Card const* GetCard(uint32_t cardId);
 };
 

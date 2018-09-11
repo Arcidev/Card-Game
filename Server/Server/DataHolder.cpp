@@ -85,7 +85,7 @@ bool DataHolder::LoadData()
     return true;
 }
 
-Card const* DataHolder::GetCard(uint32_t const& cardId)
+Card const* DataHolder::GetCard(uint32_t cardId)
 {
     CardsDataMap::const_iterator iter = m_cards.find(cardId);
     return iter != m_cards.end() ? &iter->second : nullptr;

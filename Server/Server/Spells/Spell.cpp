@@ -4,7 +4,7 @@
 
 Spell::Spell(uint32_t id, uint8_t manaCost) : m_id(id), m_manaCost(manaCost) { }
 
-uint8_t Spell::Cast(Player* caster, Player* victim, uint64_t const& selectedCardGuid) const
+uint8_t Spell::Cast(Player* caster, Player* victim, uint64_t selectedCardGuid) const
 {
     if (!caster || !victim)
         return SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS;

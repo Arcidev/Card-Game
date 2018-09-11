@@ -1,7 +1,7 @@
 #include "StaticHelper.h"
 
 // Compares 2 strings
-bool StaticHelper::CompareStringCaseInsensitive(std::string const& str1, std::string const& str2)
+bool StaticHelper::CompareStringCaseInsensitive(std::string_view str1, std::string_view str2)
 {
     if (str1.length() != str2.length())
         return false;

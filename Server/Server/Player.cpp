@@ -34,7 +34,7 @@ void Player::Disconnect()
 }
 
 // Sends attack result
-void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, uint8_t const& damage) const
+void Player::SendAttackResult(uint8_t result, uint64_t cardGuid, uint8_t damage) const
 {
     Packet packet(SMSG_ATTACK_RESULT);
     packet << result;
@@ -54,7 +54,7 @@ void Player::SendAttackResult(uint8_t const& result, uint64_t const& cardGuid, u
 }
 
 // Attacks enemy player
-void Player::Attack(uint64_t const& victimCardGuid)
+void Player::Attack(uint64_t victimCardGuid)
 {
     if (!IsActive())
         return;
@@ -100,7 +100,7 @@ void Player::Attack(uint64_t const& victimCardGuid)
     endTurn();
 }
 
-void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const& damage)
+void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage)
 {
     Player* victim = GetGame()->GetOpponent(this);
     if (!victim)
@@ -148,7 +148,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t const&
 }
 
 // Sends information about failed spell cast to client
-void Player::SendSpellCastResult(uint8_t const& reason, PlayableCard const* card, Spell const* spell) const
+void Player::SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* spell) const
 {
     Packet packet(SMSG_SPELL_CAST_RESULT);
     packet << reason;
@@ -174,7 +174,7 @@ void Player::SendSpellCastResult(uint8_t const& reason, PlayableCard const* card
 }
 
 // Sends information that card has been healed
-void Player::SendCardHealed(PlayableCard const* card, uint8_t const& amount) const
+void Player::SendCardHealed(PlayableCard const* card, uint8_t amount) const
 {
     if (!card)
         return;
@@ -193,7 +193,7 @@ void Player::SendCardHealed(PlayableCard const* card, uint8_t const& amount) con
 }
 
 // Uses card spell
-void Player::UseSpell(uint64_t const& selectedCardGuid)
+void Player::UseSpell(uint64_t selectedCardGuid)
 {
     if (!IsActive())
         return;
@@ -223,7 +223,7 @@ void Player::UseSpell(uint64_t const& selectedCardGuid)
 }
 
 // Removes card from player deck
-void Player::destroyCard(uint64_t const& cardGuid)
+void Player::destroyCard(uint64_t cardGuid)
 {
     for (uint32_t i = 0; i < m_currentCards.size(); ++i)
     {
@@ -246,7 +246,7 @@ PlayableCard* Player::GetCard(uint64_t cardGuid)
 }
 
 // Receive encrypted packet from client
-void Player::ReceivePacket(uint32_t const& dataLength, char const* data)
+void Player::ReceivePacket(uint32_t dataLength, char const* data)
 {
     uint32_t readedData = 0;
     
@@ -318,7 +318,7 @@ void Player::SendAvailableCards() const
 }
 
 // Sends whisper response to sender
-void Player::SendChatWhisperResponse(std::string const& message, std::string const& receiver, bool success) const
+void Player::SendChatWhisperResponse(std::string_view message, std::string_view receiver, bool success) const
 {
     Packet pck(success ? SMSG_CHAT_MESSAGE : SMSG_WHISPER_FAILED);
 
@@ -335,7 +335,7 @@ void Player::SendChatWhisperResponse(std::string const& message, std::string con
 }
 
 // Sends selection card has failed
-void Player::SendSelectCardsFailed(uint8_t const& failReason) const
+void Player::SendSelectCardsFailed(uint8_t failReason) const
 {
     Packet packet(SMSG_SELECT_CARDS_FAILED);
     packet << failReason;
@@ -432,7 +432,7 @@ PlayableCard* Player::GetCurrentCard()
 }
 
 // Informs player that game has ended
-void Player::SendEndGame(uint32_t const& winnerId) const
+void Player::SendEndGame(uint32_t winnerId) const
 {
     Packet packet(SMSG_END_GAME);
     packet << winnerId;
@@ -451,7 +451,7 @@ void Player::DefendSelf()
 }
 
 // Sends new card stat modifiers
-void Player::SendCardStatChanged(PlayableCard const* card, uint8_t const& cardStat) const
+void Player::SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) const
 {
     Packet packet(SMSG_CARD_STAT_CHANGED);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 2, 6, 7, 1, 0, 3, 5, 4 });
@@ -468,7 +468,7 @@ void Player::SendCardStatChanged(PlayableCard const* card, uint8_t const& cardSt
 }
 
 // Sends information about aura application
-void Player::SendApplyAura(uint64_t const& targetGuid, SpellAuraEffect const* aura) const
+void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const* aura) const
 {
     Packet packet(SMSG_APPLY_AURA);
     packet.WriteBitStreamInOrder(targetGuid, { 7, 2, 1, 3, 5, 4, 0, 6 });
@@ -552,7 +552,7 @@ void Player::endTurn()
 }
 
 // Handles periodic damage from aura
-void Player::DealPeriodicDamage(PlayableCard* card, uint32_t const& damage)
+void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage)
 {
     card->DealDamage(damage);
 

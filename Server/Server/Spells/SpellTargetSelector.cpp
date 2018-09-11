@@ -8,7 +8,7 @@ SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
     handleTargetUnitTargetFriend    // TARGET_UNIT_TARGET_FRIEND
 };
 
-std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t const& targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t targetGuid)
 {
     for (PlayableCard* card : player->GetCurrentCards())
     {
@@ -19,7 +19,7 @@ std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, 
     return std::list<PlayableCard*>();
 }
 
-std::list<PlayableCard*> SpellTargetSelector::GetTargets(uint8_t const& spellTarget, Player* attacker, Player* victim, uint64_t  const& targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::GetTargets(uint8_t spellTarget, Player* attacker, Player* victim, uint64_t targetGuid)
 {
     return spellTarget < MAX_SPELL_EFFECT_TARGET ? m_spellTargetSelectors[spellTarget](attacker, victim, targetGuid) : std::list<PlayableCard*>();
 }

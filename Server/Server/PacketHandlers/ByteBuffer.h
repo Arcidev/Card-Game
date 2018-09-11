@@ -11,14 +11,14 @@ class ByteBuffer
         std::vector<uint8_t> m_storage;
 
         void append(uint8_t const* src, size_t cnt);
-        template <typename T> void append(T const& value);
-        template <typename T> T read(size_t const& pos);
+        template <typename T> void append(T value);
+        template <typename T> T read(size_t pos);
 
     public:
         ByteBuffer();
         void FlushBits();
-        bool WriteBit(uint32_t const& bit);
-        void WriteByte(uint8_t const& b);
+        bool WriteBit(uint32_t bit);
+        void WriteByte(uint8_t b);
         void ReadByte(uint8_t& byte);
         void WriteBitStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder);
         void WriteByteStreamInOrder(Guid const& guid, std::initializer_list<uint8_t> const& indexOrder);
@@ -30,14 +30,14 @@ class ByteBuffer
 
         std::vector<uint8_t> const& GetStorage() const { return m_storage; }
 
-        ByteBuffer& operator << (uint32_t const& value);
-        ByteBuffer& operator << (int32_t const& value) { return operator<<((uint32_t)value); }
-        ByteBuffer& operator << (uint16_t const& value);
-        ByteBuffer& operator << (int16_t const& value) { return operator<<((uint16_t)value); }
-        ByteBuffer& operator << (uint8_t const& value);
-        ByteBuffer& operator << (int8_t const& value) { return operator<<((uint8_t)value); }
-        ByteBuffer& operator << (float const& value);
-        ByteBuffer& operator << (std::string const& value);
+        ByteBuffer& operator << (uint32_t value);
+        ByteBuffer& operator << (int32_t value) { return operator<<((uint32_t)value); }
+        ByteBuffer& operator << (uint16_t value);
+        ByteBuffer& operator << (int16_t value) { return operator<<((uint16_t)value); }
+        ByteBuffer& operator << (uint8_t value);
+        ByteBuffer& operator << (int8_t value) { return operator<<((uint8_t)value); }
+        ByteBuffer& operator << (float value);
+        ByteBuffer& operator << (std::string_view value);
         ByteBuffer& operator << (std::vector<uint8_t> const& value);
         ByteBuffer& operator << (ByteBuffer const& value);
 

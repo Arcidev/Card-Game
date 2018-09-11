@@ -11,7 +11,7 @@ PacketHandlerFunc const PacketHandler::packetHandlers[] =
 };
 
 // Returns function that handle sended packet
-PacketHandlerFunc PacketHandler::GetPacketHandler(uint16_t const& packetId)
+PacketHandlerFunc PacketHandler::GetPacketHandler(uint16_t packetId)
 {
     return packetId < CMSG_MAX_PACKET_VALUE ? packetHandlers[packetId] : nullptr;
 }

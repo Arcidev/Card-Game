@@ -9,12 +9,12 @@ SpellAuraEffectHandlerFunc const SpellAuraEffectHandler::m_spellAuraEffectHandle
     handleHealOnTick    // SPELL_AURA_EFFECT_HEAL
 };
 
-void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t const& damage)
+void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage)
 {
     card->GetOwner()->DealPeriodicDamage(card, damage);
 }
 
-void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t const& amount)
+void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount)
 {
     card->Heal(amount);
 }

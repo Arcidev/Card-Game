@@ -5,5 +5,5 @@
 class Sha
 {
     public:
-        static std::string CreateHash(std::string const& data);
+        static std::string CreateHash(std::string_view data);
 };

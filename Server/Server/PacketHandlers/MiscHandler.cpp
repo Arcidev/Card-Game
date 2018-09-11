@@ -19,11 +19,12 @@ void PacketHandler::handleInitPacket(Player* player, Packet* packet)
     *packet >> name;
     name = Aes::Decrypt(std::vector<uint8_t>(name.begin(), name.end()), player->GetAesEncryptor().Key, player->GetAesEncryptor().IVec);
 
-    player->SetName(std::string((char*)name.data(), name.size()));
+    std::string nameStr = std::string((char*)name.data(), name.size());
+    player->SetName(nameStr);
     player->SendInitResponse();
     player->SendAvailableCards();
 
-    DEBUG_LOG("CMSG_INIT_PACKET:\r\n\tName: %s\r\n", player->GetName().c_str());
+    DEBUG_LOG("CMSG_INIT_PACKET:\r\n\tName: %s\r\n", nameStr.c_str());
     if (player->GetGame()->IsFull())
         player->GetOpponent()->SendInitResponse();
 }

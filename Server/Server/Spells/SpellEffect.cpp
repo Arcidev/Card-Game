@@ -47,7 +47,7 @@ bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGu
     return true;
 }
 
-SpellEffectFunc SpellEffect::GetSpellEffectFunc(uint8_t const& spellEffectId)
+SpellEffectFunc SpellEffect::GetSpellEffectFunc(uint8_t spellEffectId)
 {
     return spellEffectId < MAX_SPELL_EFFECT_VALUE ? m_spellEffects[spellEffectId] : nullptr;
 }

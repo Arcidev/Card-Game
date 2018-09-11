@@ -3,7 +3,7 @@
 
 class PlayableCard;
 
-typedef void(*SpellAuraEffectHandlerFunc)(PlayableCard* card, uint8_t const& value);
+typedef void(*SpellAuraEffectHandlerFunc)(PlayableCard* card, uint8_t value);
 
 enum SpellAuraEffects
 {
@@ -18,8 +18,8 @@ class SpellAuraEffectHandler
     private:
         static SpellAuraEffectHandlerFunc const m_spellAuraEffectHandlers[];
 
-        static void handleDamageOnTick(PlayableCard* card, uint8_t const& damage);
-        static void handleHealOnTick(PlayableCard* card, uint8_t const& damage);
+        static void handleDamageOnTick(PlayableCard* card, uint8_t damage);
+        static void handleHealOnTick(PlayableCard* card, uint8_t damage);
 
     public:
         static SpellAuraEffectHandlerFunc GetAuraEffectTickHandler(uint8_t spellAuraEffect);
