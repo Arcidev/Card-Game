@@ -21,7 +21,7 @@
 #define SOCKET int
 #define WSADATA int
 #define SD_BOTH 2
-#define InitWinsock(word, data) 0
+#define InitWinsock [] (...) { return 0; }
 #define CloseWinsock [] () { }
 #define closesocket close
 #define GetSockError() errno
