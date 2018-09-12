@@ -1,0 +1,25 @@
+path_classifiers:
+  docs:
+    - README.md
+    - LICENSE.md      
+extraction:
+  cpp:
+    prepare:
+      packages:
+        - g++-7
+    after_prepare:
+        - sudo add-apt-repository ppa:jonathonf/gcc-7.1 -y
+        - sudo apt-get update
+        - sudo apt-get install libsqlite3-dev
+        - sudo apt-get install libssl-dev
+        - sudo apt-get install gcc-7 g++-7
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 20
+        - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 20
+        - sudo update-alternatives --config gcc
+        - sudo update-alternatives --config g++
+    index:
+      build_command:
+        - cd Server
+        - mkdir Build
+        - chmod u+rx BUILD
+        - ./BUILD
