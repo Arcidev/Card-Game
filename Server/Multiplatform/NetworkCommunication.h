@@ -21,6 +21,7 @@
 #define SOCKET int
 #define WSADATA int
 #define SD_BOTH 2
+#define MAKEWORD(a,b) ((unsigned short)(((unsigned char)(a))|(((unsigned short)((unsigned char)(b)))<<8)))
 #define InitWinsock [] (...) { return 0; }
 #define CloseWinsock [] () { }
 #define closesocket close
