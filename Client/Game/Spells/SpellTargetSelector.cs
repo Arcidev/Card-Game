@@ -10,7 +10,8 @@ namespace Client.Game
         private static readonly Func<Player, Player, IEnumerable<UInt64>>[] targetSelectors =
         {
             HandleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
-            HandleTargetUnitFriend          // TARGET_UNIT_TARGET_FRIEND
+            HandleTargetUnitFriend,         // TARGET_UNIT_TARGET_FRIEND
+            HandleTargetUnitCleaveEnemy     // TARGET_UNIT_CLEAVE_ENEMY
         };
 
         public static Func<Player, Player, IEnumerable<UInt64>> GetTargetSelector(byte target)
@@ -30,5 +31,7 @@ namespace Client.Game
         {
             return player.CardDeck.Where(x => x != null).Select(x => x.Guid);
         }
+
+        private static IEnumerable<UInt64> HandleTargetUnitCleaveEnemy(Player player, Player enemy) => HandleTargetUnitTargetEnemy(player, enemy);
     }
 }
