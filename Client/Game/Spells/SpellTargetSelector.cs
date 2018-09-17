@@ -16,7 +16,7 @@ namespace Client.Game
 
         public static Func<Player, Player, IEnumerable<UInt64>> GetTargetSelector(byte target)
         {
-            if (target > (byte)SpellTargets.MAX_SPELL_EFFECT_TARGET)
+            if (target >= (byte)SpellTargets.MAX_SPELL_EFFECT_TARGET)
                 return null;
 
             return targetSelectors[target];
