@@ -11,6 +11,9 @@ enum SpellEffects
 
 enum SpellAttributes
 {
+    SPELL_ATTRIBUTE_TARGET_MELEE        = 0x01,
+    SPELL_ATTRIBUTE_TARGET_SELF         = 0x02,
+    SPELL_ATTRIBUTE_HIDE_TARGET_CLIENT  = 0x04
 };
 
 struct SpellEffectValues

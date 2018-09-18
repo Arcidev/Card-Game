@@ -12,7 +12,7 @@ SpellEffectFunc const SpellEffect::m_spellEffects[] =
 
 bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
     if (targets.empty())
         return false;
 
@@ -22,7 +22,7 @@ bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t 
 
 bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
     if (targets.empty())
         return false;
 
@@ -37,7 +37,7 @@ bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t tar
 
 bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
     if (targets.empty())
         return false;
 

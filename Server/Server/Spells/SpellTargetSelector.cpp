@@ -1,4 +1,5 @@
 #include "SpellTargetSelector.h"
+#include "SpellEffect.h"
 #include "../Cards/PlayableCard.h"
 #include "../Player.h"
 
@@ -9,18 +10,49 @@ SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
     handleTargetUnitCleaveEnemy     // TARGET_UNIT_CLEAVE_ENEMY
 };
 
-std::list<PlayableCard*> SpellTargetSelector::getTargetFromDeck(Player* player, uint64_t targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
 {
-    for (PlayableCard* card : player->GetCurrentCards())
+    auto cards = victim->GetCurrentCards();
+    auto result = std::list<PlayableCard*>();
+
+    for (size_t i = 0; i < cards.size(); i++)
     {
-        if (targetGuid == card->GetGuid())
-            return std::list<PlayableCard*>{ card };
+        if (cards[i]->GetGuid() != targetGuid)
+            continue;
+
+        // The effect can be applied only to melee target
+        if (spellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE && i != attacker->GetCurrentCardIndex())
+            break;
+
+        result.push_back(cards[i]);
+        break;
     }
 
-    return std::list<PlayableCard*>();
+    return result;
 }
 
-std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player* /*attacker*/, Player* victim, uint64_t targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetFriend(Player const* attacker, Player const* /*victim*/, uint64_t targetGuid, uint32_t spellAttributes)
+{
+    auto cards = attacker->GetCurrentCards();
+    auto result = std::list<PlayableCard*>();
+
+    for (size_t i = 0; i < cards.size(); i++)
+    {
+        if (cards[i]->GetGuid() != targetGuid)
+            continue;
+
+        // The effect can be applied only to self
+        if (spellAttributes & SPELL_ATTRIBUTE_TARGET_SELF && i != attacker->GetCurrentCardIndex())
+            break;
+
+        result.push_back(cards[i]);
+        break;
+    }
+
+    return result;
+}
+
+std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
 {
     auto cards = victim->GetCurrentCards();
     auto result = std::list<PlayableCard*>();
@@ -29,6 +61,10 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player
     {
         if (cards[i]->GetGuid() != targetGuid)
             continue;
+
+        // The effect can be applied only to melee target
+        if (spellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE && i != attacker->GetCurrentCardIndex())
+            break;
 
         result.push_back(cards[i]);
         
@@ -46,7 +82,7 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player
     return result;
 }
 
-std::list<PlayableCard*> SpellTargetSelector::GetTargets(uint8_t spellTarget, Player* attacker, Player* victim, uint64_t targetGuid)
+std::list<PlayableCard*> SpellTargetSelector::GetTargets(uint8_t spellTarget, Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
 {
-    return spellTarget < MAX_SPELL_EFFECT_TARGET ? m_spellTargetSelectors[spellTarget](attacker, victim, targetGuid) : std::list<PlayableCard*>();
+    return spellTarget < MAX_SPELL_EFFECT_TARGET ? m_spellTargetSelectors[spellTarget](attacker, victim, targetGuid, spellAttributes) : std::list<PlayableCard*>();
 }

@@ -12,20 +12,18 @@ enum SpellTargets
 
 class PlayableCard;
 class Player;
-typedef std::list<PlayableCard*>(*SpellTargetSelectorFunc)(Player* attacker, Player* victim, uint64_t targetGuid);
+typedef std::list<PlayableCard*>(*SpellTargetSelectorFunc)(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
 
 class SpellTargetSelector
 {
     private:
         static SpellTargetSelectorFunc const m_spellTargetSelectors[];
 
-        static std::list<PlayableCard*> getTargetFromDeck(Player* player, uint64_t targetGuid);
-
         // target handlers
-        static std::list<PlayableCard*> handleTargetUnitTargetEnemy(Player* /*attacker*/, Player* victim, uint64_t targetGuid) { return getTargetFromDeck(victim, targetGuid); }
-        static std::list<PlayableCard*> handleTargetUnitTargetFriend(Player* attacker, Player* /*victim*/, uint64_t targetGuid) { return getTargetFromDeck(attacker, targetGuid); }
-        static std::list<PlayableCard*> handleTargetUnitCleaveEnemy(Player* /*attacker*/, Player* victim, uint64_t targetGuid);
+        static std::list<PlayableCard*> handleTargetUnitTargetEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
+        static std::list<PlayableCard*> handleTargetUnitTargetFriend(Player const* attacker, Player const* /*victim*/, uint64_t targetGuid, uint32_t spellAttributes);
+        static std::list<PlayableCard*> handleTargetUnitCleaveEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
 
     public:
-        static std::list<PlayableCard*> GetTargets(uint8_t spellTarget, Player* attacker, Player* victim, uint64_t targetGuid);
+        static std::list<PlayableCard*> GetTargets(uint8_t spellTarget, Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
 };

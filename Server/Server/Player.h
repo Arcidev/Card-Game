@@ -75,12 +75,13 @@ class Player
 
         Player* GetOpponent() const { return m_game->GetOpponent(this); }
         PlayableCard* GetCurrentCard();
-        CardsMap const& GetCards() { return m_cards; }
-        std::vector<PlayableCard*> const& GetCurrentCards() { return m_currentCards; }
+        CardsMap const& GetCards() const { return m_cards; }
+        std::vector<PlayableCard*> const& GetCurrentCards() const { return m_currentCards; }
         PlayableCard* GetCard(uint64_t cardGuid);
         SOCKET const& GetSocket() const { return m_socket; }
         Game* GetGame() const { return m_game; }
         uint32_t GetId() const { return m_id; }
+        uint8_t GetCurrentCardIndex() const { return m_currentCardIndex; }
         std::string_view GetName() const { return m_name; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         ServerNetwork const* GetNetwork() const { return m_network; }

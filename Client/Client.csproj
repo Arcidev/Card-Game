@@ -89,6 +89,7 @@
     <Compile Include="Enums\CursorTypes.cs" />
     <Compile Include="Enums\SelectionType.cs" />
     <Compile Include="Enums\SpellCastResult.cs" />
+    <Compile Include="Enums\SpellAttributes.cs" />
     <Compile Include="Enums\SpellTargets.cs" />
     <Compile Include="Game\Cards\DefensiveCard.cs" />
     <Compile Include="Game\Cards\MeleeCard.cs" />

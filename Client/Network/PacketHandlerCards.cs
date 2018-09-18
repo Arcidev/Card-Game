@@ -32,7 +32,7 @@ namespace Client.Network
                     var spellEffectsCount = packet.ReadByte();
                     var spellEffects = new SpellEffect[spellEffectsCount];
                     for (int j = 0; j < spellEffectsCount; j++)
-                        spellEffects[j] = new SpellEffect(packet.ReadByte());
+                        spellEffects[j] = new SpellEffect(packet.ReadByte(), (SpellAttributes)packet.ReadUInt32());
 
                     spell = new Spell(spellId, manaCost, spellEffects);
                 }

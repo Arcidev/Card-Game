@@ -302,7 +302,10 @@ void Player::SendAvailableCards() const
             buffer << spell->GetId();
             buffer << (uint8_t)spell->GetSpellEffects().size();
             for (auto const& spellEffect : spell->GetSpellEffects())
+            {
                 buffer << spellEffect.second.Target;
+                buffer << spellEffect.second.SpellAttributes;
+            }
         }
 
         buffer << card.second.GetDamage();
