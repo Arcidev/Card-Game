@@ -15,7 +15,7 @@ void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t dama
     card->GetOwner()->DealPeriodicDamage(card, damage, spellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
 }
 
-void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t spellAttributes)
+void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t /*spellAttributes*/)
 {
     card->Heal(amount);
 }

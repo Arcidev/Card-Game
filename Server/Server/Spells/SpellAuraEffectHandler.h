@@ -19,7 +19,7 @@ class SpellAuraEffectHandler
         static SpellAuraEffectHandlerFunc const m_spellAuraEffectHandlers[];
 
         static void handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes);
-        static void handleHealOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes);
+        static void handleHealOnTick(PlayableCard* card, uint8_t damage, uint32_t /*spellAttributes*/);
 
     public:
         static SpellAuraEffectHandlerFunc GetAuraEffectTickHandler(uint8_t spellAuraEffect);
