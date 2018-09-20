@@ -65,8 +65,9 @@ class Player
         void UseSpell(uint64_t selectedCardGuid);
         void DefendSelf();
         void Prepare();
-        void DealPeriodicDamage(PlayableCard* card, uint32_t damage);
-        
+        void DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense);
+        void Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense);
+
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const* cardTemplate);
         void ReceivePacket(uint32_t length, char const* packetData);

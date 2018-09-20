@@ -26,7 +26,8 @@ namespace Client.Network
             HandleApplyAura,            // SMSG_APPLY_AURA
             HandleSpellPeriodicDamage,  // SMSG_SPELL_PERIODIC_DAMAGE
             HandleCardHealed,           // SMSG_CARD_HEALED
-            HandleManaReplenishment     // SMSG_MANA_REPLENISHMENT
+            HandleManaReplenishment,    // SMSG_MANA_REPLENISHMENT
+            HandleSpellDrain            // SMSG_SPELL_DRAIN
         };
 
         // Returns function to handle packet

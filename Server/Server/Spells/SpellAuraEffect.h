@@ -13,9 +13,10 @@ class SpellAuraEffect
         uint8_t m_currentTick;
         uint8_t m_value1;
         uint8_t m_value2;
+        uint32_t m_spellAttributes;
 
     public:
-        SpellAuraEffect(PlayableCard* card, uint32_t m_spellId, uint8_t id, uint8_t duration, uint8_t value1, uint8_t value2);
+        SpellAuraEffect(PlayableCard* card, uint32_t m_spellId, uint8_t id, uint8_t duration, uint8_t value1, uint8_t value2, uint32_t spellAttributes);
         void Tick();
 
         uint32_t GetSpellId() const { return m_spellId; }

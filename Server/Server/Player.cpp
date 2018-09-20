@@ -210,7 +210,7 @@ void Player::UseSpell(uint64_t selectedCardGuid)
         return;
     }
 
-    currentCard->ModifyMana(-currentCard->GetSpell()->GetManaCost());
+    currentCard->SubtractMana(currentCard->GetSpell()->GetManaCost());
     SendSpellCastResult(result, currentCard, currentCard->GetSpell());
 
     endTurn();
@@ -493,7 +493,7 @@ void Player::replenishMana()
 
         for (PlayableCard* currentCard : m_currentCards)
         {
-            currentCard->ModifyMana(MANA_REPLENISHMENT_VALUE);
+            currentCard->AddMana(MANA_REPLENISHMENT_VALUE);
 
             packet.WriteBitStreamInOrder(currentCard->GetGuid(), { 5, 0, 1, 2, 3, 7, 4, 6 });
 
@@ -560,9 +560,9 @@ uint8_t Player::calculateReducedDamage(uint8_t damage, uint8_t defense)
 }
 
 // Handles periodic damage from aura
-void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage)
+void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense)
 {
-    card->DealDamage(damage);
+    card->DealDamage(applyDefense ? calculateReducedDamage(damage, card->GetModifiedDefense()) : damage);
 
     Packet packet(SMSG_SPELL_PERIODIC_DAMAGE);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 6, 4, 1 });
@@ -573,5 +573,29 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage)
     packet << m_id;
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 7, 5, 4, 6 });
     packet << damage;
+    GetGame()->BroadcastPacket(packet);
+}
+
+// Handles drain spell effect
+void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense)
+{
+    auto damage = applyDefense ? calculateReducedDamage(drainedHealth, card->GetModifiedDefense()) : drainedHealth;
+    auto currentCard = GetCurrentCard();
+    card->DealDamage(damage);
+    card->SubtractMana(drainedMana);
+
+    currentCard->AddHealth(restoredHealth);
+    currentCard->AddMana(restoredMana);
+
+    Packet packet(SMSG_SPELL_DRAIN);
+    packet.WriteBitStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteBit(card->IsAlive());
+    packet.FlushBits();
+
+    packet << m_id;
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet << damage << restoredHealth << drainedMana << restoredMana;
+    packet << card->GetMana() << currentCard->GetHealth() << currentCard->GetMana();
+
     GetGame()->BroadcastPacket(packet);
 }

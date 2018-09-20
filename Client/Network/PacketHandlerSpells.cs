@@ -89,5 +89,37 @@ namespace Client.Network
             else
                 player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage, true);
         }
+
+        // Handle SMSG_SPELL_DRAIN
+        private static void HandleSpellDrain(Packet packet, ClientGame game)
+        {
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
+            var isAlive = packet.ReadBit();
+
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var opponent = game.GetOpponent(player.Id);
+            packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
+
+            var drainedHealth = packet.ReadByte();
+            var restoredHealth = packet.ReadByte();
+            var drainedMana = packet.ReadByte();
+            var restoredMana = packet.ReadByte();
+            var opponentMana = packet.ReadByte();
+            var health = packet.ReadByte();
+            var mana = packet.ReadByte();
+
+            if (isAlive)
+            {
+                opponent.AttackCard(guid, drainedHealth, CombatLogTypes.SpellUsage, true);
+                opponent.SetCardMana(guid, opponentMana);
+            }
+            else
+                opponent.DestroyCard(guid, packet.ReadByte(), CombatLogTypes.SpellUsage, true);
+
+            var currentCardGuid = player.ActiveCard.Guid;
+            player.HealCard(currentCardGuid, health, restoredHealth);
+            player.SetCardMana(currentCardGuid, mana);
+        }
     }
 }

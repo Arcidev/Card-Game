@@ -12,7 +12,7 @@ SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
 
 std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
 {
-    auto cards = victim->GetCurrentCards();
+    auto& cards = victim->GetCurrentCards();
     auto result = std::list<PlayableCard*>();
 
     for (size_t i = 0; i < cards.size(); i++)
@@ -33,7 +33,7 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetEnemy(Player
 
 std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetFriend(Player const* attacker, Player const* /*victim*/, uint64_t targetGuid, uint32_t spellAttributes)
 {
-    auto cards = attacker->GetCurrentCards();
+    auto& cards = attacker->GetCurrentCards();
     auto result = std::list<PlayableCard*>();
 
     for (size_t i = 0; i < cards.size(); i++)
@@ -54,7 +54,7 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetFriend(Playe
 
 std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
 {
-    auto cards = victim->GetCurrentCards();
+    auto& cards = victim->GetCurrentCards();
     auto result = std::list<PlayableCard*>();
     
     for (size_t i = 0; i < cards.size(); i++)
