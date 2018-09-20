@@ -18,9 +18,6 @@ namespace Client.Game
 
         public IEnumerable<UInt64> GetPossibleTargets(Player player, Player opponent)
         {
-            if ((SpellAttributes & SpellAttributes.HideTarget) != SpellAttributes.None)
-                return new List<UInt64>();
-
             return targetSelector?.Invoke(player, opponent, SpellAttributes) ?? new List<UInt64>();
         }
     }

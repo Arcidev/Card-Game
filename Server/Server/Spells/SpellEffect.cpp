@@ -16,7 +16,7 @@ bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t 
     if (targets.empty())
         return false;
 
-    attacker->SpellAttack(targets, effectValues->Value1);
+    attacker->SpellAttack(targets, effectValues->Value1, effectValues->SpellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
     return true;
 }
 

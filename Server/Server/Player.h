@@ -41,6 +41,7 @@ class Player
         void destroyCard(uint64_t cardGuid);
         void replenishMana();
         void endTurn();
+        uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense);
 
     public:
         Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
@@ -60,7 +61,7 @@ class Player
         void SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* amount) const;
         void SendCardHealed(PlayableCard const* card, uint8_t amount) const;
         void Attack(uint64_t victimCardGuid);
-        void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage);
+        void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage, bool applyDefense);
         void UseSpell(uint64_t selectedCardGuid);
         void DefendSelf();
         void Prepare();

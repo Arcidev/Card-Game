@@ -74,15 +74,7 @@ void Player::Attack(uint64_t victimCardGuid)
         return;
     }
 
-    uint8_t damage = currentCard->GetModifiedDamage();
-    float reduction = (float)(victimCard->GetModifiedDefense() * DEFENSE_PERCENT_PER_POINT);
-    if (reduction)
-    {
-        reduction /= 100.0f;
-        reduction += 1.0f;
-        damage = (uint8_t)(damage / reduction);
-    }
-
+    uint8_t damage = calculateReducedDamage(currentCard->GetModifiedDamage(), victimCard->GetModifiedDefense());
     victimCard->DealDamage(damage);
 
     if (!victimCard->IsAlive())
@@ -100,7 +92,7 @@ void Player::Attack(uint64_t victimCardGuid)
     endTurn();
 }
 
-void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage)
+void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage, bool applyDefense)
 {
     Player* victim = GetGame()->GetOpponent(this);
     if (!victim)
@@ -113,7 +105,9 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     packet << (uint8_t)targets.size();
     for (PlayableCard* target : targets)
     {
-        target->DealDamage(damage);
+        uint8_t reducedDamage = applyDefense ? calculateReducedDamage(damage, target->GetModifiedDefense()) : damage;
+
+        target->DealDamage(reducedDamage);
         if (target->IsAlive())
             packet.WriteBit(true);
         else
@@ -128,7 +122,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
         packet.WriteBitStreamInOrder(target->GetGuid(), { 6, 3, 1, 7, 0, 2, 5, 4 });
 
         buffer.WriteByteStreamInOrder(target->GetGuid(), { 4, 3, 5 });
-        buffer << damage;
+        buffer << reducedDamage;
         buffer.WriteByteStreamInOrder(target->GetGuid(), { 2, 0, 1, 6, 7 });
     }
 
@@ -552,6 +546,17 @@ void Player::endTurn()
     replenishMana();
     ++m_currentCardIndex;
     GetGame()->ActivateSecondPlayer();
+}
+
+uint8_t Player::calculateReducedDamage(uint8_t damage, uint8_t defense)
+{
+    float reduction = (float)(defense * DEFENSE_PERCENT_PER_POINT);
+    if (!reduction)
+        return damage;
+
+    reduction /= 100.0f;
+    reduction += 1.0f;
+    return (uint8_t)(damage / reduction);
 }
 
 // Handles periodic damage from aura
