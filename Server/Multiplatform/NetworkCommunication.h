@@ -23,7 +23,7 @@
 #define SD_BOTH 2
 #define MAKEWORD(a,b) ((unsigned short)(((unsigned char)(a))|(((unsigned short)((unsigned char)(b)))<<8)))
 #define InitWinsock [] (...) { return 0; }
-#define CloseWinsock __noop
+#define CloseWinsock [] () { }
 #define closesocket close
 #define GetSockError() errno
 #define ZeroMemory(destination, length) memset(destination, 0, length)
