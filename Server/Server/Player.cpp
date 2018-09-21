@@ -199,7 +199,7 @@ void Player::UseSpell(uint64_t selectedCardGuid)
 
     if (!currentCard->GetSpell())
     {
-        SendSpellCastResult(SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS, nullptr, 0);
+        SendSpellCastResult(SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS, nullptr, nullptr);
         return;
     }
 
