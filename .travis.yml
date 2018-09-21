@@ -6,11 +6,9 @@ git:
   depth: 1
 
 branches:
-  only:
-    - master
+  only: master
 
-compiler:
-  - g++
+compiler: g++
 
 before_install:
   - sudo add-apt-repository ppa:jonathonf/gcc-7.1 -y

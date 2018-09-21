@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef NDEBUG
-#define DEBUG_LOG [] (...) { }
+#define DEBUG_LOG __noop
 #else
 #define DEBUG_LOG printf
 #endif
