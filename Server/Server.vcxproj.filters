@@ -83,9 +83,6 @@
     <ClInclude Include="Server\Spells\SpellAuraEffect.h">
       <Filter>Spells</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h">
-      <Filter>Spells</Filter>
-    </ClInclude>
     <ClInclude Include="Server\PacketHandlers\ByteBuffer.h">
       <Filter>PacketHandlers</Filter>
     </ClInclude>
@@ -109,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="Server\SignalHandler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellAuraEffectTickHandler.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h">
+      <Filter>Spells</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +166,6 @@
     <ClCompile Include="Server\Spells\SpellAuraEffect.cpp">
       <Filter>Spells</Filter>
     </ClCompile>
-    <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
-      <Filter>Spells</Filter>
-    </ClCompile>
     <ClCompile Include="Server\PacketHandlers\ByteBuffer.cpp">
       <Filter>PacketHandlers</Filter>
     </ClCompile>
@@ -198,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="Server\SignalHandler.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Spells\SpellAuraEffectTickHandler.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
+      <Filter>Spells</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

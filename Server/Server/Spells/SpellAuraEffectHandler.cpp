@@ -1,26 +1,42 @@
 #include "SpellAuraEffectHandler.h"
-#include "SpellEffect.h"
+#include "SpellAuraEffect.h"
 #include "../Player.h"
 #include "../Cards/PlayableCard.h"
 
-SpellAuraEffectHandlerFunc const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
+SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
 {
-    handleDamageOnTick, // SPELL_AURA_EFFECT_DAMAGE
-    nullptr,            // SPELL_AURA_EFFECT_MODIFY_STAT
-    handleHealOnTick    // SPELL_AURA_EFFECT_HEAL
+    { defaultApplyHandler,      defaultRemoveHandler        },  // SPELL_AURA_EFFECT_DAMAGE
+    { statChangedApplyHandler,  statChangedRemoveHandler    },  // SPELL_AURA_EFFECT_MODIFY_STAT
+    { defaultApplyHandler,      defaultRemoveHandler        }   // SPELL_AURA_EFFECT_HEAL
 };
 
-void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes)
+void SpellAuraEffectHandler::defaultApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)
 {
-    card->GetOwner()->DealPeriodicDamage(card, damage, spellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
+    targetCard->ApplyAura(aura);
 }
 
-void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t /*spellAttributes*/)
+void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
 {
-    card->Heal(amount);
+    /// TODO: Inform player about aura removal
 }
 
-SpellAuraEffectHandlerFunc SpellAuraEffectHandler::GetAuraEffectTickHandler(uint8_t spellAuraEffect)
+void SpellAuraEffectHandler::statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)
 {
-    return spellAuraEffect < MAX_SPELL_AURA_VALUE ? m_spellAuraEffectHandlers[spellAuraEffect] : nullptr;
+    targetCard->ApplyAura(aura);
+    targetCard->GetOwner()->SendCardStatChanged(targetCard, aura.GetValue1());
+}
+
+void SpellAuraEffectHandler::statChangedRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
+{
+    card->GetOwner()->SendCardStatChanged(card, aura.GetValue1());
+}
+
+SpellAuraEffectApplyHandlerFunc SpellAuraEffectHandler::GetApplyHandler(uint8_t spellAuraEffect)
+{
+    return spellAuraEffect < MAX_SPELL_AURA_VALUE ? m_spellAuraEffectHandlers[spellAuraEffect].Apply : nullptr;
+}
+
+SpellAuraEffectRemoveHandlerFunc SpellAuraEffectHandler::GetRemoveHandler(uint8_t spellAuraEffect)
+{
+    return spellAuraEffect < MAX_SPELL_AURA_VALUE ? m_spellAuraEffectHandlers[spellAuraEffect].Remove : nullptr;
 }

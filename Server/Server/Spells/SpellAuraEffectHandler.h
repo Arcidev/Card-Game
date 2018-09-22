@@ -2,25 +2,30 @@
 #include <cstdint>
 
 class PlayableCard;
+class Player;
+class SpellAuraEffect;
 
-typedef void(*SpellAuraEffectHandlerFunc)(PlayableCard* card, uint8_t value, uint32_t spellAttributes);
+typedef void(*SpellAuraEffectApplyHandlerFunc)(SpellAuraEffect const& aura, Player* caster, PlayableCard* targetCard);
+typedef void(*SpellAuraEffectRemoveHandlerFunc)(SpellAuraEffect const& aura, PlayableCard* card);
 
-enum SpellAuraEffects
+struct SpellAuraEffectFuncWrapper
 {
-    SPELL_AURA_EFFECT_DAMAGE = 0,
-    SPELL_AURA_EFFECT_MODIFY_STAT,
-    SPELL_AURA_EFFECT_HEAL,
-    MAX_SPELL_AURA_VALUE
+    SpellAuraEffectApplyHandlerFunc Apply;
+    SpellAuraEffectRemoveHandlerFunc Remove;
 };
 
 class SpellAuraEffectHandler
 {
     private:
-        static SpellAuraEffectHandlerFunc const m_spellAuraEffectHandlers[];
+        static SpellAuraEffectFuncWrapper const m_spellAuraEffectHandlers[];
 
-        static void handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes);
-        static void handleHealOnTick(PlayableCard* card, uint8_t damage, uint32_t /*spellAttributes*/);
+        static void defaultApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard);
+        static void defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
+
+        static void statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard);
+        static void statChangedRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
     public:
-        static SpellAuraEffectHandlerFunc GetAuraEffectTickHandler(uint8_t spellAuraEffect);
+        static SpellAuraEffectApplyHandlerFunc GetApplyHandler(uint8_t spellAuraEffect);
+        static SpellAuraEffectRemoveHandlerFunc GetRemoveHandler(uint8_t spellAuraEffect);
 };

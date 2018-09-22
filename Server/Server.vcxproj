@@ -116,6 +116,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Server\Spells\Spell.h" />
     <ClInclude Include="Server\Spells\SpellAuraEffect.h" />
     <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h" />
+    <ClInclude Include="Server\Spells\SpellAuraEffectTickHandler.h" />
     <ClInclude Include="Server\Spells\SpellEffect.h" />
     <ClInclude Include="Server\Spells\SpellTargetSelector.h" />
     <ClInclude Include="Server\StaticHelper.h" />
@@ -148,6 +149,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Spells\Spell.cpp" />
     <ClCompile Include="Server\Spells\SpellAuraEffect.cpp" />
     <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp" />
+    <ClCompile Include="Server\Spells\SpellAuraEffectTickHandler.cpp" />
     <ClCompile Include="Server\Spells\SpellEffect.cpp" />
     <ClCompile Include="Server\Spells\SpellTargetSelector.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />

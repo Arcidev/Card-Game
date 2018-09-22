@@ -512,16 +512,11 @@ void Player::replenishMana()
 void Player::endTurn()
 {
     bool sendDeckCards = false;
-    std::list<std::pair<uint64_t, std::list<uint32_t> > > cards;
     for (std::vector<PlayableCard*>::iterator iter = m_currentCards.begin(); iter != m_currentCards.end();)
     {
         if ((*iter)->HasAuras())
         {
-            std::list<uint32_t> removedAuras = (*iter)->HandleTickOnAuras();
-
-            if (!removedAuras.empty())
-                cards.push_back(std::make_pair((*iter)->GetGuid(), removedAuras));
-
+            (*iter)->HandleTickOnAuras();
             if (!(*iter)->IsAlive())
             {
                 if (!sendDeckCards)

@@ -30,7 +30,7 @@ class PlayableCard : public Card
         void AddHealth(uint8_t amount);
         void AddMana(uint8_t amount);
         void SubtractMana(uint8_t amount) { m_mana = (amount < m_mana ? m_mana - amount : 0); }
-        std::list<uint32_t> HandleTickOnAuras();
+        void HandleTickOnAuras();
 
         bool IsAlive() const { return GetHealth() > 0; }
         bool HasAuras() const { return !m_auras.empty(); }

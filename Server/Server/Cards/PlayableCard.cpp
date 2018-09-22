@@ -6,6 +6,7 @@
 #include "../DataHolder.h"
 #include "../Player.h"
 #include "../PlayerDefines.h"
+#include "../Spells/SpellAuraEffectHandler.h"
 
 PlayableCard::PlayableCard(uint64_t guid, Card const* card, Player* owner) : Card(*card), m_guid(guid), m_isDefending(false), m_owner(owner) { }
 
@@ -57,7 +58,7 @@ int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
 {
     int8_t modifier = 0;
     for (auto const& aura : m_auras)
-        if (aura.second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
+        if (aura.second.GetDuration() && aura.second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
             if (aura.second.GetValue1() == stat)
                 modifier += (int8_t)aura.second.GetValue2();
 
@@ -75,9 +76,6 @@ void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     else
         m_auras.insert(std::make_pair(aura.GetSpellId(), aura));
 
-    if (aura.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-        m_owner->SendCardStatChanged(this, aura.GetValue1());
-
     m_owner->SendApplyAura(m_guid, &aura);
 }
 
@@ -87,22 +85,20 @@ void PlayableCard::Heal(uint8_t amount)
     m_owner->SendCardHealed(this, amount);
 }
 
-std::list<uint32_t> PlayableCard::HandleTickOnAuras()
+void PlayableCard::HandleTickOnAuras()
 {
-    std::list<uint32_t> spellIds;
     for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
     {
         iter->second.Tick();
-        if (!iter->second.GetDuration())
+        if (iter->second.GetDuration())
         {
-            spellIds.push_back(iter->second.GetId());
-            iter = m_auras.erase(iter);
-        }
-        else
             ++iter;
-    }
+            continue;
+        }
 
-    return spellIds;
+        iter->second.Remove(); 
+        iter = m_auras.erase(iter);
+    }
 }
 
 void PlayableCard::AddMana(uint8_t amount)

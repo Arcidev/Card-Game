@@ -1,4 +1,5 @@
 #include "SpellEffect.h"
+#include "SpellAuraEffectHandler.h"
 #include "../Cards/PlayableCard.h"
 #include "../PacketHandlers/Packet.h"
 #include "../Player.h"
@@ -27,10 +28,14 @@ bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t tar
     if (targets.empty())
         return false;
 
+    SpellAuraEffectApplyHandlerFunc applyHandler = SpellAuraEffectHandler::GetApplyHandler(effectValues->Value1);
+    if (!applyHandler)
+        return false;
+
     for (PlayableCard* target : targets)
     {
         SpellAuraEffect auraEffect(target, effectValues->SpellId, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4, effectValues->SpellAttributes);
-        target->ApplyAura(auraEffect);
+        applyHandler(auraEffect, attacker, target);
     }
 
     return true;
