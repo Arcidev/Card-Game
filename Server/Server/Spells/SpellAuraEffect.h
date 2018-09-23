@@ -1,14 +1,6 @@
 #pragma once
 #include "SpellAuraEffectTickHandler.h"
 
-enum SpellAuraEffects
-{
-    SPELL_AURA_EFFECT_DAMAGE = 0,
-    SPELL_AURA_EFFECT_MODIFY_STAT,
-    SPELL_AURA_EFFECT_HEAL,
-    MAX_SPELL_AURA_VALUE
-};
-
 class Player;
 class PlayableCard;
 class SpellAuraEffect

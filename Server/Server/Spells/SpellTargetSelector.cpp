@@ -1,5 +1,5 @@
 #include "SpellTargetSelector.h"
-#include "SpellEffect.h"
+#include "SpellDefines.h"
 #include "../Cards/PlayableCard.h"
 #include "../Player.h"
 

@@ -1,7 +1,7 @@
 #include "SpellEffect.h"
 #include "SpellAuraEffectHandler.h"
+#include "SpellDefines.h"
 #include "../Cards/PlayableCard.h"
-#include "../PacketHandlers/Packet.h"
 #include "../Player.h"
 
 SpellEffectFunc const SpellEffect::m_spellEffects[] =

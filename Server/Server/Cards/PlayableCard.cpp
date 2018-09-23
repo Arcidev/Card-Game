@@ -7,6 +7,7 @@
 #include "../Player.h"
 #include "../PlayerDefines.h"
 #include "../Spells/SpellAuraEffectHandler.h"
+#include "../Spells/SpellDefines.h"
 
 PlayableCard::PlayableCard(uint64_t guid, Card const* card, Player* owner) : Card(*card), m_guid(guid), m_isDefending(false), m_owner(owner) { }
 
