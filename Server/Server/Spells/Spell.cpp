@@ -18,7 +18,7 @@ uint8_t Spell::Cast(Player* caster, Player* victim, uint64_t selectedCardGuid) c
 
     bool failed = true;
     for (SpellEffectPair const& effectPair : m_spellEffects)
-        if (effectPair.first(caster, victim, selectedCardGuid, &effectPair.second) && failed)
+        if (effectPair.first(caster, victim, selectedCardGuid, effectPair.second) && failed)
             failed = false;
 
     return failed ? SPELL_CAST_RESULT_FAIL_INVALID_TARGET : SPELL_CAST_RESULT_SUCCESS;

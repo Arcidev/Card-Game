@@ -12,55 +12,55 @@ SpellEffectFunc const SpellEffect::m_spellEffects[] =
     handleDrain         // SPELL_EFFECT_DRAIN
 };
 
-bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
+bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues.Target, attacker, victim, targetGuid, effectValues.SpellAttributes);
     if (targets.empty())
         return false;
 
-    attacker->SpellAttack(targets, effectValues->Value1, effectValues->SpellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
+    attacker->SpellAttack(targets, effectValues.Value1, effectValues.SpellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
     return true;
 }
 
-bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
+bool SpellEffect::handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues.Target, attacker, victim, targetGuid, effectValues.SpellAttributes);
     if (targets.empty())
         return false;
 
-    SpellAuraEffectApplyHandlerFunc applyHandler = SpellAuraEffectHandler::GetApplyHandler(effectValues->Value1);
+    SpellAuraEffectApplyHandlerFunc applyHandler = SpellAuraEffectHandler::GetApplyHandler(effectValues.Value1);
     if (!applyHandler)
         return false;
 
     for (PlayableCard* target : targets)
     {
-        SpellAuraEffect auraEffect(target, effectValues->SpellId, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4, effectValues->SpellAttributes);
+        SpellAuraEffect auraEffect(target, effectValues.SpellId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
         applyHandler(auraEffect, attacker, target);
     }
 
     return true;
 }
 
-bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
+bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues.Target, attacker, victim, targetGuid, effectValues.SpellAttributes);
     if (targets.empty())
         return false;
 
     for (PlayableCard* target : targets)
-        target->Heal(effectValues->Value1);
+        target->Heal(effectValues.Value1);
 
     return true;
 }
 
-bool SpellEffect::handleDrain(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues)
+bool SpellEffect::handleDrain(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
 {
-    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues->Target, attacker, victim, targetGuid, effectValues->SpellAttributes);
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues.Target, attacker, victim, targetGuid, effectValues.SpellAttributes);
     if (targets.empty())
         return false;
 
     for (PlayableCard* target : targets)
-        attacker->Drain(target, effectValues->Value1, effectValues->Value2, effectValues->Value3, effectValues->Value4, effectValues->SpellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
+        attacker->Drain(target, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
 
     return true;
 }

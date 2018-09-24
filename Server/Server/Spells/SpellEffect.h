@@ -25,17 +25,17 @@ struct SpellEffectValues
 };
 
 class Player;
-typedef bool(*SpellEffectFunc)(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
+typedef bool(*SpellEffectFunc)(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
 
 class SpellEffect
 {
     private:
         static SpellEffectFunc const m_spellEffects[];
 
-        static bool handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
-        static bool handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
-        static bool handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
-        static bool handleDrain(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const* effectValues);
+        static bool handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
+        static bool handleApplyAura(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
+        static bool handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
+        static bool handleDrain(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
 
     public:
         static SpellEffectFunc GetSpellEffectFunc(uint8_t spellEffectId);
