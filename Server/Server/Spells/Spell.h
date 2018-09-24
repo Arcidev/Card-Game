@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include "SpellEffect.h"
 
 typedef std::pair<SpellEffectFunc, SpellEffectValues> SpellEffectPair;

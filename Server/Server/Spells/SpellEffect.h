@@ -1,5 +1,5 @@
 #pragma once
-#include "SpellTargetSelector.h"
+#include <cstdint>
 
 enum SpellEffects
 {

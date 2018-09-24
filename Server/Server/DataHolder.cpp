@@ -1,5 +1,7 @@
 #include <iostream>
 #include "DataHolder.h"
+#include "Spells/SpellDefines.h"
+#include "Spells/SpellValidator.h"
 #include "../DataBase/SQLite/sqlite3.h"
 
 CardsDataMap DataHolder::m_cards;
@@ -19,7 +21,8 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
         return 0;
     }
 
-    SpellEffectFunc spellEffectFunc = SpellEffect::GetSpellEffectFunc(atoi(argv[1]));
+    uint8_t spellEffectId = atoi(argv[1]);
+    SpellEffectFunc spellEffectFunc = SpellEffect::GetSpellEffectFunc(spellEffectId);
     if (!spellEffectFunc)
     {
         std::cerr << "Spell id " << spellId << " has invalid spell effect" << std::endl;
@@ -32,6 +35,8 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
 
     SpellEffectValues spellVal(spellId, atoi(argv[2]), targetId, atoi(argv[5]), atoi(argv[6]), atoi(argv[7]), atoi(argv[8]));
     spellIter->second.addSpellEffect(std::make_pair(spellEffectFunc, spellVal));
+
+    SpellValidator::ValidateSpellEffect(spellEffectId, &spellVal);
     return 0;
 }
 

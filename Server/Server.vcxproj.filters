@@ -116,6 +116,9 @@
     <ClInclude Include="Server\Spells\SpellDefines.h">
       <Filter>Spells</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Spells\SpellValidator.h">
+      <Filter>Spells</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -206,6 +209,9 @@
       <Filter>Spells</Filter>
     </ClCompile>
     <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Spells\SpellValidator.cpp">
       <Filter>Spells</Filter>
     </ClCompile>
   </ItemGroup>

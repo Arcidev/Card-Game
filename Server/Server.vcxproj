@@ -120,6 +120,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Server\Spells\SpellDefines.h" />
     <ClInclude Include="Server\Spells\SpellEffect.h" />
     <ClInclude Include="Server\Spells\SpellTargetSelector.h" />
+    <ClInclude Include="Server\Spells\SpellValidator.h" />
     <ClInclude Include="Server\StaticHelper.h" />
     <ClInclude Include="Shared\SharedDefines.h" />
   </ItemGroup>
@@ -153,6 +154,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Spells\SpellAuraEffectTickHandler.cpp" />
     <ClCompile Include="Server\Spells\SpellEffect.cpp" />
     <ClCompile Include="Server\Spells\SpellTargetSelector.cpp" />
+    <ClCompile Include="Server\Spells\SpellValidator.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,7 @@
 #include "SpellEffect.h"
 #include "SpellAuraEffectHandler.h"
 #include "SpellDefines.h"
+#include "SpellTargetSelector.h"
 #include "../Cards/PlayableCard.h"
 #include "../Player.h"
 
