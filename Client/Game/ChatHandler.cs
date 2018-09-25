@@ -91,6 +91,13 @@ namespace Client.Game
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
+        // Logs apply aura
+        public void LogExpireAura(PlayableCard card, SpellData spell)
+        {
+            var message = $"{spell.Name} has expired from {card.Name}";
+            WriteLog(message, CombatLogTypes.SpellUsage);
+        }
+
         // Logs heal from spell
         public void LogHeal(PlayableCard card, byte amount)
         {

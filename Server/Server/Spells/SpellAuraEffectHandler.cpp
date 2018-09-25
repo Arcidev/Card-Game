@@ -17,7 +17,7 @@ void SpellAuraEffectHandler::defaultApplyHandler(SpellAuraEffect const& aura, Pl
 
 void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
 {
-    /// TODO: Inform player about aura removal
+    card->GetOwner()->SendAuraExpired(card->GetGuid(), &aura);
 }
 
 void SpellAuraEffectHandler::statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)

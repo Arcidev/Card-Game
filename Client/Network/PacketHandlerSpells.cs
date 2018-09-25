@@ -121,5 +121,18 @@ namespace Client.Network
             player.HealCard(currentCardGuid, health, restoredHealth);
             player.SetCardMana(currentCardGuid, mana);
         }
+
+        // SMSG_SPELL_AURA_EXPIRED
+        private static void HandleSpellAuraExpired(Packet packet, ClientGame game)
+        {
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 0, 5, 7, 2, 1, 4, 3, 6);
+
+            var spellId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 7, 6, 5, 4, 3, 2, 1, 0);
+            var player = game.GetPlayer(packet.ReadUInt32());
+
+            player.ExpireAura(guid, spellId);
+        }
     }
 }
