@@ -47,6 +47,9 @@ void SpellValidator::validateTargetUnitSelf(uint32_t spellEffectId, SpellEffectV
 {
     if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
         writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
+
+    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE)
+        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_MELEE");
 }
 
 void SpellValidator::validateSpellAuraMorph(SpellEffectValues const* values)
