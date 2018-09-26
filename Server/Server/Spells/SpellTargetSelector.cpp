@@ -7,7 +7,8 @@ SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
 {
     handleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
     handleTargetUnitTargetFriend,   // TARGET_UNIT_TARGET_FRIEND
-    handleTargetUnitCleaveEnemy     // TARGET_UNIT_CLEAVE_ENEMY
+    handleTargetUnitCleaveEnemy,    // TARGET_UNIT_CLEAVE_ENEMY
+    handleTargetUnitSelf            // TARGET_UNIT_SELF
 };
 
 std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetEnemy(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes)
@@ -41,8 +42,8 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitTargetFriend(Playe
         if (cards[i]->GetGuid() != targetGuid)
             continue;
 
-        // The effect can be applied only to self
-        if (spellAttributes & SPELL_ATTRIBUTE_TARGET_SELF && i != attacker->GetCurrentCardIndex())
+        // The effect cannot be applied to self
+        if (spellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF && i == attacker->GetCurrentCardIndex())
             break;
 
         result.push_back(cards[i]);
@@ -78,6 +79,17 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitCleaveEnemy(Player
 
         break;
     }
+
+    return result;
+}
+
+std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitSelf(Player const* attacker, Player const* /*victim*/, uint64_t targetGuid, uint32_t /*spellAttributes*/)
+{
+    auto& cards = attacker->GetCurrentCards();
+    auto result = std::list<PlayableCard*>();
+
+    if (cards.size() > attacker->GetCurrentCardIndex())
+        result.push_back(cards[attacker->GetCurrentCardIndex()]);
 
     return result;
 }

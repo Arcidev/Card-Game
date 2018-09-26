@@ -6,6 +6,7 @@ namespace Client.Enums
         Enemy = 0,
         Friend,
         CleaveEnemy,
+        Self,
         MaxSpellTarget
     };
 }
