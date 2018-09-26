@@ -89,7 +89,8 @@ std::list<PlayableCard*> SpellTargetSelector::handleTargetUnitSelf(Player const*
     auto result = std::list<PlayableCard*>();
 
     if (cards.size() > attacker->GetCurrentCardIndex())
-        result.push_back(cards[attacker->GetCurrentCardIndex()]);
+        if (cards[attacker->GetCurrentCardIndex()]->GetGuid() == targetGuid)
+            result.push_back(cards[attacker->GetCurrentCardIndex()]);
 
     return result;
 }
