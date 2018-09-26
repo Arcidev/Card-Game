@@ -9,7 +9,7 @@ SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandle
     { defaultApplyHandler,      defaultRemoveHandler        },  // SPELL_AURA_EFFECT_DAMAGE
     { statChangedApplyHandler,  statChangedRemoveHandler    },  // SPELL_AURA_EFFECT_MODIFY_STAT
     { defaultApplyHandler,      defaultRemoveHandler        },  // SPELL_AURA_EFFECT_HEAL
-    { morphApplyHandler,        morphRemoveHandler          }   // SPELL_AURA_MORPH
+    { morphApplyHandler,        morphRemoveHandler          }   // SPELL_AURA_EFFECT_MORPH
 };
 
 void SpellAuraEffectHandler::defaultApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)

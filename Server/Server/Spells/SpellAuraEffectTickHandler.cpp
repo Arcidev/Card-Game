@@ -8,7 +8,7 @@ SpellAuraEffectTickHandlerFunc const SpellAuraEffectTickHandler::m_spellAuraEffe
     handleDamageOnTick, // SPELL_AURA_EFFECT_DAMAGE
     nullptr,            // SPELL_AURA_EFFECT_MODIFY_STAT
     handleHealOnTick,   // SPELL_AURA_EFFECT_HEAL
-    nullptr             // SPELL_AURA_MORPH
+    nullptr             // SPELL_AURA_EFFECT_MORPH
 };
 
 void SpellAuraEffectTickHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes)

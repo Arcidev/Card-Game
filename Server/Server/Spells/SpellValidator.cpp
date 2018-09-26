@@ -16,7 +16,7 @@ SpellAuraValidatorFunc const SpellValidator::m_auraValidators[] =
     nullptr,                // SPELL_AURA_EFFECT_DAMAGE
     nullptr,                // SPELL_AURA_EFFECT_MODIFY_STAT
     nullptr,                // SPELL_AURA_EFFECT_HEAL
-    validateSpellAuraMorph  // SPELL_AURA_MORPH
+    validateSpellAuraMorph  // SPELL_AURA_EFFECT_MORPH
 };
 
 void SpellValidator::writeTargetValidationErrorMessage(uint32_t spellId, uint32_t spellEffectId, uint32_t target, uint32_t attribute, std::string_view targetName, std::string_view attrName)
@@ -56,14 +56,14 @@ void SpellValidator::validateSpellAuraMorph(SpellEffectValues const* values)
 {
     if (values->Target == TARGET_UNIT_TARGET_FRIEND && !(values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF))
     {
-        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_MORPH << " - Target: " << TARGET_UNIT_TARGET_FRIEND
+        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target: " << TARGET_UNIT_TARGET_FRIEND
             << "(TARGET_UNIT_TARGET_FRIEND) should contain attribute: " << SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF << "(SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)." << std::endl;
     }
 
     if (values->Target == TARGET_UNIT_SELF)
     {
-        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_MORPH << " - Target " << TARGET_UNIT_SELF
-            << "(TARGET_UNIT_SELF) makes no sense on SPELL_AURA_MORPH." << std::endl;
+        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target " << TARGET_UNIT_SELF
+            << "(TARGET_UNIT_SELF) makes no sense on SPELL_AURA_EFFECT_MORPH." << std::endl;
     }
 }
 
