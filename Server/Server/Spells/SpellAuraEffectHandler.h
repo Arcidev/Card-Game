@@ -25,6 +25,9 @@ class SpellAuraEffectHandler
         static void statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard);
         static void statChangedRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
+        static void morphApplyHandler(SpellAuraEffect const& aura, Player* caster, PlayableCard* targetCard);
+        static void morphRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
+
     public:
         static SpellAuraEffectApplyHandlerFunc GetApplyHandler(uint8_t spellAuraEffect);
         static SpellAuraEffectRemoveHandlerFunc GetRemoveHandler(uint8_t spellAuraEffect);

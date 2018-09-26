@@ -28,7 +28,8 @@ namespace Client.Network
             HandleCardHealed,           // SMSG_CARD_HEALED
             HandleManaReplenishment,    // SMSG_MANA_REPLENISHMENT
             HandleSpellDrain,           // SMSG_SPELL_DRAIN
-            HandleSpellAuraExpired      // SMSG_SPELL_AURA_EXPIRED
+            HandleSpellAuraExpired,     // SMSG_SPELL_AURA_EXPIRED
+            HandleCardMorphInfo         // SMSG_CARD_MORPH_INFO
         };
 
         // Returns function to handle packet

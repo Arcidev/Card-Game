@@ -465,6 +465,40 @@ void Player::SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) con
     m_game->BroadcastPacket(packet);
 }
 
+// Sends info about card morph
+void Player::SendMorphInfo(PlayableCard const* card) const
+{
+    Card const* cardInfo = card->GetMorph() ? card->GetMorph() : card;
+    Spell const* spell = cardInfo->GetSpell();
+
+    Packet packet(SMSG_CARD_MORPH_INFO);
+    packet.WriteBitStreamInOrder(card->GetGuid(), { 2, 6, 7, 1, 0, 3, 5, 4 });
+    packet.WriteBit(card->GetMorph() != nullptr);
+    packet.WriteBit(spell != nullptr);
+    packet.FlushBits();
+
+    packet << m_id;
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet << cardInfo->GetId();
+    packet << cardInfo->GetDamage();
+    packet << cardInfo->GetDefense();
+    packet << cardInfo->GetType();
+    if (spell)
+    {
+        packet << spell->GetId();
+        packet << spell->GetManaCost();
+        packet << (uint8_t)spell->GetSpellEffects().size();
+        for (auto const& spellEffect : spell->GetSpellEffects())
+        {
+            packet << spellEffect.second.Target;
+            packet << spellEffect.second.SpellAttributes;
+        }
+    }
+    packet << card->GetMana();
+
+    m_game->BroadcastPacket(packet);
+}
+
 // Sends information about aura application
 void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const* aura) const
 {

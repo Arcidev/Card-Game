@@ -220,5 +220,11 @@ namespace Client.Network
                     opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
             }
         }
+
+        // Handle SMSG_CARD_MORPH_INFO packet
+        private static void HandleCardMorphInfo(Packet packet, ClientGame game)
+        {
+            /// TODO:
+        }
     }
 }

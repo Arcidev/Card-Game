@@ -37,22 +37,24 @@ void PlayableCard::SetDefendState(bool defend)
 
 uint8_t PlayableCard::GetModifiedDefense() const
 {
+    uint8_t baseDefense = m_morph ? m_morph->GetDefense() : GetDefense();
     int8_t defenseModifier = GetStatModifierValue(CARD_STAT_DEFENSE);
     if (defenseModifier < 0)
-        if (GetDefense() < -defenseModifier)
+        if (baseDefense < -defenseModifier)
             return 0;
 
-    return GetDefense() + defenseModifier;
+    return baseDefense + defenseModifier;
 }
 
 uint8_t PlayableCard::GetModifiedDamage() const
 {
+    uint8_t baseDamage = m_morph ? m_morph->GetDamage() : GetDamage();
     int8_t damageModifier = GetStatModifierValue(CARD_STAT_DAMAGE);
     if (damageModifier < 0)
-        if (GetDamage() < -damageModifier)
+        if (baseDamage < -damageModifier)
             return 0;
 
-    return GetDamage() + damageModifier;
+    return baseDamage + damageModifier;
 }
 
 int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
@@ -104,10 +106,10 @@ void PlayableCard::HandleTickOnAuras()
 
 void PlayableCard::AddMana(uint8_t amount)
 { 
-    m_mana = (std::min)((uint8_t)(m_mana + amount), DataHolder::GetCard(GetId())->GetMana());
+    m_mana = (std::min)(m_mana + amount, (int)DataHolder::GetCard(GetId())->GetMana());
 }
 
 void PlayableCard::AddHealth(uint8_t amount)
 {
-    m_hp = (std::min)((uint8_t)(m_hp + amount), DataHolder::GetCard(GetId())->GetHealth());
+    m_hp = (std::min)(m_hp + amount, (int)DataHolder::GetCard(GetId())->GetHealth());
 }

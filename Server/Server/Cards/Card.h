@@ -57,6 +57,6 @@ class Card
         uint8_t GetMana() const { return m_mana; }
         uint8_t GetHealth() const { return m_hp; }
         uint8_t GetPrice() const { return m_price; }
-        Spell const* GetSpell() const { return m_spell; }
+        virtual Spell const* GetSpell() const { return m_spell; }
 };
 
