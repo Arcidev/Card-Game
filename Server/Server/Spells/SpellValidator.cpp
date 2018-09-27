@@ -69,9 +69,15 @@ void SpellValidator::validateSpellAuraMorph(SpellEffectValues const* values)
 
 void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const* values)
 {
+    if (spellEffectId >= MAX_SPELL_EFFECT_VALUE)
+    {
+        std::cerr << "SpellId: " << values->SpellId << " has invalid SpellEffectId: " << spellEffectId << std::endl;
+        return;
+    }
+
     if (values->Target >= MAX_SPELL_EFFECT_TARGET)
     {
-        std::cerr << "Spell id " << values->SpellId << " has invalid target " << (int)values->Target << " for spell effect " << spellEffectId << std::endl;
+        std::cerr << "SpellId: " << values->SpellId << " has invalid target: " << (int)values->Target << " for SpellEffectId: " << spellEffectId << std::endl;
         return;
     }
 
@@ -81,7 +87,7 @@ void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValu
     {
         if (values->Value1 >= MAX_SPELL_AURA_VALUE)
         {
-            std::cerr << "Spell id " << values->SpellId << " has invalid aura effect value " << (int)values->Value1 << " for spell effect" << spellEffectId << std::endl;
+            std::cerr << "SpellId: " << values->SpellId << " has invalid SpellAuraEffectId: " << (int)values->Value1 << " for SpellEffectId:" << spellEffectId << std::endl;
             return;
         }
 
