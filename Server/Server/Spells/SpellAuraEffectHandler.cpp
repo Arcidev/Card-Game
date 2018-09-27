@@ -37,7 +37,7 @@ void SpellAuraEffectHandler::morphApplyHandler(SpellAuraEffect const& aura, Play
 {
     PlayableCard* card = caster->GetCurrentCard();
     card->Morph(DataHolder::GetCard(targetCard->GetId()));
-    card->SetMana(card->GetMorph()->GetMana() * aura.GetValue1());
+    card->SetMana(card->GetMorph()->GetMana() * aura.GetValue1() / 100.f);
 
     caster->SendMorphInfo(card);
 }
@@ -45,7 +45,7 @@ void SpellAuraEffectHandler::morphApplyHandler(SpellAuraEffect const& aura, Play
 void SpellAuraEffectHandler::morphRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
 {
     card->Morph(nullptr);
-    card->SetMana(DataHolder::GetCard(card->GetId())->GetMana() * aura.GetValue2());
+    card->SetMana(DataHolder::GetCard(card->GetId())->GetMana() * aura.GetValue2() / 100.f);
 
     card->GetOwner()->SendMorphInfo(card);
 }
