@@ -107,9 +107,6 @@
     <ClInclude Include="Server\SignalHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Spells\SpellAuraEffectTickHandler.h">
-      <Filter>Spells</Filter>
-    </ClInclude>
     <ClInclude Include="Server\Spells\SpellAuraEffectHandler.h">
       <Filter>Spells</Filter>
     </ClInclude>
@@ -204,9 +201,6 @@
     </ClCompile>
     <ClCompile Include="Server\SignalHandler.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server\Spells\SpellAuraEffectTickHandler.cpp">
-      <Filter>Spells</Filter>
     </ClCompile>
     <ClCompile Include="Server\Spells\SpellAuraEffectHandler.cpp">
       <Filter>Spells</Filter>

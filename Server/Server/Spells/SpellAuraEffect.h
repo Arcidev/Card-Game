@@ -1,5 +1,5 @@
 #pragma once
-#include "SpellAuraEffectTickHandler.h"
+#include "SpellAuraEffectHandler.h"
 
 class Player;
 class PlayableCard;

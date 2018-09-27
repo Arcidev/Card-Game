@@ -7,11 +7,13 @@ class SpellAuraEffect;
 
 typedef void(*SpellAuraEffectApplyHandlerFunc)(SpellAuraEffect const& aura, Player* caster, PlayableCard* targetCard);
 typedef void(*SpellAuraEffectRemoveHandlerFunc)(SpellAuraEffect const& aura, PlayableCard* card);
+typedef void(*SpellAuraEffectTickHandlerFunc)(PlayableCard* card, uint8_t value, uint32_t spellAttributes);
 
 struct SpellAuraEffectFuncWrapper
 {
     SpellAuraEffectApplyHandlerFunc Apply;
     SpellAuraEffectRemoveHandlerFunc Remove;
+    SpellAuraEffectTickHandlerFunc Tick;
 };
 
 class SpellAuraEffectHandler
@@ -22,13 +24,22 @@ class SpellAuraEffectHandler
         static void defaultApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard);
         static void defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
+        // SPELL_AURA_EFFECT_DAMAGE
+        static void handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes);
+
+        // SPELL_AURA_EFFECT_MODIFY_STAT 
         static void statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard);
         static void statChangedRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
+        // SPELL_AURA_EFFECT_HEAL
+        static void handleHealOnTick(PlayableCard* card, uint8_t damage, uint32_t /*spellAttributes*/);
+
+        // SPELL_AURA_EFFECT_MORPH
         static void morphApplyHandler(SpellAuraEffect const& aura, Player* caster, PlayableCard* targetCard);
         static void morphRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
     public:
         static SpellAuraEffectApplyHandlerFunc GetApplyHandler(uint8_t spellAuraEffect);
         static SpellAuraEffectRemoveHandlerFunc GetRemoveHandler(uint8_t spellAuraEffect);
+        static SpellAuraEffectTickHandlerFunc GetAuraEffectTickHandler(uint8_t spellAuraEffect);
 };
