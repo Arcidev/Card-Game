@@ -20,14 +20,14 @@
 #include <cstring>
 #define SOCKET int
 #define WSADATA int
-#define SD_BOTH 2
 #define MAKEWORD(a,b) ((unsigned short)(((unsigned char)(a))|(((unsigned short)((unsigned char)(b)))<<8)))
 #define InitWinsock [] (...) { return 0; }
 #define CloseWinsock [] () { }
 #define closesocket close
 #define GetSockError() errno
 #define ZeroMemory(destination, length) memset(destination, 0, length)
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR   -1
 #define IoctlSocket ioctl
+constexpr int SD_BOTH = 2;
+constexpr int INVALID_SOCKET = -1;
+constexpr int SOCKET_ERROR = -1;
 #endif // !__unix__

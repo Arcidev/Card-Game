@@ -1,7 +1,7 @@
 #pragma once
 #include "ByteBuffer.h"
 
-#define MAX_PACKET_SIZE 10000
+constexpr int MAX_PACKET_SIZE = 10000;
 
 enum CMSGPackets
 {

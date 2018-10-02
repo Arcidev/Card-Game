@@ -1,8 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <list>
-#define MAX_CARDS_COUNT 5
-#define MAX_CARDS_ON_DECK 4
+
+constexpr uint8_t MAX_CARDS_COUNT = 5;
+constexpr uint8_t MAX_CARDS_ON_DECK = 4;
 
 enum CardType
 {
