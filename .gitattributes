@@ -1,7 +1,6 @@
 # Ignore external libraries from language statistics
 Server/Crypto/OpenSSL/* linguist-vendored
 Server/DataBase/* linguist-vendored
-packages/* linguist-vendored
 
 # Lineendings
 *.sln        eol=crlf
