@@ -66,7 +66,7 @@ T ByteBuffer::read(size_t pos)
 void ByteBuffer::WriteByte(uint8_t byte)
 {
     if (byte)
-        append<uint8_t>(byte);
+        append(byte);
 }
 
 // Reads byte value of guid if byte has value. If not its ignored
@@ -140,28 +140,28 @@ bool ByteBuffer::ReadBit()
 // Stores uint32 value in stream
 ByteBuffer& ByteBuffer::operator << (uint32_t value)
 {
-    append<uint32_t>(value);
+    append(value);
     return *this;
 }
 
 // Stores uint16 value in stream
 ByteBuffer& ByteBuffer::operator << (uint16_t value)
 {
-    append<uint16_t>(value);
+    append(value);
     return *this;
 }
 
 // Stores uint8 value in stream
 ByteBuffer& ByteBuffer::operator << (uint8_t value)
 {
-    append<uint8_t>(value);
+    append(value);
     return *this;
 }
 
 // Stores float value in stream
 ByteBuffer& ByteBuffer::operator << (float value)
 {
-    append<float>(value);
+    append(value);
     return *this;
 }
 
