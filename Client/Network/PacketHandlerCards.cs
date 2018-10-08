@@ -224,7 +224,36 @@ namespace Client.Network
         // Handle SMSG_CARD_MORPH_INFO packet
         private static void HandleCardMorphInfo(Packet packet, ClientGame game)
         {
-            /// TODO:
+            var cardGuid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(cardGuid, 2, 6, 7, 1, 0, 3, 5, 4);
+            var isMorph = packet.ReadBit();
+            var hasSpell = packet.ReadBit();
+
+            var player = game.GetPlayer(packet.ReadUInt32());
+            packet.ReadGuidByteStreamInOrder(cardGuid, 0, 1, 2, 3, 4, 5, 6, 7);
+
+            var cardTemplate = DataHolder.GetCard(packet.ReadUInt32());
+            var damage = packet.ReadByte();
+            var defense = packet.ReadByte();
+            var mana = packet.ReadByte();
+
+            Spell spell = null;
+            if (hasSpell)
+            {
+                var spellData = DataHolder.GetSpellData(packet.ReadUInt32());
+                var manaCost = packet.ReadByte();
+                var spellEffectsCount = packet.ReadByte();
+                var spellEffects = new SpellEffect[spellEffectsCount];
+                for (int i = 0; i < spellEffectsCount; i++)
+                    spellEffects[i] = new SpellEffect(packet.ReadByte(), (SpellAttributes)packet.ReadUInt32());
+
+                spell = new Spell(spellData.SpellId, manaCost, spellEffects)
+                {
+                    SpellData = spellData
+                };
+            }
+
+            player.MorphCard(cardGuid, cardTemplate, damage, defense, mana, spell, isMorph);
         }
     }
 }

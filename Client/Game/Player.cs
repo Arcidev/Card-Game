@@ -292,6 +292,29 @@ namespace Client.Game
             SetCardMana(cardPair, mana);
         }
 
+        // Morphs card
+        public void MorphCard(UInt64 cardGuid, Card cardTemplate, byte damage, byte defense, byte mana, Spell spell, bool isMorph)
+        {
+            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
+            if (cardPair.Item1 == null)
+                return;
+
+            game.Chat.LogMorph(cardPair.Item1, cardTemplate, isMorph);
+            Invoke(() =>
+            {
+                cardPair.Item1.UnloadImages();
+                cardPair.Item1.Id = cardTemplate.Id;
+                cardPair.Item1.ImageUri = cardTemplate.ImageUri;
+                cardPair.Item1.Type = cardTemplate.Type;
+                cardPair.Item1.Spell = spell;
+
+                cardPair.Item1.Damage = damage;
+                cardPair.Item1.Defense = defense;
+                cardPair.Item1.Mana = damage;
+                cardPair.Item2.Source = cardPair.Item1.Image;
+            });
+        }
+
         // Sets card mana
         private void SetCardMana((PlayableCard, Image) cardPair, byte mana)
         {

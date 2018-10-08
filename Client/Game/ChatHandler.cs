@@ -119,6 +119,13 @@ namespace Client.Game
             WriteLog(message, CombatLogTypes.StatChange);
         }
 
+        // Logs morph
+        public void LogMorph(Card card, Card morph, bool isMorph)
+        {
+            var message = isMorph ? $"{card.Name} has been morphed to {morph.Name}" : $"{morph.Name} has been demorphed from {card.Name}";
+            WriteLog(message, CombatLogTypes.SpellUsage);
+        }
+
         // Returns chat color
         private Brush GetChatColor(ChatTypes chatType)
         {

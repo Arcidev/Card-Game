@@ -482,7 +482,8 @@ void Player::SendMorphInfo(PlayableCard const* card) const
     packet << cardInfo->GetId();
     packet << cardInfo->GetDamage();
     packet << cardInfo->GetDefense();
-    packet << cardInfo->GetType();
+    packet << card->GetMana();
+
     if (spell)
     {
         packet << spell->GetId();
@@ -494,7 +495,6 @@ void Player::SendMorphInfo(PlayableCard const* card) const
             packet << spellEffect.second.SpellAttributes;
         }
     }
-    packet << card->GetMana();
 
     m_game->BroadcastPacket(packet);
 }

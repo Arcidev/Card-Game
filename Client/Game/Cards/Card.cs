@@ -1,4 +1,4 @@
-﻿using Client.Enums;
+using Client.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -49,11 +49,11 @@ namespace Client.Game
 
         public SelectionType SelectionType { get; set; }
 
-        public UInt32 Id { get; }
+        public UInt32 Id { get; set; }
 
         public string Name { get; set; }
 
-        public CreatureTypes Type { get; }
+        public CreatureTypes Type { get; set; }
 
         public byte Hp 
         {
@@ -65,7 +65,7 @@ namespace Client.Game
             }
         }
 
-        public byte Damage { get; }
+        public byte Damage { get; set; }
 
         public sbyte DamageModifier
         {
@@ -99,7 +99,7 @@ namespace Client.Game
             }
         }
 
-        public byte Defense { get; }
+        public byte Defense { get; set; }
 
         public sbyte DefenseModifier
         {
@@ -136,7 +136,7 @@ namespace Client.Game
             }
         }
 
-        public Spell Spell { get; }
+        public Spell Spell { get; set; }
 
         public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
