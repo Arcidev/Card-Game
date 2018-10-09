@@ -27,7 +27,5 @@ namespace Client.Game
 
             return targets;
         }
-
-        
     }
 }
