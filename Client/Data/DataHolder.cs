@@ -35,9 +35,6 @@ namespace Client.Data
             return spellsDataMap.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, "", "");
         }
 
-        // Unloads data from memory
-        public static void UnloadCards() { cardsMap = null; }
-
         private static void LoadSpellsData(SQLiteConnection connection)
         {
             spellsDataMap = new Dictionary<UInt32, SpellData>();

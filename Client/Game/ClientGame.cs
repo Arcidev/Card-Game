@@ -207,7 +207,6 @@ namespace Client.Game
         public void UnloadData()
         {
             MainWindow.SlideShow.UnloadItems();
-            DataHolder.UnloadCards();
         }
 
         // Ends game

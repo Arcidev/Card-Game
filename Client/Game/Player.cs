@@ -293,7 +293,7 @@ namespace Client.Game
         }
 
         // Morphs card
-        public void MorphCard(UInt64 cardGuid, Card cardTemplate, byte damage, byte defense, byte mana, Spell spell, bool isMorph)
+        public void MorphCard(UInt64 cardGuid, Card cardTemplate, byte mana, bool isMorph)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
@@ -306,11 +306,11 @@ namespace Client.Game
                 cardPair.Item1.Id = cardTemplate.Id;
                 cardPair.Item1.ImageUri = cardTemplate.ImageUri;
                 cardPair.Item1.Type = cardTemplate.Type;
-                cardPair.Item1.Spell = spell;
-
-                cardPair.Item1.Damage = damage;
-                cardPair.Item1.Defense = defense;
-                cardPair.Item1.Mana = damage;
+                cardPair.Item1.Spell = cardTemplate.Spell;
+                cardPair.Item1.Name = cardTemplate.Name;
+                cardPair.Item1.Damage = cardTemplate.Damage;
+                cardPair.Item1.Defense = cardTemplate.Defense;
+                cardPair.Item1.Mana = mana;
                 cardPair.Item2.Source = cardPair.Item1.Image;
             });
         }
