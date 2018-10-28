@@ -146,6 +146,7 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
 {
     ServerNetwork* network = player->GetNetwork();
     int playerId = player->GetId();
+    srand((unsigned int)player); // set seed from player memory address
 
     while (!network->IsShuttingDown())
     {
