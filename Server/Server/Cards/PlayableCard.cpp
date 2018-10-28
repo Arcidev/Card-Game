@@ -71,15 +71,18 @@ int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
     return modifier;
 }
 
-void PlayableCard::ApplyAura(SpellAuraEffect const& aura)
+SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 {
+    m_owner->SendApplyAura(m_guid, &aura);
+
     SpellAuraEffectsMap::iterator iter = m_auras.find(aura.GetSpellId());
     if (iter != m_auras.end())
+    {
         iter->second = aura;
-    else
-        m_auras.insert(std::make_pair(aura.GetSpellId(), aura));
-
-    m_owner->SendApplyAura(m_guid, &aura);
+        return iter->second;
+    }
+        
+    return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
 }
 
 void PlayableCard::Heal(uint8_t amount)

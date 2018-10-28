@@ -22,11 +22,11 @@ class PlayableCard : public Card
 
     public:
         virtual ~PlayableCard() { }
-        static PlayableCard* Create(uint64_t m_id, Card const* card, Player* owner);
+        static PlayableCard* Create(uint64_t guid, Card const* card, Player* owner);
 
         void DealDamage(uint8_t damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
         void SetDefendState(bool defend);
-        void ApplyAura(SpellAuraEffect const& aura);
+        SpellAuraEffect const& ApplyAura(SpellAuraEffect const& aura);
         void Heal(uint8_t amount);
         void AddHealth(uint8_t amount);
         void AddMana(uint8_t amount);

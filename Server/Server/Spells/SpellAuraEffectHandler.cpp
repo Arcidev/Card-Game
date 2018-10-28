@@ -12,9 +12,9 @@ SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandle
     { morphApplyHandler,        morphRemoveHandler,         nullptr             }   // SPELL_AURA_EFFECT_MORPH
 };
 
-void SpellAuraEffectHandler::defaultApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)
+void SpellAuraEffectHandler::defaultApplyHandler(SpellEffectValues const& effectValues, Player* /*caster*/, PlayableCard* targetCard)
 {
-    targetCard->ApplyAura(aura);
+    applyAuraEffect(effectValues, targetCard);
 }
 
 void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
@@ -27,9 +27,10 @@ void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t dama
     card->GetOwner()->DealPeriodicDamage(card, damage, spellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
 }
 
-void SpellAuraEffectHandler::statChangedApplyHandler(SpellAuraEffect const& aura, Player* /*caster*/, PlayableCard* targetCard)
+void SpellAuraEffectHandler::statChangedApplyHandler(SpellEffectValues const& effectValues, Player* /*caster*/, PlayableCard* targetCard)
 {
-    targetCard->ApplyAura(aura);
+    SpellAuraEffect const& aura = applyAuraEffect(effectValues, targetCard);
+
     targetCard->GetOwner()->SendCardStatChanged(targetCard, aura.GetValue1());
 }
 
@@ -43,12 +44,15 @@ void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount
     card->Heal(amount);
 }
 
-void SpellAuraEffectHandler::morphApplyHandler(SpellAuraEffect const& aura, Player* caster, PlayableCard* targetCard)
+void SpellAuraEffectHandler::morphApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
     PlayableCard* card = caster->GetCurrentCard();
+    SpellAuraEffect const& aura = applyAuraEffect(effectValues, card);
+
     card->Morph(DataHolder::GetCard(targetCard->GetId()));
     card->SetMana(uint8_t(card->GetMorph()->GetMana() * aura.GetValue1() / 100.f));
 
+    card->ApplyAura(aura);
     caster->SendMorphInfo(card);
 }
 
@@ -58,6 +62,12 @@ void SpellAuraEffectHandler::morphRemoveHandler(SpellAuraEffect const& aura, Pla
     card->SetMana(uint8_t(DataHolder::GetCard(card->GetId())->GetMana() * aura.GetValue2() / 100.f));
 
     card->GetOwner()->SendMorphInfo(card);
+}
+
+SpellAuraEffect SpellAuraEffectHandler::applyAuraEffect(SpellEffectValues const& effectValues, PlayableCard* targetCard)
+{
+    SpellAuraEffect auraEffect(targetCard, effectValues.SpellId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
+    return targetCard->ApplyAura(auraEffect);
 }
 
 SpellAuraEffectApplyHandlerFunc SpellAuraEffectHandler::GetApplyHandler(uint8_t spellAuraEffect)

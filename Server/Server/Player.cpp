@@ -204,15 +204,16 @@ void Player::UseSpell(uint64_t selectedCardGuid)
         return;
     }
 
-    uint8_t result = currentCard->GetSpell()->Cast(this, victim, selectedCardGuid);
+    Spell const* spell = currentCard->GetSpell();
+    uint8_t result = spell->Cast(this, victim, selectedCardGuid);
     if (result)
     {
         SendSpellCastResult(result, nullptr, nullptr);
         return;
     }
 
-    currentCard->SubtractMana(currentCard->GetSpell()->GetManaCost());
-    SendSpellCastResult(result, currentCard, currentCard->GetSpell());
+    currentCard->SubtractMana(spell->GetManaCost());
+    SendSpellCastResult(result, currentCard, spell);
 
     endTurn();
 }

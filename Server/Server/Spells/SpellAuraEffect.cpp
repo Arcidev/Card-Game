@@ -22,13 +22,6 @@ void SpellAuraEffect::Tick()
         m_SpellAuraEffectHandler(m_card, m_value2, m_spellAttributes);
 }
 
-void SpellAuraEffect::Apply(Player* player)
-{
-    SpellAuraEffectApplyHandlerFunc applyHandler = SpellAuraEffectHandler::GetApplyHandler(m_id);
-    if (applyHandler)
-        applyHandler((*this), player, m_card);
-}
-
 void SpellAuraEffect::Remove()
 {
     SpellAuraEffectRemoveHandlerFunc removeHandler = SpellAuraEffectHandler::GetRemoveHandler(m_id);

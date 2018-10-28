@@ -19,7 +19,6 @@ class SpellAuraEffect
     public:
         SpellAuraEffect(PlayableCard* card, uint32_t m_spellId, uint8_t id, uint8_t duration, uint8_t value1, uint8_t value2, uint32_t spellAttributes);
         void Tick();
-        void Apply(Player* caster);
         void Remove();
 
         uint32_t GetSpellId() const { return m_spellId; }
