@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <list>
 
 constexpr uint8_t MAX_CARDS_COUNT = 5;
 constexpr uint8_t MAX_CARDS_ON_DECK = 4;

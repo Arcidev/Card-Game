@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Game.h"
+#include "NetworkServices.h"
 #include "Player.h"
+#include "PacketHandlers/Packet.h"
 #include "ServerNetwork.h"
 #include "StaticHelper.h"
 #include "../Shared/SharedDefines.h"

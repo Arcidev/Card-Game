@@ -3,11 +3,10 @@
 #include <mutex>
 #include <thread>
 #include "../Multiplatform/NetworkCommunication.h"
-#include "NetworkServices.h"
-#include "PacketHandlers/Packet.h"
 
 class Player;
 class Packet;
+
 typedef std::pair<Player*, std::thread*> PlayerThread;
 typedef std::map<unsigned int, PlayerThread> PlayerMap;
 

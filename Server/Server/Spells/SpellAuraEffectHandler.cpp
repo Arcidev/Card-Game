@@ -52,7 +52,6 @@ void SpellAuraEffectHandler::morphApplyHandler(SpellEffectValues const& effectVa
     card->Morph(DataHolder::GetCard(targetCard->GetId()));
     card->SetMana(uint8_t(card->GetMorph()->GetMana() * aura.GetValue1() / 100.f));
 
-    card->ApplyAura(aura);
     caster->SendMorphInfo(card);
 }
 

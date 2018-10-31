@@ -3,6 +3,7 @@
 
 class Player;
 class PlayableCard;
+
 class SpellAuraEffect
 {
     private:

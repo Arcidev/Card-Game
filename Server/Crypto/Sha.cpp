@@ -1,6 +1,8 @@
 #include "Sha.h"
 #include "OpenSSL/sha.h"
 
+constexpr int bufferLength = SHA256_DIGEST_LENGTH * 2 + 1;
+
 // Creates hash from data
 std::string Sha::CreateHash(std::string_view data)
 {
@@ -10,9 +12,9 @@ std::string Sha::CreateHash(std::string_view data)
     SHA256_Update(&sha256, data.data(), data.size());
     SHA256_Final(hash, &sha256);
 
-    char outputBuffer[SHA256_DIGEST_LENGTH * 2 + 1];
+    char outputBuffer[bufferLength];
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-        sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
+        snprintf(outputBuffer + (i * 2), bufferLength - (i * 2), "%02x", hash[i]);
 
     outputBuffer[SHA256_DIGEST_LENGTH * 2] = '\0';
     return outputBuffer;
