@@ -87,14 +87,16 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 
 void PlayableCard::RemoveAuraByType(uint8_t auraTypeId)
 {
-    for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end(); iter++)
+    for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
     {
-        if (iter->second.GetId() == auraTypeId)
+        if (iter->second.GetId() != auraTypeId)
         {
-            iter->second.Remove();
-            m_auras.erase(iter);
-            break;
+            ++iter;
+            continue;
         }
+
+        iter->second.Remove();
+        iter = m_auras.erase(iter);
     }
 }
 
