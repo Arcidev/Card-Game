@@ -47,6 +47,8 @@ void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount
 void SpellAuraEffectHandler::morphApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
     PlayableCard* card = caster->GetCurrentCard();
+    card->RemoveAuraByType(SPELL_AURA_EFFECT_MORPH);
+
     SpellAuraEffect const& aura = applyAuraEffect(effectValues, card);
 
     card->Morph(DataHolder::GetCard(targetCard->GetId()));

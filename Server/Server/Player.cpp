@@ -213,7 +213,10 @@ void Player::UseSpell(uint64_t selectedCardGuid)
         return;
     }
 
-    currentCard->SubtractMana(spell->GetManaCost());
+    // Spell might have been changed and mana cost handled differently
+    if (currentCard->GetSpell() == spell)
+        currentCard->SubtractMana(spell->GetManaCost());
+
     SendSpellCastResult(result, currentCard, spell);
 
     endTurn();

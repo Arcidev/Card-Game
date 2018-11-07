@@ -85,6 +85,19 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
 }
 
+void PlayableCard::RemoveAuraByType(uint8_t auraTypeId)
+{
+    for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end(); iter++)
+    {
+        if (iter->second.GetId() == auraTypeId)
+        {
+            iter->second.Remove();
+            m_auras.erase(iter);
+            break;
+        }
+    }
+}
+
 void PlayableCard::Heal(uint8_t amount)
 {
     AddHealth(amount);
