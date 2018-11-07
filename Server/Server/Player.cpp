@@ -231,7 +231,7 @@ void Player::destroyCard(uint64_t cardGuid)
         {
             m_currentCards.erase(m_currentCards.begin() + i);
 
-            if (i >= m_currentCardIndex)
+            if (m_currentCardIndex >= i)
                 --m_currentCardIndex;
             break;
         }
@@ -549,7 +549,8 @@ void Player::replenishMana()
 // Handles periodic damage from aura
 void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense)
 {
-    card->DealDamage(applyDefense ? calculateReducedDamage(damage, card->GetModifiedDefense()) : damage);
+    damage = applyDefense ? calculateReducedDamage(damage, card->GetModifiedDefense()) : damage;
+    card->DealDamage(damage);
 
     Packet packet(SMSG_SPELL_PERIODIC_DAMAGE);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 6, 4, 1 });
@@ -591,7 +592,7 @@ void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHe
 void Player::endTurn()
 {
     bool sendDeckCards = false;
-    for (std::vector<PlayableCard*>::iterator iter = m_currentCards.begin(); iter != m_currentCards.end();)
+    for (auto iter = m_currentCards.begin(); iter != m_currentCards.end();)
     {
         if ((*iter)->HasAuras())
         {
@@ -600,6 +601,10 @@ void Player::endTurn()
             {
                 if (!sendDeckCards)
                     sendDeckCards = true;
+
+                if (m_currentCardIndex >= iter - m_currentCards.begin())
+                    --m_currentCardIndex;
+
                 iter = m_currentCards.erase(iter);
                 continue;
             }
