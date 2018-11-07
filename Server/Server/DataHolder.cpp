@@ -36,7 +36,7 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
     SpellEffectValues spellVal(spellId, atoi(argv[2]), targetId, atoi(argv[5]), atoi(argv[6]), atoi(argv[7]), atoi(argv[8]));
     spellIter->second.addSpellEffect(std::make_pair(spellEffectFunc, spellVal));
 
-    SpellValidator::ValidateSpellEffect(spellEffectId, &spellVal);
+    SpellValidator::ValidateSpellEffect(spellEffectId, spellVal);
     return 0;
 }
 

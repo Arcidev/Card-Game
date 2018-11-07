@@ -489,7 +489,7 @@ void Player::SendMorphInfo(PlayableCard const* card) const
 }
 
 // Sends information about aura application
-void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const* aura) const
+void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) const
 {
     Packet packet(SMSG_APPLY_AURA);
     packet.WriteBitStreamInOrder(targetGuid, { 7, 2, 1, 3, 5, 4, 0, 6 });
@@ -497,19 +497,19 @@ void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const* aura) con
 
     packet << m_id;
     packet.WriteByteStreamInOrder(targetGuid, { 0, 5, 2, 1, 7, 6, 4, 3 });
-    packet << aura->GetSpellId();
+    packet << aura.GetSpellId();
 
     GetGame()->BroadcastPacket(packet);
 }
 
 // Sends information about aura expiration
-void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const* aura) const
+void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) const
 {
     Packet packet(SMSG_SPELL_AURA_EXPIRED);
     packet.WriteBitStreamInOrder(targetGuid, { 0, 5, 7, 2, 1, 4, 3, 6 });
     packet.FlushBits();
 
-    packet << aura->GetSpellId();
+    packet << aura.GetSpellId();
     packet.WriteByteStreamInOrder(targetGuid, { 7, 6, 5, 4, 3, 2, 1, 0 });
     packet << m_id;
 

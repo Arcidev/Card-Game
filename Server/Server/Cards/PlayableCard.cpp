@@ -73,7 +73,7 @@ int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
 
 SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 {
-    m_owner->SendApplyAura(m_guid, &aura);
+    m_owner->SendApplyAura(m_guid, aura);
 
     SpellAuraEffectsMap::iterator iter = m_auras.find(aura.GetSpellId());
     if (iter != m_auras.end())

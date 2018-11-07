@@ -25,73 +25,73 @@ void SpellValidator::writeTargetValidationErrorMessage(uint32_t spellId, uint32_
         << "(" << attrName << ") has no effect on target: " << target << "(" << targetName << ")." << std::endl;
 }
 
-void SpellValidator::validateTargetUnitTargetEnemy(uint32_t spellEffectId, SpellEffectValues const* values)
+void SpellValidator::validateTargetUnitTargetEnemy(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
-        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_TARGET_ENEMY", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
+    if (values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
+        writeTargetValidationErrorMessage(values.SpellId, spellEffectId, values.Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_TARGET_ENEMY", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
 }
 
-void SpellValidator::validateTargetUnitTargetFriend(uint32_t spellEffectId, SpellEffectValues const* values)
+void SpellValidator::validateTargetUnitTargetFriend(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE)
-        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_MELEE, "TARGET_UNIT_TARGET_FRIEND", "SPELL_ATTRIBUTE_TARGET_MELEE");
+    if (values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE)
+        writeTargetValidationErrorMessage(values.SpellId, spellEffectId, values.Target, SPELL_ATTRIBUTE_TARGET_MELEE, "TARGET_UNIT_TARGET_FRIEND", "SPELL_ATTRIBUTE_TARGET_MELEE");
 }
 
-void SpellValidator::validateTargetUnitCleaveEnemy(uint32_t spellEffectId, SpellEffectValues const* values)
+void SpellValidator::validateTargetUnitCleaveEnemy(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
-        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_CLEAVE_ENEMY", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
+    if (values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
+        writeTargetValidationErrorMessage(values.SpellId, spellEffectId, values.Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_CLEAVE_ENEMY", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
 }
 
-void SpellValidator::validateTargetUnitSelf(uint32_t spellEffectId, SpellEffectValues const* values)
+void SpellValidator::validateTargetUnitSelf(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
-        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
+    if (values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)
+        writeTargetValidationErrorMessage(values.SpellId, spellEffectId, values.Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF");
 
-    if (values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE)
-        writeTargetValidationErrorMessage(values->SpellId, spellEffectId, values->Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_MELEE");
+    if (values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_MELEE)
+        writeTargetValidationErrorMessage(values.SpellId, spellEffectId, values.Target, SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF, "TARGET_UNIT_SELF", "SPELL_ATTRIBUTE_TARGET_MELEE");
 }
 
-void SpellValidator::validateSpellAuraMorph(SpellEffectValues const* values)
+void SpellValidator::validateSpellAuraMorph(SpellEffectValues const& values)
 {
-    if (values->Target == TARGET_UNIT_TARGET_FRIEND && !(values->SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF))
+    if (values.Target == TARGET_UNIT_TARGET_FRIEND && !(values.SpellAttributes & SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF))
     {
-        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target: " << TARGET_UNIT_TARGET_FRIEND
+        std::cerr << "SpellId: " << values.SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target: " << TARGET_UNIT_TARGET_FRIEND
             << "(TARGET_UNIT_TARGET_FRIEND) should contain attribute: " << SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF << "(SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF)." << std::endl;
     }
 
-    if (values->Target == TARGET_UNIT_SELF)
+    if (values.Target == TARGET_UNIT_SELF)
     {
-        std::cerr << "SpellId: " << values->SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target " << TARGET_UNIT_SELF
+        std::cerr << "SpellId: " << values.SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Target " << TARGET_UNIT_SELF
             << "(TARGET_UNIT_SELF) makes no sense on SPELL_AURA_EFFECT_MORPH." << std::endl;
     }
 }
 
-void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const* values)
+void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const& values)
 {
     if (spellEffectId >= MAX_SPELL_EFFECT_VALUE)
     {
-        std::cerr << "SpellId: " << values->SpellId << " has invalid SpellEffectId: " << spellEffectId << std::endl;
+        std::cerr << "SpellId: " << values.SpellId << " has invalid SpellEffectId: " << spellEffectId << std::endl;
         return;
     }
 
-    if (values->Target >= MAX_SPELL_EFFECT_TARGET)
+    if (values.Target >= MAX_SPELL_EFFECT_TARGET)
     {
-        std::cerr << "SpellId: " << values->SpellId << " has invalid target: " << (int)values->Target << " for SpellEffectId: " << spellEffectId << std::endl;
+        std::cerr << "SpellId: " << values.SpellId << " has invalid target: " << (int)values.Target << " for SpellEffectId: " << spellEffectId << std::endl;
         return;
     }
 
-    m_targetValidators[values->Target](spellEffectId, values);
+    m_targetValidators[values.Target](spellEffectId, values);
 
     if (spellEffectId == SPELL_EFFECT_APPLY_AURA)
     {
-        if (values->Value1 >= MAX_SPELL_AURA_VALUE)
+        if (values.Value1 >= MAX_SPELL_AURA_VALUE)
         {
-            std::cerr << "SpellId: " << values->SpellId << " has invalid SpellAuraEffectId: " << (int)values->Value1 << " for SpellEffectId:" << spellEffectId << std::endl;
+            std::cerr << "SpellId: " << values.SpellId << " has invalid SpellAuraEffectId: " << (int)values.Value1 << " for SpellEffectId:" << spellEffectId << std::endl;
             return;
         }
 
-        if (m_auraValidators[values->Value1])
-            m_auraValidators[values->Value1](values);
+        if (m_auraValidators[values.Value1])
+            m_auraValidators[values.Value1](values);
     }
 }

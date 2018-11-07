@@ -19,7 +19,7 @@ void SpellAuraEffectHandler::defaultApplyHandler(SpellEffectValues const& effect
 
 void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
 {
-    card->GetOwner()->SendAuraExpired(card->GetGuid(), &aura);
+    card->GetOwner()->SendAuraExpired(card->GetGuid(), aura);
 }
 
 void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes)
