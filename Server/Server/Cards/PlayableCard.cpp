@@ -85,8 +85,9 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
 }
 
-void PlayableCard::RemoveAuraByType(uint8_t auraTypeId)
+std::list<uint32_t> PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly)
 {
+    std::list<uint32_t> removedSpellIds;
     for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
     {
         if (iter->second.GetId() != auraTypeId)
@@ -95,9 +96,15 @@ void PlayableCard::RemoveAuraByType(uint8_t auraTypeId)
             continue;
         }
 
+        removedSpellIds.push_back(iter->first);
         iter->second.Remove();
         iter = m_auras.erase(iter);
+
+        if (removeFirstOnly)
+            break;
     }
+
+    return removedSpellIds;
 }
 
 void PlayableCard::Heal(uint8_t amount)

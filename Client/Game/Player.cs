@@ -242,16 +242,19 @@ namespace Client.Game
         }
 
         // Removes aura from creature
-        public void ExpireAura(UInt64 cardGuid, UInt32 spellId)
+        public void ExpireAuras(UInt64 cardGuid, UInt32[] spellIds)
         {
             var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
             if (cardPair.Item1 == null)
                 return;
 
-            var spellData = DataHolder.GetSpellData(spellId);
-            game.Chat.LogExpireAura(cardPair.Item1, spellData);
+            foreach(var spellId in spellIds)
+            {
+                var spellData = DataHolder.GetSpellData(spellId);
+                game.Chat.LogExpireAura(cardPair.Item1, spellData);
 
-            /// TODO: add some graphics effect
+                /// TODO: add some graphics effect
+            }
         }
 
         // Heals card

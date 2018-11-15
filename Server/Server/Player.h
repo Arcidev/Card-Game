@@ -60,6 +60,7 @@ class Player
         void SendMorphInfo(PlayableCard const* card) const;
         void SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) const;
         void SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) const;
+        void SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& spellIds) const;
         void SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* amount) const;
         void SendCardHealed(PlayableCard const* card, uint8_t amount) const;
         void Attack(uint64_t victimCardGuid);

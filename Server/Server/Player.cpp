@@ -516,6 +516,21 @@ void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) c
     GetGame()->BroadcastPacket(packet);
 }
 
+// Sends information about aura expiration
+void Player::SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& spellIds) const
+{
+    Packet packet(SMSG_SPELL_AURAS_REMOVED);
+    packet.WriteBitStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteByteStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet << m_id;
+
+    packet << (uint8_t)spellIds.size();
+    for (uint32_t spellId : spellIds)
+        packet << spellId;
+
+    GetGame()->BroadcastPacket(packet);
+}
+
 // Replenishes mana
 void Player::replenishMana()
 {

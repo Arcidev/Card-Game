@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <map>
 #include <vector>
 #include "Card.h"
@@ -27,7 +28,7 @@ class PlayableCard : public Card
         void DealDamage(uint8_t damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
         void SetDefendState(bool defend);
         SpellAuraEffect const& ApplyAura(SpellAuraEffect const& aura);
-        void RemoveAuraByType(uint8_t auraTypeId);
+        std::list<uint32_t> RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly);
         void Heal(uint8_t amount);
         void AddHealth(uint8_t amount);
         void AddMana(uint8_t amount);

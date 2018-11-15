@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Client.Enums;
 using Client.Game;
+using System;
 
 namespace Client.Network
 {
@@ -132,7 +133,20 @@ namespace Client.Network
             packet.ReadGuidByteStreamInOrder(guid, 7, 6, 5, 4, 3, 2, 1, 0);
             var player = game.GetPlayer(packet.ReadUInt32());
 
-            player.ExpireAura(guid, spellId);
+            player.ExpireAuras(guid, new[] { spellId });
+        }
+
+        // SMSG_SPELL_AURAS_REMOVED
+        private static void HandleSpellAuraRemoved(Packet packet, ClientGame game)
+        {
+            var guid = packet.ReadPacketGuid();
+            var player = game.GetPlayer(packet.ReadUInt32());
+
+            var spellIds = new UInt32[packet.ReadByte()];
+            for (var i = 0; i < spellIds.Length; i++)
+                spellIds[i] = packet.ReadUInt32();
+
+            player.ExpireAuras(guid, spellIds);
         }
     }
 }

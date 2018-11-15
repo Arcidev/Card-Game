@@ -47,7 +47,7 @@ void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount
 void SpellAuraEffectHandler::morphApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
     PlayableCard* card = caster->GetCurrentCard();
-    card->RemoveAuraByType(SPELL_AURA_EFFECT_MORPH);
+    card->RemoveAurasByType(SPELL_AURA_EFFECT_MORPH, true); // There should be only 1 active morph so no need to check all auras
 
     SpellAuraEffect const& aura = applyAuraEffect(effectValues, card);
 
@@ -68,6 +68,9 @@ void SpellAuraEffectHandler::morphRemoveHandler(SpellAuraEffect const& aura, Pla
 SpellAuraEffect SpellAuraEffectHandler::applyAuraEffect(SpellEffectValues const& effectValues, PlayableCard* targetCard)
 {
     SpellAuraEffect auraEffect(targetCard, effectValues.SpellId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
+    if (effectValues.SpellAttributes & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
+        targetCard->RemoveAurasByType(auraEffect.GetId(), false);
+
     return targetCard->ApplyAura(auraEffect);
 }
 

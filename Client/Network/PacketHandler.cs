@@ -29,6 +29,7 @@ namespace Client.Network
             HandleManaReplenishment,    // SMSG_MANA_REPLENISHMENT
             HandleSpellDrain,           // SMSG_SPELL_DRAIN
             HandleSpellAuraExpired,     // SMSG_SPELL_AURA_EXPIRED
+            HandleSpellAuraRemoved,     // SMSG_SPELL_AURAS_REMOVED
             HandleCardMorphInfo         // SMSG_CARD_MORPH_INFO
         };
 
