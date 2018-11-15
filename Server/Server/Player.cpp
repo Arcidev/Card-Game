@@ -519,6 +519,9 @@ void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) c
 // Sends information about aura expiration
 void Player::SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& spellIds) const
 {
+    if (spellIds.empty())
+        return;
+
     Packet packet(SMSG_SPELL_AURAS_REMOVED);
     packet.WriteBitStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet.WriteByteStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
