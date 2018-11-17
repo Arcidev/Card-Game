@@ -18,6 +18,8 @@ class PlayableCard : public Card
         SpellAuraEffectsMap m_auras;
         Card const* m_morph;
 
+        void removeExclusiveAura(uint8_t auraTypeId);
+
     protected:
         PlayableCard(uint64_t guid, Card const* card, Player* owner);
 
@@ -28,7 +30,7 @@ class PlayableCard : public Card
         void DealDamage(uint8_t damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
         void SetDefendState(bool defend);
         SpellAuraEffect const& ApplyAura(SpellAuraEffect const& aura);
-        std::list<uint32_t> RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly);
+        void RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly);
         void Heal(uint8_t amount);
         void AddHealth(uint8_t amount);
         void AddMana(uint8_t amount);

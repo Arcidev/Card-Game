@@ -73,6 +73,11 @@ int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
 
 SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 {
+    if (aura.GetSpellAttributes() & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
+        RemoveAurasByType(aura.GetId(), false);
+    else
+        removeExclusiveAura(aura.GetId());
+
     m_owner->SendApplyAura(m_guid, aura);
 
     SpellAuraEffectsMap::iterator iter = m_auras.find(aura.GetSpellId());
@@ -85,7 +90,7 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
 }
 
-std::list<uint32_t> PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly)
+void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly)
 {
     std::list<uint32_t> removedSpellIds;
     for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
@@ -104,7 +109,24 @@ std::list<uint32_t> PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool rem
             break;
     }
 
-    return removedSpellIds;
+    m_owner->SendAurasRemoved(m_guid, removedSpellIds);
+}
+
+void PlayableCard::removeExclusiveAura(uint8_t auraTypeId)
+{
+    for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end(); iter++)
+    {
+        if (iter->second.GetId() != auraTypeId)
+            continue;
+
+        // Only 1 exclusive aura should be active per type (without any non-exclusive), therefore we check only first match
+        if (~iter->second.GetSpellAttributes() & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
+            return;
+
+        m_owner->SendAurasRemoved(m_guid, { iter->first });
+        m_auras.erase(iter);
+        return;
+    }
 }
 
 void PlayableCard::Heal(uint8_t amount)

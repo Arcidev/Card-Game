@@ -27,4 +27,5 @@ class SpellAuraEffect
         uint8_t GetValue1() const { return m_value1; }
         uint8_t GetValue2() const { return m_value2; }
         uint8_t GetDuration() const { return m_duration; }
+        uint32_t GetSpellAttributes() const { return m_spellAttributes; }
 };
