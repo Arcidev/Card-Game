@@ -11,7 +11,7 @@ namespace Client.Game
         {
             HandleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
             HandleTargetUnitFriend,         // TARGET_UNIT_TARGET_FRIEND
-            HandleTargetUnitCleaveEnemy,    // TARGET_UNIT_CLEAVE_ENEMY
+            HandleTargetUnitTargetEnemy,    // TARGET_UNIT_CLEAVE_ENEMY same as TARGET_UNIT_TARGET_ENEMY
             HandleTargetUnitSelf            // TARGET_UNIT_SELF
         };
 
@@ -40,8 +40,6 @@ namespace Client.Game
 
             return query.Select(x => x.Guid);
         }
-
-        private static IEnumerable<UInt64> HandleTargetUnitCleaveEnemy(Player player, Player enemy, SpellAttributes attributes) => HandleTargetUnitTargetEnemy(player, enemy, attributes);
 
         private static IEnumerable<UInt64> HandleTargetUnitSelf(Player player, Player enemy, SpellAttributes attributes)
         {

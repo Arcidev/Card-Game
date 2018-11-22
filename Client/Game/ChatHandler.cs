@@ -37,7 +37,7 @@ namespace Client.Game
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            var packet = new Packet(CMSGPackets.CMSG_CHAT_MESSAGE);
+            var packet = new Packet(CMSGPackets.ChatMessage);
             packet.Write((byte)chatType);
             packet.Write(text.Trim());
             foreach (var p in customParams)

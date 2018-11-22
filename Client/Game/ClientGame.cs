@@ -47,7 +47,7 @@ namespace Client.Game
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
 
             // Sends init packet to server
-            var packet = new Packet(CMSGPackets.CMSG_INIT_PACKET);
+            var packet = new Packet(CMSGPackets.Init);
             var rsa = new RsaEncryptor(RSAKey.Modulus, RSAKey.Exponent);
             aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
             network.Encryptor = aes;
@@ -98,7 +98,7 @@ namespace Client.Game
         // Sends packet to server
         public void SendPacket(Packet packet, bool encrypt = true, bool disposePacket = true) 
         { 
-            network?.SendPacket(packet, encrypt);
+            network.SendPacket(packet, encrypt);
             if (disposePacket)
                 packet.Dispose();
         }
@@ -106,15 +106,12 @@ namespace Client.Game
         // Removes all resources
         public void Dispose()
         {
-            if (network != null)
-            {
-                // Cancel task and try to wait
-                tokenSource.Cancel();
-                networkConnectionTask.Wait(250);
+            // Cancel task and try to wait
+            tokenSource.Cancel();
+            networkConnectionTask.Wait(250);
 
-                aes.Dispose();
-                network.Dispose();
-            }
+            aes.Dispose();
+            network.Dispose();
         }
 
         // Sends chat message packet to server
@@ -141,7 +138,7 @@ namespace Client.Game
         // Sends selected cards to server
         public void SendSelectedCards()
         {
-            var packet = new Packet(CMSGPackets.CMSG_SELECTED_CARDS);
+            var packet = new Packet(CMSGPackets.SelectedCards);
             var cards = DataHolder.Cards.Where(x => x.SelectionType == SelectionType.Selected);
 
             packet.Write((byte)cards.Count());
@@ -161,7 +158,7 @@ namespace Client.Game
                 return;
 
             SetActiveCardActionGrid(false);
-            var packet = new Packet(CMSGPackets.CMSG_CARD_ACTION).Builder()
+            var packet = new Packet(CMSGPackets.CardAction).Builder()
                 .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
                 .FlushBits()
                 .WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0)
@@ -176,7 +173,7 @@ namespace Client.Game
         public void SendDefendSelf()
         {
             SetActiveCardActionGrid(false);
-            var packet = new Packet(CMSGPackets.CMSG_DEFEND_SELF);
+            var packet = new Packet(CMSGPackets.DefendSelf);
             SendPacket(packet);
         }
 

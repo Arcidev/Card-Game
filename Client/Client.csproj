@@ -157,7 +157,6 @@
     <Resource Include="Assets\CardBack.png" />
     <Resource Include="Assets\CardBackGrayscale.png" />
     <Resource Include="Assets\CardTemplate.png" />
-    <Resource Include="Assets\close2.png" />
     <Resource Include="Assets\IconWarrior.png" />
     <Resource Include="Assets\Mage.png" />
     <Resource Include="Assets\nback.png" />
