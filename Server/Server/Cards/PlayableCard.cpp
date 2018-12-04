@@ -74,7 +74,7 @@ int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
 SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 {
     if (aura.GetSpellAttributes() & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
-        RemoveAurasByType(aura.GetId(), false);
+        RemoveAurasByType(aura.GetId(), SIZE_MAX);
     else
         removeExclusiveAura(aura.GetId());
 
@@ -90,7 +90,7 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
     return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
 }
 
-void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly)
+void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, size_t toRemove)
 {
     std::list<uint32_t> removedSpellIds;
     for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
@@ -105,7 +105,7 @@ void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly)
         iter->second.Remove();
         iter = m_auras.erase(iter);
 
-        if (removeFirstOnly)
+        if (!(--toRemove))
             break;
     }
 

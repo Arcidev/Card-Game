@@ -68,12 +68,6 @@ void SpellValidator::defaultEffectValidator(uint32_t spellEffectId, SpellEffectV
         std::cerr << "SpellId: " << values.SpellId << ", SpellEffectId: " << spellEffectId << " - Attribute " << SPELL_ATTRIBUTE_AURA_EXCLUSIVE
             << " (SPELL_ATTRIBUTE_AURA_EXCLUSIVE) is only valid for SPELL_EFFECT_APPLY_AURA" << std::endl;
     }
-
-    if (values.SpellAttributes & SPELL_ATTRIBUTE_APPLY_TO_FIRST_ONLY && spellEffectId != SPELL_EFFECT_REMOVE_AURA_TYPE)
-    {
-        std::cerr << "SpellId: " << values.SpellId << ", SpellEffectId: " << spellEffectId << " - Attribute " << SPELL_ATTRIBUTE_APPLY_TO_FIRST_ONLY
-            << " (SPELL_ATTRIBUTE_APPLY_TO_FIRST_ONLY) is currently only valid for SPELL_EFFECT_REMOVE_AURA_TYPE" << std::endl;
-    }
 }
 
 void SpellValidator::validateSpellAuraMorph(SpellEffectValues const& values)

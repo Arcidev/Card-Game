@@ -71,7 +71,7 @@ bool SpellEffect::handleRemoveAuraType(Player* attacker, Player* victim, uint64_
         return false;
 
     for (PlayableCard* target : targets)
-        target->RemoveAurasByType(effectValues.Value1, effectValues.SpellAttributes & SPELL_ATTRIBUTE_APPLY_TO_FIRST_ONLY);
+        target->RemoveAurasByType(effectValues.Value1, effectValues.Value2);
 
     return true;
 }

@@ -30,7 +30,7 @@ class PlayableCard : public Card
         void DealDamage(uint8_t damage) { m_hp = (damage < m_hp ? m_hp - damage : 0); }
         void SetDefendState(bool defend);
         SpellAuraEffect const& ApplyAura(SpellAuraEffect const& aura);
-        void RemoveAurasByType(uint8_t auraTypeId, bool removeFirstOnly);
+        void RemoveAurasByType(uint8_t auraTypeId, size_t toRemove);
         void Heal(uint8_t amount);
         void AddHealth(uint8_t amount);
         void AddMana(uint8_t amount);
