@@ -65,7 +65,10 @@ void DataHolder::loadSpells(sqlite3* db)
     char* errorMsg;
     std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
     if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, nullptr, &errorMsg) != SQLITE_OK)
+    {
         std::cerr << "Error while loading spels: " << errorMsg << std::endl;
+        sqlite3_free(errorMsg);
+    }
 }
 
 // Loads cards info from database
@@ -74,19 +77,26 @@ void DataHolder::loadCards(sqlite3* db)
     char* errorMsg;
     std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense, Price, SpellId FROM Cards";
     if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, nullptr, &errorMsg) != SQLITE_OK)
+    {
         std::cerr << "Error while loading cards: " << errorMsg << std::endl;
+        sqlite3_free(errorMsg);
+    }
 }
 
 // Loads all data from database
 bool DataHolder::LoadData()
 {
     sqlite3* db;
-    if (sqlite3_open("../DataBase/data.db", &db))
+    if (sqlite3_open_v2("../DataBase/data.db", &db, SQLITE_OPEN_READONLY, nullptr))
+    {
+        std::cerr << "Error while opening database: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close_v2(db);
         return false;
+    }
 
     loadSpells(db);
     loadCards(db);
-    sqlite3_close(db);
+    sqlite3_close_v2(db);
     return true;
 }
 
