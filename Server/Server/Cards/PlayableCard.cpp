@@ -80,14 +80,15 @@ SpellAuraEffect const& PlayableCard::ApplyAura(SpellAuraEffect const& aura)
 
     m_owner->SendApplyAura(m_guid, aura);
 
-    SpellAuraEffectsMap::iterator iter = m_auras.find(aura.GetSpellId());
+    auto auraKey = std::make_pair(aura.GetSpellId(), aura.GetSpellValueId());
+    SpellAuraEffectsMap::iterator iter = m_auras.find(auraKey);
     if (iter != m_auras.end())
     {
         iter->second = aura;
         return iter->second;
     }
         
-    return m_auras.insert(std::make_pair(aura.GetSpellId(), aura)).first->second;
+    return m_auras.insert(std::make_pair(auraKey, aura)).first->second;
 }
 
 void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, size_t toRemove)
@@ -101,7 +102,7 @@ void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, size_t toRemove)
             continue;
         }
 
-        removedSpellIds.push_back(iter->first);
+        removedSpellIds.push_back(iter->first.first);
         iter->second.Remove();
         iter = m_auras.erase(iter);
 
@@ -123,7 +124,7 @@ void PlayableCard::removeExclusiveAura(uint8_t auraTypeId)
         if (~iter->second.GetSpellAttributes() & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
             return;
 
-        m_owner->SendAurasRemoved(m_guid, { iter->first });
+        m_owner->SendAurasRemoved(m_guid, { iter->first.first });
         m_auras.erase(iter);
         return;
     }

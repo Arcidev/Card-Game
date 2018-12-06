@@ -5,7 +5,7 @@
 #include "Card.h"
 #include "../Spells/SpellAuraEffect.h"
 
-typedef std::map<uint32_t, SpellAuraEffect> SpellAuraEffectsMap;
+typedef std::map<std::pair<uint32_t, uint32_t>, SpellAuraEffect> SpellAuraEffectsMap;
 
 class Player;
 

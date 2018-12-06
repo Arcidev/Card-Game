@@ -67,7 +67,7 @@ void SpellAuraEffectHandler::morphRemoveHandler(SpellAuraEffect const& aura, Pla
 
 SpellAuraEffect SpellAuraEffectHandler::applyAuraEffect(SpellEffectValues const& effectValues, PlayableCard* targetCard)
 {
-    SpellAuraEffect auraEffect(targetCard, effectValues.SpellId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
+    SpellAuraEffect auraEffect(targetCard, effectValues.SpellId, effectValues.SpellValueId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
     return targetCard->ApplyAura(auraEffect);
 }
 

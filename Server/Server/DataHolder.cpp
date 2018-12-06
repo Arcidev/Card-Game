@@ -10,18 +10,18 @@ SpellsDataMap DataHolder::m_spells;
 // Callback for selecting spells
 int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/)
 {
-    if (argc != 9)
+    if (argc != 10)
         return 1;
 
     uint32_t spellId = atoi(argv[0]);
-    uint8_t targetId = atoi(argv[3]);
+    uint8_t targetId = atoi(argv[4]);
     if (targetId >= MAX_SPELL_EFFECT_TARGET)
     {
         std::cerr << "Spell id " << spellId << " has invalid target" << std::endl;
         return 0;
     }
 
-    uint8_t spellEffectId = atoi(argv[1]);
+    uint8_t spellEffectId = atoi(argv[2]);
     SpellEffectFunc spellEffectFunc = SpellEffect::GetSpellEffectFunc(spellEffectId);
     if (!spellEffectFunc)
     {
@@ -31,9 +31,9 @@ int DataHolder::loadSpellsCallback(void* /*data*/, int argc, char** argv, char**
     
     SpellsDataMap::iterator spellIter = m_spells.find(spellId);
     if (spellIter == m_spells.end())
-        spellIter = m_spells.insert(std::make_pair(spellId, Spell(spellId, atoi(argv[4])))).first;
+        spellIter = m_spells.insert(std::make_pair(spellId, Spell(spellId, atoi(argv[5])))).first;
 
-    SpellEffectValues spellVal(spellId, atoi(argv[2]), targetId, atoi(argv[5]), atoi(argv[6]), atoi(argv[7]), atoi(argv[8]));
+    SpellEffectValues spellVal(spellId, atoi(argv[1]), atoi(argv[3]), targetId, atoi(argv[6]), atoi(argv[7]), atoi(argv[8]), atoi(argv[9]));
     spellIter->second.addSpellEffect(std::make_pair(spellEffectFunc, spellVal));
 
     SpellValidator::ValidateSpellEffect(spellEffectId, spellVal);
@@ -60,27 +60,29 @@ int DataHolder::loadCardsCallback(void* /*data*/, int argc, char** argv, char** 
 }
 
 // Loads spells from database
-void DataHolder::loadSpells(sqlite3* db)
+bool DataHolder::loadSpells(sqlite3* db)
 {
     char* errorMsg;
-    std::string sql = "SELECT Spells.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
-    if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, nullptr, &errorMsg) != SQLITE_OK)
-    {
-        std::cerr << "Error while loading spels: " << errorMsg << std::endl;
-        sqlite3_free(errorMsg);
-    }
+    std::string sql = "SELECT Spells.Id, SpellValues.Id, SpellEffectId, SpellAttributesMask, Target, ManaCost, EffectValue1, EffectValue2, EffectValue3, EffectValue4 FROM (Spells JOIN SpellsSpellValues ON Spells.Id = SpellId) JOIN SpellValues ON SpellValueId = SpellValues.Id";
+    if (sqlite3_exec(db, sql.c_str(), loadSpellsCallback, nullptr, &errorMsg) == SQLITE_OK)
+        return true;
+
+    std::cerr << "Error while loading spels: " << errorMsg << std::endl;
+    sqlite3_free(errorMsg);
+    return false;
 }
 
 // Loads cards info from database
-void DataHolder::loadCards(sqlite3* db)
+bool DataHolder::loadCards(sqlite3* db)
 {
     char* errorMsg;
     std::string sql = "SELECT Id, type, BaseHp, BaseDamage, BaseMana, BaseDefense, Price, SpellId FROM Cards";
-    if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, nullptr, &errorMsg) != SQLITE_OK)
-    {
-        std::cerr << "Error while loading cards: " << errorMsg << std::endl;
-        sqlite3_free(errorMsg);
-    }
+    if (sqlite3_exec(db, sql.c_str(), loadCardsCallback, nullptr, &errorMsg) == SQLITE_OK)
+        return true;
+
+    std::cerr << "Error while loading cards: " << errorMsg << std::endl;
+    sqlite3_free(errorMsg);
+    return false;
 }
 
 // Loads all data from database
@@ -94,8 +96,18 @@ bool DataHolder::LoadData()
         return false;
     }
 
-    loadSpells(db);
-    loadCards(db);
+    if (!loadSpells(db))
+    {
+        sqlite3_close_v2(db);
+        return false;
+    }
+
+    if (!loadCards(db))
+    {
+        sqlite3_close_v2(db);
+        return false;
+    }
+
     sqlite3_close_v2(db);
     return true;
 }

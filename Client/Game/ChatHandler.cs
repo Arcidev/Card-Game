@@ -87,14 +87,14 @@ namespace Client.Game
         // Logs apply aura
         public void LogApplyAura(PlayableCard card, SpellData spell)
         {
-            var message = $"{card.Name} is now aflicted by {spell.Name}";
+            var message = $"{card.Name} is now aflicted by an effect from {spell.Name}";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 
         // Logs apply aura
         public void LogExpireAura(PlayableCard card, SpellData spell)
         {
-            var message = $"{spell.Name} has expired from {card.Name}";
+            var message = $"Effect of {spell.Name} has expired from {card.Name}";
             WriteLog(message, CombatLogTypes.SpellUsage);
         }
 

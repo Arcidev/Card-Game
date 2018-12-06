@@ -14,6 +14,7 @@ enum SpellEffects
 struct SpellEffectValues
 {
     uint32_t const SpellId;
+    uint32_t const SpellValueId;
     uint32_t const SpellAttributes;
     uint8_t const Target;
     uint8_t const Value1;
@@ -21,8 +22,8 @@ struct SpellEffectValues
     uint8_t const Value3;
     uint8_t const Value4;
 
-    SpellEffectValues(uint32_t spellId, uint32_t spellAttributes, uint8_t target, uint8_t value1, uint8_t value2, uint8_t value3, uint8_t value4)
-        : SpellId(spellId), SpellAttributes(spellAttributes), Target(target), Value1(value1), Value2(value2), Value3(value3), Value4(value4) { }
+    SpellEffectValues(uint32_t spellId, uint32_t spellValueId, uint32_t spellAttributes, uint8_t target, uint8_t value1, uint8_t value2, uint8_t value3, uint8_t value4)
+        : SpellId(spellId), SpellValueId(spellValueId), SpellAttributes(spellAttributes), Target(target), Value1(value1), Value2(value2), Value3(value3), Value4(value4) { }
 };
 
 class Player;

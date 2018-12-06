@@ -14,8 +14,8 @@ class DataHolder
         static SpellsDataMap m_spells;
         static CardsDataMap m_cards;
         
-        static void loadSpells(sqlite3* db);
-        static void loadCards(sqlite3* db);
+        static bool loadSpells(sqlite3* db);
+        static bool loadCards(sqlite3* db);
         static int loadSpellsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/);
         static int loadCardsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/);
 
