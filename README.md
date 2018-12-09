@@ -5,6 +5,7 @@ Card-Game
 + OpenSSL 1.0.1e (included for Windows)
 + Sqlite 3.7.13 (included for Windows)
 + C++17
++ C# 7.3
 
 ## Build Status
 [![Build Status](https://travis-ci.org/Arcidev/Card-Game.svg)](https://travis-ci.org/Arcidev/Card-Game) (Ubuntu Xenial with G++ 7.1 - Server only)
