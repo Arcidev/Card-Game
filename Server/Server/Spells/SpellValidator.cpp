@@ -93,30 +93,21 @@ void SpellValidator::validateSpellAuraMorph(SpellEffectValues const& values)
 
 void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (spellEffectId >= MAX_SPELL_EFFECT_VALUE)
-    {
+    if (spellEffectId < MAX_SPELL_EFFECT_VALUE)
+        m_effectValidators[spellEffectId](spellEffectId, values);
+    else
         std::cerr << "SpellId: " << values.SpellId << " has invalid SpellEffectId: " << spellEffectId << std::endl;
-        return;
-    }
 
-    if (values.Target >= MAX_SPELL_EFFECT_TARGET)
-    {
+    if (values.Target < MAX_SPELL_EFFECT_TARGET)
+        m_targetValidators[values.Target](spellEffectId, values);
+    else
         std::cerr << "SpellId: " << values.SpellId << " has invalid target: " << (int)values.Target << " for SpellEffectId: " << spellEffectId << std::endl;
-        return;
-    }
-
-    m_targetValidators[values.Target](spellEffectId, values);
-    m_effectValidators[spellEffectId](spellEffectId, values);
 
     if (spellEffectId == SPELL_EFFECT_APPLY_AURA)
     {
         if (values.Value1 >= MAX_SPELL_AURA_VALUE)
-        {
             std::cerr << "SpellId: " << values.SpellId << " has invalid SpellAuraEffectId: " << (int)values.Value1 << " for SpellEffectId:" << spellEffectId << std::endl;
-            return;
-        }
-
-        if (m_auraValidators[values.Value1])
+        else if (m_auraValidators[values.Value1])
             m_auraValidators[values.Value1](values);
     }
 }

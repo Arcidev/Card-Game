@@ -4,8 +4,6 @@
 #include "Rsa.h"
 #include "OpenSSL/pem.h"
 
-#define PADDING RSA_PKCS1_PADDING
-
 // Creates RSA key
 RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
 {
@@ -17,7 +15,7 @@ RSA* Rsa::createRSA(unsigned char* key, bool isPublic)
         return nullptr;
     }
 
-    rsa = isPublic ? PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL) : PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
+    rsa = isPublic ? PEM_read_bio_RSA_PUBKEY(keybio, &rsa, nullptr, nullptr) : PEM_read_bio_RSAPrivateKey(keybio, &rsa, nullptr, nullptr);
 
     if (!rsa)
         std::cerr << "Failed to create RSA" << std::endl;
@@ -38,12 +36,11 @@ std::vector<uint8_t> Rsa::Encrypt(std::vector<uint8_t> const& data, unsigned cha
 
     int(*encryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_encrypt : RSA_private_encrypt;
 
-    int encryptedLength = encryptFnc(data.size(), data.data(), encrypted, rsa, PADDING);
+    int encryptedLength = encryptFnc(data.size(), data.data(), encrypted, rsa, RSA_PKCS1_PADDING);
     if (encryptedLength == -1)
         return data;
 
-    std::vector<uint8_t> value;
-    value.resize(encryptedLength);
+    std::vector<uint8_t> value(encryptedLength);
     std::memcpy(&value[0], encrypted, encryptedLength);
     
     return value;
@@ -62,12 +59,11 @@ std::vector<uint8_t> Rsa::Decrypt(std::vector<uint8_t> const& data, unsigned cha
 
     int(*decryptFnc)(int, unsigned char const*, unsigned char*, RSA*, int) = isPublic ? RSA_public_decrypt : RSA_private_decrypt;
 
-    int decryptedLength = decryptFnc(data.size(), data.data(), decrypted, rsa, PADDING);
+    int decryptedLength = decryptFnc(data.size(), data.data(), decrypted, rsa, RSA_PKCS1_PADDING);
     if (decryptedLength == -1)
         return data;
 
-    std::vector<uint8_t> value;
-    value.resize(decryptedLength);
+    std::vector<uint8_t> value(decryptedLength);
     std::memcpy(&value[0], decrypted, decryptedLength);
 
     return value;
