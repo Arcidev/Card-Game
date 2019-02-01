@@ -11,7 +11,7 @@ namespace Client.Game
     public class Player
     {
         private readonly ClientGame game;
-        private readonly ValueTuple<PlayableCard, Image>[] cardDeck;
+        private readonly (PlayableCard card, Image image)[] cardDeck;
         private Dictionary<UInt64, PlayableCard> cards;
 
         public UInt32 Id { get; set; }
@@ -22,9 +22,9 @@ namespace Client.Game
 
         public int ActiveCardPosition { get; private set; }
 
-        public PlayableCard ActiveCard => cardDeck[ActiveCardPosition].Item1;
+        public PlayableCard ActiveCard => cardDeck[ActiveCardPosition].card;
 
-        public IEnumerable<PlayableCard> CardDeck => cardDeck.Select(x => x.Item1);
+        public IEnumerable<PlayableCard> CardDeck => cardDeck.Select(x => x.card);
 
         public Player(ClientGame clientGame, params Image[] imageLocations)
         {
@@ -55,8 +55,8 @@ namespace Client.Game
                 {
                     Invoke(() =>
                     {
-                        cardDeck[i].Item1 = card;
-                        cardDeck[i].Item2.Source = card.Image;
+                        cardDeck[i].card = card;
+                        cardDeck[i].image.Source = card.Image;
                     });
                 }
             }
@@ -66,8 +66,8 @@ namespace Client.Game
             {
                 Invoke(() =>
                 {
-                    cardDeck[i].Item1 = null;
-                    cardDeck[i].Item2.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
+                    cardDeck[i].card = null;
+                    cardDeck[i].image.Source = new BitmapImage(new Uri(i < availableCardsCount ? "Assets/CardBack.png" : "Assets/CardBackGrayscale.png", UriKind.Relative));
                 });
             }
         }
@@ -85,22 +85,22 @@ namespace Client.Game
         public void DeselectSpellFriendlyTargets()
         {
             var activeCardDeck = cardDeck[ActiveCardPosition];
-            if (activeCardDeck.Item1.SelectionType != SelectionType.Selected)
+            if (activeCardDeck.card.SelectionType != SelectionType.Selected)
             {
                 Invoke(() =>
                 {
-                    activeCardDeck.Item1.SelectionType = SelectionType.Selected;
-                    activeCardDeck.Item2.Source = activeCardDeck.Item1.Image;
+                    activeCardDeck.card.SelectionType = SelectionType.Selected;
+                    activeCardDeck.image.Source = activeCardDeck.card.Image;
                 });
 
-                foreach(var card in cardDeck.Where(x => x.Item1 != null))
+                foreach(var card in cardDeck.Where(x => x.card != null))
                 {
-                    if (card.Item1.SelectionType == SelectionType.SpellUsable)
+                    if (card.card.SelectionType == SelectionType.SpellUsable)
                     {
                         Invoke(() =>
                         {
-                            card.Item1.SelectionType = SelectionType.None;
-                            card.Item2.Source = card.Item1.Image;
+                            card.card.SelectionType = SelectionType.None;
+                            card.image.Source = card.card.Image;
                         });
                     }
                 }
@@ -110,12 +110,12 @@ namespace Client.Game
         // Remove selection
         public void RemoveSelectionFromCards()
         {
-            foreach (var card in cardDeck.Where(x => x.Item1 != null && x.Item1.SelectionType != SelectionType.None))
+            foreach (var card in cardDeck.Where(x => x.card != null && x.card.SelectionType != SelectionType.None))
             {
                 Invoke(() =>
                 {
-                    card.Item1.SelectionType = SelectionType.None;
-                    card.Item2.Source = card.Item1.Image;
+                    card.card.SelectionType = SelectionType.None;
+                    card.image.Source = card.card.Image;
                 });
             }
         }
@@ -123,12 +123,12 @@ namespace Client.Game
         // Selects possible targets
         public void SelectPossibleTargets(IEnumerable<UInt64> targetableCards, SelectionType selection)
         {
-            foreach (var card in cardDeck.Where(x => x.Item1 != null && targetableCards.Contains(x.Item1.Guid)))
+            foreach (var card in cardDeck.Where(x => x.card != null && targetableCards.Contains(x.card.Guid)))
             {
                 Invoke(() =>
                 {
-                    card.Item1.SelectionType = selection;
-                    card.Item2.Source = card.Item1.Image;
+                    card.card.SelectionType = selection;
+                    card.image.Source = card.card.Image;
                 });
             }
         }
@@ -139,23 +139,23 @@ namespace Client.Game
             IsActive = true;
             for(var i = 0; i < cardDeck.Length; i++)
             {
-                var c = cardDeck[i];
-                if (c.Item1 == null)
+                var (card, image) = cardDeck[i];
+                if (card == null)
                     continue;
 
                 var select = SelectionType.None;
-                if (c.Item1.Guid == cardGuid)
+                if (card.Guid == cardGuid)
                 {
                     ActiveCardPosition = i;
                     select = SelectionType.Selected;
                 }
 
-                if (c.Item1.SelectionType != select)
+                if (card.SelectionType != select)
                 {
                     Invoke(() =>
                     {
-                        c.Item1.SelectionType = select;
-                        c.Item2.Source = c.Item1.Image;
+                        card.SelectionType = select;
+                        image.Source = card.Image;
                     });
                 }
             }
@@ -169,27 +169,27 @@ namespace Client.Game
         }
 
         // Gets card by control name
-        public (PlayableCard, Image) GetCardByImageControlName(string name)
+        public (PlayableCard card, Image image) GetCardByImageControlName(string name)
         {
-            return cardDeck.FirstOrDefault(x => x.Item2.Name == name);
+            return cardDeck.FirstOrDefault(x => x.image.Name == name);
         }
 
         // Attacks card
         public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == guid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == guid);
+            if (card == null)
                 return;
 
             if (isPeriodicDamage)
-                game.Chat.LogPeriodicDamage(cardPair.Item1, damage, true);
+                game.Chat.LogPeriodicDamage(card, damage, true);
             else
-                game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, cardPair.Item1, damage, true);
+                game.Chat.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard, card, damage, true);
             
             Invoke(() =>
             {
-                cardPair.Item1.Hp -= damage;
-                cardPair.Item2.Source = cardPair.Item1.Image;
+                card.Hp -= damage;
+                image.Source = card.Image;
             });
         }
 
@@ -210,15 +210,15 @@ namespace Client.Game
         // Modifies card stat
         public void ModifyCardStat(UInt64 cardGuid, CardStats cardStat, sbyte value)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (card == null)
                 return;
 
-            game.Chat.LogStatChange(cardStat, cardPair.Item1, value);
+            game.Chat.LogStatChange(cardStat, card, value);
             Invoke(() =>
             {
-                cardPair.Item1.ApplyModifier(cardStat, value);
-                cardPair.Item2.Source = cardPair.Item1.Image;
+                card.ApplyModifier(cardStat, value);
+                image.Source = card.Image;
             });
         }
 
@@ -231,12 +231,12 @@ namespace Client.Game
         // Adds aura to creature
         public void ApplyAura(UInt64 cardGuid, UInt32 spellId)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (card == null)
                 return;
 
             var spellData = DataHolder.GetSpellData(spellId);
-            game.Chat.LogApplyAura(cardPair.Item1, spellData);
+            game.Chat.LogApplyAura(card, spellData);
 
             /// TODO: add some graphics effect
         }
@@ -244,14 +244,14 @@ namespace Client.Game
         // Removes aura from creature
         public void ExpireAuras(UInt64 cardGuid, UInt32[] spellIds)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (card == null)
                 return;
 
             foreach(var spellId in spellIds)
             {
                 var spellData = DataHolder.GetSpellData(spellId);
-                game.Chat.LogExpireAura(cardPair.Item1, spellData);
+                game.Chat.LogExpireAura(card, spellData);
 
                 /// TODO: add some graphics effect
             }
@@ -260,27 +260,27 @@ namespace Client.Game
         // Heals card
         public void HealCard(UInt64 cardGuid, byte health, byte amount)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (card == null)
                 return;
 
-            game.Chat.LogHeal(cardPair.Item1, amount);
+            game.Chat.LogHeal(card, amount);
             Invoke(() =>
             {
-                cardPair.Item1.Hp = health;
-                cardPair.Item2.Source = cardPair.Item1.Image;
+                card.Hp = health;
+                image.Source = card.Image;
             });
         }
 
         // Consumes mana from card and logs it into comba log
         public void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var cardPair = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (cardPair.card == null)
                 return;
 
             var spellData = DataHolder.GetSpellData(spellId);
-            game.Chat.LogManaConsume(cardPair.Item1, spellData, manaCost);
+            game.Chat.LogManaConsume(cardPair.card, spellData, manaCost);
 
             SetCardMana(cardPair, mana);
         }
@@ -288,8 +288,8 @@ namespace Client.Game
         // Sets cards mana
         public void SetCardMana(UInt64 cardGuid, byte mana)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var cardPair = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (cardPair.card == null)
                 return;
 
             SetCardMana(cardPair, mana);
@@ -298,33 +298,33 @@ namespace Client.Game
         // Morphs card
         public void MorphCard(UInt64 cardGuid, Card cardTemplate, byte mana, bool isMorph)
         {
-            var cardPair = cardDeck.FirstOrDefault(x => x.Item1?.Guid == cardGuid);
-            if (cardPair.Item1 == null)
+            var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
+            if (card == null)
                 return;
 
-            game.Chat.LogMorph(cardPair.Item1, cardTemplate, isMorph);
+            game.Chat.LogMorph(card, cardTemplate, isMorph);
             Invoke(() =>
             {
-                cardPair.Item1.UnloadImages();
-                cardPair.Item1.Id = cardTemplate.Id;
-                cardPair.Item1.ImageUri = cardTemplate.ImageUri;
-                cardPair.Item1.Type = cardTemplate.Type;
-                cardPair.Item1.Spell = cardTemplate.Spell;
-                cardPair.Item1.Name = cardTemplate.Name;
-                cardPair.Item1.Damage = cardTemplate.Damage;
-                cardPair.Item1.Defense = cardTemplate.Defense;
-                cardPair.Item1.Mana = mana;
-                cardPair.Item2.Source = cardPair.Item1.Image;
+                card.UnloadImages();
+                card.Id = cardTemplate.Id;
+                card.ImageUri = cardTemplate.ImageUri;
+                card.Type = cardTemplate.Type;
+                card.Spell = cardTemplate.Spell;
+                card.Name = cardTemplate.Name;
+                card.Damage = cardTemplate.Damage;
+                card.Defense = cardTemplate.Defense;
+                card.Mana = mana;
+                image.Source = card.Image;
             });
         }
 
         // Sets card mana
-        private void SetCardMana((PlayableCard, Image) cardPair, byte mana)
+        private void SetCardMana((PlayableCard card, Image image) cardPair, byte mana)
         {
             Invoke(() =>
             {
-                cardPair.Item1.Mana = mana;
-                cardPair.Item2.Source = cardPair.Item1.Image;
+                cardPair.card.Mana = mana;
+                cardPair.image.Source = cardPair.card.Image;
             });
         }
     }
