@@ -2,8 +2,9 @@ Card-Game
 =========
 ## Requirements
 + Platform: Linux or Windows
-+ OpenSSL 1.0.1e (included for Windows)
-+ Sqlite 3.7.13 (included for Windows)
++ OpenSSL 1.1.0i (x64 included for Windows)
++ Sqlite 3.28.0 (x64 included for Windows)
++ PostgreSQL 11 (x64 DLL/lib included for Windows)
 + C++17
 + C# 7.3
 

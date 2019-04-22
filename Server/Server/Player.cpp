@@ -379,7 +379,7 @@ void Player::SendPacket(Packet const& packet) const
     std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
     std::memcpy(&toSend[0] + sizeof(uint16_t), &encrypted[0], size);
 
-    NetworkServices::SendMessage(m_socket, &toSend[0], toSend.size());
+    NetworkServices::SendMessage(m_socket, &toSend[0], (int)toSend.size());
 }
 
 // Adds card into deck from existing template

@@ -89,7 +89,7 @@ bool DataHolder::loadCards(sqlite3* db)
 bool DataHolder::LoadData()
 {
     sqlite3* db;
-    if (sqlite3_open_v2("../DataBase/data.db", &db, SQLITE_OPEN_READONLY, nullptr))
+    if (sqlite3_open_v2("DataBase/data.db", &db, SQLITE_OPEN_READONLY, nullptr))
     {
         std::cerr << "Error while opening database: " << sqlite3_errmsg(db) << std::endl;
         sqlite3_close_v2(db);

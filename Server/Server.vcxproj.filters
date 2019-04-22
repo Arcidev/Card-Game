@@ -21,6 +21,9 @@
     <Filter Include="Spells">
       <UniqueIdentifier>{fe0b8a3b-c12c-479c-ae89-def2ecf8a982}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Database">
+      <UniqueIdentifier>{e2a4d65c-6569-46c7-b92e-db82750f3d26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shared\SharedDefines.h">
@@ -116,6 +119,9 @@
     <ClInclude Include="Server\Spells\SpellValidator.h">
       <Filter>Spells</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h">
+      <Filter>Database</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -207,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="Server\Spells\SpellValidator.cpp">
       <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp">
+      <Filter>Database</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
