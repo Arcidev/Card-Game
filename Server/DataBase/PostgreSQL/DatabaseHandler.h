@@ -2,6 +2,7 @@
 #include <functional>
 #include <string_view>
 #include "libpq-fe.h"
+#include "PreparedStatement.h"
 
 class DatabaseHandler
 {
@@ -12,6 +13,5 @@ class DatabaseHandler
     public:
         ~DatabaseHandler();
         bool CreateConnection();
-        bool ExecuteCommand(std::string_view command);
-        void FetchCommand(std::string_view command, std::function<void()> callback);
+        void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback);
 };

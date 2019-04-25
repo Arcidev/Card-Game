@@ -122,6 +122,9 @@
     <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h">
       <Filter>Database</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h">
+      <Filter>Database</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
