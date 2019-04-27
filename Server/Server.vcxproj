@@ -5,18 +5,32 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC0E3227-29DD-48FB-AC8F-E6B43743D661}</ProjectGuid>
     <RootNamespace>Server</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -29,21 +43,42 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Server\Bin\$(Configuration)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Server\$(Platform)\$(Configuration)\bin\</OutDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Server\Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Server\$(Platform)\$(Configuration)\bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,14 +89,34 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Crypto\libeay32.lib;DataBase\SQLite\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" data.db
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
 IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
 
 :copydll
-ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)." *.dll
+for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
+IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
+
+:copydll
+for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -79,14 +134,39 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Crypto\libeay32.lib;DataBase\SQLite\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(ProjectDir)Bin\DataBase" /E /PURGE
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
 IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
 
 :copydll
-ROBOCOPY "$(ProjectDir)DLL" "$(TargetDir)\"
+for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
+IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
+
+:copydll
+for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -95,6 +175,8 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Crypto\Keys\RSAPrivateKey.h" />
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
+    <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h" />
+    <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\DefensiveCard.h" />
@@ -127,6 +209,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Crypto\Aes.cpp" />
     <ClCompile Include="Crypto\Rsa.cpp" />
     <ClCompile Include="Crypto\Sha.cpp" />
+    <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp" />
     <ClCompile Include="Server\Cards\Card.cpp" />
     <ClCompile Include="Server\Cards\DefensiveCard.cpp" />
     <ClCompile Include="Server\Cards\MeleeCard.cpp" />

@@ -2,15 +2,16 @@ Card-Game
 =========
 ## Requirements
 + Platform: Linux or Windows
-+ OpenSSL 1.0.1e (included for Windows)
-+ Sqlite 3.7.13 (included for Windows)
++ OpenSSL 1.1.0i (x64 included for Windows)
++ Sqlite 3.28.0 (x64 included for Windows)
++ PostgreSQL 11 (x64 DLL/lib included for Windows)
 + C++17
 + C# 7.3
 
 ## Build Status
 [![Build Status](https://travis-ci.org/Arcidev/Card-Game.svg)](https://travis-ci.org/Arcidev/Card-Game) (Ubuntu Xenial with G++ 7.1 - Server only)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (Visual Studio 15.8)
+[![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (Visual Studio 15.9)
 
 ## How to build and run:
   <b>Windows (Automated for MS Visual Studio 15):</b>

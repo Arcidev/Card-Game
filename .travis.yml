@@ -5,9 +5,6 @@ language: cpp
 git:
   depth: 1
 
-branches:
-  only: master
-
 compiler: g++
 
 before_install:
@@ -15,6 +12,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install libsqlite3-dev
   - sudo apt-get install libssl-dev
+  - sudo apt-get install libpq-dev
   - sudo apt-get install g++-7
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 20
   - sudo update-alternatives --config g++

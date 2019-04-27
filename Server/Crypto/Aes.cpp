@@ -11,11 +11,11 @@ std::vector<uint8_t> Aes::Encrypt(std::vector<uint8_t> const& data, std::vector<
     std::vector<uint8_t> outdata(data.size() + 16);
     int outLen = 0, outLen2 = 0;
 
-    EVP_CIPHER_CTX ctx;
-    EVP_EncryptInit(&ctx, EVP_aes_256_cbc(), key.data(), iVec.data());
-    EVP_EncryptUpdate(&ctx, outdata.data(), &outLen, data.data(), data.size());
-    EVP_EncryptFinal(&ctx, &outdata[outLen], &outLen2);
-    EVP_CIPHER_CTX_cleanup(&ctx);
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    EVP_EncryptInit(ctx, EVP_aes_256_cbc(), key.data(), iVec.data());
+    EVP_EncryptUpdate(ctx, outdata.data(), &outLen, data.data(), (int)data.size());
+    EVP_EncryptFinal(ctx, &outdata[outLen], &outLen2);
+    EVP_CIPHER_CTX_free(ctx);
 
     outdata.resize(outLen + outLen2);
     return outdata;
@@ -30,12 +30,13 @@ std::vector<uint8_t> Aes::Decrypt(std::vector<uint8_t> const& data, std::vector<
     std::vector<uint8_t> outdata(data.size());
     int outLen = 0, outLen2 = 0;
 
-    EVP_CIPHER_CTX ctx;
-    EVP_DecryptInit(&ctx, EVP_aes_256_cbc(), key.data(), iVec.data());
-    EVP_DecryptUpdate(&ctx, outdata.data(), &outLen, data.data(), data.size());
-    EVP_DecryptFinal(&ctx, &outdata[outLen], &outLen2);
-    EVP_CIPHER_CTX_cleanup(&ctx);
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    EVP_DecryptInit(ctx, EVP_aes_256_cbc(), key.data(), iVec.data());
+    EVP_DecryptUpdate(ctx, outdata.data(), &outLen, data.data(), (int)data.size());
+    EVP_DecryptFinal(ctx, &outdata[outLen], &outLen2);
+    EVP_CIPHER_CTX_free(ctx);
 
     outdata.resize(outLen + outLen2);
     return outdata;
 }
+ 
