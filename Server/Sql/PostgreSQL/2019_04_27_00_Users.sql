@@ -1,0 +1,9 @@
+CREATE EXTENSION IF NOT EXISTS CITEXT WITH SCHEMA public;
+CREATE TABLE IF NOT EXISTS Users (
+    Id INT PRIMARY KEY,
+    Email CITEXT UNIQUE,
+    UserName CITEXT UNIQUE,
+    PasswordSalt CHAR(64),
+    PasswordHash CHAR(64),
+    UserRole SMALLINT
+);
