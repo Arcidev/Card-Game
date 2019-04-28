@@ -1,0 +1,15 @@
+#pragma once
+#include "DatabaseHandler.h"
+#include "DbEntities.h"
+
+class DbCommandHandler
+{
+    private:
+        DatabaseHandler dbHandler;
+
+    public:
+        DbCommandHandler(std::string_view dbName, std::string_view userName, std::string_view password);
+
+        User GetUser(std::string_view email);
+        void CreateUser(User& user);
+};

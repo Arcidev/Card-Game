@@ -8,10 +8,9 @@ class DatabaseHandler
 {
     private:
         PGconn* m_connection;
-        void CloseConnection();
 
     public:
+        DatabaseHandler(std::string_view dbName, std::string_view userName, std::string_view password);
         ~DatabaseHandler();
-        bool CreateConnection();
         void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback);
 };

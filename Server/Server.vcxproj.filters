@@ -125,6 +125,12 @@
     <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h">
       <Filter>Database</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\PostgreSQL\DbCommandHandler.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBase\PostgreSQL\DbEntities.h">
+      <Filter>Database</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -218,6 +224,9 @@
       <Filter>Spells</Filter>
     </ClCompile>
     <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase\PostgreSQL\DbCommandHandler.cpp">
       <Filter>Database</Filter>
     </ClCompile>
   </ItemGroup>

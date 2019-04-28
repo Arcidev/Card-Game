@@ -1,27 +1,20 @@
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
 #include "DatabaseHandler.h"
+
+DatabaseHandler::DatabaseHandler(std::string_view dbName, std::string_view userName, std::string_view password)
+{
+    std::ostringstream connectionString;
+    connectionString << "dbname=" << dbName << " username=" << userName << " password=" << password;
+    m_connection = PQconnectdb(connectionString.str().c_str());
+
+    if (PQstatus(m_connection) != CONNECTION_OK)
+        throw std::invalid_argument("Invalid connection arguments");
+}
 
 DatabaseHandler::~DatabaseHandler()
 {
-    CloseConnection();
-}
-
-bool DatabaseHandler::CreateConnection()
-{
-    m_connection = PQconnectdb("dbname = CardGame");
-    if (PQstatus(m_connection) == CONNECTION_OK)
-        return true;
-
-    std::cerr << "Connection to database failed: " << PQerrorMessage(m_connection);
-    m_connection = nullptr;
-    return false;
-}
-
-void DatabaseHandler::CloseConnection()
-{
-    if (!m_connection)
-        return;
-
     PQfinish(m_connection);
 }
 
