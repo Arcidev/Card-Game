@@ -14,14 +14,14 @@ User DbCommandHandler::GetUser(std::string_view email)
     User user;
     dbHandler.ExecuteCommand(stmt, [&user](auto res)
     {
-        for (int i = 0; i < PQntuples(res); i++)
-        {
-            user.Id = *(uint32_t *)PQgetvalue(res, i, 0);
-            user.Email = PQgetvalue(res, i, 1);
-            user.PasswordSalt = PQgetvalue(res, i, 2);
-            user.PasswordHash = PQgetvalue(res, i, 3);
-            user.UserRole = (uint8_t)*(uint16_t *)PQgetvalue(res, i, 0);
-        }
+        if (PQntuples(res) < 1)
+            return;
+
+        user.Id = *(uint32_t *)PQgetvalue(res, 0, 0);
+        user.Email = PQgetvalue(res, 0, 1);
+        user.PasswordSalt = PQgetvalue(res, 0, 2);
+        user.PasswordHash = PQgetvalue(res, 0, 3);
+        user.UserRole = (uint8_t)*(uint16_t *)PQgetvalue(res, 0, 0);
     });
 
     return user;

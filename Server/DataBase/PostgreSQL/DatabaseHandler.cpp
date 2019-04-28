@@ -22,7 +22,6 @@ void DatabaseHandler::ExecuteCommand(PreparedStatement const& statement, std::fu
 {
    PGresult* res = PQexecParams(m_connection, statement.GetCommand().data(), (int)statement.GetParameters().size(), nullptr, &statement.GetParameters()[0], &statement.GetSizes()[0], nullptr, 0);
 
-   ExecStatusType result = PQresultStatus(res);
    switch (PQresultStatus(res))
    {
       case PGRES_COMMAND_OK:
