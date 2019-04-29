@@ -8,7 +8,7 @@ DbCommandHandler::DbCommandHandler(std::string_view dbName, std::string_view use
 
 User DbCommandHandler::GetUser(std::string_view email)
 {
-    PreparedStatement stmt("SELECT id, email, password_salt, password_hash, user_role FROM users WHERE email = $1;");
+    PreparedStatement stmt("SELECT id, email, user_name, password_salt, password_hash, user_role FROM users WHERE email = $1 AND is_active;");
     stmt.AddParameter(email);
 
     User user;
@@ -19,9 +19,10 @@ User DbCommandHandler::GetUser(std::string_view email)
 
         user.Id = *(uint32_t *)PQgetvalue(res, 0, 0);
         user.Email = PQgetvalue(res, 0, 1);
-        user.PasswordSalt = PQgetvalue(res, 0, 2);
-        user.PasswordHash = PQgetvalue(res, 0, 3);
-        user.UserRole = (uint8_t)*(uint16_t *)PQgetvalue(res, 0, 0);
+        user.UserName = PQgetvalue(res, 0, 2);
+        user.PasswordSalt = PQgetvalue(res, 0, 3);
+        user.PasswordHash = PQgetvalue(res, 0, 4);
+        user.UserRole = (uint8_t)*(uint16_t *)PQgetvalue(res, 0, 5);
     });
 
     return user;
@@ -29,8 +30,9 @@ User DbCommandHandler::GetUser(std::string_view email)
 
 void DbCommandHandler::CreateUser(User& user)
 {
-    PreparedStatement stmt("INSERT INTO users (email, password_salt, password_hash, user_role) VALUES ($1, $2, $3, $4) RETURNING Id;");
+    PreparedStatement stmt("INSERT INTO users (email, user_name, password_salt, password_hash, user_role, is_active) VALUES ($1, $2, $3, $4, S5, true) RETURNING id;");
     stmt.AddParameter(user.Email);
+    stmt.AddParameter(user.UserName);
     stmt.AddParameter(user.PasswordSalt);
     stmt.AddParameter(user.PasswordHash);
     stmt.AddParameter(std::to_string(user.UserRole));

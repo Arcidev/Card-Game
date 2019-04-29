@@ -1,11 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS CITEXT WITH SCHEMA public;
 CREATE TABLE IF NOT EXISTS users (
-    id INT PRIMARY KEY,
-    email CITEXT UNIQUE,
-    user_name CITEXT UNIQUE,
-    password_salt CHAR(64),
-    password_hash CHAR(64),
-    user_role SMALLINT,
-    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    email CITEXT UNIQUE NOT NULL,
+    user_name CITEXT UNIQUE NOT NULL,
+    password_salt CHAR(64) NOT NULL,
+    password_hash CHAR(64) NOT NULL,
+    user_role SMALLINT NOT NULL,
+    created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN NOT NULL
 );
