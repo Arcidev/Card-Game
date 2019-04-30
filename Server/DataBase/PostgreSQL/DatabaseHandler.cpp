@@ -5,11 +5,11 @@
 DatabaseHandler::DatabaseHandler(std::string_view dbName, std::string_view userName, std::string_view password)
 {
     std::string connectionString("dbname=");
-    connectionString.append(dbName).append(" username=").append(userName).append(" password=").append(password);
+    connectionString.append(dbName).append(" user=").append(userName).append(" password=").append(password);
     m_connection = PQconnectdb(connectionString.c_str());
 
     if (PQstatus(m_connection) != CONNECTION_OK)
-        throw std::invalid_argument("Invalid connection arguments");
+        throw std::invalid_argument(PQerrorMessage(m_connection));
 }
 
 DatabaseHandler::~DatabaseHandler()
@@ -33,7 +33,7 @@ void DatabaseHandler::ExecuteCommand(PreparedStatement const& statement, std::fu
                 callback(res);
             break;
         default:
-            std::cerr << "Command execution has failed: " << statement.GetCommand() << std::endl;
+            std::cerr << "Command execution has failed: " << statement.GetCommand() << "Error: " << PQresultErrorMessage(res) << std::endl;
     }
     
     PQclear(res);

@@ -35,7 +35,8 @@ void DbCommandHandler::CreateUser(User& user)
     stmt.AddParameter(user.UserName);
     stmt.AddParameter(user.PasswordSalt);
     stmt.AddParameter(user.PasswordHash);
-    stmt.AddParameter(std::to_string(user.UserRole));
+    std::string userRoleStr = std::to_string(user.UserRole);
+    stmt.AddParameter(userRoleStr);
 
     dbHandler.ExecuteCommand(stmt, [&user](auto res) { user.Id = (uint32_t)strtoul(PQgetvalue(res, 0, 0), nullptr, 0); });
 }
@@ -44,7 +45,8 @@ void DbCommandHandler::SetUserActive(int id, bool active)
 {
     PreparedStatement stmt("UPDATE users SET is_active = $1 WHERE id = $2;");
     stmt.AddParameter(active ? "true" : "false");
-    stmt.AddParameter(std::to_string(id));
+    std::string idStr = std::to_string(id);
+    stmt.AddParameter(idStr);
 
     dbHandler.ExecuteCommand(stmt, nullptr);
 }
@@ -52,7 +54,8 @@ void DbCommandHandler::SetUserActive(int id, bool active)
 void DbCommandHandler::DeleteUser(int id)
 {
     PreparedStatement stmt("DELETE FROM users WHERE id = $1;");
-    stmt.AddParameter(std::to_string(id));
+    std::string idStr = std::to_string(id);
+    stmt.AddParameter(idStr);
 
     dbHandler.ExecuteCommand(stmt, nullptr);
 }

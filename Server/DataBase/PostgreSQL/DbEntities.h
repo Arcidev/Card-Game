@@ -9,4 +9,10 @@ struct User
     std::string_view PasswordSalt;
     std::string_view PasswordHash;
     uint8_t UserRole;
+
+    User()
+    {
+        Id = 0;
+        UserRole = 0;
+    }
 };
