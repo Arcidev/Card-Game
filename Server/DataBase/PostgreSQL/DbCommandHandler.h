@@ -12,4 +12,6 @@ class DbCommandHandler
 
         User GetUser(std::string_view email);
         void CreateUser(User& user);
+        void SetUserActive(int id, bool active);
+        void DeleteUser(int id);
 };
