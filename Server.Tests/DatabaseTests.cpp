@@ -9,11 +9,11 @@ constexpr auto UserName = "test_user";
 constexpr auto Password = "1234";
 
 namespace ServerTests
-{		
-	TEST_CLASS(DatabaseTests)
-	{
-	public:
-		
+{
+    TEST_CLASS(DatabaseTests)
+    {
+    public:
+
         TEST_CLASS_INITIALIZE(Setup)
         {
             // In case some test left in DB something due to failure
@@ -23,8 +23,8 @@ namespace ServerTests
             dbHandler.ExecuteCommand(stmt, nullptr);
         }
 
-		TEST_METHOD(UserCrudTests)
-		{
+        TEST_METHOD(UserCrudTests)
+        {
             DbCommandHandler commandHandler(DbName, UserName, Password);
 
             User user;
@@ -50,6 +50,6 @@ namespace ServerTests
             commandHandler.DeleteUser(user.Id);
             dbUser = commandHandler.GetUser(user.Email);
             Assert::AreEqual(0, dbUser.Id);
-		}
-	};
+        }
+    };
 }
