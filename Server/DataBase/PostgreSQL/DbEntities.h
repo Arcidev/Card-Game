@@ -1,13 +1,13 @@
 #pragma once
-#include <string_view>
+#include <string>
 
 struct User
 {
     int Id;
-    std::string_view Email;
-    std::string_view UserName;
-    std::string_view PasswordSalt;
-    std::string_view PasswordHash;
+    std::string Email;
+    std::string UserName;
+    std::string PasswordSalt;
+    std::string PasswordHash;
     uint8_t UserRole;
 
     User()

@@ -14,4 +14,6 @@ class DbCommandHandler
         void CreateUser(User& user);
         void SetUserActive(int id, bool active);
         void DeleteUser(int id);
+
+        void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback) const { dbHandler.ExecuteCommand(statement, callback); }
 };

@@ -12,5 +12,5 @@ class DatabaseHandler
     public:
         DatabaseHandler(std::string_view dbName, std::string_view userName, std::string_view password);
         ~DatabaseHandler();
-        void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback);
+        void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback) const;
 };

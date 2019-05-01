@@ -17,9 +17,11 @@ DatabaseHandler::~DatabaseHandler()
     PQfinish(m_connection);
 }
 
-void DatabaseHandler::ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback)
+void DatabaseHandler::ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback) const
 {
-    PGresult* res = PQexecParams(m_connection, statement.GetCommand().data(), (int)statement.GetParameters().size(), nullptr, &statement.GetParameters()[0], &statement.GetSizes()[0], nullptr, 0);
+    auto params = statement.GetParameters().empty() ? nullptr : &statement.GetParameters()[0];
+    auto sizes = statement.GetSizes().empty() ? nullptr : &statement.GetSizes()[0];
+    PGresult* res = PQexecParams(m_connection, statement.GetCommand().data(), (int)statement.GetParameters().size(), nullptr, params, sizes, nullptr, 0);
 
     switch (PQresultStatus(res))
     {
