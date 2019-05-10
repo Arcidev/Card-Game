@@ -1,4 +1,6 @@
 #include <cstdint>
+#include <cstdio>
+#include <cstring>
 #include <vector>
 #include "Sha.h"
 #include "OpenSSL/rand.h"
@@ -22,7 +24,7 @@ std::string Sha::CreateHash(std::string_view data, std::string_view hexSalt)
     bytes.resize(hexSalt.size() / 2);
 
     int value;
-    for (int i = 0; i < bytes.size(); i++)
+    for (int i = 0; i < (int)bytes.size(); i++)
     {
         sscanf_s(hexSalt.data() + i * 2, "%02X", &value);
         bytes[i] = (uint8_t)value;
