@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email CITEXT UNIQUE NOT NULL,
     user_name CITEXT UNIQUE NOT NULL,
-    password_salt CHAR(64) NOT NULL,
+    password_salt CHAR(32) NOT NULL,
     password_hash CHAR(64) NOT NULL,
     user_role SMALLINT NOT NULL,
     created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

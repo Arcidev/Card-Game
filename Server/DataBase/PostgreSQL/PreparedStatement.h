@@ -5,7 +5,7 @@
 class PreparedStatement
 {
     private:
-        std::string_view m_command;
+        std::string m_command;
         std::vector<char const*> m_params;
         std::vector<int> m_sizes;
 
