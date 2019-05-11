@@ -6,7 +6,7 @@ DbCommandHandler::DbCommandHandler(std::string_view dbName, std::string_view use
 
 }
 
-User DbCommandHandler::GetUser(std::string_view email)
+User DbCommandHandler::GetUser(std::string_view email) const
 {
     PreparedStatement stmt("SELECT id, email, user_name, password_salt, password_hash, user_role FROM users WHERE email = $1 AND is_active;");
     stmt.AddParameter(email);
@@ -28,7 +28,7 @@ User DbCommandHandler::GetUser(std::string_view email)
     return user;
 }
 
-void DbCommandHandler::CreateUser(User& user)
+void DbCommandHandler::CreateUser(User& user) const
 {
     PreparedStatement stmt("INSERT INTO users (email, user_name, password_salt, password_hash, user_role, is_active) VALUES ($1, $2, $3, $4, $5, true) RETURNING id;");
     stmt.AddParameter(user.Email);
@@ -41,7 +41,7 @@ void DbCommandHandler::CreateUser(User& user)
     dbHandler.ExecuteCommand(stmt, [&user](auto res) { user.Id = (uint32_t)strtoul(PQgetvalue(res, 0, 0), nullptr, 0); });
 }
 
-void DbCommandHandler::SetUserActive(int id, bool active)
+void DbCommandHandler::SetUserActive(int id, bool active) const
 {
     PreparedStatement stmt("UPDATE users SET is_active = $1 WHERE id = $2;");
     stmt.AddParameter(active ? "true" : "false");
@@ -51,7 +51,7 @@ void DbCommandHandler::SetUserActive(int id, bool active)
     dbHandler.ExecuteCommand(stmt, nullptr);
 }
 
-void DbCommandHandler::DeleteUser(int id)
+void DbCommandHandler::DeleteUser(int id) const
 {
     PreparedStatement stmt("DELETE FROM users WHERE id = $1;");
     std::string idStr = std::to_string(id);

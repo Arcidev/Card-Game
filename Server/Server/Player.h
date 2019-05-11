@@ -29,7 +29,7 @@ class Player
         bool m_isPrepared;
         bool m_isDisconnected;
         uint8_t m_replenishmentMoveCount;
-        uint32_t const m_id;
+        uint32_t m_id;
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
@@ -49,6 +49,7 @@ class Player
 
         void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
         void SetName(std::string_view name) { m_name = name; }
+        void SetId(uint32_t id) { m_id = id; }
         void SendInitResponse() const;
         void SendAvailableCards() const;
         void SendChatWhisperResponse(std::string_view message, std::string_view receiver, bool success) const;

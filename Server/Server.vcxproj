@@ -178,6 +178,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
     <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h" />
+    <ClInclude Include="DataBase\PostgreSQL\DatabaseInstance.h" />
     <ClInclude Include="DataBase\PostgreSQL\DbCommandHandler.h" />
     <ClInclude Include="DataBase\PostgreSQL\DbEntities.h" />
     <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h" />
@@ -207,6 +208,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Server\Spells\SpellTargetSelector.h" />
     <ClInclude Include="Server\Spells\SpellValidator.h" />
     <ClInclude Include="Server\StaticHelper.h" />
+    <ClInclude Include="Settings\SettingsHandler.h" />
     <ClInclude Include="Shared\SharedDefines.h" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +216,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Crypto\Rsa.cpp" />
     <ClCompile Include="Crypto\Sha.cpp" />
     <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp" />
+    <ClCompile Include="DataBase\PostgreSQL\DatabaseInstance.cpp" />
     <ClCompile Include="DataBase\PostgreSQL\DbCommandHandler.cpp" />
     <ClCompile Include="Server\Cards\Card.cpp" />
     <ClCompile Include="Server\Cards\DefensiveCard.cpp" />
@@ -230,6 +233,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\PacketHandlers\MiscHandler.cpp" />
     <ClCompile Include="Server\PacketHandlers\Packet.cpp" />
     <ClCompile Include="Server\PacketHandlers\PacketHandler.cpp" />
+    <ClCompile Include="Server\PacketHandlers\UserHandler.cpp" />
     <ClCompile Include="Server\Player.cpp" />
     <ClCompile Include="Server\Server.cpp" />
     <ClCompile Include="Server\ServerGame.cpp" />
@@ -242,6 +246,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Spells\SpellTargetSelector.cpp" />
     <ClCompile Include="Server\Spells\SpellValidator.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />
+    <ClCompile Include="Settings\SettingsHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

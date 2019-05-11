@@ -24,6 +24,9 @@
     <Filter Include="Database">
       <UniqueIdentifier>{e2a4d65c-6569-46c7-b92e-db82750f3d26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{c1c880b1-29c5-4e3c-960d-0d65762eefd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shared\SharedDefines.h">
@@ -131,6 +134,12 @@
     <ClInclude Include="DataBase\PostgreSQL\DbEntities.h">
       <Filter>Database</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\PostgreSQL\DatabaseInstance.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsHandler.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -228,6 +237,15 @@
     </ClCompile>
     <ClCompile Include="DataBase\PostgreSQL\DbCommandHandler.cpp">
       <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\UserHandler.cpp">
+      <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase\PostgreSQL\DatabaseInstance.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsHandler.cpp">
+      <Filter>Settings</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
