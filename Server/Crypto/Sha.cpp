@@ -1,5 +1,4 @@
 #include <cstdint>
-#include <cstdio>
 #include <cstring>
 #include <vector>
 #include "Sha.h"
@@ -23,11 +22,14 @@ std::string Sha::CreateHash(std::string_view data, std::string_view hexSalt)
     std::vector<uint8_t> bytes(hexSalt.size() / 2);
     bytes.resize(hexSalt.size() / 2);
 
-    int value;
+    char hex[3] = "00";
     for (int i = 0; i < (int)bytes.size(); i++)
     {
-        sscanf_s(hexSalt.data() + i * 2, "%02X", &value);
-        bytes[i] = (uint8_t)value;
+        char const* ptr = hexSalt.data() + i * 2;
+        hex[0] = *ptr;
+        hex[1] = *(ptr + 1);
+
+        bytes[i] = (uint8_t)strtoul(hex, nullptr, 16);
     }
 
     return createHash(data, &bytes[0], (uint8_t)bytes.size());
