@@ -1,5 +1,4 @@
 #include "PacketHandler.h"
-#include "Packet.h"
 #include "../Player.h"
 #include "../../Shared/SharedDefines.h"
 #include "../../Crypto/Aes.h"
@@ -8,15 +7,15 @@
 #include "../../Crypto/OpenSSL/aes.h"
 
 // Handle CMSG_INIT_PACKET packet
-void PacketHandler::handleInitPacket(Player* player, Packet* packet)
+void PacketHandler::handleInitPacket(Player* player, Packet& packet)
 {
     std::vector<uint8_t> keys;
-    *packet >> keys;
+    packet >> keys;
     keys = Rsa::Decrypt(keys, privateKey, false);
     player->SetAesEncryptor(std::vector<uint8_t>(keys.begin(), keys.begin() + AES_BLOCK_SIZE * 2), std::vector<uint8_t>(keys.begin() + AES_BLOCK_SIZE * 2, keys.begin() + 3 * AES_BLOCK_SIZE ));
 
     std::vector<uint8_t> name;
-    *packet >> name;
+    packet >> name;
     name = Aes::Decrypt(std::vector<uint8_t>(name.begin(), name.end()), player->GetAesEncryptor().Key, player->GetAesEncryptor().IVec);
 
     std::string nameStr = std::string((char*)name.data(), name.size());

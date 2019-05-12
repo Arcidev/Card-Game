@@ -1,5 +1,4 @@
 #include "PacketHandler.h"
-#include "Packet.h"
 
 PacketHandlerFunc const PacketHandler::packetHandlers[] =
 {
@@ -9,7 +8,8 @@ PacketHandlerFunc const PacketHandler::packetHandlers[] =
     handleCardActionPacket,     // CMSG_CARD_ACTION
     handleDefendSelfPacket,     // CMSG_DEFEND_SELF
     handleUserCreatePacket,     // CMSG_USER_CREATE
-    handleUserLogInPacket       // CMSG_USER_LOGIN
+    handleUserLogInPacket,      // CMSG_USER_LOGIN
+    handleUserChangePassword    // CMSG_USER_CHANGE_PASSWORD
 };
 
 // Returns function that handle sended packet

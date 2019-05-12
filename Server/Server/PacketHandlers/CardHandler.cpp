@@ -1,16 +1,15 @@
 #include "PacketHandler.h"
-#include "Packet.h"
 #include "../Player.h"
 #include "../DataHolder.h"
 #include "../Cards/PlayableCard.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_SELECTED_CARDS packet
-void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
+void PacketHandler::handleSelectedCardsPacket(Player* player, Packet& packet)
 {
     uint32_t cardId;
     uint8_t cardCount;
-    *packet >> cardCount;
+    packet >> cardCount;
     if (cardCount != MAX_CARDS_COUNT)
         player->SendSelectCardsFailed(INVALID_CARD_COUNT);
 
@@ -20,7 +19,7 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 
     for (uint8_t i = 0; i < MAX_CARDS_COUNT; i++)
     {
-        *packet >> cardId;
+        packet >> cardId;
         DEBUG_LOG("\tCardId: %d\r\n", cardId);
 
         Card const* card = DataHolder::GetCard(cardId);
@@ -80,15 +79,15 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet* packet)
 }
 
 // Handles CMSG_CARD_ACTION packet
-void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
+void PacketHandler::handleCardActionPacket(Player* player, Packet& packet)
 {
     Guid guid;
     uint8_t attackType;
-    packet->ReadBitStreamInOrder(guid, { 4, 3, 2, 7, 1, 6, 0, 5 });
+    packet.ReadBitStreamInOrder(guid, { 4, 3, 2, 7, 1, 6, 0, 5 });
 
-    packet->ReadByteStreamInOrder(guid, { 6, 2, 7, 1, 0 });
-    *packet >> attackType;
-    packet->ReadByteStreamInOrder(guid, { 5, 3, 4 });
+    packet.ReadByteStreamInOrder(guid, { 6, 2, 7, 1, 0 });
+    packet >> attackType;
+    packet.ReadByteStreamInOrder(guid, { 5, 3, 4 });
 
     DEBUG_LOG("CMSG_CARD_ACTION:\r\n\tcardAction: %d\r\n", attackType);
     if (attackType == CARD_ACTION_BASIC_ATTACK)
@@ -98,7 +97,7 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet* packet)
 }
 
 // Handles CMSG_DEFEND_SELF packet
-void PacketHandler::handleDefendSelfPacket(Player* player, Packet* /*packet*/)
+void PacketHandler::handleDefendSelfPacket(Player* player, Packet& /*packet*/)
 {
     DEBUG_LOG("CMSG_DEFEND_SELF\r\n");
     player->DefendSelf();

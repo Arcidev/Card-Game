@@ -7,7 +7,6 @@
 #include "PlayerDefines.h"
 #include "ServerNetwork.h"
 #include "Cards/PlayableCard.h"
-#include "PacketHandlers/Packet.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
@@ -267,7 +266,7 @@ void Player::ReceivePacket(uint32_t dataLength, char const* data)
 
             PacketHandlerFunc packetHandler = PacketHandler::GetPacketHandler(packetType);
             if (packetHandler)
-                packetHandler(this, &packet);
+                packetHandler(this, packet);
         }
         catch (std::out_of_range ex)
         {

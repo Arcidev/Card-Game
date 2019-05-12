@@ -40,6 +40,9 @@ namespace ServerTests
             Assert::AreEqual(user.Email, dbUser.Email);
             Assert::AreEqual(user.UserName, dbUser.UserName);
 
+            dbUser = commandHandler.GetUser(dbUser.Id);
+            Assert::AreEqual(user.Email, dbUser.Email);
+
             commandHandler.SetUserActive(user.Id, false);
             dbUser = commandHandler.GetUser(user.Email);
             Assert::AreEqual(0, dbUser.Id);
@@ -50,6 +53,40 @@ namespace ServerTests
             commandHandler.DeleteUser(user.Id);
             dbUser = commandHandler.GetUser(user.Email);
             Assert::AreEqual(0, dbUser.Id);
+        }
+
+        TEST_METHOD(UserInUseTests)
+        {
+            DbCommandHandler commandHandler(DbName, UserName, Password);
+
+            User user;
+            user.Email = "user_email@mail.sk";
+            user.UserName = "used_name";
+            user.PasswordHash = "1234";
+            user.PasswordSalt = "1234";
+
+            commandHandler.CreateUser(user);
+
+            for (auto& c : user.Email) c = toupper(c);
+            for (auto& c : user.UserName) c = toupper(c);
+
+            auto [emailUsed, userUsed] = commandHandler.CanCreateUser(user.Email, user.UserName);
+            Assert::IsTrue(emailUsed);
+            Assert::IsTrue(userUsed);
+
+            auto [emailUsed2, userUsed2] = commandHandler.CanCreateUser(user.Email, "another_name");
+            Assert::IsTrue(emailUsed2);
+            Assert::IsFalse(userUsed2);
+
+            auto [emailUsed3, userUsed3] = commandHandler.CanCreateUser("another_email@mail.sk", user.UserName);
+            Assert::IsFalse(emailUsed3);
+            Assert::IsTrue(userUsed3);
+
+            auto [emailUsed4, userUsed4] = commandHandler.CanCreateUser("random_email@mail.sk", "random_name");
+            Assert::IsFalse(emailUsed4);
+            Assert::IsFalse(userUsed4);
+
+            commandHandler.DeleteUser(user.Id);
         }
     };
 }

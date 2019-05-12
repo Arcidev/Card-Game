@@ -1,16 +1,14 @@
 #include "PacketHandler.h"
-#include "Packet.h"
 #include "../Player.h"
 #include "../ServerNetwork.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_CHAT_MESSAGE packet
-void PacketHandler::handleChatPacket(Player* player, Packet* packet)
+void PacketHandler::handleChatPacket(Player* player, Packet& packet)
 {
     uint8_t chatId;
     std::string message;
-    *packet >> chatId;
-    *packet >> message;
+    packet >> chatId >> message;
 
     DEBUG_LOG("CMSG_CHAT_MESSAGE:\r\n\tChatId: %d\r\n\tMessage: %s\r\n", chatId, message.c_str());
     Packet pck(SMSG_CHAT_MESSAGE);
@@ -29,7 +27,7 @@ void PacketHandler::handleChatPacket(Player* player, Packet* packet)
         case CHAT_WHISPER:
         {
             std::string receiverName;
-            *packet >> receiverName;
+            packet >> receiverName;
             player->SendChatWhisperResponse(message, receiverName, player->GetNetwork()->SendPacketToPlayer(receiverName, pck));
             break;
         }
