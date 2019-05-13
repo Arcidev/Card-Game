@@ -104,7 +104,7 @@ void PacketHandler::handleUserChangePassword(Player* player, Packet& packet)
     }
 
     auto[salt, hash] = Sha::CreateHash(newPassword);
-    DatabaseInstance::GetDbCommandHandler().SetUserPassword(player->GetId(), hash, salt);
+    DatabaseInstance::GetDbCommandHandler().SetUserPassword(player->GetId(), salt, hash);
 
     result << (uint8_t)USER_RESULT_PASSWORD_CHANGED;
     player->SendPacket(result);

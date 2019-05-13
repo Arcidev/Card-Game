@@ -30,7 +30,8 @@ namespace Client.Network
             HandleSpellDrain,           // SMSG_SPELL_DRAIN
             HandleSpellAuraExpired,     // SMSG_SPELL_AURA_EXPIRED
             HandleSpellAuraRemoved,     // SMSG_SPELL_AURAS_REMOVED
-            HandleCardMorphInfo         // SMSG_CARD_MORPH_INFO
+            HandleCardMorphInfo,        // SMSG_CARD_MORPH_INFO
+            HandleUserResult            // SMSG_USER_RESULT
         };
 
         // Returns function to handle packet

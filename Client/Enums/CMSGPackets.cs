@@ -7,6 +7,9 @@ namespace Client.Enums
         ChatMessage,
         SelectedCards,
         CardAction,
-        DefendSelf
+        DefendSelf,
+        UserCreate,
+        UserLogIn,
+        UserChangePassword
     }
 }

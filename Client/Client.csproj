@@ -90,6 +90,7 @@
     <Compile Include="Game\Spells\SpellEffect.cs" />
     <Compile Include="Game\Spells\SpellTargetSelector.cs" />
     <Compile Include="Misc\CardAttackCursors.cs" />
+    <Compile Include="Network\PacketHandlerUser.cs" />
     <Compile Include="Network\PacketHandlerMisc.cs" />
     <Compile Include="Network\PacketHandlerGame.cs" />
     <Compile Include="Network\PacketHandlerCards.cs" />
