@@ -1,7 +1,7 @@
 #include "PacketHandler.h"
 #include "../Player.h"
 #include "../../Crypto/Sha.h"
-#include "../../DataBase/PostgreSQL/DatabaseInstance.h"
+#include "../../Database/DatabaseInstance.h"
 #include "../../Shared/SharedDefines.h"
 
 enum UserResults

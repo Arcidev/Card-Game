@@ -91,14 +91,10 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
-IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
-
-:copydll
-for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+      <Command>for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -111,14 +107,10 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
-IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
-
-:copydll
-for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+      <Command>for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -136,14 +128,10 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
-IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
-
-:copydll
-for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+      <Command>for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -161,14 +149,10 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\SQLite\sqlite3.lib;DataBase\PostgreSQL\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypto\OpenSSL\libcrypto.lib;DataBase\libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(ProjectDir)DataBase" "$(TargetDir)DataBase" data.db
-IF %ERRORLEVEL% LSS 8 goto copydll else exit %ERRORLEVEL%
-
-:copydll
-for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
+      <Command>for /d  %%i in ($(ProjectDir)DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll
 IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -177,11 +161,10 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Crypto\Keys\RSAPrivateKey.h" />
     <ClInclude Include="Crypto\Rsa.h" />
     <ClInclude Include="Crypto\Sha.h" />
-    <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h" />
-    <ClInclude Include="DataBase\PostgreSQL\DatabaseInstance.h" />
-    <ClInclude Include="DataBase\PostgreSQL\DbCommandHandler.h" />
-    <ClInclude Include="DataBase\PostgreSQL\DbEntities.h" />
-    <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h" />
+    <ClInclude Include="Database\DatabaseHandler.h" />
+    <ClInclude Include="Database\DatabaseInstance.h" />
+    <ClInclude Include="Database\DbCommandHandler.h" />
+    <ClInclude Include="Database\DbEntities.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\DefensiveCard.h" />
@@ -215,9 +198,9 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Crypto\Aes.cpp" />
     <ClCompile Include="Crypto\Rsa.cpp" />
     <ClCompile Include="Crypto\Sha.cpp" />
-    <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp" />
-    <ClCompile Include="DataBase\PostgreSQL\DatabaseInstance.cpp" />
-    <ClCompile Include="DataBase\PostgreSQL\DbCommandHandler.cpp" />
+    <ClCompile Include="Database\DatabaseHandler.cpp" />
+    <ClCompile Include="Database\DatabaseInstance.cpp" />
+    <ClCompile Include="Database\DbCommandHandler.cpp" />
     <ClCompile Include="Server\Cards\Card.cpp" />
     <ClCompile Include="Server\Cards\DefensiveCard.cpp" />
     <ClCompile Include="Server\Cards\MeleeCard.cpp" />
@@ -247,6 +230,11 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Spells\SpellValidator.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />
     <ClCompile Include="Settings\SettingsHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="CardGame.conf">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

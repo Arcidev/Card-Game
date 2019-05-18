@@ -4,9 +4,7 @@
 
 int main()
 {
-    if (!DataHolder::LoadData()) // loads data from database
-        return 1;
-
+    DataHolder::LoadData();
     ServerGame server;
     server.Loop();
 

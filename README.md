@@ -3,7 +3,6 @@ Card-Game
 ## Requirements
 + Platform: Linux or Windows
 + OpenSSL 1.1.0i (x64 DLL/lib included for Windows)
-+ Sqlite 3.28.0 (x64 DLL/lib included for Windows)
 + PostgreSQL 11 (x64 DLL/lib included for Windows)
 + C++17
 + C# 7.3
@@ -18,14 +17,14 @@ Card-Game
   
     Server:
       Copy DLL files from directory Server/DLL to directory where you have built executable
-      Copy directory Server/Database to directory where you have built executable
+      Initialize PostgreSQL Database from Server/SQL and provide config to CardGame.conf file
     Client:
       Copy directory Client/Assets to directory where you have built an executable
   <b>UNIX-like systems:</b>
   
     Server:
       Build application via script BUILD or BUILD_REALEASE
-      Copy directory Server/Database to directory where you have built executable
+      Initialize PostgreSQL Database from Server/SQL and provide config to CardGame.conf file (must be copied from Server folder)
     Client:
       Not officially supported yet
       

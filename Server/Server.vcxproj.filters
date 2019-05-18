@@ -122,23 +122,20 @@
     <ClInclude Include="Server\Spells\SpellValidator.h">
       <Filter>Spells</Filter>
     </ClInclude>
-    <ClInclude Include="DataBase\PostgreSQL\DatabaseHandler.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBase\PostgreSQL\PreparedStatement.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBase\PostgreSQL\DbCommandHandler.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBase\PostgreSQL\DbEntities.h">
-      <Filter>Database</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBase\PostgreSQL\DatabaseInstance.h">
-      <Filter>Database</Filter>
-    </ClInclude>
     <ClInclude Include="Settings\SettingsHandler.h">
       <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\DatabaseHandler.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\DatabaseInstance.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\DbCommandHandler.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\DbEntities.h">
+      <Filter>Database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,20 +229,25 @@
     <ClCompile Include="Server\Spells\SpellValidator.cpp">
       <Filter>Spells</Filter>
     </ClCompile>
-    <ClCompile Include="DataBase\PostgreSQL\DatabaseHandler.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
-    <ClCompile Include="DataBase\PostgreSQL\DbCommandHandler.cpp">
-      <Filter>Database</Filter>
-    </ClCompile>
     <ClCompile Include="Server\PacketHandlers\UserHandler.cpp">
       <Filter>PacketHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="DataBase\PostgreSQL\DatabaseInstance.cpp">
-      <Filter>Database</Filter>
     </ClCompile>
     <ClCompile Include="Settings\SettingsHandler.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
+    <ClCompile Include="Database\DatabaseHandler.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\DatabaseInstance.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\DbCommandHandler.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CardGame.conf">
+      <Filter>Settings</Filter>
+    </None>
   </ItemGroup>
 </Project>

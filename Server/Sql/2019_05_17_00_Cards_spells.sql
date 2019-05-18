@@ -1,0 +1,89 @@
+CREATE TABLE IF NOT EXISTS spell_values
+(
+	id INT PRIMARY KEY,
+	spell_effect_id SMALLINT NOT NULL,
+	spell_attributes_mask INT NOT NULL,
+	target SMALLINT NOT NULL,
+	effect_value_1 SMALLINT NOT NULL,
+	effect_value_2 SMALLINT NOT NULL,
+	effect_value_3 SMALLINT NOT NULL,
+	effect_value_4 SMALLINT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS spells
+(
+	id INT PRIMARY KEY,
+	mana_cost SMALLINT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS spells_spell_values
+(
+	spell_id INT NOT NULL REFERENCES spells(id),
+	spell_value_id INT NOT NULL REFERENCES spell_values(id),
+	PRIMARY KEY (spell_id, spell_value_id)
+);
+
+CREATE TABLE IF NOT EXISTS cards 
+(
+	id INT PRIMARY KEY,
+	type SMALLINT NOT NULL,
+	base_hp SMALLINT NOT NULL,
+	base_damage SMALLINT NOT NULL,
+	base_mana SMALLINT NOT NULL,
+	base_defense SMALLINT NOT NULL,
+	price SMALLINT NOT NULL,
+	spell_id int REFERENCES spells(Id)
+);
+
+INSERT INTO spell_values VALUES
+(1, 0/*SPELL_EFFECT_DIRECT_DAMAGE*/, 0, 0/*TARGET_UNIT_TARGET_ENEMY*/, 10, 0, 0, 0),
+(2, 1/*SPELL_EFFECT_APPLY_AURA*/, 0, 0/*TARGET_UNIT_TARGET_ENEMY*/, 0/*SPELL_AURA_EFFECT_DAMAGE*/, 5, 1, 2),
+(3, 1/*SPELL_EFFECT_APPLY_AURA*/, 0, 1/*TARGET_UNIT_TARGET_FRIEND*/, 1/*SPELL_AURA_EFFECT_MODIFY_STAT*/, 16, 2/*CARD_STAT_DAMAGE*/, 5),
+(4, 2/*SPELL_EFFECT_HEAL*/, 0, 1/*TARGET_UNIT_TARGET_FRIEND*/, 5, 0, 0, 0),
+(5, 0/*SPELL_EFFECT_DIRECT_DAMAGE*/, 0, 0/*TARGET_UNIT_TARGET_ENEMY*/, 7, 0, 0, 0),
+(6, 1/*SPELL_EFFECT_APPLY_AURA*/, 0, 1/*TARGET_UNIT_TARGET_FRIEND*/, 2/*SPELL_AURA_EFFECT_HEAL*/, 5, 1, 2),
+(7, 0/*SPELL_EFFECT_DIRECT_DAMAGE*/, 4/*SPELL_ATTRIBUTE_APPLY_DEFENSE*/, 2/*TARGET_UNIT_CLEAVE_ENEMY*/, 3, 0, 0, 0),
+(8, 0/*SPELL_EFFECT_DIRECT_DAMAGE*/, 1 | 4/*SPELL_ATTRIBUTE_TARGET_MELEE, SPELL_ATTRIBUTE_APPLY_DEFENSE*/, 2/*TARGET_UNIT_CLEAVE_ENEMY*/, 4, 0, 0, 0),
+(9, 3/*SPELL_EFFECT_DRAIN*/, 1/*SPELL_ATTRIBUTE_TARGET_MELEE*/ | 4 /*SPELL_ATTRIBUTE_APPLY_DEFENSE*/, 0/*TARGET_UNIT_TARGET_ENEMY*/, 6, 3, 0, 0),
+(10, 1/*SPELL_EFFECT_APPLY_AURA*/, 0, 0/*TARGET_UNIT_TARGET_ENEMY*/, 3/*SPELL_AURA_EFFECT_MORPH*/, 8, 100/*100% mana of target card*/, 0),
+(11, 1/*SPELL_EFFECT_APPLY_AURA*/, 2/*SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF*/, 1/*TARGET_UNIT_TARGET_FRIEND*/, 3/*SPELL_AURA_EFFECT_MORPH*/, 8, 100/*100% mana of target card*/, 0);
+
+INSERT INTO spells VALUES
+(1, 4), -- Lightning Bolt
+(2, 2), -- Devil Curse
+(3, 4), -- Strength of Light
+(4, 4), -- Purge
+(5, 3), -- Lich Slap
+(6, 4),
+(7, 3),
+(8, 3),
+(9, 3),
+(10, 0);
+
+INSERT INTO spells_spell_values VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 1),
+(4, 4),
+(5, 5),
+(6, 6),
+(6, 1),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(10, 11);
+
+INSERT INTO cards VALUES
+(1, 1, 50, 4, 4, 5, 0, 8),
+(2, 1, 48, 5, 4, 4, 0, 3),
+(3, 2, 50, 2, 10, 7, 0, 1),
+(4, 1, 70, 7, 5, 1, 0, 7),
+(5, 2, 30, 3, 8, 2, 0, 4),
+(6, 1, 60, 6, 6, 6, 0, 2),
+(7, 2, 48, 9, 9, 4, 0, 5),
+(8, 2, 40, 2, 10, 3, 0, 6),
+(9, 2, 50, 10, 0, 4, 0, NULL),
+(10, 1, 70, 6, 5, 7, 0, 9),
+(11, 1, 40, 10, 0, 6, 0, 10);

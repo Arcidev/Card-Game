@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cctype>
 #include "StaticHelper.h"
 
 // Compares 2 strings
@@ -11,4 +13,15 @@ bool StaticHelper::CompareStringCaseInsensitive(std::string_view str1, std::stri
             return false;
 
     return true;
+}
+
+std::string& StaticHelper::Trim(std::string& str)
+{
+    auto it1 = std::find_if(str.begin(), str.end(), [](char ch) { return !std::isspace(ch); });
+    str.erase(str.begin(), it1);
+
+    auto it2 = std::find_if(str.rbegin(), str.rend(), [](char ch) { return !std::isspace(ch); });
+    str.erase(it2.base(), str.end());
+
+    return str;
 }

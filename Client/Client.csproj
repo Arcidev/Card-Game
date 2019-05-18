@@ -80,6 +80,7 @@
     <Compile Include="Enums\SpellCastResult.cs" />
     <Compile Include="Enums\SpellAttributes.cs" />
     <Compile Include="Enums\SpellTargets.cs" />
+    <Compile Include="Enums\UserResult.cs" />
     <Compile Include="Game\Cards\DefensiveCard.cs" />
     <Compile Include="Game\Cards\MeleeCard.cs" />
     <Compile Include="Game\Cards\PlayableCard.cs" />

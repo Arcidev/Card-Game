@@ -3,24 +3,24 @@
 #include <map>
 #include "Spells/Spell.h"
 #include "Cards/Card.h"
+#include "../Database/DatabaseInstance.h"
 
 typedef std::map<uint32_t, Card> CardsDataMap;
 typedef std::map<uint32_t, Spell> SpellsDataMap;
 
-struct sqlite3;
 class DataHolder
 {
     private:
         static SpellsDataMap m_spells;
         static CardsDataMap m_cards;
         
-        static bool loadSpells(sqlite3* db);
-        static bool loadCards(sqlite3* db);
-        static int loadSpellsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/);
-        static int loadCardsCallback(void* /*data*/, int argc, char** argv, char** /*azColName*/);
+        static void loadSpells();
+        static void loadCards();
+        static void loadSpellsCallback(PGresult const* result);
+        static void loadCardsCallback(PGresult const* result);
 
     public:
-        static bool LoadData();
+        static void LoadData();
         static CardsDataMap const& GetCards() { return m_cards; }
         static Card const* GetCard(uint32_t cardId);
 };

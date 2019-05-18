@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+#include <map>
 #include <string>
 
 struct DatabaseConfig
@@ -11,6 +13,9 @@ struct DatabaseConfig
 class SettingsHandler
 {
     private:
+        typedef std::map<std::string, std::function<void(SettingsHandler*, std::string_view)>> ConfigMap;
+        static ConfigMap m_configMap;
+
         DatabaseConfig m_dbConfig;
         SettingsHandler();
 
