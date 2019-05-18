@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "../Server/DataBase/PostgreSQL/DbCommandHandler.h"
+#include "../Server/DataBase/DbCommandHandler.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

@@ -27,8 +27,11 @@ SettingsHandler::SettingsHandler()
         if (delimiter == std::string::npos || delimiter == line.length() - 1)
             continue;
 
-        std::string config = StaticHelper::Trim(line.substr(0, delimiter));
-        std::string value = StaticHelper::Trim(line.substr(delimiter + 1));
+        std::string config = line.substr(0, delimiter);
+        std::string value = line.substr(delimiter + 1);
+
+        StaticHelper::Trim(config);
+        StaticHelper::Trim(value);
 
         ConfigMap::const_iterator iter = m_configMap.find(config);
         if (iter != m_configMap.end())
