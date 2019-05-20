@@ -1,6 +1,11 @@
 # Ignore external libraries from language statistics
 Server/Crypto/OpenSSL/* linguist-vendored
-Server/Database/* linguist-vendored
+Server/Database/libpq* linguist-vendored
+Server/Database/pg_config_ext.h linguist-vendored
+Server/Database/postgres* linguist-vendored
+
+# Mark header files as cpp
+*.h linguist-language=cpp
 
 # Lineendings
 *.sln        eol=crlf
