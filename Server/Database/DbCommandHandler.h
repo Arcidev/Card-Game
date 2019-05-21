@@ -19,6 +19,7 @@ class DbCommandHandler
         std::tuple<bool, bool> CanCreateUser(std::string_view email, std::string_view userName) const;
         void SetUserActive(int id, bool active) const;
         void DeleteUser(int id) const;
+        void UpdateUserLastLoginTime(int id) const;
 
         void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback) const { dbHandler.ExecuteCommand(statement, callback); }
 };

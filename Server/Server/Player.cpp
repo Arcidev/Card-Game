@@ -11,6 +11,7 @@
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
 #include "../Crypto/Aes.h"
+#include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
 
 Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
@@ -30,6 +31,8 @@ void Player::Disconnect()
     m_network->OnPlayerDisconnected(this);
     shutdown(m_socket, SD_BOTH);
     closesocket(m_socket);
+
+    DatabaseInstance::GetDbCommandHandler().UpdateUserLastLoginTime(m_id);
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
 }
 

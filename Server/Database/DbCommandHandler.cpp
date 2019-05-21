@@ -105,3 +105,12 @@ void DbCommandHandler::DeleteUser(int id) const
 
     dbHandler.ExecuteCommand(stmt, nullptr);
 }
+
+void DbCommandHandler::UpdateUserLastLoginTime(int id) const
+{
+    PreparedStatement stmt("UPDATE users SET last_login_on = CURRENT_TIMESTAMP WHERE id = $1;");
+    std::string idStr = std::to_string(id);
+    stmt.AddParameter(idStr);
+
+    dbHandler.ExecuteCommand(stmt, nullptr);
+}
