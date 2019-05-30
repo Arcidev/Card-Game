@@ -3,11 +3,11 @@
 namespace Client.UI.Views.User
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for CreateAccount.xaml
     /// </summary>
-    public partial class Login : Page
+    public partial class CreateAccount : Page
     {
-        public Login()
+        public CreateAccount()
         {
             InitializeComponent();
         }

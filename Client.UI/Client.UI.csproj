@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Views\Login.xaml" />
+    <None Remove="Views\User\CreateAccount.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,9 +20,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Texts.cs-CZ.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Texts.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Texts.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Texts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Texts.sk-SK.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
