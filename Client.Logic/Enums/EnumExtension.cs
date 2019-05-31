@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Client.Enums
+namespace Client.Logic.Enums
 {
     public static class EnumExtension
     {

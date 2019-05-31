@@ -1,4 +1,4 @@
-﻿using Client.Enums;
+﻿using Client.Logic.Enums;
 using System;
 
 namespace Client.Game

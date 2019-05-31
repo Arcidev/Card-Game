@@ -1,6 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Data;
-using Client.Enums;
+using Client.Logic.Enums;
 using Client.Game;
 using System;
 using System.Collections.Generic;

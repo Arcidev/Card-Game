@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Client.Game;
 using System.ComponentModel;
-using Client.Enums;
+using Client.Logic.Enums;
 using Client.UI;
 using Client.Misc;
 

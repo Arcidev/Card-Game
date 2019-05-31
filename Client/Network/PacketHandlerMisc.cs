@@ -1,5 +1,5 @@
 ﻿using Arci.Networking.Data;
-using Client.Enums;
+using Client.Logic.Enums;
 using Client.Game;
 
 namespace Client.Network

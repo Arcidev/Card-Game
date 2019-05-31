@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Client.Enums
+namespace Client.Logic.Enums
 {
     [Flags]
     public enum SpellAttributes

@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Client.Logic\Client.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Texts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

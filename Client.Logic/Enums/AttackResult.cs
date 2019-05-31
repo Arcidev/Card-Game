@@ -1,5 +1,5 @@
 ﻿
-namespace Client.Enums
+namespace Client.Logic.Enums
 {
     public enum AttackResult
     {

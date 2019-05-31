@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CreateAccount" xml:space="preserve">
-    <value>Create account</value>
+    <value>Create Account</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -128,5 +128,11 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Username:</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="PasswordAgain" xml:space="preserve">
+    <value>Password Again:</value>
   </data>
 </root>

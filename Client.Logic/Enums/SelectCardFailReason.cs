@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Client.Enums
+namespace Client.Logic.Enums
 {
     public enum SelectCardFailReason
     {

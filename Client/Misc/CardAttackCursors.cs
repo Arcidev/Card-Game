@@ -1,4 +1,4 @@
-﻿using Client.Enums;
+﻿using Client.Logic.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;

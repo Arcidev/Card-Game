@@ -129,4 +129,10 @@
   <data name="UserName" xml:space="preserve">
     <value>Užívateľské meno:</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail:</value>
+  </data>
+  <data name="PasswordAgain" xml:space="preserve">
+    <value>Heslo znova:</value>
+  </data>
 </root>

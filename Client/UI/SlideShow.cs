@@ -1,5 +1,5 @@
 ﻿using Client.Data;
-using Client.Enums;
+using Client.Logic.Enums;
 using Client.Game;
 using System.Linq;
 using System.Timers;
