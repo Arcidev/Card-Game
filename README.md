@@ -8,9 +8,8 @@ Card-Game
 + C# 7.3
 
 ## Build Status
-[![Build Status](https://travis-ci.org/Arcidev/Card-Game.svg)](https://travis-ci.org/Arcidev/Card-Game) (Ubuntu Xenial with G++ 7.1 - Server only)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/0610759ka3nks9mb?svg=true)](https://ci.appveyor.com/project/Arcidev/card-game) (Visual Studio 16.1)
+[![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game)
+[![Build status](https://img.shields.io/appveyor/ci/Arcidev/Card-Game.svg?logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/Arcidev/card-game)
 
 ## How to build and run:
   <b>Windows (Automated for MS Visual Studio 15):</b>
