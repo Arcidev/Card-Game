@@ -135,4 +135,7 @@
   <data name="PasswordAgain" xml:space="preserve">
     <value>Password Again:</value>
   </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Password and confirmation password do not match.</value>
+  </data>
 </root>

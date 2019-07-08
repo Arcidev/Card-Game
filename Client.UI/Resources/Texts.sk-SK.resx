@@ -135,4 +135,7 @@
   <data name="PasswordAgain" xml:space="preserve">
     <value>Heslo znova:</value>
   </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Heslo a potvrdzovacie heslo sa nezhodujú.</value>
+  </data>
 </root>

@@ -135,4 +135,7 @@
   <data name="PasswordAgain" xml:space="preserve">
     <value>Contraseña de nuevo:</value>
   </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>La contraseña y la contraseña de confirmación no coinciden.</value>
+  </data>
 </root>

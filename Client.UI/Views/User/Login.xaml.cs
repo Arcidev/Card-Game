@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Client.UI.ViewModels.User;
+using System.Windows.Controls;
 
 namespace Client.UI.Views.User
 {
@@ -10,6 +11,15 @@ namespace Client.UI.Views.User
         public Login()
         {
             InitializeComponent();
+        }
+
+        private void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (!(DataContext is LoginViewModel vm))
+                return;
+
+            if (vm.Login(Password.Password))
+                ; // redirect to game
         }
     }
 }
