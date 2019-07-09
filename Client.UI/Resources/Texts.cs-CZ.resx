@@ -138,4 +138,7 @@
   <data name="PasswordMismatch" xml:space="preserve">
     <value>Heslo a potvrzovací heslo se neshodují.</value>
   </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server:</value>
+  </data>
 </root>

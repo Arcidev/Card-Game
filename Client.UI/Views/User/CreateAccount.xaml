@@ -19,21 +19,24 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="0 0 5 0" Text="{x:Static resx:Texts.UserName}" />
-        <TextBox Width="150" Margin="0 2" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource}" />
-        <TextBlock Margin="0 0 5 0" Grid.Row="1" Text="{x:Static resx:Texts.Email}" />
-        <TextBox Width="150" Margin="0 2" Grid.Row="1" Grid.Column="1" Text="{Binding Email, Mode=OneWayToSource}" />
-        <TextBlock Margin="0 0 5 0" Grid.Row="2" Text="{x:Static resx:Texts.Password}" />
-        <PasswordBox Width="150" Margin="0 2" Grid.Row="2" Grid.Column="1" Name="Password" />
-        <TextBlock Margin="0 0 5 0" Grid.Row="3" Text="{x:Static resx:Texts.PasswordAgain}" />
-        <PasswordBox Width="150" Margin="0 2" Grid.Row="3" Grid.Column="1" Name="PasswordAgain" />
-        <TextBlock Foreground="Red" Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" Visibility="{Binding HasError, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Button Margin="0 10 0 0" Grid.Row="5" Grid.ColumnSpan="2" Click="CreateAccountBtn_Click">
+        <TextBlock Margin="0 0 5 0" Text="{x:Static resx:Texts.Server}" />
+        <ComboBox Width="150" Grid.Column="1" ItemsSource="{Binding ServerList, Mode=OneWay}" SelectedItem="{Binding Server}"/>
+        <TextBlock Margin="0 0 5 0" Grid.Row="1" Text="{x:Static resx:Texts.UserName}" />
+        <TextBox Width="150" Margin="0 2" Grid.Row="1" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource}" />
+        <TextBlock Margin="0 0 5 0" Grid.Row="2" Text="{x:Static resx:Texts.Email}" />
+        <TextBox Width="150" Margin="0 2" Grid.Row="2" Grid.Column="1" Text="{Binding Email, Mode=OneWayToSource}" />
+        <TextBlock Margin="0 0 5 0" Grid.Row="3" Text="{x:Static resx:Texts.Password}" />
+        <PasswordBox Width="150" Margin="0 2" Grid.Row="3" Grid.Column="1" Name="Password" />
+        <TextBlock Margin="0 0 5 0" Grid.Row="4" Text="{x:Static resx:Texts.PasswordAgain}" />
+        <PasswordBox Width="150" Margin="0 2" Grid.Row="4" Grid.Column="1" Name="PasswordAgain" />
+        <TextBlock Foreground="Red" Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" Visibility="{Binding HasError, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Button Margin="0 10 0 0" Grid.Row="6" Grid.ColumnSpan="2" Click="CreateAccountBtn_Click">
             <Label Content="{x:Static resx:Texts.CreateAccount}" />
         </Button>
     </Grid>

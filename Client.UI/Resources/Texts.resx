@@ -138,4 +138,7 @@
   <data name="PasswordMismatch" xml:space="preserve">
     <value>Password and confirmation password do not match.</value>
   </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server:</value>
+  </data>
 </root>

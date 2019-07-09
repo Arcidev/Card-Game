@@ -1,4 +1,7 @@
-﻿
+﻿using Client.Logic;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Client.UI.ViewModels.User
 {
     public class LoginViewModel : NotifyPropertyViewModel
@@ -22,6 +25,15 @@ namespace Client.UI.ViewModels.User
         }
 
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+        public IEnumerable<string> ServerList => Game.Servers;
+
+        public string Server { get; set; }
+
+        public LoginViewModel()
+        {
+            Server = ServerList.FirstOrDefault();
+        }
 
         public bool Login(string password)
         {

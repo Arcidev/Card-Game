@@ -229,7 +229,7 @@ namespace Client.Game
 
         public PlayableCard GetCardByImageControlName(string imageControlName)
         {
-            var (card, image) = Player.GetCardByImageControlName(imageControlName);
+            var (card, _) = Player.GetCardByImageControlName(imageControlName);
             if (card != null)
                 return card;
 
