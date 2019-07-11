@@ -24,9 +24,6 @@ void PacketHandler::handleUserCreatePacket(Player* player, Packet& packet)
     packet >> user.UserName >> user.Email >> user.PasswordHash;
 
     DEBUG_LOG("CMSG_USER_CREATE:\r\n\tUserName: %s\r\n", user.Email.c_str());
-    auto [salt, hash] = Sha::CreateHash(user.PasswordHash);
-    user.PasswordSalt = salt;
-    user.PasswordHash = hash;
 
     Packet result(SMSG_USER_RESULT);
     auto [emailInUse, userNameInUse] = DatabaseInstance::GetDbCommandHandler().CanCreateUser(user.Email, user.UserName);
@@ -43,6 +40,10 @@ void PacketHandler::handleUserCreatePacket(Player* player, Packet& packet)
         player->SendPacket(result);
         return;
     }
+
+    auto [salt, hash] = Sha::CreateHash(user.PasswordHash);
+    user.PasswordSalt = salt;
+    user.PasswordHash = hash;
 
     DatabaseInstance::GetDbCommandHandler().CreateUser(user);
     if (!user.Id)

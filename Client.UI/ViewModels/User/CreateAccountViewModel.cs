@@ -1,13 +1,18 @@
-﻿
+﻿using Arci.Networking.Data;
+using Client.Logic;
+using Client.Logic.Enums;
+using System;
+using System.Threading.Tasks;
+
 namespace Client.UI.ViewModels.User
 {
     public class CreateAccountViewModel : LoginViewModel
     {
-        public string Email { get; set; }
+        public string Username { get; set; }
 
-        public bool CreateAccount(string password)
+        public async Task<Game> CreateAccount(string password, Action<UInt16> callback)
         {
-            return false;
+            return await UserOperation(new Packet(CMSGPackets.UserCreate).Builder().Write(Username).Write(Email).Write(password).Build(), callback);
         }
     }
 }

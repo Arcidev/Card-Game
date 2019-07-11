@@ -141,4 +141,7 @@
   <data name="Server" xml:space="preserve">
     <value>Server:</value>
   </data>
+  <data name="UnableToConnect" xml:space="preserve">
+    <value>Nelze se připojit k serveru.</value>
+  </data>
 </root>

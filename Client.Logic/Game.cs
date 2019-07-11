@@ -21,6 +21,9 @@ namespace Client.Logic
         private readonly Task networkConnectionTask;
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
+        public event Action<string> ErrorOccured;
+        public event Action<UInt16> PacketProcessed;
+
         /// <summary>
         /// List of available servers
         /// </summary>
@@ -72,6 +75,11 @@ namespace Client.Logic
             packet.Dispose();
         }
 
+        public void OnErrorOccured(string error)
+        {
+            ErrorOccured?.Invoke(error);
+        }
+
         /// <inheritdoc />
         public void Dispose()
         {
@@ -95,6 +103,8 @@ namespace Client.Logic
                         {
                             //var packetHandler = PacketHandler.GetPacketHandler(packet.OpcodeNumber);
                             //packetHandler(packet, this);
+
+                            PacketProcessed?.Invoke(packet.OpcodeNumber);
                             packet.Dispose();
                         }
                     }

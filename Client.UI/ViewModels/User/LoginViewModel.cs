@@ -1,6 +1,11 @@
-﻿using Client.Logic;
+﻿using Arci.Networking.Data;
+using Client.Logic;
+using Client.Logic.Enums;
+using Client.UI.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Client.UI.ViewModels.User
 {
@@ -8,7 +13,7 @@ namespace Client.UI.ViewModels.User
     {
         private string errorMessage;
 
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         public string ErrorMessage
         {
@@ -35,9 +40,24 @@ namespace Client.UI.ViewModels.User
             Server = ServerList.FirstOrDefault();
         }
 
-        public bool Login(string password)
+        public async Task<Game> Login(string password, Action<UInt16> callback)
         {
-            return false;
+            return await UserOperation(new Packet(CMSGPackets.UserLogIn).Builder().Write(Email).Write(password).Build(), callback);
+        }
+
+        protected async Task<Game> UserOperation(Packet packet, Action<UInt16> callback)
+        {
+            var game = await Game.CreateAsync(Server);
+            if (game == null)
+            {
+                ErrorMessage = Texts.UnableToConnect;
+                return null;
+            }
+
+            game.ErrorOccured += (error) => ErrorMessage = error;
+            game.PacketProcessed += callback;
+            game.SendPacket(packet);
+            return game;
         }
     }
 }

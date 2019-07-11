@@ -1,4 +1,6 @@
-﻿using Client.UI.ViewModels.User;
+﻿using Client.Logic.Enums;
+using Client.UI.ViewModels.User;
+using System;
 using System.Windows.Controls;
 
 namespace Client.UI.Views.User
@@ -13,13 +15,25 @@ namespace Client.UI.Views.User
             InitializeComponent();
         }
 
-        private void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (!(DataContext is LoginViewModel vm))
                 return;
 
-            if (vm.Login(Password.Password))
-                ; // redirect to game
+            LoginBtn.IsEnabled = false;
+            var game = await vm.Login(Password.Password, (opcodeNumber) =>
+            {
+                if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
+                {
+                    if (false) // if player logged in
+                        ; // redirect to game
+                    else
+                        LoginBtn.IsEnabled = true;
+                }
+            });
+            
+            if (game == null)
+                LoginBtn.IsEnabled = true;
         }
     }
 }
