@@ -2,6 +2,7 @@
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
 using Client.Logic.Enums;
+using Client.Network;
 using System;
 using System.Security.Cryptography;
 using System.Threading;
@@ -101,9 +102,7 @@ namespace Client.Logic
                     {
                         foreach (var packet in packets)
                         {
-                            //var packetHandler = PacketHandler.GetPacketHandler(packet.OpcodeNumber);
-                            //packetHandler(packet, this);
-
+                            PacketHandler.GetPacketHandler(packet.OpcodeNumber)?.Invoke(packet, this);
                             PacketProcessed?.Invoke(packet.OpcodeNumber);
                             packet.Dispose();
                         }

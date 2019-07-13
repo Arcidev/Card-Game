@@ -6,7 +6,7 @@ namespace Client.Logic.Enums
         LogedIn = 0,
         PasswordChanged,
         EmailInUse,
-        UserNameInUse,
+        UsernameInUse,
         InvalidCredentials,
         UnknownError
     }

@@ -42,7 +42,7 @@ namespace Client.Network
                 return;
             }
 
-            if (result == UserResult.UserNameInUse)
+            if (result == UserResult.UsernameInUse)
             {
                 /// TODO: Show error on login page
                 return;
