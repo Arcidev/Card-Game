@@ -1,21 +1,19 @@
 #include <algorithm>
-#include <iostream>
 #include <random>
 #include "Player.h"
+#include "ConnectedUser.h"
 #include "DataHolder.h"
-#include "NetworkServices.h"
 #include "PlayerDefines.h"
 #include "ServerNetwork.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
-#include "../Crypto/Aes.h"
 #include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
 
-Player::Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network)
-    : m_isPrepared(false), m_isDisconnected(false), m_replenishmentMoveCount(0), m_id(id), m_currentCardIndex(0), m_game(game), m_network(network), m_socket(socket), m_name("<unknown>") { }
+Player::Player(Game* game, ConnectedUser* user)
+    : m_isPrepared(false), m_replenishmentMoveCount(0), m_id(user->GetId()), m_currentCardIndex(0), m_game(game), m_user(user) { }
 
 Player::~Player()
 {
@@ -26,11 +24,7 @@ Player::~Player()
 // Set player state to disconnected
 void Player::Disconnect()
 {
-    m_isDisconnected = true;
     m_game->DisconnectPlayer(m_id);
-    m_network->OnPlayerDisconnected(this);
-    shutdown(m_socket, SD_BOTH);
-    closesocket(m_socket);
 
     DatabaseInstance::GetDbCommandHandler().UpdateUserLastLoginTime(m_id);
     DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
@@ -39,7 +33,7 @@ void Player::Disconnect()
 // Sends attack result
 void Player::SendAttackResult(uint8_t result, uint64_t cardGuid, uint8_t damage) const
 {
-    Packet packet(SMSG_ATTACK_RESULT);
+    Packet packet(SMSGPackets::SMSG_ATTACK_RESULT);
     packet << result;
     if (result)
     {
@@ -103,7 +97,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
         return;
 
     bool sendOpponentCardDeck = false;
-    Packet packet(SMSG_SPELL_DAMAGE);
+    Packet packet(SMSGPackets::SMSG_SPELL_DAMAGE);
     ByteBuffer buffer;
 
     packet << (uint8_t)targets.size();
@@ -148,7 +142,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
 // Sends information about failed spell cast to client
 void Player::SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* spell) const
 {
-    Packet packet(SMSG_SPELL_CAST_RESULT);
+    Packet packet(SMSGPackets::SMSG_SPELL_CAST_RESULT);
     packet << reason;
     if (!reason)
     {
@@ -177,7 +171,7 @@ void Player::SendCardHealed(PlayableCard const* card, uint8_t amount) const
     if (!card)
         return;
 
-    Packet packet(SMSG_CARD_HEALED);
+    Packet packet(SMSGPackets::SMSG_CARD_HEALED);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 7, 2, 6, 1, 3, 0, 5, 4 });
     packet.FlushBits();
 
@@ -247,37 +241,9 @@ PlayableCard* Player::GetCard(uint64_t cardGuid)
     return (iter == m_cards.end()) ? nullptr : iter->second;
 }
 
-// Receive encrypted packet from client
-void Player::ReceivePacket(uint32_t dataLength, char const* data)
+inline std::string_view Player::GetName() const
 {
-    uint32_t readedData = 0;
-    
-    while (readedData < dataLength)
-    {
-        uint16_t packetLength;
-        std::memcpy(&packetLength, data + readedData, sizeof(uint16_t));
-        std::vector<uint8_t> networkData;
-        networkData.resize(packetLength);
-        std::memcpy(&networkData[0], data + sizeof(uint16_t) + readedData, packetLength);
-
-        // Inicializes readable packet with decrypted data
-        Packet packet(Aes::Decrypt(networkData, m_AesEncryptor.Key, m_AesEncryptor.IVec));
-        try
-        {
-            uint16_t packetType;
-            packet >> packetType;
-
-            PacketHandlerFunc packetHandler = PacketHandler::GetPacketHandler(packetType);
-            if (packetHandler)
-                packetHandler(this, packet);
-        }
-        catch (std::out_of_range ex)
-        {
-            std::cerr << "Error occured while reading packet: " << ex.what() << std::endl;
-        }
-
-        readedData += dataLength + sizeof(uint16_t);
-    }
+    return m_user->GetName();
 }
 
 // Sends all cards that are currently available to be played with
@@ -285,7 +251,7 @@ void Player::SendAvailableCards() const
 {
     // can be static, always sending the same
     CardsDataMap cards = DataHolder::GetCards();
-    Packet packet(SMSG_AVAILABLE_CARDS);
+    Packet packet(SMSGPackets::SMSG_AVAILABLE_CARDS);
     packet << (uint16_t)cards.size();
 
     ByteBuffer buffer;
@@ -322,66 +288,26 @@ void Player::SendAvailableCards() const
     SendPacket(packet);
 }
 
-// Sends whisper response to sender
-void Player::SendChatWhisperResponse(std::string_view message, std::string_view receiver, bool success) const
-{
-    Packet pck(success ? SMSG_CHAT_MESSAGE : SMSG_WHISPER_FAILED);
-
-    if (success)
-    {
-        pck << (uint8_t)CHAT_WHISPER_RESPONSE;
-        pck << receiver;
-        pck << message;
-    }
-    else
-        pck << receiver;
-    
-    SendPacket(pck);
-}
-
 // Sends selection card has failed
 void Player::SendSelectCardsFailed(uint8_t failReason) const
 {
-    Packet packet(SMSG_SELECT_CARDS_FAILED);
+    Packet packet(SMSGPackets::SMSG_SELECT_CARDS_FAILED);
     packet << failReason;
 
     SendPacket(packet);
 }
 
-// Sends info about opponent if is already connected
-void Player::SendInitResponse() const
-{
-    Packet pck(SMSG_INIT_RESPONSE);
-    pck.WriteBit(m_game->IsFull());
-    pck.FlushBits();
-
-    pck << m_id;
-    if (m_game->IsFull())
-    {
-        pck << GetOpponent()->GetId();
-        pck << GetOpponent()->GetName();
-    }
-
-    SendPacket(pck);
-}
-
 // Sends information about disconnected opponent
 void Player::SendPlayerDisconnected() const
 {
-    Packet packet(SMSG_PLAYER_DISCONNECTED);
+    Packet packet(SMSGPackets::SMSG_PLAYER_DISCONNECTED);
     SendPacket(packet);
 }
 
 // Sends encrypted packet to client
-void Player::SendPacket(Packet const& packet) const
+inline void Player::SendPacket(Packet const& packet) const
 {
-    std::vector<uint8_t> encrypted = Aes::Encrypt(packet.GetStorage(), m_AesEncryptor.Key, m_AesEncryptor.IVec);
-    uint16_t size = (uint16_t)encrypted.size();
-    std::vector<uint8_t> toSend(sizeof(uint16_t) + size);
-    std::memcpy(&toSend[0], (uint8_t *)&size, sizeof(uint16_t));
-    std::memcpy(&toSend[0] + sizeof(uint16_t), &encrypted[0], size);
-
-    NetworkServices::SendMessage(m_socket, &toSend[0], (int)toSend.size());
+    m_user->SendPacket(packet);
 }
 
 // Adds card into deck from existing template
@@ -413,7 +339,7 @@ void Player::HandleDeckCards(bool addCard)
     }
     
     uint8_t cardsCount = (uint8_t)m_currentCards.size();
-    Packet packet(SMSG_DECK_CARDS);
+    Packet packet(SMSGPackets::SMSG_DECK_CARDS);
     packet << cardsCount;
     for (uint8_t i = 0; i < cardsCount; i++)
         packet.WriteBitStreamInOrder(m_currentCards[i]->GetGuid(), { 7, 2, 1, 4, 5, 0, 6, 3 });
@@ -439,7 +365,7 @@ PlayableCard* Player::GetCurrentCard()
 // Informs player that game has ended
 void Player::SendEndGame(uint32_t winnerId) const
 {
-    Packet packet(SMSG_END_GAME);
+    Packet packet(SMSGPackets::SMSG_END_GAME);
     packet << winnerId;
 
     GetGame()->BroadcastPacket(packet);
@@ -458,7 +384,7 @@ void Player::DefendSelf()
 // Sends new card stat modifiers
 void Player::SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) const
 {
-    Packet packet(SMSG_CARD_STAT_CHANGED);
+    Packet packet(SMSGPackets::SMSG_CARD_STAT_CHANGED);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 2, 6, 7, 1, 0, 3, 5, 4 });
     packet.FlushBits();
 
@@ -477,7 +403,7 @@ void Player::SendMorphInfo(PlayableCard const* card) const
 {
     Card const* cardInfo = card->GetMorph() ? card->GetMorph() : card;
 
-    Packet packet(SMSG_CARD_MORPH_INFO);
+    Packet packet(SMSGPackets::SMSG_CARD_MORPH_INFO);
     packet.WriteBit(card->GetMorph() != nullptr);
     packet.FlushBits();
 
@@ -493,7 +419,7 @@ void Player::SendMorphInfo(PlayableCard const* card) const
 // Sends information about aura application
 void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) const
 {
-    Packet packet(SMSG_APPLY_AURA);
+    Packet packet(SMSGPackets::SMSG_APPLY_AURA);
     packet.WriteBitStreamInOrder(targetGuid, { 7, 2, 1, 3, 5, 4, 0, 6 });
     packet.FlushBits();
 
@@ -507,7 +433,7 @@ void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) con
 // Sends information about aura expiration
 void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) const
 {
-    Packet packet(SMSG_SPELL_AURA_EXPIRED);
+    Packet packet(SMSGPackets::SMSG_SPELL_AURA_EXPIRED);
     packet.WriteBitStreamInOrder(targetGuid, { 0, 5, 7, 2, 1, 4, 3, 6 });
     packet.FlushBits();
 
@@ -524,7 +450,7 @@ void Player::SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& sp
     if (spellIds.empty())
         return;
 
-    Packet packet(SMSG_SPELL_AURAS_REMOVED);
+    Packet packet(SMSGPackets::SMSG_SPELL_AURAS_REMOVED);
     packet.WriteBitStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet.WriteByteStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet << m_id;
@@ -542,7 +468,7 @@ void Player::replenishMana()
     m_replenishmentMoveCount = (m_replenishmentMoveCount + 1) % MANA_REPLENISHMENT_MOVES;
     if (!m_replenishmentMoveCount)
     {
-        Packet packet(SMSG_MANA_REPLENISHMENT);
+        Packet packet(SMSGPackets::SMSG_MANA_REPLENISHMENT);
         ByteBuffer buffer;
 
         packet << (uint8_t)m_currentCards.size();
@@ -572,7 +498,7 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyD
     damage = applyDefense ? calculateReducedDamage(damage, card->GetModifiedDefense()) : damage;
     card->DealDamage(damage);
 
-    Packet packet(SMSG_SPELL_PERIODIC_DAMAGE);
+    Packet packet(SMSGPackets::SMSG_SPELL_PERIODIC_DAMAGE);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 6, 4, 1 });
     packet.WriteBit(card->IsAlive());
     packet.WriteBitStreamInOrder(card->GetGuid(), { 7, 2, 3, 5, 0 });
@@ -595,7 +521,7 @@ void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHe
     currentCard->AddHealth(restoredHealth);
     currentCard->AddMana(restoredMana);
 
-    Packet packet(SMSG_SPELL_DRAIN);
+    Packet packet(SMSGPackets::SMSG_SPELL_DRAIN);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet.WriteBit(card->IsAlive());
     packet.FlushBits();

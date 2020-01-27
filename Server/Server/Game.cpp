@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "ConnectedUser.h"
 #include "Player.h"
 #include "PacketHandlers/Packet.h"
 #include "Cards/PlayableCard.h"
@@ -26,7 +27,7 @@ void Game::DisconnectPlayer(uint32_t playerId)
         opponent = m_player1;
 
     // Informs opponent about disconnection
-    if (opponent && !opponent->IsDisconnected())
+    if (opponent && !opponent->GetUser()->IsDisconnected())
         opponent->SendPlayerDisconnected();
 }
 
@@ -45,14 +46,14 @@ void Game::RemovePlayer(uint32_t playerId)
         opponnent = m_player1;
     }
 
-    if (!opponnent || opponnent->IsDisconnected())
+    if (!opponnent || opponnent->GetUser()->IsDisconnected())
         delete this;
 }
 
 // Check if this game has players
 bool Game::IsEmpty() const
 {
-    return (!m_player1 || m_player1->IsDisconnected()) && (!m_player2 || m_player2->IsDisconnected());
+    return (!m_player1 || m_player1->GetUser()->IsDisconnected()) && (!m_player2 || m_player2->GetUser()->IsDisconnected());
 }
 
 // Adds player to this game
@@ -101,7 +102,7 @@ void Game::ActivateSecondPlayer()
     // Stop defending if is in defend state
     currentCard->SetDefendState(false);
 
-    Packet packet(SMSG_ACTIVE_PLAYER);
+    Packet packet(SMSGPackets::SMSG_ACTIVE_PLAYER);
     packet.WriteBitStreamInOrder(currentCard->GetGuid(), { 7, 1, 2, 0, 3, 5, 4, 6 });
     packet.FlushBits();
 

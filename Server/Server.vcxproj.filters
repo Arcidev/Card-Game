@@ -137,6 +137,9 @@
     <ClInclude Include="Database\DbEntities.h">
       <Filter>Database</Filter>
     </ClInclude>
+    <ClInclude Include="Server\ConnectedUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -243,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="Database\DbCommandHandler.cpp">
       <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\ConnectedUser.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

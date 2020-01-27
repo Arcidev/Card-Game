@@ -4,22 +4,24 @@
 #include <thread>
 #include "../Multiplatform/NetworkCommunication.h"
 
-class Player;
+class ConnectedUser;
+class Game;
 class Packet;
+class Player;
 
-typedef std::pair<Player*, std::thread*> PlayerThread;
-typedef std::map<unsigned int, PlayerThread> PlayerMap;
+typedef std::pair<ConnectedUser*, std::thread*> UserThread;
+typedef std::map<unsigned int, UserThread> UserMap;
 
 class ServerNetwork
 {
     private:
-        Player* m_lastPlayer;
-        PlayerMap m_players;
+        Player const* m_lastPlayer;
+        UserMap m_users;
         SOCKET m_listenSocket;
         bool m_shuttingDown;
         std::mutex m_locker;
 
-        static void handlePlayerNetwork(Player* player);
+        static void handlePlayerNetwork(ConnectedUser* user);
 
     public:
         ServerNetwork();
@@ -29,14 +31,16 @@ class ServerNetwork
         // accept new connections
         bool AcceptNewClient(unsigned int const& id);
         // receive incoming data
-        int ReceiveData(Player const* player, char* recvbuf) const;
+        int ReceiveData(ConnectedUser const* player, char* recvbuf) const;
         void BroadcastPacket(Packet const& packet) const;
         bool SendPacketToPlayer(std::string_view playerName, Packet const& packet) const;
         bool IsShuttingDown() const { return m_shuttingDown; };
 
-        PlayerMap& GetPlayers() { return m_players; }
-        PlayerMap const& GetPlayers() const { return m_players; }
+        UserMap& GetUsers() { return m_users; }
+        UserMap const& GetUsers() const { return m_users; }
         std::mutex& GetLocker() { return m_locker; }
+        void SetLastPlayer(Player const* user) { m_lastPlayer = user; }
 
-        void OnPlayerDisconnected(Player const* player);
+        void OnPlayerDisconnected(ConnectedUser const* user);
+        Game* GetGameForPlayer();
 };

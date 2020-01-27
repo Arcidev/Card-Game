@@ -4,22 +4,15 @@
 #include <vector>
 #include <list>
 #include "Game.h"
-#include "../Multiplatform/NetworkCommunication.h"
 
 class Card;
+class ConnectedUser;
 class Packet;
-class Spell;
-class ServerNetwork;
 class PlayableCard;
+class Spell;
 class SpellAuraEffect;
 
 typedef std::map<uint64_t, PlayableCard*> CardsMap;
-
-struct AesEncryptor
-{
-    std::vector<uint8_t> Key;
-    std::vector<uint8_t> IVec;
-};
 
 class Player
 {
@@ -27,16 +20,12 @@ class Player
         std::vector<PlayableCard*> m_cardOrder;
         std::vector<PlayableCard*> m_currentCards;
         bool m_isPrepared;
-        bool m_isDisconnected;
         uint8_t m_replenishmentMoveCount;
         uint32_t m_id;
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
-        ServerNetwork* m_network;
-        SOCKET m_socket;
-        std::string m_name;
-        AesEncryptor m_AesEncryptor;
+        ConnectedUser* m_user;
 
         void destroyCard(uint64_t cardGuid);
         void replenishMana();
@@ -44,15 +33,10 @@ class Player
         uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense);
 
     public:
-        Player(uint32_t id, SOCKET socket, Game* game, ServerNetwork* network);
+        Player(Game* game, ConnectedUser* user);
         ~Player();
 
-        void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
-        void SetName(std::string_view name) { m_name = name; }
-        void SetId(uint32_t id) { m_id = id; }
-        void SendInitResponse() const;
         void SendAvailableCards() const;
-        void SendChatWhisperResponse(std::string_view message, std::string_view receiver, bool success) const;
         void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;
         void SendAttackResult(uint8_t result, uint64_t cardGuid, uint8_t damage) const;
@@ -74,7 +58,6 @@ class Player
 
         void ClearCards() { m_cards.clear(); }
         void CreateCard(Card const* cardTemplate);
-        void ReceivePacket(uint32_t length, char const* packetData);
         void SendPacket(Packet const& packet) const;
         void Disconnect();
         void HandleDeckCards(bool addCard);
@@ -84,15 +67,12 @@ class Player
         CardsMap const& GetCards() const { return m_cards; }
         std::vector<PlayableCard*> const& GetCurrentCards() const { return m_currentCards; }
         PlayableCard* GetCard(uint64_t cardGuid);
-        SOCKET const& GetSocket() const { return m_socket; }
         Game* GetGame() const { return m_game; }
         uint32_t GetId() const { return m_id; }
         uint8_t GetCurrentCardIndex() const { return m_currentCardIndex; }
-        std::string_view GetName() const { return m_name; }
-        AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
-        ServerNetwork const* GetNetwork() const { return m_network; }
-        ServerNetwork* GetNetwork() { return m_network; }
+        std::string_view GetName() const;
+        ConnectedUser const* GetUser() const { return m_user; }
+        ConnectedUser* GetUser() { return m_user; }
         bool IsPrepared() const { return m_isPrepared; }
-        bool IsDisconnected() const { return m_isDisconnected; }
         bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }
 };

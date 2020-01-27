@@ -1,5 +1,5 @@
 #include "PacketHandler.h"
-#include "../Player.h"
+#include "../ConnectedUser.h"
 #include "../../Crypto/Sha.h"
 #include "../../Database/DatabaseInstance.h"
 #include "../../Shared/SharedDefines.h"
@@ -15,9 +15,9 @@ enum UserResults
 };
 
 // Handle CMSG_USER_CREATE packet
-void PacketHandler::handleUserCreatePacket(Player* player, Packet& packet)
+void PacketHandler::handleUserCreatePacket(ConnectedUser* cUser, Packet& packet)
 {
-    if (player->GetId())
+    if (cUser->GetId())
         return;
 
     User user;
@@ -25,19 +25,19 @@ void PacketHandler::handleUserCreatePacket(Player* player, Packet& packet)
 
     DEBUG_LOG("CMSG_USER_CREATE:\r\n\tUserName: %s\r\n", user.Email.c_str());
 
-    Packet result(SMSG_USER_RESULT);
+    Packet result(SMSGPackets::SMSG_USER_RESULT);
     auto [emailInUse, userNameInUse] = DatabaseInstance::GetDbCommandHandler().CanCreateUser(user.Email, user.UserName);
     if (emailInUse)
     {
         result << (uint8_t)USER_RESULT_EMAIL_IN_USE;
-        player->SendPacket(result);
+        cUser->SendPacket(result);
         return;
     }
 
     if (userNameInUse)
     {
         result << (uint8_t)USER_RESULT_USERNAME_IN_USE;
-        player->SendPacket(result);
+        cUser->SendPacket(result);
         return;
     }
 
@@ -49,21 +49,21 @@ void PacketHandler::handleUserCreatePacket(Player* player, Packet& packet)
     if (!user.Id)
     {
         result << (uint8_t)USER_RESULT_UKNOWN_ERROR;
-        player->SendPacket(result);
+        cUser->SendPacket(result);
         return;
     }
 
-    player->SetId(user.Id);
-    player->SetName(user.UserName);
+    cUser->SetDatabaseUserId(user.Id);
+    cUser->SetName(user.UserName);
 
-    result << (uint8_t)USER_RESULT_LOGGED_IN << player->GetId() << player->GetName();
-    player->SendPacket(result);
+    result << (uint8_t)USER_RESULT_LOGGED_IN << cUser->GetId() << cUser->GetName();
+    cUser->SendPacket(result);
 }
 
 // Handle CMSG_USER_LOGIN packet
-void PacketHandler::handleUserLogInPacket(Player* player, Packet& packet)
+void PacketHandler::handleUserLogInPacket(ConnectedUser* cUser, Packet& packet)
 {
-    if (player->GetId())
+    if (cUser->GetId())
         return;
 
     std::string email;
@@ -72,41 +72,41 @@ void PacketHandler::handleUserLogInPacket(Player* player, Packet& packet)
 
     DEBUG_LOG("CMSG_USER_LOGIN:\r\n\tUserName: %s\r\n", email.c_str());
     User user = DatabaseInstance::GetDbCommandHandler().GetUser(email);
-    Packet result(SMSG_USER_RESULT);
+    Packet result(SMSGPackets::SMSG_USER_RESULT);
     if (!user.Id || Sha::CreateHash(password, user.PasswordSalt) != user.PasswordHash)
     {
         result << (uint8_t)USER_RESULT_INVALID_CREDENTIALS;
-        player->SendPacket(result);
+        cUser->SendPacket(result);
         return;
     }
 
-    player->SetId(user.Id);
-    player->SetName(user.UserName);
+    cUser->SetDatabaseUserId(user.Id);
+    cUser->SetName(user.UserName);
 
-    result << (uint8_t)USER_RESULT_LOGGED_IN << player->GetId() << player->GetName();
-    player->SendPacket(result);
+    result << (uint8_t)USER_RESULT_LOGGED_IN << cUser->GetId() << cUser->GetName();
+    cUser->SendPacket(result);
 }
 
 // Handle CMSG_USER_CHANGE_PASSWORD packet
-void PacketHandler::handleUserChangePassword(Player* player, Packet& packet)
+void PacketHandler::handleUserChangePassword(ConnectedUser* cUser, Packet& packet)
 {
     std::string password;
     std::string newPassword;
     packet >> password >> newPassword;
 
-    DEBUG_LOG("CMSG_USER_CHANGE_PASSWORD:\r\n\tId: %d\r\n", player->GetId());
-    User user = DatabaseInstance::GetDbCommandHandler().GetUser(player->GetId());
-    Packet result(SMSG_USER_RESULT);
+    DEBUG_LOG("CMSG_USER_CHANGE_PASSWORD:\r\n\tId: %d\r\n", cUser->GetId());
+    User user = DatabaseInstance::GetDbCommandHandler().GetUser(cUser->GetId());
+    Packet result(SMSGPackets::SMSG_USER_RESULT);
     if (!user.Id || Sha::CreateHash(password, user.PasswordSalt) != user.PasswordHash)
     {
         result << (uint8_t)USER_RESULT_INVALID_CREDENTIALS;
-        player->SendPacket(result);
+        cUser->SendPacket(result);
         return;
     }
 
     auto[salt, hash] = Sha::CreateHash(newPassword);
-    DatabaseInstance::GetDbCommandHandler().SetUserPassword(player->GetId(), salt, hash);
+    DatabaseInstance::GetDbCommandHandler().SetUserPassword(cUser->GetId(), salt, hash);
 
     result << (uint8_t)USER_RESULT_PASSWORD_CHANGED;
-    player->SendPacket(result);
+    cUser->SendPacket(result);
 }

@@ -39,7 +39,7 @@ namespace Client.Logic
             network = clientNetwork;
 
             var packet = new Packet(CMSGPackets.Init);
-            using (var rsa = new RsaEncryptor(null, null))
+            using (var rsa = new RsaEncryptor(Security.RSAKey.Modulus, Security.RSAKey.Exponent))
             {
                 aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
                 network.Encryptor = aes;
