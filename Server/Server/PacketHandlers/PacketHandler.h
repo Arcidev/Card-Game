@@ -26,6 +26,7 @@ class PacketHandler
 
         static void handleInitPacket(ConnectedUser* user, Packet& packet);
         static void handleChatPacket(ConnectedUser* user, Packet& packet);
+        static void handleStartGamePacket(ConnectedUser* user, Packet& /*packet*/);
         static void handleSelectedCardsPacket(ConnectedUser* user, Packet& packet);
         static void handleCardActionPacket(ConnectedUser* user, Packet& packet);
         static void handleDefendSelfPacket(ConnectedUser* user, Packet& packet);
@@ -37,9 +38,9 @@ class PacketHandler
 
         // Validators
         static bool isLoggedIn(ConnectedUser const* user);
-        static bool isInGame(ConnectedUser const* user);
+        static bool isPlaying(ConnectedUser const* user);
         static bool notLoggedIn(ConnectedUser const* user) { return !isLoggedIn(user); }
-        static bool notInGame(ConnectedUser const* user);
+        static bool notPlaying(ConnectedUser const* user) { return isLoggedIn(user) && !isPlaying(user); }
 
     public:
         static PacketHandlerFuncWrapper GetPacketHandler(uint16_t packetId);

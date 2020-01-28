@@ -16,7 +16,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static int maxCardsCount = 5;
+        private const int maxCardsCount = 5;
         private string userName;
         private ClientGame game;
         private int selectedCardCount;
@@ -64,7 +64,7 @@ namespace Client
                 return;
             }
 
-            game = await ClientGame.CreateAsync(userName, ServerComboBox.SelectedItem.ToString(), this);
+            game = await ClientGame.CreateAsync(ServerComboBox.SelectedItem.ToString(), this);
             if (game == null)
             {
                 MessageBox.Show("Server is offline");

@@ -106,7 +106,8 @@ ServerNetwork::~ServerNetwork()
         user.second.first->Disconnect();
         user.second.second->join();
         delete user.second.second;
-        //user.second.first->GetPlayer()->GetGame()->RemovePlayer(user.second.first->GetId());
+        if (user.second.first->GetPlayer())
+            user.second.first->GetPlayer()->GetGame()->RemovePlayer(user.second.first->GetId());
         delete user.second.first;
     }
 
@@ -164,7 +165,7 @@ void ServerNetwork::handlePlayerNetwork(ConnectedUser* user)
                             network->GetUsers().erase(iter);
                         }
 
-                        if (user->GetPlayer()->GetGame()->IsEmpty())
+                        if (user->GetPlayer() && user->GetPlayer()->GetGame()->IsEmpty())
                             delete user->GetPlayer()->GetGame();
                     }
                 }

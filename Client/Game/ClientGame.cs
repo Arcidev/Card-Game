@@ -38,12 +38,12 @@ namespace Client.Game
 
         public Player Opponent { get; set; }
 
-        private ClientGame(string name, MainWindow window, ClientNetwork network)
+        private ClientGame(MainWindow window, ClientNetwork network)
         {
             MainWindow = window;
             this.network = network;
             Chat = new ChatHandler(this);
-            Player = new Player(this, MainWindow.PlayerCard1, MainWindow.PlayerCard2, MainWindow.PlayerCard3, MainWindow.PlayerCard4) { Name = name };
+            Player = new Player(this, MainWindow.PlayerCard1, MainWindow.PlayerCard2, MainWindow.PlayerCard3, MainWindow.PlayerCard4);
             Opponent = new Player(this, MainWindow.OpponentCard1, MainWindow.OpponentCard2, MainWindow.OpponentCard3, MainWindow.OpponentCard4);
 
             // Sends init packet to server
@@ -52,7 +52,6 @@ namespace Client.Game
             aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
             network.Encryptor = aes;
             packet.Write(rsa.Encrypt(aes.Encryptors));
-            packet.Write(aes.Encrypt(name));
             rsa.Dispose();
 
             SendPacket(packet, false);
@@ -60,13 +59,13 @@ namespace Client.Game
         }
 
         // Creates new instance of game
-        public static async Task<ClientGame> CreateAsync(string name, string server, MainWindow window)
+        public static async Task<ClientGame> CreateAsync(string server, MainWindow window)
         {
             var network = await ClientNetwork.CreateAsync(server, port);
             if (network == null)
                 return null;
 
-            return new ClientGame(name, window, network);
+            return new ClientGame(window, network);
         }
 
         // Gets player by id

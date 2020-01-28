@@ -36,6 +36,7 @@ class Player
         Player(Game* game, ConnectedUser* user);
         ~Player();
 
+        void SendGameInfo() const;
         void SendAvailableCards() const;
         void SendSelectCardsFailed(uint8_t failReason) const;
         void SendPlayerDisconnected() const;

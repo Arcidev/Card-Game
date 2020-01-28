@@ -23,7 +23,7 @@ void PacketHandler::handleChatPacket(ConnectedUser* user, Packet& packet)
             user->GetNetwork()->BroadcastPacket(pck);
             break;
         case CHAT_LOCAL:
-            if (user->GetPlayer())
+            if (user->GetPlayer()) // user does not have to be playing to use chat, but for game chat he should
                 user->GetPlayer()->GetGame()->BroadcastPacket(pck);
             break;
         case CHAT_WHISPER:
