@@ -49,7 +49,6 @@ class ConnectedUser
         ServerNetwork* GetNetwork() { return m_network; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         bool IsDisconnected() const { return m_disconnected; }
-        Player const* GetPlayer() const { return m_player; }
-        Player* GetPlayer() { return m_player; }
+        Player* GetPlayer() const { return m_player; }
 };
 
