@@ -25,7 +25,7 @@ class Player
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
-        ConnectedUser* m_user;
+        ConnectedUser const* m_user;
 
         void destroyCard(uint64_t cardGuid);
         void replenishMana();
@@ -33,7 +33,7 @@ class Player
         uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense);
 
     public:
-        Player(Game* game, ConnectedUser* user);
+        Player(Game* game, ConnectedUser const* user);
         ~Player();
 
         void SendGameInfo() const;
@@ -73,7 +73,6 @@ class Player
         uint8_t GetCurrentCardIndex() const { return m_currentCardIndex; }
         std::string_view GetName() const;
         ConnectedUser const* GetUser() const { return m_user; }
-        ConnectedUser* GetUser() { return m_user; }
         bool IsPrepared() const { return m_isPrepared; }
         bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }
 };

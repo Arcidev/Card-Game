@@ -46,7 +46,7 @@ class ConnectedUser
         bool IsLoggedIn() const { return m_serverId != 0; }
         std::string_view GetName() const { return m_name; }
         SOCKET GetSocket() const { return m_socket; }
-        ServerNetwork* GetNetwork() { return m_network; }
+        ServerNetwork* GetNetwork() const { return m_network; }
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         bool IsDisconnected() const { return m_disconnected; }
         Player* GetPlayer() const { return m_player; }

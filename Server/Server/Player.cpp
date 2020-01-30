@@ -12,7 +12,7 @@
 #include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
 
-Player::Player(Game* game, ConnectedUser* user)
+Player::Player(Game* game, ConnectedUser const* user)
     : m_isPrepared(false), m_replenishmentMoveCount(0), m_id(user->GetId()), m_currentCardIndex(0), m_game(game), m_user(user) { }
 
 Player::~Player()

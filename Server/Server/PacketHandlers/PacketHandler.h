@@ -29,7 +29,7 @@ class PacketHandler
         static void handleStartGamePacket(ConnectedUser* user, Packet& /*packet*/);
         static void handleSelectedCardsPacket(ConnectedUser* user, Packet& packet);
         static void handleCardActionPacket(ConnectedUser* user, Packet& packet);
-        static void handleDefendSelfPacket(ConnectedUser* user, Packet& packet);
+        static void handleDefendSelfPacket(ConnectedUser* user, Packet& /*packet*/);
 
         // User packets
         static void handleUserCreatePacket(ConnectedUser* user, Packet& packet);
