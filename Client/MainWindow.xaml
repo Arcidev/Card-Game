@@ -133,8 +133,8 @@
             <Label Margin="380,386,579,149" VerticalAlignment="Center" Height="37" RenderTransformOrigin="1.288,0.459">Password</Label>
             <Label Margin="387,428,579,107" VerticalAlignment="Center" Height="37" RenderTransformOrigin="1.288,0.459">Server</Label>
             <Button Name="LoginBox" Content="Login" HorizontalAlignment="Left" Height="60" Margin="412,492,0,0" VerticalAlignment="Top" Width="200" Click="LoginButtonClick"/>
-            <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="444,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="188" MaxLength="16" TextChanged="UserNameBox_Changed"/>
-            <PasswordBox Name="PasswordBox" Padding="7" HorizontalAlignment="Left" Height="36" Margin="444,386,386,149" VerticalAlignment="Top" Width="188" MaxLength="16"/>
+            <TextBox Name="UserNameBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="444,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="188" MaxLength="16"/>
+            <PasswordBox Name="PasswordBox" Padding="7" HorizontalAlignment="Left" Height="37" Margin="444,386,386,149" VerticalAlignment="Top" Width="188" MaxLength="16"/>
         </Grid>
         <Grid Visibility="Hidden" Name="CardDeckGrid">
             <Grid Name="PlayerCardDeck" Margin="0,283,313,37">

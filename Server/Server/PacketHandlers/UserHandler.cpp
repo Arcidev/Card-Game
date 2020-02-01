@@ -17,13 +17,10 @@ enum UserResults
 // Handle CMSG_USER_CREATE packet
 void PacketHandler::handleUserCreatePacket(ConnectedUser* cUser, Packet& packet)
 {
-    if (cUser->GetId())
-        return;
-
     User user;
     packet >> user.UserName >> user.Email >> user.PasswordHash;
 
-    DEBUG_LOG("CMSG_USER_CREATE:\r\n\tUserName: %s\r\n", user.Email.c_str());
+    DEBUG_LOG("CMSG_USER_CREATE:\r\n\tEmail: %s\r\n", user.Email.c_str());
 
     Packet result(SMSGPackets::SMSG_USER_RESULT);
     auto [emailInUse, userNameInUse] = DatabaseInstance::GetDbCommandHandler().CanCreateUser(user.Email, user.UserName);
@@ -63,14 +60,11 @@ void PacketHandler::handleUserCreatePacket(ConnectedUser* cUser, Packet& packet)
 // Handle CMSG_USER_LOGIN packet
 void PacketHandler::handleUserLogInPacket(ConnectedUser* cUser, Packet& packet)
 {
-    if (cUser->GetId())
-        return;
-
     std::string email;
     std::string password;
     packet >> email >> password;
 
-    DEBUG_LOG("CMSG_USER_LOGIN:\r\n\tUserName: %s\r\n", email.c_str());
+    DEBUG_LOG("CMSG_USER_LOGIN:\r\n\tEmail: %s\r\n", email.c_str());
     User user = DatabaseInstance::GetDbCommandHandler().GetUser(email);
     Packet result(SMSGPackets::SMSG_USER_RESULT);
     if (!user.Id || Sha::CreateHash(password, user.PasswordSalt) != user.PasswordHash)

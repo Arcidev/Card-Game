@@ -43,7 +43,7 @@ class ConnectedUser
         void SendInitResponse() const;
 
         uint32_t GetId() const { return m_serverId; }
-        bool IsLoggedIn() const { return m_serverId != 0; }
+        bool IsLoggedIn() const { return m_databaseId != 0; }
         std::string_view GetName() const { return m_name; }
         SOCKET GetSocket() const { return m_socket; }
         ServerNetwork* GetNetwork() const { return m_network; }

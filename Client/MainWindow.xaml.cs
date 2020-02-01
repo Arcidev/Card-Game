@@ -17,7 +17,6 @@ namespace Client
     public partial class MainWindow : Window
     {
         private const int maxCardsCount = 5;
-        private string userName;
         private ClientGame game;
         private int selectedCardCount;
         private bool cardClicked;
@@ -29,7 +28,6 @@ namespace Client
         {
             InitializeComponent();
 
-            userName = "";
             selectedCardCount = 0;
             cardClicked = false;
             cardControlName = "";
@@ -74,18 +72,6 @@ namespace Client
             LoginGrid.Visibility = Visibility.Hidden;
 
             ShowChat(true);
-        }
-
-        private void UserNameBox_Changed(object sender, TextChangedEventArgs e)
-        {
-            if (UserNameBox.Text.Any(c => !Char.IsLetter(c)))
-            {
-                var caretIndex = UserNameBox.CaretIndex - 1;
-                UserNameBox.Text = userName;
-                UserNameBox.CaretIndex = caretIndex;
-            }
-            else
-                userName = UserNameBox.Text;
         }
 
         private void ShowChat(bool show)

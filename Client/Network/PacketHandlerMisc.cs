@@ -9,9 +9,18 @@ namespace Client.Network
         // Handle SMSG_INIT_RESPONSE packet
         private static void HandleInitResponse(Packet packet, ClientGame game)
         {
+            string email = string.Empty;
+            string password = string.Empty;
+
+            game.Invoke(() =>
+            {
+                email = game.MainWindow.UserNameBox.Text;
+                password = game.MainWindow.PasswordBox.Password;
+            });
+
             var login = new Packet(CMSGPackets.UserLogIn).Builder()
-                .Write(game.MainWindow.UserNameBox.Text)
-                .Write(game.MainWindow.PasswordBox.Password).Build();
+                .Write(email)
+                .Write(password).Build();
 
             game.SendPacket(login);
         }
