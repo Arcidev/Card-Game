@@ -2,27 +2,47 @@
 #include <cstdint>
 #include "Packet.h"
 
-class Player;
+class ConnectedUser;
 
-typedef void(*PacketHandlerFunc)(Player* player, Packet& packet);
+typedef void(*PacketHandlerFunc)(ConnectedUser* user, Packet& packet);
+typedef bool(*HandlerValidatorFunc)(ConnectedUser const* user);
+
+struct PacketHandlerFuncWrapper
+{
+    PacketHandlerFunc Handler;
+    HandlerValidatorFunc HandlerValidator;
+
+    void Invoke(ConnectedUser* user, Packet& packet)
+    {
+        if (Handler != nullptr && HandlerValidator != nullptr && HandlerValidator(user))
+            Handler(user, packet);
+    }
+};
 
 class PacketHandler
 {
     private:
-        static PacketHandlerFunc const packetHandlers[];
+        static PacketHandlerFuncWrapper const packetHandlers[];
 
-        static void handleInitPacket(Player* player, Packet& packet);
-        static void handleChatPacket(Player* player, Packet& packet);
-        static void handleSelectedCardsPacket(Player* player, Packet& packet);
-        static void handleCardActionPacket(Player* player, Packet& packet);
-        static void handleDefendSelfPacket(Player* player, Packet& packet);
+        static void handleInitPacket(ConnectedUser* user, Packet& packet);
+        static void handleChatPacket(ConnectedUser* user, Packet& packet);
+        static void handleStartGamePacket(ConnectedUser* user, Packet& /*packet*/);
+        static void handleSelectedCardsPacket(ConnectedUser* user, Packet& packet);
+        static void handleCardActionPacket(ConnectedUser* user, Packet& packet);
+        static void handleDefendSelfPacket(ConnectedUser* user, Packet& /*packet*/);
 
         // User packets
-        static void handleUserCreatePacket(Player* player, Packet& packet);
-        static void handleUserLogInPacket(Player* player, Packet& packet);
-        static void handleUserChangePassword(Player* player, Packet& packet);
+        static void handleUserCreatePacket(ConnectedUser* user, Packet& packet);
+        static void handleUserLogInPacket(ConnectedUser* user, Packet& packet);
+        static void handleUserChangePassword(ConnectedUser* user, Packet& packet);
+
+        // Validators
+        static bool isLoggedIn(ConnectedUser const* user);
+        static bool isPlaying(ConnectedUser const* user);
+        static bool notLoggedIn(ConnectedUser const* user) { return !isLoggedIn(user); }
+        static bool notPlaying(ConnectedUser const* user) { return isLoggedIn(user) && !isPlaying(user); }
 
     public:
-        static PacketHandlerFunc GetPacketHandler(uint16_t packetId);
+        static PacketHandlerFuncWrapper GetPacketHandler(uint16_t packetId);
 };
 

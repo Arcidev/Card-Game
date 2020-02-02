@@ -5,6 +5,7 @@ namespace Client.Logic.Enums
     {
         Init = 0,
         ChatMessage,
+        StartGame,
         SelectedCards,
         CardAction,
         DefendSelf,

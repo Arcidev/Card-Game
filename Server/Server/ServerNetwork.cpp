@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Game.h"
+#include "ConnectedUser.h"
 #include "NetworkServices.h"
-#include "Player.h"
 #include "PacketHandlers/Packet.h"
+#include "Player.h"
 #include "ServerNetwork.h"
 #include "StaticHelper.h"
 #include "../Shared/SharedDefines.h"
@@ -100,13 +101,14 @@ ServerNetwork::~ServerNetwork()
     m_shuttingDown = true;
     GetLocker().unlock();
 
-    for (auto const& player : m_players)
+    for (auto const& user : m_users)
     {
-        player.second.first->Disconnect();
-        player.second.second->join();
-        delete player.second.second;
-        player.second.first->GetGame()->RemovePlayer(player.second.first->GetId());
-        delete player.second.first;
+        user.second.first->Disconnect();
+        user.second.second->join();
+        delete user.second.second;
+        if (user.second.first->GetPlayer())
+            user.second.first->GetPlayer()->GetGame()->RemovePlayer(user.second.first->GetId());
+        delete user.second.first;
     }
 
     DEBUG_LOG("Server network cleared\r\n");
@@ -116,46 +118,32 @@ ServerNetwork::~ServerNetwork()
 bool ServerNetwork::AcceptNewClient(unsigned int const& id)
 {
     // if client is waiting, accept the connection and save the socket
-    SOCKET ClientSocket = accept(m_listenSocket, nullptr, nullptr);
-    if (ClientSocket != INVALID_SOCKET)
+    SOCKET clientSocket = accept(m_listenSocket, nullptr, nullptr);
+    if (clientSocket != INVALID_SOCKET)
     {
-        Game* game = nullptr;
-        if (m_lastPlayer)
-        {
-            game = m_lastPlayer->GetGame();
-            if (game->IsFull())
-                game = new Game();
-        }
-        else
-            game = new Game();
-
-        Player* player = new Player(id, ClientSocket, game, this);
-        game->AddPlayer(player);
-        m_lastPlayer = player;
-
-        std::thread* t = new std::thread(&ServerNetwork::handlePlayerNetwork, player);
+        ConnectedUser* user = new ConnectedUser(id, clientSocket, this);
+        std::thread* t = new std::thread(&ServerNetwork::handlePlayerNetwork, user);
 
         // insert new client into session id table
-        m_players.insert(std::make_pair(id, std::make_pair(player, t)));
-
+        m_users.insert(std::make_pair(id, std::make_pair(user, t)));
         return true;
     }
 
     return false;
 }
 
-void ServerNetwork::handlePlayerNetwork(Player* player)
+void ServerNetwork::handlePlayerNetwork(ConnectedUser* user)
 {
-    ServerNetwork* network = player->GetNetwork();
-    int playerId = player->GetId();
-    srand((intptr_t)player & (int)-1); // set seed from player memory address
+    ServerNetwork* network = user->GetNetwork();
+    int userId = user->GetId();
+    srand((intptr_t)user & (int)-1); // set seed from player memory address
 
     while (!network->IsShuttingDown())
     {
         char networkData[MAX_PACKET_SIZE];
 
         // get data for that client
-        int dataLength = network->ReceiveData(player, networkData);
+        int dataLength = network->ReceiveData(user, networkData);
         if (!dataLength)
         {
             if (!network->IsShuttingDown())
@@ -167,18 +155,18 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
                 {
                     if (!network->IsShuttingDown())
                     {
-                        player->Disconnect();
-                        PlayerMap::iterator iter = network->GetPlayers().find(playerId);
-                        if (iter != network->GetPlayers().end())
+                        user->Disconnect();
+                        UserMap::iterator iter = network->GetUsers().find(userId);
+                        if (iter != network->GetUsers().end())
                         {
                             iter->second.second->detach();
                             delete iter->second.second;
 
-                            network->GetPlayers().erase(iter);
+                            network->GetUsers().erase(iter);
                         }
 
-                        if (player->GetGame()->IsEmpty())
-                            delete player->GetGame();
+                        if (user->GetPlayer() && user->GetPlayer()->GetGame()->IsEmpty())
+                            delete user->GetPlayer()->GetGame();
                     }
                 }
                 catch (std::exception const& ex)
@@ -200,33 +188,33 @@ void ServerNetwork::handlePlayerNetwork(Player* player)
         if (dataLength < 2)
             continue;
 
-        player->ReceivePacket(dataLength, networkData);
+        user->ReceivePacket(dataLength, networkData);
     }
 
-    DEBUG_LOG("Thread of player %d has ended.\r\n", playerId);
+    DEBUG_LOG("Thread of player %d has ended.\r\n", userId);
 }
 
 // receive incoming data
-int ServerNetwork::ReceiveData(Player const* player, char* recvbuf) const
+int ServerNetwork::ReceiveData(ConnectedUser const* user, char* recvbuf) const
 {
-    return NetworkServices::ReceiveMessage(player->GetSocket(), recvbuf, MAX_PACKET_SIZE);
+    return NetworkServices::ReceiveMessage(user->GetSocket(), recvbuf, MAX_PACKET_SIZE);
 }
 
 // Broadcasts packet to all clients
 void ServerNetwork::BroadcastPacket(Packet const& packet) const
 {
-    for (auto const& player : m_players)
-        player.second.first->SendPacket(packet);
+    for (auto const& user : m_users)
+        user.second.first->SendPacket(packet);
 }
 
 // Sends packet to player searched by name
 bool ServerNetwork::SendPacketToPlayer(std::string_view playerName, Packet const& packet) const
 {
-    for (auto const& player : m_players)
+    for (auto const& user : m_users)
     {
-        if (StaticHelper::CompareStringCaseInsensitive(player.second.first->GetName(), playerName))
+        if (StaticHelper::CompareStringCaseInsensitive(user.second.first->GetName(), playerName))
         {
-            player.second.first->SendPacket(packet);
+            user.second.first->SendPacket(packet);
             return true;
         }
     }
@@ -235,8 +223,23 @@ bool ServerNetwork::SendPacketToPlayer(std::string_view playerName, Packet const
 }
 
 // Set last player to null if this player was the one last connected
-void ServerNetwork::OnPlayerDisconnected(Player const* player)
+void ServerNetwork::OnPlayerDisconnected(ConnectedUser const* user)
 {
-    if (m_lastPlayer && (player->GetId() == m_lastPlayer->GetId()))
+    if (m_lastPlayer && (user->GetId() == m_lastPlayer->GetId()))
         m_lastPlayer = nullptr;
+}
+
+Game* ServerNetwork::GetGameForPlayer()
+{
+    Game* game = nullptr;
+    if (m_lastPlayer)
+    {
+        game = m_lastPlayer->GetGame();
+        if (game->IsFull())
+            game = new Game();
+    }
+    else
+        game = new Game();
+
+    return game;
 }

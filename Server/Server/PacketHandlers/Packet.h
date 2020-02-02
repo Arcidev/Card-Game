@@ -3,10 +3,11 @@
 
 constexpr int MAX_PACKET_SIZE = 10000;
 
-enum CMSGPackets
+enum class CMSGPackets
 {
     CMSG_INIT_PACKET = 0,
     CMSG_CHAT_MESSAGE,
+    CMSG_START_GAME,
     CMSG_SELECTED_CARDS,
     CMSG_CARD_ACTION,
     CMSG_DEFEND_SELF,
@@ -16,9 +17,10 @@ enum CMSGPackets
     CMSG_MAX_PACKET_VALUE
 };
 
-enum SMSGPackets
+enum class SMSGPackets
 {
     SMSG_INIT_RESPONSE = 0,
+    SMSG_GAME_INFO,
     SMSG_AVAILABLE_CARDS,
     SMSG_CHAT_MESSAGE,
     SMSG_WHISPER_FAILED,
@@ -48,6 +50,6 @@ enum SMSGPackets
 class Packet : public ByteBuffer
 {
     public:
-        Packet(uint32_t opcodeNumber);
+        Packet(SMSGPackets opcodeNumber);
         Packet(std::vector<uint8_t> const& data);
 };

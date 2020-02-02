@@ -9,6 +9,7 @@ namespace Client.Network
         private static readonly Action<Packet, ClientGame>[] packetHandlers = 
         {
             HandleInitResponse,         // SMSG_INIT_RESPONSE
+            HandleGameInfo,             // SMSG_GAME_INFO
             HandleAvailableCards,       // SMSG_AVAILABLE_CARDS
             HandleChatMessage,          // SMSG_CHAT_MESSAGE
             HandleWhisperFailed,        // SMSG_WHISPER_FAILED

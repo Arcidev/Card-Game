@@ -15,8 +15,7 @@ namespace Client.Network
                 game.Player.Id = packet.ReadUInt32();
                 game.Player.Name = packet.ReadString();
 
-                /// TODO: proceed with login
-
+                game.SendPacket(new Packet(CMSGPackets.StartGame));
                 return;
             }
 

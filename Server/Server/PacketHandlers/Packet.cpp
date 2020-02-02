@@ -1,9 +1,9 @@
 #include "Packet.h"
 
 // Inicializes writeable packet
-Packet::Packet(uint32_t opcodeNumber)
+Packet::Packet(SMSGPackets opcodeNumber)
 {
-    append<uint16_t>(opcodeNumber);
+    append((uint16_t)opcodeNumber);
 }
 
 // Inicializes readable packet

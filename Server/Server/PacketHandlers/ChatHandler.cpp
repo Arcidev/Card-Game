@@ -1,34 +1,36 @@
 #include "PacketHandler.h"
+#include "../ConnectedUser.h"
 #include "../Player.h"
 #include "../ServerNetwork.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_CHAT_MESSAGE packet
-void PacketHandler::handleChatPacket(Player* player, Packet& packet)
+void PacketHandler::handleChatPacket(ConnectedUser* user, Packet& packet)
 {
     uint8_t chatId;
     std::string message;
     packet >> chatId >> message;
 
     DEBUG_LOG("CMSG_CHAT_MESSAGE:\r\n\tChatId: %d\r\n\tMessage: %s\r\n", chatId, message.c_str());
-    Packet pck(SMSG_CHAT_MESSAGE);
+    Packet pck(SMSGPackets::SMSG_CHAT_MESSAGE);
     pck << chatId;
-    pck << player->GetName();
+    pck << user->GetName();
     pck << message;
 
     switch (chatId)
     {
         case CHAT_GLOBAL:
-            player->GetNetwork()->BroadcastPacket(pck);
+            user->GetNetwork()->BroadcastPacket(pck);
             break;
         case CHAT_LOCAL:
-            player->GetGame()->BroadcastPacket(pck);
+            if (user->GetPlayer()) // user does not have to be playing to use chat, but for game chat he should
+                user->GetPlayer()->GetGame()->BroadcastPacket(pck);
             break;
         case CHAT_WHISPER:
         {
             std::string receiverName;
             packet >> receiverName;
-            player->SendChatWhisperResponse(message, receiverName, player->GetNetwork()->SendPacketToPlayer(receiverName, pck));
+            user->SendChatWhisperResponse(message, receiverName, user->GetNetwork()->SendPacketToPlayer(receiverName, pck));
             break;
         }
         default:

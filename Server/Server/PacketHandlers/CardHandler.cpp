@@ -1,20 +1,21 @@
 #include "PacketHandler.h"
-#include "../Player.h"
+#include "../ConnectedUser.h"
 #include "../DataHolder.h"
+#include "../Player.h"
 #include "../Cards/PlayableCard.h"
 #include "../../Shared/SharedDefines.h"
 
 // Handle CMSG_SELECTED_CARDS packet
-void PacketHandler::handleSelectedCardsPacket(Player* player, Packet& packet)
+void PacketHandler::handleSelectedCardsPacket(ConnectedUser* user, Packet& packet)
 {
     uint32_t cardId;
     uint8_t cardCount;
     packet >> cardCount;
     if (cardCount != MAX_CARDS_COUNT)
-        player->SendSelectCardsFailed(INVALID_CARD_COUNT);
+        user->GetPlayer()->SendSelectCardsFailed(INVALID_CARD_COUNT);
 
     // In case it failed in packet sended before
-    player->ClearCards();
+    user->GetPlayer()->ClearCards();
     DEBUG_LOG("CMSG_SELECTED_CARDS:\r\n\tCardCount: %d\r\n", cardCount);
 
     for (uint8_t i = 0; i < MAX_CARDS_COUNT; i++)
@@ -26,29 +27,29 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet& packet)
         if (!card)
         {
             // Rest of packet is ignored
-            player->SendSelectCardsFailed(INVALID_CARD_ID);
+            user->GetPlayer()->SendSelectCardsFailed(INVALID_CARD_ID);
             return;
         }
 
-        player->CreateCard(card);
+        user->GetPlayer()->CreateCard(card);
     }
 
-    player->Prepare();
-    if (!player->GetOpponent() || !player->GetOpponent()->IsPrepared())
+    user->GetPlayer()->Prepare();
+    if (!user->GetPlayer()->GetOpponent() || !user->GetPlayer()->GetOpponent()->IsPrepared())
     {
-        Packet pck(SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER);
-        player->SendPacket(pck);
+        Packet pck(SMSGPackets::SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER);
+        user->SendPacket(pck);
         return;
     }
 
-    Packet pck(SMSG_SELECT_CARDS);
-    ByteBuffer playerBuffer;
+    Packet pck(SMSGPackets::SMSG_SELECT_CARDS);
+    ByteBuffer userBuffer;
     ByteBuffer opponentBuffer;
 
-    pck << (uint8_t)player->GetCards().size();
-    pck << (uint8_t)player->GetOpponent()->GetCards().size();
+    pck << (uint8_t)user->GetPlayer()->GetCards().size();
+    pck << (uint8_t)user->GetPlayer()->GetOpponent()->GetCards().size();
 
-    for (auto const& card : player->GetOpponent()->GetCards())
+    for (auto const& card : user->GetPlayer()->GetOpponent()->GetCards())
     {
         pck.WriteBitStreamInOrder(card.first, { 1, 2, 7, 0, 5, 3, 4, 6 });
 
@@ -57,29 +58,29 @@ void PacketHandler::handleSelectedCardsPacket(Player* player, Packet& packet)
         opponentBuffer.WriteByteStreamInOrder(card.first, { 3, 5 });
     }
 
-    for (auto const& card : player->GetCards())
+    for (auto const& card : user->GetPlayer()->GetCards())
     {
         pck.WriteBitStreamInOrder(card.first, { 7, 1, 2, 4, 6, 0, 3, 5 });
 
-        playerBuffer.WriteByteStreamInOrder(card.first, { 7, 2, 0, 1, 6, 4, 5 });
-        playerBuffer << card.second->GetId();
-        playerBuffer.WriteByteStreamInOrder(card.first, { 3 });
+        userBuffer.WriteByteStreamInOrder(card.first, { 7, 2, 0, 1, 6, 4, 5 });
+        userBuffer << card.second->GetId();
+        userBuffer.WriteByteStreamInOrder(card.first, { 3 });
     }
 
     pck.FlushBits();
-    pck << player->GetId();
-    pck << playerBuffer;
+    pck << user->GetId();
+    pck << userBuffer;
     pck << opponentBuffer;
 
-    player->GetGame()->BroadcastPacket(pck);
+    user->GetPlayer()->GetGame()->BroadcastPacket(pck);
 
-    player->HandleDeckCards(true);
-    player->GetOpponent()->HandleDeckCards(true);
-    player->GetGame()->ActivateSecondPlayer();
+    user->GetPlayer()->HandleDeckCards(true);
+    user->GetPlayer()->GetOpponent()->HandleDeckCards(true);
+    user->GetPlayer()->GetGame()->ActivateSecondPlayer();
 }
 
 // Handles CMSG_CARD_ACTION packet
-void PacketHandler::handleCardActionPacket(Player* player, Packet& packet)
+void PacketHandler::handleCardActionPacket(ConnectedUser* user, Packet& packet)
 {
     Guid guid;
     uint8_t attackType;
@@ -91,14 +92,14 @@ void PacketHandler::handleCardActionPacket(Player* player, Packet& packet)
 
     DEBUG_LOG("CMSG_CARD_ACTION:\r\n\tcardAction: %d\r\n", attackType);
     if (attackType == CARD_ACTION_BASIC_ATTACK)
-        player->Attack(guid);
+        user->GetPlayer()->Attack(guid);
     else if (attackType == CARD_ACTION_SPELL_USE)
-        player->UseSpell(guid);
+        user->GetPlayer()->UseSpell(guid);
 }
 
 // Handles CMSG_DEFEND_SELF packet
-void PacketHandler::handleDefendSelfPacket(Player* player, Packet& /*packet*/)
+void PacketHandler::handleDefendSelfPacket(ConnectedUser* user, Packet& /*packet*/)
 {
     DEBUG_LOG("CMSG_DEFEND_SELF\r\n");
-    player->DefendSelf();
+    user->GetPlayer()->DefendSelf();
 }

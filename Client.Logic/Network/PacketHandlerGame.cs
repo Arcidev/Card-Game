@@ -6,6 +6,29 @@ namespace Client.Network
 {
     public static partial class PacketHandler
     {
+        // Handle HandleGameInfo packet
+        private static void HandleGameInfo(Packet packet, Game game)
+        {
+            //var hasOpponent = packet.ReadBit();
+            //var playerId = packet.ReadUInt32();
+            //game.Player.Id = playerId;
+
+            //string message;
+            //if (hasOpponent)
+            //{
+            //    var opponentId = packet.ReadUInt32();
+            //    var opponentName = packet.ReadString();
+            //    message = $"{opponentName} has joined the game";
+
+            //    game.Opponent.Id = opponentId;
+            //    game.Opponent.Name = opponentName;
+            //}
+            //else
+            //    message = "Waiting for another player to join the game";
+
+            //game.Chat.Write(message, ChatTypes.Info);
+        }
+
         // Handle SMSG_ACTIVE_PLAYER packet
         private static void HandleActivePlayer(Packet packet, Game game)
         {
