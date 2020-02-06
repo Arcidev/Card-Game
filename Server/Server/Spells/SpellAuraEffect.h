@@ -8,6 +8,7 @@ class SpellAuraEffect
 {
     private:
         PlayableCard* m_card;
+        PlayableCard const* m_caster;
         SpellAuraEffectTickHandlerFunc m_SpellAuraEffectHandler;
         uint32_t m_spellId;
         uint32_t m_spellValueId;
@@ -19,7 +20,7 @@ class SpellAuraEffect
         uint32_t m_spellAttributes;
 
     public:
-        SpellAuraEffect(PlayableCard* card, uint32_t spellId, uint32_t spellValueId, uint8_t id, uint8_t duration, uint8_t value1, uint8_t value2, uint32_t spellAttributes);
+        SpellAuraEffect(PlayableCard* card, PlayableCard const* caster, uint32_t spellId, uint32_t spellValueId, uint8_t id, uint8_t duration, uint8_t value1, uint8_t value2, uint32_t spellAttributes);
         void Tick();
         void Remove();
 

@@ -27,8 +27,13 @@ enum FailReson
 
 enum CardStats
 {
-    CARD_STAT_DEFENSE = 1,
-    CARD_STAT_DAMAGE
+    CARD_STAT_DEFENSE               = 0x01,
+    CARD_STAT_DAMAGE                = 0x02,
+    CARD_STAT_DAMAGE_TAKEN          = 0x04,
+    CARD_STAT_SPELL_DAMAGE          = 0x08,
+    CARD_STAT_SPELL_DAMAGE_TAKEN    = 0x10,
+    CARD_STAT_SPELL_HEAL            = 0x20,
+    CARD_STAT_SPELL_HEAL_TAKEN      = 0x40
 };
 
 class Spell;

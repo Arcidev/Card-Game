@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "SpellEffect.h"
 #include "SpellAuraEffectHandler.h"
 #include "SpellDefines.h"
@@ -46,8 +47,12 @@ bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGu
     if (targets.empty())
         return false;
 
+    uint8_t attackerModifier = attacker->GetCurrentCard()->GetStatModifierValue(CARD_STAT_SPELL_HEAL);
     for (PlayableCard* target : targets)
-        target->Heal(effectValues.Value1);
+    {
+        uint8_t amount = (std::max)(effectValues.Value1 + attackerModifier + target->GetStatModifierValue(CARD_STAT_SPELL_HEAL_TAKEN), 0);
+        target->Heal(amount);
+    }
 
     return true;
 }

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "SpellAuraEffectHandler.h"
 #include "SpellDefines.h"
 #include "../DataHolder.h"
@@ -12,9 +13,9 @@ SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandle
     { morphApplyHandler,        morphRemoveHandler,         nullptr             }   // SPELL_AURA_EFFECT_MORPH
 };
 
-void SpellAuraEffectHandler::defaultApplyHandler(SpellEffectValues const& effectValues, Player* /*caster*/, PlayableCard* targetCard)
+void SpellAuraEffectHandler::defaultApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
-    applyAuraEffect(effectValues, targetCard);
+    applyAuraEffect(effectValues, targetCard, caster->GetCurrentCard());
 }
 
 void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
@@ -22,15 +23,15 @@ void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, P
     card->GetOwner()->SendAuraExpired(card->GetGuid(), aura);
 }
 
-void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes)
+void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes, PlayableCard const* caster)
 {
+    damage = (std::max)(damage + caster->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
     card->GetOwner()->DealPeriodicDamage(card, damage, spellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
 }
 
-void SpellAuraEffectHandler::statChangedApplyHandler(SpellEffectValues const& effectValues, Player* /*caster*/, PlayableCard* targetCard)
+void SpellAuraEffectHandler::statChangedApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
-    SpellAuraEffect const& aura = applyAuraEffect(effectValues, targetCard);
-
+    SpellAuraEffect const& aura = applyAuraEffect(effectValues, targetCard, caster->GetCurrentCard());
     targetCard->GetOwner()->SendCardStatChanged(targetCard, aura.GetValue1());
 }
 
@@ -39,8 +40,9 @@ void SpellAuraEffectHandler::statChangedRemoveHandler(SpellAuraEffect const& aur
     card->GetOwner()->SendCardStatChanged(card, aura.GetValue1());
 }
 
-void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t /*spellAttributes*/)
+void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t /*spellAttributes*/, PlayableCard const* caster)
 {
+    amount = (std::max)(amount + caster->GetStatModifierValue(CARD_STAT_SPELL_HEAL) + card->GetStatModifierValue(CARD_STAT_SPELL_HEAL_TAKEN), 0);
     card->Heal(amount);
 }
 
@@ -49,7 +51,7 @@ void SpellAuraEffectHandler::morphApplyHandler(SpellEffectValues const& effectVa
     PlayableCard* card = caster->GetCurrentCard();
     card->RemoveAurasByType(SPELL_AURA_EFFECT_MORPH, 1); // There should be only 1 active morph so no need to check all auras
 
-    SpellAuraEffect const& aura = applyAuraEffect(effectValues, card);
+    SpellAuraEffect const& aura = applyAuraEffect(effectValues, card, card);
 
     card->Morph(DataHolder::GetCard(targetCard->GetId()));
     card->SetMana(uint8_t(card->GetMorph()->GetMana() * aura.GetValue1() / 100.f));
@@ -65,9 +67,9 @@ void SpellAuraEffectHandler::morphRemoveHandler(SpellAuraEffect const& aura, Pla
     card->GetOwner()->SendMorphInfo(card);
 }
 
-SpellAuraEffect SpellAuraEffectHandler::applyAuraEffect(SpellEffectValues const& effectValues, PlayableCard* targetCard)
+SpellAuraEffect SpellAuraEffectHandler::applyAuraEffect(SpellEffectValues const& effectValues, PlayableCard* targetCard, PlayableCard const* caster)
 {
-    SpellAuraEffect auraEffect(targetCard, effectValues.SpellId, effectValues.SpellValueId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
+    SpellAuraEffect auraEffect(targetCard, caster, effectValues.SpellId, effectValues.SpellValueId, effectValues.Value1, effectValues.Value2, effectValues.Value3, effectValues.Value4, effectValues.SpellAttributes);
     return targetCard->ApplyAura(auraEffect);
 }
 

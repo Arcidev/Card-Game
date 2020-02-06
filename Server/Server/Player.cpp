@@ -99,13 +99,16 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     bool sendOpponentCardDeck = false;
     Packet packet(SMSGPackets::SMSG_SPELL_DAMAGE);
     ByteBuffer buffer;
-
     packet << (uint8_t)targets.size();
+
+    uint8_t attackerModifier = GetCurrentCard()->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE);
     for (PlayableCard* target : targets)
     {
-        uint8_t reducedDamage = applyDefense ? calculateReducedDamage(damage, target->GetModifiedDefense()) : damage;
+        damage = (std::max)(damage + attackerModifier + target->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+        if (applyDefense)
+            damage = calculateReducedDamage(damage, target->GetModifiedDefense());
 
-        target->DealDamage(reducedDamage);
+        target->DealDamage(damage);
         if (target->IsAlive())
             packet.WriteBit(true);
         else
@@ -120,7 +123,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
         packet.WriteBitStreamInOrder(target->GetGuid(), { 6, 3, 1, 7, 0, 2, 5, 4 });
 
         buffer.WriteByteStreamInOrder(target->GetGuid(), { 4, 3, 5 });
-        buffer << reducedDamage;
+        buffer << damage;
         buffer.WriteByteStreamInOrder(target->GetGuid(), { 2, 0, 1, 6, 7 });
     }
 
@@ -528,11 +531,15 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyD
 // Handles drain spell effect
 void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense)
 {
-    auto damage = applyDefense ? calculateReducedDamage(drainedHealth, card->GetModifiedDefense()) : drainedHealth;
     auto currentCard = GetCurrentCard();
+    uint8_t damage = (std::max)(drainedHealth + currentCard->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+    if (applyDefense)
+        damage = calculateReducedDamage(damage, card->GetModifiedDefense());
+
     card->DealDamage(damage);
     card->SubtractMana(drainedMana);
 
+    restoredHealth = (std::max)(restoredHealth + currentCard->GetStatModifierValue(CARD_STAT_SPELL_HEAL) + currentCard->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
     currentCard->AddHealth(restoredHealth);
     currentCard->AddMana(restoredMana);
 
