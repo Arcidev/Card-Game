@@ -42,7 +42,7 @@ class PlayableCard : public Card
         bool IsAlive() const { return GetHealth() > 0; }
         bool HasAuras() const { return !m_auras.empty(); }
         uint8_t GetModifiedDefense() const;
-        uint8_t GetModifiedDamage() const;
+        uint8_t GetModifiedDamage(uint8_t additional_modifier = 0) const;
         int8_t GetStatModifierValue(uint8_t stat) const;
         uint64_t GetGuid() const { return m_guid; }
         Player* GetOwner() const { return m_owner; }

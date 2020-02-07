@@ -39,22 +39,15 @@ uint8_t PlayableCard::GetModifiedDefense() const
 {
     uint8_t baseDefense = m_morph ? m_morph->GetDefense() : GetDefense();
     int8_t defenseModifier = GetStatModifierValue(CARD_STAT_DEFENSE);
-    if (defenseModifier < 0)
-        if (baseDefense < -defenseModifier)
-            return 0;
-
-    return baseDefense + defenseModifier;
+    return (std::max)(baseDefense + defenseModifier, 0);
 }
 
-uint8_t PlayableCard::GetModifiedDamage() const
+uint8_t PlayableCard::GetModifiedDamage(uint8_t additional_modifier) const
 {
     uint8_t baseDamage = m_morph ? m_morph->GetDamage() : GetDamage();
     int8_t damageModifier = GetStatModifierValue(CARD_STAT_DAMAGE);
-    if (damageModifier < 0)
-        if (baseDamage < -damageModifier)
-            return 0;
 
-    return baseDamage + damageModifier;
+    return (std::max)(baseDamage + damageModifier + additional_modifier, 0);
 }
 
 int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const

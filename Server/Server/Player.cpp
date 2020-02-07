@@ -71,7 +71,7 @@ void Player::Attack(uint64_t victimCardGuid)
         return;
     }
 
-    uint8_t damage = calculateReducedDamage(currentCard->GetModifiedDamage(), victimCard->GetModifiedDefense());
+    uint8_t damage = calculateReducedDamage(currentCard->GetModifiedDamage(victimCard->GetStatModifierValue(CARD_STAT_DAMAGE_TAKEN)), victimCard->GetModifiedDefense());
     victimCard->DealDamage(damage);
 
     if (!victimCard->IsAlive())
