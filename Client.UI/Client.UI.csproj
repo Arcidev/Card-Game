@@ -40,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Game\MainMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\User\Login.xaml">
       <SubType>Designer</SubType>
     </Page>

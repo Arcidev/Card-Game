@@ -4,6 +4,7 @@ namespace Client.Logic.Enums
     public enum SMSGPackets
     {
         InitResponse = 0,
+        GameInfo,
         AvailableCards,
         CharMessage,
         WhisperFailed,

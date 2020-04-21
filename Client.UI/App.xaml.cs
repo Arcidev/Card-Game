@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Client.Logic;
+using System.Windows;
 
 namespace Client.UI
 {
@@ -7,5 +8,23 @@ namespace Client.UI
     /// </summary>
     public partial class App : Application
     {
+        private Game game;
+
+        public static Game GetGame() => (Current as App)?.game;
+
+        public static void SetGame(Game game)
+        {
+            if (!(Current is App app))
+                return;
+
+            app.game?.Dispose();
+            app.game = game;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            game?.Dispose();
+            base.OnExit(e);
+        }
     }
 }

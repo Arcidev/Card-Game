@@ -144,4 +144,7 @@
   <data name="UnableToConnect" xml:space="preserve">
     <value>No se puede conectar al servidor.</value>
   </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>Menú principal</value>
+  </data>
 </root>

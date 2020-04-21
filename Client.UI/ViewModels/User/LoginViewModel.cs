@@ -40,18 +40,23 @@ namespace Client.UI.ViewModels.User
             Server = ServerList.FirstOrDefault();
         }
 
-        public async Task<Game> Login(string password, Action<UInt16> callback)
+        public async Task<Game> Login(string password, Action<UInt16, Game> callback)
         {
             return await UserOperation(new Packet(CMSGPackets.UserLogIn).Builder().Write(Email).Write(password).Build(), callback);
         }
 
-        protected async Task<Game> UserOperation(Packet packet, Action<UInt16> callback)
+        protected async Task<Game> UserOperation(Packet packet, Action<UInt16, Game> callback)
         {
-            var game = await Game.CreateAsync(Server);
+            var game = App.GetGame();
             if (game == null)
             {
-                ErrorMessage = Texts.UnableToConnect;
-                return null;
+                game = await Game.CreateAsync(Server);
+                if (game == null)
+                {
+                    ErrorMessage = Texts.UnableToConnect;
+                    return null;
+                }
+                App.SetGame(game);
             }
 
             game.ErrorOccured += (error) => ErrorMessage = error;

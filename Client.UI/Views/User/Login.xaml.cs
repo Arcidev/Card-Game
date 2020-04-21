@@ -1,5 +1,6 @@
 ﻿using Client.Logic.Enums;
 using Client.UI.ViewModels.User;
+using Client.UI.Views.Game;
 using System;
 using System.Windows.Controls;
 
@@ -21,14 +22,14 @@ namespace Client.UI.Views.User
                 return;
 
             LoginBtn.IsEnabled = false;
-            var game = await vm.Login(Password.Password, (opcodeNumber) =>
+            var game = await vm.Login(Password.Password, (opcodeNumber, game) =>
             {
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
-                    if (false) // if player logged in
-                        ; // redirect to game
+                    if (game.Player != null)
+                        Dispatcher.Invoke(() => NavigationService.Navigate(new MainMenu()));
                     else
-                        LoginBtn.IsEnabled = true;
+                        Dispatcher.Invoke(() => LoginBtn.IsEnabled = true);
                 }
             });
             

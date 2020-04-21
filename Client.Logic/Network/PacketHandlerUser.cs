@@ -19,9 +19,7 @@ namespace Client.Network
             switch(result)
             {
                 case UserResult.LogedIn:
-                    //game.Player.Id = packet.ReadUInt32();
-                    //game.Player.Name = packet.ReadString();
-                    /// TODO: proceed with login
+                    game.Player = new Player(packet.ReadUInt32(), packet.ReadString());
                     return;
                 case UserResult.PasswordChanged:
                     game.OnErrorOccured(Texts.PasswordChanged);

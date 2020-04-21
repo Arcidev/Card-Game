@@ -23,7 +23,7 @@ namespace Client.Logic
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         public event Action<string> ErrorOccured;
-        public event Action<UInt16> PacketProcessed;
+        public event Action<UInt16, Game> PacketProcessed;
 
         /// <summary>
         /// List of available servers
@@ -33,6 +33,10 @@ namespace Client.Logic
             "localhost",
             "calista.mine.sk"
         };
+
+        public Player Player { get; set; }
+
+        public Player Opponent { get; set; }
 
         private Game(ClientNetwork clientNetwork)
         {
@@ -103,7 +107,7 @@ namespace Client.Logic
                         foreach (var packet in packets)
                         {
                             PacketHandler.GetPacketHandler(packet.OpcodeNumber)?.Invoke(packet, this);
-                            PacketProcessed?.Invoke(packet.OpcodeNumber);
+                            PacketProcessed?.Invoke(packet.OpcodeNumber, this);
                             packet.Dispose();
                         }
                     }

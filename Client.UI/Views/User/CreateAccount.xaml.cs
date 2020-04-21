@@ -1,6 +1,7 @@
 ﻿using Client.Logic.Enums;
 using Client.UI.Resources;
 using Client.UI.ViewModels.User;
+using Client.UI.Views.Game;
 using System;
 using System.Windows.Controls;
 
@@ -28,12 +29,12 @@ namespace Client.UI.Views.User
             }
 
             CreateAccountBtn.IsEnabled = false;
-            var game = await vm.CreateAccount(Password.Password, (opcodeNumber) =>
+            var game = await vm.CreateAccount(Password.Password, (opcodeNumber, game) =>
             {
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
-                    if (false) // if player created account
-                        ; // redirect to game
+                    if (game.Player != null)
+                        NavigationService.Navigate(new MainMenu());
                     else
                         CreateAccountBtn.IsEnabled = true;
                 }
