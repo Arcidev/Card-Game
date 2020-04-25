@@ -147,4 +147,10 @@
   <data name="MainMenu" xml:space="preserve">
     <value>Main Menu</value>
   </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>Start Game</value>
+  </data>
+  <data name="SelectCards" xml:space="preserve">
+    <value>Select Cards</value>
+  </data>
 </root>

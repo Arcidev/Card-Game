@@ -15,6 +15,8 @@ namespace Client.UI.Views.User
         public CreateAccount()
         {
             InitializeComponent();
+
+            Loaded += (obj, args) => App.SetGame(null);
         }
 
         private async void CreateAccountBtn_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -29,8 +31,12 @@ namespace Client.UI.Views.User
             }
 
             CreateAccountBtn.IsEnabled = false;
-            var game = await vm.CreateAccount(Password.Password, (opcodeNumber, game) =>
+            var game = await vm.CreateAccount(Password.Password, (opcodeNumber) =>
             {
+                var game = App.GetGame();
+                if (game == null)
+                    return;
+
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
                     if (game.Player != null)

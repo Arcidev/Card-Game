@@ -6,7 +6,8 @@
         xmlns:resx="clr-namespace:Client.UI.Resources"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.User"
         mc:Ignorable="d"
-        Title="{x:Static resx:Texts.Login}" Height="450" Width="800">
+        Title="{x:Static resx:Texts.Login}" Height="450" Width="800"
+        WindowTitle="Card Game">
     <Page.DataContext>
         <viewmodels:LoginViewModel />
     </Page.DataContext>

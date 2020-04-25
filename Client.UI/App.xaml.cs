@@ -17,6 +17,9 @@ namespace Client.UI
             if (!(Current is App app))
                 return;
 
+            if (game == app.game)
+                return;
+
             app.game?.Dispose();
             app.game = game;
         }

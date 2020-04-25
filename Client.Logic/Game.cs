@@ -23,7 +23,7 @@ namespace Client.Logic
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         public event Action<string> ErrorOccured;
-        public event Action<UInt16, Game> PacketProcessed;
+        public event Action<UInt16> PacketProcessed;
 
         /// <summary>
         /// List of available servers
@@ -74,10 +74,26 @@ namespace Client.Logic
         /// <param name="packet"></param>
         /// <param name="encrypt"></param>
         /// <param name="disposePacket"></param>
-        public void SendPacket(Packet packet, bool encrypt = true)
+        public void SendPacket(Packet packet, bool encrypt = true, bool disposePacket = true)
         {
             network.SendPacket(packet, encrypt);
-            packet.Dispose();
+
+            if (disposePacket)
+                packet.Dispose();
+        }
+
+        /// <summary>
+        /// Sends packet to server asynchronously
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <param name="encrypt"></param>
+        /// <param name="disposePacket"></param>
+        public async Task SendPacketAsync(Packet packet, bool encrypt = true, bool disposePacket = true)
+        {
+            await network.SendPacketAsync(packet, encrypt);
+
+            if (disposePacket)
+                packet.Dispose();
         }
 
         public void OnErrorOccured(string error)
@@ -95,6 +111,21 @@ namespace Client.Logic
             network.Dispose();
         }
 
+        public void UnsubscribeAllHandlers()
+        {
+            if (ErrorOccured != null)
+            {
+                foreach (var handler in ErrorOccured.GetInvocationList())
+                    ErrorOccured -= handler as Action<string>;
+            }
+
+            if (PacketProcessed != null)
+            {
+                foreach (var handler in PacketProcessed.GetInvocationList())
+                    PacketProcessed -= handler as Action<UInt16>;
+            }
+        }
+
         private async Task UpdateAsync()
         {
             while (!tokenSource.Token.IsCancellationRequested)
@@ -107,7 +138,7 @@ namespace Client.Logic
                         foreach (var packet in packets)
                         {
                             PacketHandler.GetPacketHandler(packet.OpcodeNumber)?.Invoke(packet, this);
-                            PacketProcessed?.Invoke(packet.OpcodeNumber, this);
+                            PacketProcessed?.Invoke(packet.OpcodeNumber);
                             packet.Dispose();
                         }
                     }

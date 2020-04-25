@@ -14,6 +14,8 @@ namespace Client.UI.Views.User
         public Login()
         {
             InitializeComponent();
+
+            Loaded += (obj, args) => App.SetGame(null);
         }
 
         private async void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -22,8 +24,12 @@ namespace Client.UI.Views.User
                 return;
 
             LoginBtn.IsEnabled = false;
-            var game = await vm.Login(Password.Password, (opcodeNumber, game) =>
+            var game = await vm.Login(Password.Password, (opcodeNumber) =>
             {
+                var game = App.GetGame();
+                if (game == null)
+                    return;
+
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
                     if (game.Player != null)

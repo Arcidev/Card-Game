@@ -124,11 +124,29 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Cards.
+        /// </summary>
+        public static string SelectCards {
+            get {
+                return ResourceManager.GetString("SelectCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server:.
         /// </summary>
         public static string Server {
             get {
                 return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Game.
+        /// </summary>
+        public static string StartGame {
+            get {
+                return ResourceManager.GetString("StartGame", resourceCulture);
             }
         }
         

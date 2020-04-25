@@ -40,12 +40,12 @@ namespace Client.UI.ViewModels.User
             Server = ServerList.FirstOrDefault();
         }
 
-        public async Task<Game> Login(string password, Action<UInt16, Game> callback)
+        public async Task<Game> Login(string password, Action<UInt16> callback)
         {
             return await UserOperation(new Packet(CMSGPackets.UserLogIn).Builder().Write(Email).Write(password).Build(), callback);
         }
 
-        protected async Task<Game> UserOperation(Packet packet, Action<UInt16, Game> callback)
+        protected async Task<Game> UserOperation(Packet packet, Action<UInt16> callback)
         {
             var game = App.GetGame();
             if (game == null)
@@ -59,10 +59,15 @@ namespace Client.UI.ViewModels.User
                 App.SetGame(game);
             }
 
-            game.ErrorOccured += (error) => ErrorMessage = error;
+            game.ErrorOccured += SetErrorMessage;
             game.PacketProcessed += callback;
-            game.SendPacket(packet);
+            await game.SendPacketAsync(packet);
             return game;
+        }
+
+        private void SetErrorMessage(string msg)
+        {
+            ErrorMessage = msg;
         }
     }
 }
