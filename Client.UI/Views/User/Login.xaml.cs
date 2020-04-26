@@ -33,7 +33,7 @@ namespace Client.UI.Views.User
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
                     if (game.Player != null)
-                        Dispatcher.Invoke(() => NavigationService.Navigate(new MainMenu()));
+                        Dispatcher.Invoke(() => NavigationService.Navigate(new GamePage()));
                     else
                         Dispatcher.Invoke(() => LoginBtn.IsEnabled = true);
                 }

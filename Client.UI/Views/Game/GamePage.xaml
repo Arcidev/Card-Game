@@ -1,0 +1,20 @@
+﻿<Page x:Class="Client.UI.Views.Game.GamePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
+        mc:Ignorable="d"
+        Title="{x:Static resx:Texts.MainMenu}">
+    <Page.DataContext>
+        <viewmodels:GameViewModel />
+    </Page.DataContext>
+    <TabControl>
+        <TabItem Header="{x:Static resx:Texts.Game}">
+            <Frame Name="GameFrame" Source="MainMenu.xaml" />
+        </TabItem>
+        <TabItem Header="{x:Static resx:Texts.Chat}">
+        </TabItem>
+    </TabControl>
+</Page>

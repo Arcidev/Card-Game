@@ -41,6 +41,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Game\GamePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Game\SelectCardsViewModel.xaml">
       <SubType>Designer</SubType>
     </Page>

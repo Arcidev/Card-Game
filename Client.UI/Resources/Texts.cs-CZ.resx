@@ -153,4 +153,10 @@
   <data name="SelectCards" xml:space="preserve">
     <value>Vyberte karty</value>
   </data>
+  <data name="Game" xml:space="preserve">
+    <value>Hra</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
 </root>
