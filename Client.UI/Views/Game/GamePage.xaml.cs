@@ -15,10 +15,10 @@ namespace Client.UI.Views.Game
         {
             InitializeComponent();
 
-            Loaded += MainMenu_Loaded;
+            Loaded += GamePageLoaded;
         }
 
-        private void MainMenu_Loaded(object sender, RoutedEventArgs e)
+        private void GamePageLoaded(object sender, RoutedEventArgs e)
         {
             if (!(DataContext is GameViewModel vm))
                 return;
@@ -33,9 +33,17 @@ namespace Client.UI.Views.Game
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    // Let's get rid of main menu from navigation bar
+                    GameFrame.Navigated += GameFrame_Navigated;
                     GameFrame.Navigate(new SelectCards());
                 });
             }
+        }
+
+        private void GameFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            NavigationService.RemoveBackEntry();
+            GameFrame.Navigated -= GameFrame_Navigated;
         }
     }
 }
