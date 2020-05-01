@@ -8,8 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\GeneralChat.PNG" />
     <None Remove="Views\Login.xaml" />
     <None Remove="Views\User\CreateAccount.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\GeneralChat.PNG" />
   </ItemGroup>
 
   <ItemGroup>

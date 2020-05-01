@@ -19,7 +19,13 @@
         <ListView ItemsSource="{Binding ChatWindows}" SelectedItem="{Binding ActiveChat}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border CornerRadius="16">
+                            <Image Source="{Binding Picture}" Width="32" Height="32" />
+                        </Border>
+                        <TextBlock Text="{Binding Name, Mode=OneWay}" VerticalAlignment="Center" />
+                        <Ellipse Margin="5 0 0 0" Width="6" Height="6" Fill="Red" Visibility="{Binding PendingMessages, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

@@ -20,6 +20,8 @@ namespace Client.UI.ViewModels.MainGame
         private readonly ChatViewModel parent;
         private readonly StringBuilder text;
         private string message;
+        private string picture;
+        private bool pendingMessages;
 
         public string Name { get; }
 
@@ -28,6 +30,32 @@ namespace Client.UI.ViewModels.MainGame
         public AsyncCommandHandler HandleChatCommandCmd { get; }
 
         public string Text => text.ToString();
+
+        public bool PendingMessages
+        {
+            get => pendingMessages;
+            set
+            {
+                if (pendingMessages == value)
+                    return;
+
+                pendingMessages = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Picture
+        {
+            get => picture;
+            set
+            {
+                if (picture == value)
+                    return;
+
+                picture = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Message
         {
