@@ -10,8 +10,6 @@ namespace Client.UI.ViewModels.MainGame
         public SelectCardsViewModel()
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            game.UnsubscribeAllHandlers();
-
         }
     }
 }

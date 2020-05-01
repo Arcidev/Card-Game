@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:local="clr-namespace:Client.UI.Views.Game"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.MainMenu}">
@@ -15,6 +16,7 @@
             <Frame Name="GameFrame" Source="MainMenu.xaml" />
         </TabItem>
         <TabItem Header="{x:Static resx:Texts.Chat}">
+            <Frame Source="Chat.xaml" />
         </TabItem>
     </TabControl>
 </Page>

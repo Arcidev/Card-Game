@@ -16,8 +16,6 @@ namespace Client.UI.ViewModels.MainGame
         public MainMenuViewModel()
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            game.UnsubscribeAllHandlers();
-
             StartGameCommand = new AsyncCommandHandler(StartGameAsync);
         }
 

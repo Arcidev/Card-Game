@@ -51,7 +51,7 @@ namespace Client.Network
         // Handle SMSG_SELECT_CARDS_FAILED packet
         private static void HandleSelectCardsFailed(Packet packet, ClientGame game)
         {
-            game.Chat.Write($"Selecting cards failed: {((SelectCardFailReason)packet.ReadByte()).GetDescription()}", ChatTypes.Info);
+            game.Chat.Write($"Selecting cards failed: {((SelectCardFailReason)packet.ReadByte()).GetDescription()}", ChatType.Info);
         }
 
         // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet
@@ -59,7 +59,7 @@ namespace Client.Network
         {
             game.MainWindow.SlideShow.SetVisible(false);
             game.ShowCardDeck(true);
-            game.Chat.Write("Waiting for another player to pick his cards", ChatTypes.Info);
+            game.Chat.Write("Waiting for another player to pick his cards", ChatType.Info);
         }
 
         // Handle SMSG_SELECT_CARDS packet
@@ -113,7 +113,7 @@ namespace Client.Network
             player2.AddCards(cards2);
 
             game.UnloadData();
-            game.Chat.Write("Game has started", ChatTypes.Info);
+            game.Chat.Write("Game has started", ChatType.Info);
         }
 
         // Handle SMSG_DECK_CARDS packet
@@ -200,7 +200,7 @@ namespace Client.Network
             if (result == AttackResult.InvalidTarget)
             {
                 game.SetActiveCardActionGrid(true);
-                game.Chat.Write("You cannot attack that target", ChatTypes.Info);
+                game.Chat.Write("You cannot attack that target", ChatType.Info);
                 return;
             }
             else

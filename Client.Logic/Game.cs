@@ -38,9 +38,12 @@ namespace Client.Logic
 
         public Player Opponent { get; set; }
 
+        public Chat Chat { get; }
+
         private Game(ClientNetwork clientNetwork)
         {
             network = clientNetwork;
+            Chat = new Chat(this);
 
             var packet = new Packet(CMSGPackets.Init);
             using (var rsa = new RsaEncryptor(Security.RSAKey.Modulus, Security.RSAKey.Exponent))

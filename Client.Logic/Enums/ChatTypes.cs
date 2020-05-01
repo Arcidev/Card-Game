@@ -2,7 +2,7 @@
 
 namespace Client.Logic.Enums
 {
-    public enum ChatTypes
+    public enum ChatType
     {
         Global = 1,
         Game,

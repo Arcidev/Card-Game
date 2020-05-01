@@ -97,6 +97,33 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Global Chat.
+        /// </summary>
+        public static string GlobalChat {
+            get {
+                return ResourceManager.GetString("GlobalChat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid command.
+        /// </summary>
+        public static string InvalidCommand {
+            get {
+                return ResourceManager.GetString("InvalidCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid syntax. Use: {0}.
+        /// </summary>
+        public static string InvalidSyntax {
+            get {
+                return ResourceManager.GetString("InvalidSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
@@ -142,11 +169,29 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Possible commands.
+        /// </summary>
+        public static string PossibleCommands {
+            get {
+                return ResourceManager.GetString("PossibleCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Cards.
         /// </summary>
         public static string SelectCards {
             get {
                 return ResourceManager.GetString("SelectCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
             }
         }
         

@@ -44,6 +44,9 @@
     <Page Update="Views\Game\GamePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Game\Chat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Game\SelectCards.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -159,4 +159,19 @@
   <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
+  <data name="GlobalChat" xml:space="preserve">
+    <value>Global Chat</value>
+  </data>
+  <data name="PossibleCommands" xml:space="preserve">
+    <value>Possible commands</value>
+  </data>
+  <data name="InvalidCommand" xml:space="preserve">
+    <value>Invalid command</value>
+  </data>
+  <data name="InvalidSyntax" xml:space="preserve">
+    <value>Invalid syntax. Use: {0}</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
 </root>

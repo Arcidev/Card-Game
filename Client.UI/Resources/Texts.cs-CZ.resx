@@ -159,4 +159,19 @@
   <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
+  <data name="GlobalChat" xml:space="preserve">
+    <value>Hlavní chat</value>
+  </data>
+  <data name="PossibleCommands" xml:space="preserve">
+    <value>Možné příkazy</value>
+  </data>
+  <data name="InvalidCommand" xml:space="preserve">
+    <value>Neplatný příkaz</value>
+  </data>
+  <data name="InvalidSyntax" xml:space="preserve">
+    <value>Neplatná syntaxe. Použijte: {0}</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Odeslat</value>
+  </data>
 </root>

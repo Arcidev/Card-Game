@@ -9,7 +9,7 @@ namespace Client.Network
         // Handle SMSG_CHAT_MESSAGE packet
         private static void HandleChatMessage(Packet packet, ClientGame game)
         {
-            var chatType = (ChatTypes)packet.ReadByte();
+            var chatType = (ChatType)packet.ReadByte();
             var senderName = packet.ReadString();
             var message = packet.ReadString();
 
@@ -19,7 +19,7 @@ namespace Client.Network
         // Handle SMSG_WHISPER_FAILED packet
         private static void HandleWhisperFailed(Packet packet, ClientGame game)
         {
-            game.Chat.Write($"Player \"{packet.ReadString()}\" not found", ChatTypes.Info);
+            game.Chat.Write($"Player \"{packet.ReadString()}\" not found", ChatType.Info);
         }
     }
 }

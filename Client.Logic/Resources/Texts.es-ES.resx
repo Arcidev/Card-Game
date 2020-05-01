@@ -132,4 +132,7 @@
   <data name="UnknownError" xml:space="preserve">
     <value>Ocurrió un error desconocido</value>
   </data>
+  <data name="PlayerNotFound" xml:space="preserve">
+    <value>El jugador {0} no encontrado</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
 using Client.Logic;
+using Client.Logic.Resources;
 
 namespace Client.Network
 {
@@ -9,17 +10,18 @@ namespace Client.Network
         // Handle SMSG_CHAT_MESSAGE packet
         private static void HandleChatMessage(Packet packet, Game game)
         {
-            var chatType = (ChatTypes)packet.ReadByte();
+            var chatType = (ChatType)packet.ReadByte();
             var senderName = packet.ReadString();
             var message = packet.ReadString();
 
-            //game.Chat.WriteChannelMessage(chatType, message, senderName);
+            game.Chat.OnMessageReceived(chatType, senderName, message);
         }
 
         // Handle SMSG_WHISPER_FAILED packet
         private static void HandleWhisperFailed(Packet packet, Game game)
         {
-            //game.Chat.Write($"Player \"{packet.ReadString()}\" not found", ChatTypes.Info);
+            var playerName = packet.ReadString();
+            game.Chat.OnError(ChatType.Whisper, playerName, string.Format(Texts.PlayerNotFound, playerName));
         }
     }
 }

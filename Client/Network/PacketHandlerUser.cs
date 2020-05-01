@@ -21,14 +21,14 @@ namespace Client.Network
 
             if (result == UserResult.PasswordChanged)
             {
-                game.Chat.Write("Password changed successfully", ChatTypes.Info);
+                game.Chat.Write("Password changed successfully", ChatType.Info);
                 return;
             }
 
             if (result == UserResult.InvalidCredentials)
             {
                 if (game.Player.Id != 0)
-                    game.Chat.Write("Invalid credentials", ChatTypes.Info);
+                    game.Chat.Write("Invalid credentials", ChatType.Info);
 
                 /// TODO: Show error on login page
 
@@ -48,7 +48,7 @@ namespace Client.Network
             }
 
             if (result == UserResult.UnknownError)
-                game.Chat.Write("Unknown error occured", ChatTypes.Info);
+                game.Chat.Write("Unknown error occured", ChatType.Info);
         }
     }
 }

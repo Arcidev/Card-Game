@@ -88,6 +88,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player {0} not found.
+        /// </summary>
+        public static string PlayerNotFound {
+            get {
+                return ResourceManager.GetString("PlayerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error occurred.
         /// </summary>
         public static string UnknownError {

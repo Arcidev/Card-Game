@@ -31,14 +31,14 @@ namespace Client.Game
             switch (commands.FirstOrDefault(x => x.StartsWith(cmd)))
             {
                 case "game":
-                    game.Chat.SetActiveChat(ChatTypes.Game);
+                    game.Chat.SetActiveChat(ChatType.Game);
                     if (commandDelimiter > 0)
-                        game.SendChatMessage(command.Substring(commandDelimiter).Trim(), ChatTypes.Game);
+                        game.SendChatMessage(command.Substring(commandDelimiter).Trim(), ChatType.Game);
                     break;
                 case "global":
-                    game.Chat.SetActiveChat(ChatTypes.Global);
+                    game.Chat.SetActiveChat(ChatType.Global);
                     if (commandDelimiter > 0)
-                        game.SendChatMessage(command.Substring(commandDelimiter).Trim(), ChatTypes.Global);
+                        game.SendChatMessage(command.Substring(commandDelimiter).Trim(), ChatType.Global);
                     break;
                 case "help":
                     ListCommands(game);
@@ -55,19 +55,19 @@ namespace Client.Game
         // Writes syntax error into chat
         private static void FormatSyntaxError(ClientGame game, string correctSyntax)
         {
-            game.Chat.Write($"Invalid syntax. Use: {correctSyntax}", ChatTypes.Info);
+            game.Chat.Write($"Invalid syntax. Use: {correctSyntax}", ChatType.Info);
         }
 
         // Writes invalid command into chat
         private static void WriteInvalidCommand(ClientGame game)
         {
-            game.Chat.Write("Invalid command", ChatTypes.Info);
+            game.Chat.Write("Invalid command", ChatType.Info);
         }
 
         // Lists all commands in chat
         private static void ListCommands(ClientGame game)
         {
-            game.Chat.Write($"Possible commands:{LineSeparator}{string.Join(LineSeparator, commands)}", ChatTypes.Info);
+            game.Chat.Write($"Possible commands:{LineSeparator}{string.Join(LineSeparator, commands)}", ChatType.Info);
         }
 
         // Sends whisper message to server
@@ -89,7 +89,7 @@ namespace Client.Game
                 return;
             }
 
-            game.SendChatMessage(message, ChatTypes.Whisper, receiverName);
+            game.SendChatMessage(message, ChatType.Whisper, receiverName);
         }
     }
 }

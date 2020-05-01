@@ -94,7 +94,7 @@ namespace Client
             if (ChatTextBox.Text[0] == '/')
                 game.HandleCommand(ChatTextBox.Text.Substring(1));
             else
-                game.SendChatMessage(ChatTextBox.Text, ChatTypes.AutoSelect);
+                game.SendChatMessage(ChatTextBox.Text, ChatType.AutoSelect);
 
             ChatTextBox.Text = String.Empty;
         }
@@ -134,7 +134,7 @@ namespace Client
         {
             if (selectedCardCount != 5)
             {
-                game.Chat.Write($"You have not selected {maxCardsCount} cards", ChatTypes.Info);
+                game.Chat.Write($"You have not selected {maxCardsCount} cards", ChatType.Info);
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace Client
 
             if ((SlideShow.SelectedCard.SelectionType == SelectionType.None) && (selectedCardCount == maxCardsCount))
             {
-                game.Chat.Write($"You can't select more cards than {maxCardsCount}", ChatTypes.Info);
+                game.Chat.Write($"You can't select more cards than {maxCardsCount}", ChatType.Info);
                 return;
             }
 

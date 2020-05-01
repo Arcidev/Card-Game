@@ -14,7 +14,7 @@ namespace Client.Network
             if (result != SpellCastResult.Success)
             {
                 game.SetActiveCardActionGrid(true);
-                game.Chat.Write(result.GetDescription(), ChatTypes.Info);
+                game.Chat.Write(result.GetDescription(), ChatType.Info);
                 return;
             }
 

@@ -26,7 +26,7 @@ namespace Client.Network
             else
                 message = "Waiting for another player to join the game";
 
-            game.Chat.Write(message, ChatTypes.Info);
+            game.Chat.Write(message, ChatType.Info);
         }
 
         // Handle SMSG_ACTIVE_PLAYER packet
@@ -49,7 +49,7 @@ namespace Client.Network
         // Handle SMSG_PLAYER_DISCONNECTED packet
         private static void HandlePlayerDisconnected(Packet packet, ClientGame game)
         {
-            game.Chat.Write($"Player \"{game.Opponent.Name}\" has disconnected", ChatTypes.Info);
+            game.Chat.Write($"Player \"{game.Opponent.Name}\" has disconnected", ChatType.Info);
         }
 
         // Handle SMSG_END_GAME packet

@@ -132,4 +132,7 @@
   <data name="UnknownError" xml:space="preserve">
     <value>Vyskytla sa neznáma chyba</value>
   </data>
+  <data name="PlayerNotFound" xml:space="preserve">
+    <value>Hráč {0} sa nenašiel</value>
+  </data>
 </root>

@@ -114,9 +114,9 @@ namespace Client.Game
         }
 
         // Sends chat message packet to server
-        public void SendChatMessage(string text, ChatTypes chatType, params string[] customParams)
+        public void SendChatMessage(string text, ChatType chatType, params string[] customParams)
         {
-            if (chatType == ChatTypes.AutoSelect)
+            if (chatType == ChatType.AutoSelect)
                 chatType = Chat.ActiveChat;
 
             Chat.SendChatMessage(text, chatType, customParams);

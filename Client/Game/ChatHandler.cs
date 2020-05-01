@@ -11,28 +11,28 @@ namespace Client.Game
         private ClientGame clientGame;
 
         // Currently active chat
-        public ChatTypes ActiveChat { get; set; }
+        public ChatType ActiveChat { get; set; }
 
         public ChatHandler(ClientGame game)
         {
             clientGame = game;
-            ActiveChat = ChatTypes.Global;
+            ActiveChat = ChatType.Global;
         }
 
         // Writes message into chat
-        public void Write(string message, ChatTypes chatType)
+        public void Write(string message, ChatType chatType)
         {
             InvokeToChat(message, clientGame.MainWindow.GeneralChatTab, GetChatColor(chatType));
         }
 
         // Writes message as channel message into chat
-        public void WriteChannelMessage(ChatTypes chatType, string message, string sender)
+        public void WriteChannelMessage(ChatType chatType, string message, string sender)
         {
             Write($"[{chatType.GetDescription()}] {sender}> {message}", chatType);
         }
 
         // Sends chat message to server
-        public void SendChatMessage(string text, ChatTypes chatType, params string[] customParams)
+        public void SendChatMessage(string text, ChatType chatType, params string[] customParams)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return;
@@ -47,7 +47,7 @@ namespace Client.Game
         }
 
         // Sets active chat
-        public void SetActiveChat(ChatTypes chatType)
+        public void SetActiveChat(ChatType chatType)
         {
             ActiveChat = chatType;
             clientGame.Invoke(() =>
@@ -127,18 +127,18 @@ namespace Client.Game
         }
 
         // Returns chat color
-        private Brush GetChatColor(ChatTypes chatType)
+        private Brush GetChatColor(ChatType chatType)
         {
             switch (chatType)
             {
-                case ChatTypes.Game:
+                case ChatType.Game:
                     return Brushes.Blue;
-                case ChatTypes.Global:
+                case ChatType.Global:
                     return Brushes.Green;
-                case ChatTypes.Whisper:
-                case ChatTypes.WhisperResponse:
+                case ChatType.Whisper:
+                case ChatType.WhisperResponse:
                     return Brushes.Purple;
-                case ChatTypes.Info:
+                case ChatType.Info:
                     return Brushes.Orange;
                 default:
                     return Brushes.Black;
