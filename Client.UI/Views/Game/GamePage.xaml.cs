@@ -44,6 +44,19 @@ namespace Client.UI.Views.Game
         {
             NavigationService.RemoveBackEntry();
             GameFrame.Navigated -= GameFrame_Navigated;
+
+            if (DataContext is GameViewModel vm)
+                vm.ChatViewModel.AddGameChat();
+        }
+
+        private void Frame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e) => UpdateFrameDataContext();
+
+        private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) => UpdateFrameDataContext();
+
+        private void UpdateFrameDataContext()
+        {
+            if (ChatFrame.Content is FrameworkElement content)
+                content.DataContext = ChatFrame.DataContext;
         }
     }
 }

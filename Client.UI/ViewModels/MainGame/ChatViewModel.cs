@@ -4,6 +4,7 @@ using Client.UI.Resources;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -31,12 +32,12 @@ namespace Client.UI.ViewModels.MainGame
             }
         }
 
-        public ChatViewModel()
+        public ChatViewModel(Game game)
         {
-            Game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
+            Game = game;
             ChatWindows = new ObservableCollection<ChatWindowViewModel>()
             {
-                new ChatWindowViewModel(Texts.GlobalChat, ChatType.Global, this) { Picture = "/Images/GeneralChat.PNG" }
+                new ChatWindowViewModel(Texts.GlobalChat, ChatType.Global, this) { Picture = "/Images/GeneralChat.png" }
             };
 
             ActiveChat = ChatWindows.First();
@@ -74,6 +75,14 @@ namespace Client.UI.ViewModels.MainGame
             chatVm.Write(sender, msg);
             if (chatVm != ActiveChat)
                 chatVm.PendingMessages = true;
+        }
+
+        public void AddGameChat()
+        {
+            if (ChatWindows.Any(x => x.ChatType == ChatType.Game))
+                return;
+
+            ChatWindows.Add(new ChatWindowViewModel(Texts.Game, ChatType.Game, this) { Picture = "/Images/GameChat.png" });
         }
 
         public void SetActiveChat(ChatType type, string name, bool create = false)

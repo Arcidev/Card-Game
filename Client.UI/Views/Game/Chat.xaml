@@ -8,10 +8,7 @@
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.Chat}"
         d:DesignHeight="200" d:DesignWidth="300">
-    <Page.DataContext>
-        <viewmodels:ChatViewModel />
-    </Page.DataContext>
-    <Grid>
+    <Grid d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="250" />
             <ColumnDefinition Width="3*"/>
@@ -19,17 +16,19 @@
         <ListView ItemsSource="{Binding ChatWindows}" SelectedItem="{Binding ActiveChat}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border CornerRadius="16">
-                            <Image Source="{Binding Picture}" Width="32" Height="32" />
-                        </Border>
-                        <TextBlock Text="{Binding Name, Mode=OneWay}" VerticalAlignment="Center" />
-                        <Ellipse Margin="5 0 0 0" Width="6" Height="6" Fill="Red" Visibility="{Binding PendingMessages, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="32" Height="32">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding Picture}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Margin="5 0" Text="{Binding Name, Mode=OneWay}" VerticalAlignment="Center" />
+                        <Ellipse Width="6" Height="6" Fill="Red" Visibility="{Binding PendingMessages, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid Grid.Column="1" DataContext="{Binding ActiveChat}">
+        <Grid Grid.Column="1" DataContext="{Binding ActiveChat}" Margin="5 0">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
