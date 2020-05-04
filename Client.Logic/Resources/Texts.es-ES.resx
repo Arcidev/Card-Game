@@ -135,4 +135,13 @@
   <data name="PlayerNotFound" xml:space="preserve">
     <value>El jugador {0} no encontrado</value>
   </data>
+  <data name="SelectCardsFailed" xml:space="preserve">
+    <value>Seleccionando tarjetas fallidas: {0}</value>
+  </data>
+  <data name="InvalidCardCount" xml:space="preserve">
+    <value>Recuento de tarjetas inválido</value>
+  </data>
+  <data name="InvalidCardId" xml:space="preserve">
+    <value>El servidor no admite todas las tarjetas que ha seleccionado</value>
+  </data>
 </root>

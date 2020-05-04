@@ -8,7 +8,7 @@ namespace Client.Logic.Data.Cards
     {
         public UInt64 Guid { get; }
 
-        public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Hp, card.Damage, card.Mana, card.Defense, card.Price, card.Spell)
+        public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Hp, card.Damage, card.Mana, card.Defense, card.Spell)
         {
             ImageUri = card.ImageUri;
             Name = card.Name;

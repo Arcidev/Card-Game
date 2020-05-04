@@ -36,7 +36,7 @@ namespace Client.Network
         };
 
         // Returns function to handle packet
-        public static Action<Packet, Game> GetPacketHandler(UInt16 packetType)
+        internal static Action<Packet, Game> GetPacketHandler(UInt16 packetType)
         {
             return packetHandlers[packetType];
         }

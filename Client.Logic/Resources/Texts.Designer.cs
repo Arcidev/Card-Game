@@ -70,6 +70,24 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid card count.
+        /// </summary>
+        public static string InvalidCardCount {
+            get {
+                return ResourceManager.GetString("InvalidCardCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server does not support every card you&apos;ve selected.
+        /// </summary>
+        public static string InvalidCardId {
+            get {
+                return ResourceManager.GetString("InvalidCardId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid credentials.
         /// </summary>
         public static string InvalidCredentials {
@@ -93,6 +111,15 @@ namespace Client.Logic.Resources {
         public static string PlayerNotFound {
             get {
                 return ResourceManager.GetString("PlayerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selecting cards failed: {0}.
+        /// </summary>
+        public static string SelectCardsFailed {
+            get {
+                return ResourceManager.GetString("SelectCardsFailed", resourceCulture);
             }
         }
         

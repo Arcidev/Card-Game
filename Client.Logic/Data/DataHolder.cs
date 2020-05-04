@@ -8,15 +8,15 @@ namespace Client.Logic.Data
 {
     public static class DataHolder
     {
-        private static IDictionary<UInt32, Card> cardsMap;
-        private static IDictionary<UInt32, SpellData> spellsDataMap;
+        private static IDictionary<UInt32, SelectableCard> cardsMap;
+        private static readonly IDictionary<UInt32, SpellData> spellsDataMap = new Dictionary<UInt32, SpellData>();
 
-        public static IEnumerable<Card> Cards => cardsMap?.Values;
+        public static IEnumerable<SelectableCard> Cards => cardsMap?.Values;
 
         // Loads cards from database
-        public static void LoadData(IDictionary<UInt32, Card> cards)
+        public static void LoadData(IDictionary<UInt32, SelectableCard> cards)
         {
-            using (SQLiteConnection connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))
+            using (var connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;"))
             {
                 connection.Open();
                 LoadSpellsData(connection);
@@ -25,9 +25,9 @@ namespace Client.Logic.Data
         }
 
         // Returns card by id
-        public static Card GetCard(UInt32 id)
+        public static SelectableCard GetCard(UInt32 id)
         {
-            return cardsMap.TryGetValue(id, out var card) ? card : null;
+            return cardsMap != null && cardsMap.TryGetValue(id, out var card) ? card : null;
         }
 
         // Returns spells data
@@ -38,7 +38,7 @@ namespace Client.Logic.Data
 
         private static void LoadSpellsData(SQLiteConnection connection)
         {
-            spellsDataMap = new Dictionary<UInt32, SpellData>();
+            spellsDataMap.Clear();
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT id, name, description FROM Spells";
@@ -54,7 +54,7 @@ namespace Client.Logic.Data
         }
 
         // Loads cards
-        private static void LoadCards(SQLiteConnection connection, IDictionary<UInt32, Card> cards)
+        private static void LoadCards(SQLiteConnection connection, IDictionary<UInt32, SelectableCard> cards)
         {
             using (var cmd = connection.CreateCommand())
             {

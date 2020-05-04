@@ -99,11 +99,6 @@ namespace Client.Logic
                 packet.Dispose();
         }
 
-        public void OnErrorOccured(string error)
-        {
-            ErrorOccured?.Invoke(error);
-        }
-
         /// <inheritdoc />
         public void Dispose()
         {
@@ -127,6 +122,11 @@ namespace Client.Logic
                 foreach (var handler in PacketProcessed.GetInvocationList())
                     PacketProcessed -= handler as Action<UInt16>;
             }
+        }
+
+        internal void OnErrorOccured(string error)
+        {
+            ErrorOccured?.Invoke(error);
         }
 
         private async Task UpdateAsync()

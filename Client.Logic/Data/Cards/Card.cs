@@ -91,9 +91,7 @@ namespace Client.Logic.Data.Cards
 
         public Spell Spell { get; set; }
 
-        public byte Price { get; }
-
-        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, byte price, Spell spell)
+        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
             Id = id;
             Type = type;
@@ -101,7 +99,6 @@ namespace Client.Logic.Data.Cards
             Damage = damage;
             this.mana = mana;
             Defense = defense;
-            Price = price;
             Spell = spell;
         }
     }

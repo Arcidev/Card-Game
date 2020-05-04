@@ -1,5 +1,12 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic;
+using Client.Logic.Data;
+using Client.Logic.Data.Cards;
+using Client.Logic.Data.Spells;
+using Client.Logic.Enums;
+using Client.Logic.Resources;
+using System;
+using System.Collections.Generic;
 
 namespace Client.Network
 {
@@ -8,46 +15,44 @@ namespace Client.Network
         // Handle SMSG_AVAILABLE_CARDS packet
         private static void HandleAvailableCards(Packet packet, Game game)
         {
-            //var cardsCount = packet.ReadUInt16();
-            //var cards = new Dictionary<UInt32, SelectableCard>();
-            //var hasSpell = new bool[cardsCount];
+            var cardsCount = packet.ReadUInt16();
+            var cards = new Dictionary<UInt32, SelectableCard>();
+            var hasSpell = new bool[cardsCount];
 
-            //for (var i = 0; i < cardsCount; i++)
-            //    hasSpell[i] = packet.ReadBit();
+            for (var i = 0; i < cardsCount; i++)
+                hasSpell[i] = packet.ReadBit();
 
-            //for (var i = 0; i < cardsCount; i++)
-            //{
-            //    var id = packet.ReadUInt32();
-            //    var type = (CreatureTypes)packet.ReadByte();
-            //    var health = packet.ReadByte();
-            //    Spell spell = null;
-            //    if (hasSpell[i])
-            //    {
-            //        var manaCost = packet.ReadByte();
-            //        var spellId = packet.ReadUInt32();
-            //        var spellEffectsCount = packet.ReadByte();
-            //        var spellEffects = new SpellEffect[spellEffectsCount];
-            //        for (int j = 0; j < spellEffectsCount; j++)
-            //            spellEffects[j] = new SpellEffect(packet.ReadByte(), (SpellAttributes)packet.ReadUInt32());
+            for (var i = 0; i < cardsCount; i++)
+            {
+                var id = packet.ReadUInt32();
+                var type = (CreatureTypes)packet.ReadByte();
+                var health = packet.ReadByte();
+                Spell spell = null;
+                if (hasSpell[i])
+                {
+                    var manaCost = packet.ReadByte();
+                    var spellId = packet.ReadUInt32();
+                    var spellEffectsCount = packet.ReadByte();
+                    var spellEffects = new SpellEffect[spellEffectsCount];
+                    for (int j = 0; j < spellEffectsCount; j++)
+                        spellEffects[j] = new SpellEffect(packet.ReadByte(), (SpellAttributes)packet.ReadUInt32());
 
-            //        spell = new Spell(spellId, manaCost, spellEffects);
-            //    }
-            //    var damage = packet.ReadByte();
-            //    var mana = packet.ReadByte();
-            //    var defense = packet.ReadByte();
-            //    var price = packet.ReadByte();
-            //    cards.Add(id, new SelectableCard(id, type, health, damage, mana, defense, price, spell));
-            //}
+                    spell = new Spell(spellId, manaCost, spellEffects);
+                }
+                var damage = packet.ReadByte();
+                var mana = packet.ReadByte();
+                var defense = packet.ReadByte();
+                var price = packet.ReadByte();
+                cards.Add(id, new SelectableCard(id, type, health, damage, mana, defense, price, spell));
+            }
 
-            //DataHolder.LoadData(cards);
-            //game.MainWindow.SlideShow.LoadItems();
-            //game.MainWindow.SlideShow.SetVisible(true);
+            DataHolder.LoadData(cards);
         }
 
         // Handle SMSG_SELECT_CARDS_FAILED packet
         private static void HandleSelectCardsFailed(Packet packet, Game game)
         {
-            //game.Chat.Write($"Selecting cards failed: {((SelectCardFailReason)packet.ReadByte()).GetDescription()}", ChatTypes.Info);
+            game.OnErrorOccured(string.Format(Texts.SelectCardsFailed, ((SelectCardFailReason)packet.ReadByte()).GetDescription()));
         }
 
         // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet

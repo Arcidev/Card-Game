@@ -135,4 +135,13 @@
   <data name="PlayerNotFound" xml:space="preserve">
     <value>Hráč {0} sa nenašiel</value>
   </data>
+  <data name="SelectCardsFailed" xml:space="preserve">
+    <value>Výber kariet zlyhal: {0}</value>
+  </data>
+  <data name="InvalidCardCount" xml:space="preserve">
+    <value>Neplatný počet kariet</value>
+  </data>
+  <data name="InvalidCardId" xml:space="preserve">
+    <value>Server nepodporuje všetky vybraté karty</value>
+  </data>
 </root>

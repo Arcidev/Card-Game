@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
+﻿using Client.Logic.Attributes;
+using Client.Logic.Resources;
 
 namespace Client.Logic.Enums
 {
     public enum SelectCardFailReason
     {
-        [Description("Invalid card count")]
+        [LocalizedDescription(nameof(Texts.InvalidCardCount))]
         InvalidCardCount = 1,
-        [Description("Server does not support every card you've selected")]
+        [LocalizedDescription(nameof(Texts.InvalidCardId))]
         InvalidCardId
     }
 }
