@@ -78,7 +78,7 @@ namespace Client.Game
         }
 
         // Logs stat change into chat
-        public void LogStatChange(CardStats stat, PlayableCard card, sbyte value)
+        public void LogStatChange(CardStat stat, PlayableCard card, sbyte value)
         {
             var message = $"{card.Name}'s {stat.GetDescription()} has been changed by {value}";
             WriteLog(message, CombatLogTypes.StatChange);

@@ -8,7 +8,7 @@ namespace Client.Logic.Data.Cards
     {
         public UInt64 Guid { get; }
 
-        public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Hp, card.Damage, card.Mana, card.Defense, card.Spell)
+        public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Health, card.Damage, card.Mana, card.Defense, card.Spell)
         {
             ImageUri = card.ImageUri;
             Name = card.Name;
@@ -30,14 +30,14 @@ namespace Client.Logic.Data.Cards
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);
 
-        public void ApplyModifier(CardStats cardStat, sbyte value)
+        public void ApplyModifier(CardStat cardStat, sbyte value)
         {
             switch (cardStat)
             {
-                case CardStats.Defense:
+                case CardStat.Defense:
                     DefenseModifier = value;
                     return;
-                case CardStats.Damage:
+                case CardStat.Damage:
                     DamageModifier = value;
                     return;
                 default:

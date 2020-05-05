@@ -208,7 +208,7 @@ namespace Client.Game
         }
 
         // Modifies card stat
-        public void ModifyCardStat(UInt64 cardGuid, CardStats cardStat, sbyte value)
+        public void ModifyCardStat(UInt64 cardGuid, CardStat cardStat, sbyte value)
         {
             var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == cardGuid);
             if (card == null)

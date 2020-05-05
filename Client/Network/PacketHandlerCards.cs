@@ -147,7 +147,7 @@ namespace Client.Network
             packet.ReadGuidByteStreamInOrder(guid, 6, 3, 1);
             var playerId = packet.ReadUInt32();
             packet.ReadGuidByteStreamInOrder(guid, 0, 4, 2);
-            var cardStat = (CardStats)packet.ReadByte();
+            var cardStat = (CardStat)packet.ReadByte();
 
             game.GetPlayer(playerId).ModifyCardStat(guid, cardStat, value);
         }

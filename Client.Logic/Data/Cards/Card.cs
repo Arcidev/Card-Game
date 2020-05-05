@@ -8,10 +8,12 @@ namespace Client.Logic.Data.Cards
     {
         private byte health;
         private byte mana;
+        private byte damage;
+        private byte defense;
         private sbyte damageModifier;
         private sbyte defenseModifier;
 
-        public event Action<CardStats> StatChanged;
+        public event Action<CardStat> StatChanged;
 
         public UInt32 Id { get; }
 
@@ -19,17 +21,25 @@ namespace Client.Logic.Data.Cards
 
         public CreatureTypes Type { get; set; }
 
-        public byte Hp
+        public byte Health
         {
             get => health;
             set
             {
                 health = value;
-                StatChanged?.Invoke(CardStats.Health);
+                StatChanged?.Invoke(CardStat.Health);
             }
         }
 
-        public byte Damage { get; set; }
+        public byte Damage
+        {
+            get => damage;
+            set
+            {
+                damage = value;
+                StatChanged?.Invoke(CardStat.Damage);
+            }
+        }
 
         public sbyte DamageModifier
         {
@@ -37,7 +47,7 @@ namespace Client.Logic.Data.Cards
             set
             {
                 damageModifier = value;
-                StatChanged?.Invoke(CardStats.Damage);
+                StatChanged?.Invoke(CardStat.Damage);
             }
         }
 
@@ -59,11 +69,19 @@ namespace Client.Logic.Data.Cards
             set
             {
                 mana = value;
-                StatChanged?.Invoke(CardStats.Mana);
+                StatChanged?.Invoke(CardStat.Mana);
             }
         }
 
-        public byte Defense { get; set; }
+        public byte Defense
+        {
+            get => defense;
+            set
+            {
+                defense = value;
+                StatChanged?.Invoke(CardStat.Defense);
+            }
+        }
 
         public sbyte DefenseModifier
         {
@@ -71,7 +89,7 @@ namespace Client.Logic.Data.Cards
             set
             {
                 defenseModifier = value;
-                StatChanged?.Invoke(CardStats.Defense);
+                StatChanged?.Invoke(CardStat.Defense);
             }
         }
 

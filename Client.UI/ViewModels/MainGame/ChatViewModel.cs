@@ -37,7 +37,7 @@ namespace Client.UI.ViewModels.MainGame
             Game = game;
             ChatWindows = new ObservableCollection<ChatWindowViewModel>()
             {
-                new ChatWindowViewModel(Texts.GlobalChat, ChatType.Global, this) { Picture = "/Images/GeneralChat.png" }
+                new ChatWindowViewModel(Texts.GlobalChat, ChatType.Global, this) { Picture = "/Assets/Images/GeneralChat.png" }
             };
 
             ActiveChat = ChatWindows.First();
@@ -82,7 +82,7 @@ namespace Client.UI.ViewModels.MainGame
             if (ChatWindows.Any(x => x.ChatType == ChatType.Game))
                 return;
 
-            ChatWindows.Add(new ChatWindowViewModel(Texts.Game, ChatType.Game, this) { Picture = "/Images/GameChat.png" });
+            ChatWindows.Add(new ChatWindowViewModel(Texts.Game, ChatType.Game, this) { Picture = "/Assets/Images/GameChat.png" });
         }
 
         public void SetActiveChat(ChatType type, string name, bool create = false)

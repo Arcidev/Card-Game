@@ -8,19 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\GameChat.png" />
-    <None Remove="Images\GeneralChat.PNG" />
+    <Compile Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+    <Page Remove="Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Data\sqlite3.exe" />
+    <None Remove="Assets\Images\GameChat.png" />
+    <None Remove="Assets\Images\GeneralChat.png" />
     <None Remove="Views\Login.xaml" />
     <None Remove="Views\User\CreateAccount.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\GameChat.png" />
-    <Resource Include="Images\GeneralChat.png" />
+    <ProjectReference Include="..\Client.Logic\Client.Logic.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client.Logic\Client.Logic.csproj" />
+    <Resource Include="Assets\Images\GameChat.png" />
+    <Resource Include="Assets\Images\GeneralChat.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +53,12 @@
     <EmbeddedResource Update="Resources\Texts.sk-SK.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Data\data.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

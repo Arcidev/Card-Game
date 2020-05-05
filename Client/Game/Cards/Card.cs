@@ -175,10 +175,10 @@ namespace Client.Game
                 var dpi = VisualTreeHelper.GetDpi(drawingVisual);
                 
                 // Card stats
-                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, GetStatBrush(CardStats.Damage), dpi.PixelsPerDip), damagePosition);
+                drawingContext.DrawText(new FormattedText(DamageModified.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, GetStatBrush(CardStat.Damage), dpi.PixelsPerDip), damagePosition);
                 drawingContext.DrawText(new FormattedText(mana.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, Brushes.White, dpi.PixelsPerDip), manaPosition);
                 drawingContext.DrawText(new FormattedText(health.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, Brushes.White, dpi.PixelsPerDip), hpPosition);
-                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, GetStatBrush(CardStats.Defense), dpi.PixelsPerDip), defensePosition);
+                drawingContext.DrawText(new FormattedText(DefenseModified.ToString(), cultureInfo, FlowDirection.LeftToRight, italicFont, statsFontSize, GetStatBrush(CardStat.Defense), dpi.PixelsPerDip), defensePosition);
             }
 
             // Converts the Visual (DrawingVisual) into a BitmapSource
@@ -256,18 +256,18 @@ namespace Client.Game
             return bmp;
         }
 
-        private Brush GetStatBrush(CardStats cardStat)
+        private Brush GetStatBrush(CardStat cardStat)
         {
             var modifier = 0;
             var stat = 0;
 
             switch (cardStat)
             {
-                case CardStats.Defense:
+                case CardStat.Defense:
                     modifier = defenseModifier;
                     stat = Defense;
                     break;
-                case CardStats.Damage:
+                case CardStat.Damage:
                     modifier = damageModifier;
                     stat = Damage;
                     break;

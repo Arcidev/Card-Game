@@ -1,7 +1,7 @@
 ﻿
 namespace Client.Logic.Enums
 {
-    public enum CardStats
+    public enum CardStat
     {
         Defense = 1,
         Damage,
