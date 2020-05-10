@@ -22,7 +22,7 @@ namespace Client.Logic
         private readonly Task networkConnectionTask;
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-        public event Action<string> ErrorOccured;
+        public event Action<MessageType, string> MessageReceived;
         public event Action<UInt16> PacketProcessed;
 
         /// <summary>
@@ -30,8 +30,7 @@ namespace Client.Logic
         /// </summary>
         public static string[] Servers { get; } =
         {
-            "localhost",
-            "calista.mine.sk"
+            "localhost"
         };
 
         public Player Player { get; set; }
@@ -111,10 +110,10 @@ namespace Client.Logic
 
         public void UnsubscribeAllHandlers()
         {
-            if (ErrorOccured != null)
+            if (MessageReceived != null)
             {
-                foreach (var handler in ErrorOccured.GetInvocationList())
-                    ErrorOccured -= handler as Action<string>;
+                foreach (var handler in MessageReceived.GetInvocationList())
+                    MessageReceived -= handler as Action<MessageType, string>;
             }
 
             if (PacketProcessed != null)
@@ -124,10 +123,9 @@ namespace Client.Logic
             }
         }
 
-        internal void OnErrorOccured(string error)
-        {
-            ErrorOccured?.Invoke(error);
-        }
+        internal void OnErrorOccured(string error) => MessageReceived?.Invoke(MessageType.Error, error);
+
+        internal void OnInformationReceived(string msg) => MessageReceived?.Invoke(MessageType.Information, msg);
 
         private async Task UpdateAsync()
         {

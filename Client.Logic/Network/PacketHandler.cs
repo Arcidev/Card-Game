@@ -8,7 +8,7 @@ namespace Client.Network
     {
         private static readonly Action<Packet, Game>[] packetHandlers = 
         {
-            HandleInitResponse,         // SMSG_INIT_RESPONSE
+            null,                       // SMSG_INIT_RESPONSE
             HandleGameInfo,             // SMSG_GAME_INFO
             HandleAvailableCards,       // SMSG_AVAILABLE_CARDS
             HandleChatMessage,          // SMSG_CHAT_MESSAGE
@@ -38,7 +38,7 @@ namespace Client.Network
         // Returns function to handle packet
         internal static Action<Packet, Game> GetPacketHandler(UInt16 packetType)
         {
-            return packetHandlers[packetType];
+            return packetType < packetHandlers.Length ? packetHandlers[packetType] : null;
         }
     }
 }

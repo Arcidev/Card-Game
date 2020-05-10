@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
 using Client.Logic;
+using Client.Logic.Resources;
 
 namespace Client.Network
 {
@@ -49,7 +50,7 @@ namespace Client.Network
         // Handle SMSG_PLAYER_DISCONNECTED packet
         private static void HandlePlayerDisconnected(Packet packet, Game game)
         {
-            //game.Chat.Write($"Player \"{game.Opponent.Name}\" has disconnected", ChatTypes.Info);
+            game.OnInformationReceived(string.Format(Texts.PlayerDisconnected, game.Opponent.Name));
         }
 
         // Handle SMSG_END_GAME packet

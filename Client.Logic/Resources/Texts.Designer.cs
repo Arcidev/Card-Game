@@ -106,6 +106,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player {0} has disconnected.
+        /// </summary>
+        public static string PlayerDisconnected {
+            get {
+                return ResourceManager.GetString("PlayerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player {0} not found.
         /// </summary>
         public static string PlayerNotFound {

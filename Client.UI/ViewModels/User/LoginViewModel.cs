@@ -59,15 +59,16 @@ namespace Client.UI.ViewModels.User
                 App.SetGame(game);
             }
 
-            game.ErrorOccured += SetErrorMessage;
+            game.MessageReceived += SetErrorMessage;
             game.PacketProcessed += callback;
             await game.SendPacketAsync(packet);
             return game;
         }
 
-        private void SetErrorMessage(string msg)
+        private void SetErrorMessage(MessageType type, string msg)
         {
-            ErrorMessage = msg;
+            if (type == MessageType.Error)
+                ErrorMessage = msg;
         }
     }
 }
