@@ -115,6 +115,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has joined the game.
+        /// </summary>
+        public static string PlayerJoinedGame {
+            get {
+                return ResourceManager.GetString("PlayerJoinedGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player {0} not found.
         /// </summary>
         public static string PlayerNotFound {
@@ -147,6 +156,15 @@ namespace Client.Logic.Resources {
         public static string UsernameInUse {
             get {
                 return ResourceManager.GetString("UsernameInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for another player to join the game.
+        /// </summary>
+        public static string WaitingForPlayer {
+            get {
+                return ResourceManager.GetString("WaitingForPlayer", resourceCulture);
             }
         }
     }

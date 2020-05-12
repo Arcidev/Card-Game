@@ -127,4 +127,10 @@
   <data name="PlayerDisconnected" xml:space="preserve">
     <value>Player {0} has disconnected</value>
   </data>
+  <data name="WaitingForPlayer" xml:space="preserve">
+    <value>Waiting for another player to join the game</value>
+  </data>
+  <data name="PlayerJoinedGame" xml:space="preserve">
+    <value>{0} has joined the game</value>
+  </data>
 </root>

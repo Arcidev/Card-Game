@@ -8,7 +8,7 @@ namespace Client.Logic
     {
         private readonly PlayableCard[] cardDeck;
 
-        public UInt32 Id { get; }
+        public UInt32 Id { get; set; }
 
         public string Name { get; }
 

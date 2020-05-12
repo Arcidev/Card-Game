@@ -1,5 +1,4 @@
 ﻿using Arci.Networking.Data;
-using Client.Logic.Enums;
 using Client.Logic;
 using Client.Logic.Resources;
 
@@ -10,24 +9,20 @@ namespace Client.Network
         // Handle HandleGameInfo packet
         private static void HandleGameInfo(Packet packet, Game game)
         {
-            //var hasOpponent = packet.ReadBit();
-            //var playerId = packet.ReadUInt32();
-            //game.Player.Id = playerId;
+            var hasOpponent = packet.ReadBit();
+            var playerId = packet.ReadUInt32();
+            game.Player.Id = playerId;
 
-            //string message;
-            //if (hasOpponent)
-            //{
-            //    var opponentId = packet.ReadUInt32();
-            //    var opponentName = packet.ReadString();
-            //    message = $"{opponentName} has joined the game";
+            if (hasOpponent)
+            {
+                var opponentId = packet.ReadUInt32();
+                var opponentName = packet.ReadString();
 
-            //    game.Opponent.Id = opponentId;
-            //    game.Opponent.Name = opponentName;
-            //}
-            //else
-            //    message = "Waiting for another player to join the game";
-
-            //game.Chat.Write(message, ChatTypes.Info);
+                game.Opponent = new Player(opponentId, opponentName);
+                game.OnInformationReceived(string.Format(Texts.PlayerJoinedGame, opponentName));
+            }
+            else
+                game.OnInformationReceived(Texts.WaitingForPlayer);
         }
 
         // Handle SMSG_ACTIVE_PLAYER packet
