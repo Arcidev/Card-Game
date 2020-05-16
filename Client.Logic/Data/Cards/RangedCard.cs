@@ -12,7 +12,7 @@ namespace Client.Logic.Data.Cards
         public override IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex)
         {
             enemyCards = enemyCards.Where(x => x != null);
-            var possibleTargets = enemyCards.Where(x => x.Type == CreatureTypes.Defensive);
+            var possibleTargets = enemyCards.Where(x => x.Type == CreatureType.Defensive);
             if (possibleTargets.Any())
                 return possibleTargets.Select(x => x.Guid);
 

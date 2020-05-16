@@ -5,11 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
+        xmlns:controls="clr-namespace:Client.UI.Controls"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.SelectCards}">
     <Page.DataContext>
         <viewmodels:SelectCardsViewModel />
     </Page.DataContext>
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-    </Grid>
+    <ListView HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{Binding Cards}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="4" HorizontalAlignment="Stretch" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <controls:CardControl DataContext="{Binding}" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </Page>

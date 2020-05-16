@@ -19,7 +19,7 @@ namespace Client.Logic.Data.Cards
 
         public string Name { get; set; }
 
-        public CreatureTypes Type { get; set; }
+        public CreatureType Type { get; set; }
 
         public byte Health
         {
@@ -109,7 +109,7 @@ namespace Client.Logic.Data.Cards
 
         public Spell Spell { get; set; }
 
-        public Card(UInt32 id, CreatureTypes type, byte hp, byte damage, byte mana, byte defense, Spell spell)
+        public Card(UInt32 id, CreatureType type, byte hp, byte damage, byte mana, byte defense, Spell spell)
         {
             Id = id;
             Type = type;

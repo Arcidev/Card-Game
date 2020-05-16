@@ -1,10 +1,8 @@
 ﻿using Client.Logic;
 using Client.Logic.Enums;
 using Client.UI.Resources;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
 
 namespace Client.UI.ViewModels.MainGame
 {

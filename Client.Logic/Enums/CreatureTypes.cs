@@ -1,7 +1,7 @@
 ﻿
 namespace Client.Logic.Enums
 {
-    public enum CreatureTypes
+    public enum CreatureType
     {
         Melee = 1,
         Ranged,

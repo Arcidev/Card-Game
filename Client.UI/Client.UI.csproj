@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <None Remove="Assets\Data\sqlite3.exe" />
+    <None Remove="Assets\Images\Cards\Template\gabriola-simplified-b.png" />
+    <None Remove="Assets\Images\Cards\Template\gabriola-simplified-g.png" />
+    <None Remove="Assets\Images\Cards\Template\gabriola-simplified.png" />
+    <None Remove="Assets\Images\Cards\Template\Potion.png" />
     <None Remove="Assets\Images\GameChat.png" />
     <None Remove="Assets\Images\GeneralChat.png" />
     <None Remove="Views\Login.xaml" />
@@ -27,6 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\Cards\Template\gabriola-simplified-b.png" />
+    <Resource Include="Assets\Images\Cards\Template\gabriola-simplified-g.png" />
+    <Resource Include="Assets\Images\Cards\Template\gabriola-simplified.png" />
+    <Resource Include="Assets\Images\Cards\Template\Potion.png" />
     <Resource Include="Assets\Images\GameChat.png" />
     <Resource Include="Assets\Images\GeneralChat.png" />
   </ItemGroup>

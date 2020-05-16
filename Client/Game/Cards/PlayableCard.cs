@@ -6,11 +6,11 @@ namespace Client.Game
 {
     public abstract class PlayableCard : Card
     {
-        private static readonly Dictionary<CreatureTypes, Type> derrivedClasses = new Dictionary<CreatureTypes, Type>()
+        private static readonly Dictionary<CreatureType, Type> derrivedClasses = new Dictionary<CreatureType, Type>()
         {
-            { CreatureTypes.Melee,      typeof(MeleeCard)       },
-            { CreatureTypes.Ranged,     typeof(RangedCard)      },
-            { CreatureTypes.Defensive,  typeof(DefensiveCard)   }
+            { CreatureType.Melee,      typeof(MeleeCard)       },
+            { CreatureType.Ranged,     typeof(RangedCard)      },
+            { CreatureType.Defensive,  typeof(DefensiveCard)   }
         };
 
         public UInt64 Guid { get; }

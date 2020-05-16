@@ -22,7 +22,7 @@ namespace Client.Network
             for (var i = 0; i < cardsCount; i++)
             {
                 var id = packet.ReadUInt32();
-                var type = (CreatureTypes)packet.ReadByte();
+                var type = (CreatureType)packet.ReadByte();
                 var health = packet.ReadByte();
                 Spell spell = null;
                 if (hasSpell[i])

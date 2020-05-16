@@ -163,7 +163,7 @@ namespace Client
         {
             var activeCard = game.Player.ActiveCard;
             var opponent = game.Opponent;
-            Cursor = CardAttackCursors.GetCursor(activeCard.Type == CreatureTypes.Melee ? CardAttackCursorTypes.Sword : CardAttackCursorTypes.Arrow);
+            Cursor = CardAttackCursors.GetCursor(activeCard.Type == CreatureType.Melee ? CardAttackCursorTypes.Sword : CardAttackCursorTypes.Arrow);
 
             opponent.RemoveSelectionFromCards();
             opponent.SetPossibleTargets(activeCard.GetPossibleTargets(opponent.CardDeck, game.Player.ActiveCardPosition));
