@@ -10,7 +10,14 @@
     <Page.DataContext>
         <viewmodels:MainMenuViewModel />
     </Page.DataContext>
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Button Content="{x:Static resx:Texts.StartGame}" Command="{Binding StartGameCommand}" />
-    </Grid>
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="Margin" Value="0 5" />
+        </Style>
+    </Page.Resources>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.StartGame}" Command="{Binding StartGameCommand}" />
+        <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.Logout}" Click="LogoutButton_Click" />
+    </StackPanel>
 </Page>

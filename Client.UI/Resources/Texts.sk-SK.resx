@@ -174,4 +174,7 @@
   <data name="Send" xml:space="preserve">
     <value>Odoslať</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Odhlásiť sa</value>
+  </data>
 </root>

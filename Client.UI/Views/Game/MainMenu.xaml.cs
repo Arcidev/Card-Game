@@ -11,5 +11,7 @@ namespace Client.UI.Views.Game
         {
             InitializeComponent();
         }
+
+        private void LogoutButton_Click(object sender, System.Windows.RoutedEventArgs e) => NavigationService.GoBack();
     }
 }
