@@ -6,7 +6,8 @@
              xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.Cards"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewmodels:PlayableCardViewModel}">
     <UserControl.Resources>
-        <BitmapImage x:Key="DesignSource" UriSource="/Assets/Images/Cards/Template/gabriola-simplified.png"/>
+        <BitmapImage x:Key="BackgroundDesignSource" UriSource="/Assets/Images/Cards/Template/gabriola-simplified.png"/>
+        <BitmapImage x:Key="ImageDesignSource" UriSource="/Assets/Images/Cards/Warrior.png"/>
         <Style x:Key="BaseTextBlock" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontSize" Value="30" />
@@ -18,30 +19,34 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid Width="300" Height="450">
-        <Grid.Background>
-            <ImageBrush ImageSource="{Binding Background, FallbackValue={StaticResource DesignSource}}" Stretch="UniformToFill" />
-        </Grid.Background>
+    <Grid Width="300" Height="410">
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="45"/>
             <RowDefinition />
+            <RowDefinition Height="70" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="30" />
             <ColumnDefinition Width="50" />
             <ColumnDefinition />
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
+        <Image Source="{Binding Image, FallbackValue={StaticResource ImageDesignSource}}" Width="212" Height="212" VerticalAlignment="Top" Margin="0 65 0 0" Grid.ColumnSpan="5" Grid.RowSpan="6" />
+        <Image Source="{Binding Background, FallbackValue={StaticResource BackgroundDesignSource}}" Grid.ColumnSpan="5" Grid.RowSpan="6" />
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Damage, FallbackValue=0}" Style="{StaticResource StatStyle}" />
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Health, FallbackValue=0}" Style="{StaticResource StatStyle}" />
         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Name, FallbackValue=Name}" HorizontalAlignment="Right" FontFamily="Gabriola" Style="{StaticResource BaseTextBlock}"/>
-        <StackPanel Visibility="{Binding HasSpell, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
+        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Spell, FallbackValue=Lorem Ipsum}" FontSize="14" TextWrapping="Wrap" FontFamily="Gill Sans MT Condensed" Foreground="White" />
+        <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Image Source="/Assets/Images/Cards/Template/Health.png" />
+            <TextBlock Text="{Binding Health, FallbackValue=0}" HorizontalAlignment="Right" Style="{StaticResource StatStyle}"/>
+        </StackPanel>
+        <StackPanel Visibility="{Binding HasSpell, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
             <TextBlock Text="{Binding Mana, FallbackValue=0}" HorizontalAlignment="Right" Style="{StaticResource StatStyle}"/>
-            <Image Source="/Assets/Images/Cards/Template/Potion.png" />
+            <Image Source="/Assets/Images/Cards/Template/Mana.png" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -66,7 +66,7 @@ namespace Client.Logic.Data
                         if (cards.TryGetValue(Convert.ToUInt32(result["id"]), out var card))
                         {
                             card.Name = Convert.ToString(result["name"]);
-                            card.ImageUri = $"Assets/{Convert.ToString(result["imagePath"])}";
+                            card.ImageUri = Convert.ToString(result["imagePath"]);
 
                             if (card.Spell != null)
                                 card.Spell.SpellData = GetSpellData(card.Spell.Id);

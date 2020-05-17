@@ -16,10 +16,22 @@
 
   <ItemGroup>
     <None Remove="Assets\Data\sqlite3.exe" />
+    <None Remove="Assets\Images\Cards\Archer.png" />
+    <None Remove="Assets\Images\Cards\Assassin.png" />
+    <None Remove="Assets\Images\Cards\Demon.png" />
+    <None Remove="Assets\Images\Cards\Harpy.png" />
+    <None Remove="Assets\Images\Cards\Lich.png" />
+    <None Remove="Assets\Images\Cards\Mage.png" />
+    <None Remove="Assets\Images\Cards\Paladin.png" />
+    <None Remove="Assets\Images\Cards\Priest.png" />
     <None Remove="Assets\Images\Cards\Template\gabriola-simplified-b.png" />
     <None Remove="Assets\Images\Cards\Template\gabriola-simplified-g.png" />
     <None Remove="Assets\Images\Cards\Template\gabriola-simplified.png" />
-    <None Remove="Assets\Images\Cards\Template\Potion.png" />
+    <None Remove="Assets\Images\Cards\Template\Health.png" />
+    <None Remove="Assets\Images\Cards\Template\Mana.png" />
+    <None Remove="Assets\Images\Cards\Warrior.png" />
+    <None Remove="Assets\Images\Cards\Werewolf.png" />
+    <None Remove="Assets\Images\Cards\Wizard.png" />
     <None Remove="Assets\Images\GameChat.png" />
     <None Remove="Assets\Images\GeneralChat.png" />
     <None Remove="Views\Login.xaml" />
@@ -31,10 +43,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\Cards\Archer.png" />
+    <Resource Include="Assets\Images\Cards\Assassin.png" />
+    <Resource Include="Assets\Images\Cards\Demon.png" />
+    <Resource Include="Assets\Images\Cards\Harpy.png" />
+    <Resource Include="Assets\Images\Cards\Lich.png" />
+    <Resource Include="Assets\Images\Cards\Mage.png" />
+    <Resource Include="Assets\Images\Cards\Paladin.png" />
+    <Resource Include="Assets\Images\Cards\Priest.png" />
     <Resource Include="Assets\Images\Cards\Template\gabriola-simplified-b.png" />
     <Resource Include="Assets\Images\Cards\Template\gabriola-simplified-g.png" />
     <Resource Include="Assets\Images\Cards\Template\gabriola-simplified.png" />
-    <Resource Include="Assets\Images\Cards\Template\Potion.png" />
+    <Resource Include="Assets\Images\Cards\Template\Health.png" />
+    <Resource Include="Assets\Images\Cards\Template\Mana.png" />
+    <Resource Include="Assets\Images\Cards\Warrior.png" />
+    <Resource Include="Assets\Images\Cards\Werewolf.png" />
+    <Resource Include="Assets\Images\Cards\Wizard.png" />
     <Resource Include="Assets\Images\GameChat.png" />
     <Resource Include="Assets\Images\GeneralChat.png" />
   </ItemGroup>

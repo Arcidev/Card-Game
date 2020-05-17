@@ -15,11 +15,13 @@ namespace Client.UI.ViewModels.Cards
 
         public byte Mana => card.Mana;
 
-        public string ImageUri => card.ImageUri;
+        public string Image => $"/Assets/Images/Cards/{card.ImageUri}";
 
         public string Name => card.Name;
 
         public bool HasSpell => card.Spell != null;
+
+        public string Spell => card.Spell?.Info;
 
         public string Background { get; }
 
