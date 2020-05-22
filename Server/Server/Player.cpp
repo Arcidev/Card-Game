@@ -328,6 +328,15 @@ inline void Player::SendPacket(Packet const& packet) const
     m_user->SendPacket(packet);
 }
 
+// Clears player cards
+void Player::ClearCards()
+{
+    for (const auto& [key, card] : m_cards)
+        delete card;
+
+    m_cards.clear();
+}
+
 // Adds card into deck from existing template
 void Player::CreateCard(Card const* cardTemplate)
 {

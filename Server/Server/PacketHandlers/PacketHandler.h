@@ -39,6 +39,9 @@ class PacketHandler
         // Validators
         static bool isLoggedIn(ConnectedUser const* user);
         static bool isPlaying(ConnectedUser const* user);
+        static bool isPrepared(ConnectedUser const* user);
+        static bool isInGame(ConnectedUser const* user);
+        static bool notPrepared(ConnectedUser const* user) { return isPlaying(user) && !isPrepared(user); }
         static bool notLoggedIn(ConnectedUser const* user) { return !isLoggedIn(user); }
         static bool notPlaying(ConnectedUser const* user) { return isLoggedIn(user) && !isPlaying(user); }
 
