@@ -1,11 +1,14 @@
 ﻿using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
+using System;
 
 namespace Client.UI.ViewModels.Cards
 {
     public abstract class CardViewModel<T> : NotifyPropertyViewModel where T : Card
     {
         protected readonly T card;
+
+        public UInt32 Id => card.Id;
 
         public byte Health => card.Health;
 

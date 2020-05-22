@@ -7,10 +7,12 @@ namespace Client.UI.Controls
     {
         public event EventHandler CanExecuteChanged;
 
-        private readonly Action action;
-        private readonly Func<bool> canExecute;
+        private readonly Action<object> action;
+        private readonly Func<object, bool> canExecute;
 
-        public CommandHandler(Action action, Func<bool> canExecute = null)
+        public CommandHandler(Action action, Func<bool> canExecute = null) : this(o => action(), o => canExecute()) { }
+
+        public CommandHandler(Action<object> action, Func<object, bool> canExecute = null)
         {
             this.action = action;
             this.canExecute = canExecute;
@@ -18,12 +20,12 @@ namespace Client.UI.Controls
 
         public bool CanExecute(object parameter)
         {
-            return canExecute?.Invoke() ?? true;
+            return canExecute?.Invoke(parameter) ?? true;
         }
 
         public void Execute(object parameter)
         {
-            action.Invoke();
+            action.Invoke(parameter);
         }
 
         public void NotifyCanExecuteChanged()
