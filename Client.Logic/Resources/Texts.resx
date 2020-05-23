@@ -142,4 +142,13 @@
   <data name="StatChanged" xml:space="preserve">
     <value>{0} - {1} has been changed by {2}</value>
   </data>
+  <data name="ManaReplenished" xml:space="preserve">
+    <value>{0} - Cards have replenished {1} mana</value>
+  </data>
+  <data name="CardMorphed" xml:space="preserve">
+    <value>{0}  has been morphed to {1}</value>
+  </data>
+  <data name="CardDemorph" xml:space="preserve">
+    <value>{0} has been demorphed from {1}</value>
+  </data>
 </root>

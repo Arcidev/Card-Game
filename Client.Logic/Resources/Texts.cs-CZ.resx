@@ -162,4 +162,13 @@
   <data name="StatChanged" xml:space="preserve">
     <value>{0} - {1} byla zmenena o {2}</value>
   </data>
+  <data name="ManaReplenished" xml:space="preserve">
+    <value>{0} - Kartám se doplnilo {1} many</value>
+  </data>
+  <data name="CardMorphed" xml:space="preserve">
+    <value>{0} byl proměněn na {1}</value>
+  </data>
+  <data name="CardDemorph" xml:space="preserve">
+    <value>{0} byl proměněn spátky na {1}</value>
+  </data>
 </root>

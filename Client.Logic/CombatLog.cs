@@ -17,5 +17,16 @@ namespace Client.Logic
         {
             MessageReceived?.Invoke(CombatLogType.StatChange, string.Format(Texts.StatChanged, name, cardStat.GetDescription(), value));
         }
+
+        internal void LogManaReplenishment(Player player, byte manaReplenished)
+        {
+            MessageReceived?.Invoke(CombatLogType.StatChange, string.Format(Texts.ManaReplenished, player?.Name, manaReplenished));
+        }
+
+        internal void LogMorph(string card, string morph, bool isMorph)
+        {
+            var message = isMorph ? string.Format(Texts.CardMorphed, card, morph) : string.Format(Texts.CardDemorph, morph, card);
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, message);
+        }
     }
 }

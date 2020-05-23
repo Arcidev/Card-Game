@@ -12,10 +12,11 @@ namespace Client.Logic.Data.Cards
         private byte defense;
         private sbyte damageModifier;
         private sbyte defenseModifier;
+        protected UInt32 id;
 
         public event Action<CardStat> StatChanged;
 
-        public UInt32 Id { get; }
+        public UInt32 Id => id;
 
         public string Name { get; set; }
 
@@ -109,14 +110,14 @@ namespace Client.Logic.Data.Cards
 
         public Spell Spell { get; set; }
 
-        public Card(UInt32 id, CreatureType type, byte hp, byte damage, byte mana, byte defense, Spell spell)
+        public Card(UInt32 id, CreatureType type, byte health, byte damage, byte mana, byte defense, Spell spell)
         {
-            Id = id;
+            this.id = id;
             Type = type;
-            health = hp;
-            Damage = damage;
+            this.health = health;
+            this.damage = damage;
             this.mana = mana;
-            Defense = defense;
+            this.defense = defense;
             Spell = spell;
         }
     }

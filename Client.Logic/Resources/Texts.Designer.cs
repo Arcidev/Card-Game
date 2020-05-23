@@ -61,11 +61,29 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has been demorphed from {1}.
+        /// </summary>
+        public static string CardDemorph {
+            get {
+                return ResourceManager.GetString("CardDemorph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} has been healed by {1}.
         /// </summary>
         public static string CardHealed {
             get {
                 return ResourceManager.GetString("CardHealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}  has been morphed to {1}.
+        /// </summary>
+        public static string CardMorphed {
+            get {
+                return ResourceManager.GetString("CardMorphed", resourceCulture);
             }
         }
         
@@ -102,6 +120,15 @@ namespace Client.Logic.Resources {
         public static string InvalidCredentials {
             get {
                 return ResourceManager.GetString("InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Cards have replenished {1} mana.
+        /// </summary>
+        public static string ManaReplenished {
+            get {
+                return ResourceManager.GetString("ManaReplenished", resourceCulture);
             }
         }
         

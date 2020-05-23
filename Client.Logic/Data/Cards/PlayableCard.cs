@@ -6,6 +6,11 @@ namespace Client.Logic.Data.Cards
 {
     public abstract class PlayableCard : Card
     {
+        /// <summary>
+        /// Called when the whole card changes (f.e. with morph)
+        /// </summary>
+        public event Action CardChanged;
+
         public UInt64 Guid { get; }
 
         public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Health, card.Damage, card.Mana, card.Defense, card.Spell)
@@ -43,6 +48,20 @@ namespace Client.Logic.Data.Cards
                 default:
                     return;
             }
+        }
+
+        public void Morph(Card card, byte mana)
+        {
+            id = card.Id;
+            ImageUri = card.ImageUri;
+            Type = card.Type;
+            Spell = card.Spell;
+            Name = card.Name;
+            Damage = card.Damage;
+            Defense = card.Defense;
+            Mana = mana;
+
+            CardChanged?.Invoke();
         }
     }
 }

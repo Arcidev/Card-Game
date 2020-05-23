@@ -162,4 +162,13 @@
   <data name="StatChanged" xml:space="preserve">
     <value>{0} - {1} ha sido cambiado por {2}</value>
   </data>
+  <data name="ManaReplenished" xml:space="preserve">
+    <value>{0} - Las cartas han rellenado {1} maná</value>
+  </data>
+  <data name="CardMorphed" xml:space="preserve">
+    <value>{0} se ha transformado en {1}</value>
+  </data>
+  <data name="CardDemorph" xml:space="preserve">
+    <value>{0} se ha transformado de {1}</value>
+  </data>
 </root>

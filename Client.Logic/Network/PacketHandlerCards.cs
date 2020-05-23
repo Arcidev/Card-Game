@@ -169,27 +169,27 @@ namespace Client.Network
         // Handle SMSG_MANA_REPLENISHMENT packet
         private static void HandleManaReplenishment(Packet packet, Game game)
         {
-            //var cardCount = packet.ReadByte();
-            //var guids = new PacketGuid[cardCount];
+            var cardCount = packet.ReadByte();
+            var guids = new PacketGuid[cardCount];
 
-            //for (var i = 0; i < cardCount; i++)
-            //{
-            //    guids[i] = new PacketGuid();
-            //    packet.ReadGuidBitStreamInOrder(guids[i], 5, 0, 1, 2, 3, 7, 4, 6);
-            //}
+            for (var i = 0; i < cardCount; i++)
+            {
+                guids[i] = new PacketGuid();
+                packet.ReadGuidBitStreamInOrder(guids[i], 5, 0, 1, 2, 3, 7, 4, 6);
+            }
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //var manaReplenished = packet.ReadByte();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var manaReplenished = packet.ReadByte();
 
-            //for (var i = 0; i < cardCount; i++)
-            //{
-            //    packet.ReadGuidByteStreamInOrder(guids[i], 2, 6, 0, 7, 1, 4, 3, 5);
-            //    var mana = packet.ReadByte();
+            for (var i = 0; i < cardCount; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(guids[i], 2, 6, 0, 7, 1, 4, 3, 5);
+                var mana = packet.ReadByte();
 
-            //    player.SetCardMana(guids[i], mana);
-            //}
+                player?.SetCardMana(guids[i], mana);
+            }
 
-            //game.Chat.LogManaReplenishment(player, manaReplenished);
+            game.CombatLog.LogManaReplenishment(player, manaReplenished);
         }
 
         // Handle SMSG_ATTACK_RESULT packet
@@ -223,16 +223,16 @@ namespace Client.Network
         // Handle SMSG_CARD_MORPH_INFO packet
         private static void HandleCardMorphInfo(Packet packet, Game game)
         {
-            //var isMorph = packet.ReadBit();
-            //packet.ClearUnflushedBits();
+            var isMorph = packet.ReadBit();
+            packet.ClearUnflushedBits();
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //var cardGuid = packet.ReadPacketGuid();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var cardGuid = packet.ReadPacketGuid();
 
-            //var cardTemplate = DataHolder.GetCard(packet.ReadUInt32());
-            //var mana = packet.ReadByte();
+            var cardTemplate = DataHolder.GetCard(packet.ReadUInt32());
+            var mana = packet.ReadByte();
 
-            //player.MorphCard(cardGuid, cardTemplate, mana, isMorph);
+            player?.MorphCard(cardGuid, cardTemplate, mana, isMorph);
         }
     }
 }
