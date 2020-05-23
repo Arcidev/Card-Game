@@ -58,9 +58,7 @@ namespace Client.Network
         // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet
         private static void HandleSelectCardsWait(Packet packet, Game game)
         {
-            //game.MainWindow.SlideShow.SetVisible(false);
-            //game.ShowCardDeck(true);
-            //game.Chat.Write("Waiting for another player to pick his cards", ChatTypes.Info);
+            game.OnInformationReceived(Texts.WaitingForSecondPlayer);
         }
 
         // Handle SMSG_SELECT_CARDS packet
@@ -141,31 +139,31 @@ namespace Client.Network
         // Handle SMSG_CARD_STAT_CHANGED packet
         private static void HandleCardStatChanged(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 2, 6, 7, 1, 0, 3, 5, 4);
-            //packet.ReadGuidByteStreamInOrder(guid, 5, 7);
-            //var value = packet.ReadSByte();
-            //packet.ReadGuidByteStreamInOrder(guid, 6, 3, 1);
-            //var playerId = packet.ReadUInt32();
-            //packet.ReadGuidByteStreamInOrder(guid, 0, 4, 2);
-            //var cardStat = (CardStats)packet.ReadByte();
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 2, 6, 7, 1, 0, 3, 5, 4);
+            packet.ReadGuidByteStreamInOrder(guid, 5, 7);
+            var value = packet.ReadSByte();
+            packet.ReadGuidByteStreamInOrder(guid, 6, 3, 1);
+            var playerId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 0, 4, 2);
+            var cardStat = (CardStat)packet.ReadByte();
 
-            //game.GetPlayer(playerId).ModifyCardStat(guid, cardStat, value);
+            game.GetPlayer(playerId)?.ModifyCardStat(guid, cardStat, value);
         }
 
         // Handle SMSG_CARD_HEALED packet
         private static void HandleCardHealed(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 7, 2, 6, 1, 3, 0, 5, 4);
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 6, 1, 3, 0, 5, 4);
 
-            //packet.ReadGuidByteStreamInOrder(guid, 5, 2, 7, 1);
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //var health = packet.ReadByte();
-            //packet.ReadGuidByteStreamInOrder(guid, 4, 0, 3, 6);
-            //var amount = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 5, 2, 7, 1);
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var health = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 4, 0, 3, 6);
+            var amount = packet.ReadByte();
 
-            //player.HealCard(guid, health, amount);
+            player?.HealCard(guid, health, amount);
         }
 
         // Handle SMSG_MANA_REPLENISHMENT packet

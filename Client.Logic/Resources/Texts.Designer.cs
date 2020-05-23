@@ -61,6 +61,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has been healed by {1}.
+        /// </summary>
+        public static string CardHealed {
+            get {
+                return ResourceManager.GetString("CardHealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email already in use.
         /// </summary>
         public static string EmailInUse {
@@ -142,6 +151,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - {1} has been changed by {2}.
+        /// </summary>
+        public static string StatChanged {
+            get {
+                return ResourceManager.GetString("StatChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error occurred.
         /// </summary>
         public static string UnknownError {
@@ -165,6 +183,15 @@ namespace Client.Logic.Resources {
         public static string WaitingForPlayer {
             get {
                 return ResourceManager.GetString("WaitingForPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for the second player to pick his cards.
+        /// </summary>
+        public static string WaitingForSecondPlayer {
+            get {
+                return ResourceManager.GetString("WaitingForSecondPlayer", resourceCulture);
             }
         }
     }

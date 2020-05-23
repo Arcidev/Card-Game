@@ -19,7 +19,7 @@ namespace Client.Network
             switch(result)
             {
                 case UserResult.LogedIn:
-                    game.Player = new Player(packet.ReadUInt32(), packet.ReadString());
+                    game.Player = new Player(packet.ReadUInt32(), packet.ReadString(), game);
                     return;
                 case UserResult.PasswordChanged:
                     game.OnErrorOccured(Texts.PasswordChanged);

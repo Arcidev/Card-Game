@@ -18,7 +18,7 @@ namespace Client.Network
                 var opponentId = packet.ReadUInt32();
                 var opponentName = packet.ReadString();
 
-                game.Opponent = new Player(opponentId, opponentName);
+                game.Opponent = new Player(opponentId, opponentName, game);
                 game.OnInformationReceived(string.Format(Texts.PlayerJoinedGame, opponentName));
             }
             else

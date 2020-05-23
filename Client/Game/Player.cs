@@ -175,7 +175,7 @@ namespace Client.Game
         }
 
         // Attacks card
-        public void AttackCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
+        public void AttackCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
         {
             var (card, image) = cardDeck.FirstOrDefault(x => x.card?.Guid == guid);
             if (card == null)
@@ -194,7 +194,7 @@ namespace Client.Game
         }
 
         // Destroys card
-        public void DestroyCard(UInt64 guid, byte damage, CombatLogTypes combatLogType, bool isPeriodicDamage)
+        public void DestroyCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
         {
             if (cards.TryGetValue(guid, out var card))
             {

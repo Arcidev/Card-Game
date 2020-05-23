@@ -153,4 +153,13 @@
   <data name="PlayerJoinedGame" xml:space="preserve">
     <value>{0} se ha unido al juego</value>
   </data>
+  <data name="WaitingForSecondPlayer" xml:space="preserve">
+    <value>Esperando a que el segundo jugador elija sus cartas</value>
+  </data>
+  <data name="CardHealed" xml:space="preserve">
+    <value>{0} ha sido sanado por {1}</value>
+  </data>
+  <data name="StatChanged" xml:space="preserve">
+    <value>{0} - {1} ha sido cambiado por {2}</value>
+  </data>
 </root>

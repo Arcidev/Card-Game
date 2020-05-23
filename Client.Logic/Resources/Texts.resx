@@ -133,4 +133,13 @@
   <data name="PlayerJoinedGame" xml:space="preserve">
     <value>{0} has joined the game</value>
   </data>
+  <data name="WaitingForSecondPlayer" xml:space="preserve">
+    <value>Waiting for the second player to pick his cards</value>
+  </data>
+  <data name="CardHealed" xml:space="preserve">
+    <value>{0} has been healed by {1}</value>
+  </data>
+  <data name="StatChanged" xml:space="preserve">
+    <value>{0} - {1} has been changed by {2}</value>
+  </data>
 </root>

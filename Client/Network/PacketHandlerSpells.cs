@@ -54,9 +54,9 @@ namespace Client.Network
                 packet.ReadGuidByteStreamInOrder(targets[i], 2, 0, 1, 6, 7);
 
                 if (isAlive[i])
-                    opponent.AttackCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
+                    opponent.AttackCard(targets[i], damage, CombatLogType.SpellUsage, false);
                 else
-                    opponent.DestroyCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
+                    opponent.DestroyCard(targets[i], damage, CombatLogType.SpellUsage, false);
             }
         }
 
@@ -86,9 +86,9 @@ namespace Client.Network
             byte damage = packet.ReadByte();
 
             if (isAlive)
-                player.AttackCard(guid, damage, CombatLogTypes.SpellUsage, true);
+                player.AttackCard(guid, damage, CombatLogType.SpellUsage, true);
             else
-                player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage, true);
+                player.DestroyCard(guid, damage, CombatLogType.SpellUsage, true);
         }
 
         // Handle SMSG_SPELL_DRAIN
@@ -112,11 +112,11 @@ namespace Client.Network
 
             if (isAlive)
             {
-                opponent.AttackCard(guid, drainedHealth, CombatLogTypes.SpellUsage, true);
+                opponent.AttackCard(guid, drainedHealth, CombatLogType.SpellUsage, true);
                 opponent.SetCardMana(guid, opponentMana);
             }
             else
-                opponent.DestroyCard(guid, packet.ReadByte(), CombatLogTypes.SpellUsage, true);
+                opponent.DestroyCard(guid, packet.ReadByte(), CombatLogType.SpellUsage, true);
 
             var currentCardGuid = player.ActiveCard.Guid;
             player.HealCard(currentCardGuid, health, restoredHealth);

@@ -215,9 +215,9 @@ namespace Client.Network
 
                 var opponent = game.GetOpponent(attackerId);
                 if (result == AttackResult.CardAttacked)
-                    opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
+                    opponent.AttackCard(cardGuid, damage, CombatLogType.BasicDamage, false);
                 else
-                    opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
+                    opponent.DestroyCard(cardGuid, damage, CombatLogType.BasicDamage, false);
             }
         }
 

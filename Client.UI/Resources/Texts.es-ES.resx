@@ -151,7 +151,7 @@
     <value>Empezar juego</value>
   </data>
   <data name="SelectCards" xml:space="preserve">
-    <value>Elige cartas</value>
+    <value>Seleccionar cartas</value>
   </data>
   <data name="Game" xml:space="preserve">
     <value>Juego</value>

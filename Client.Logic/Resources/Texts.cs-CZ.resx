@@ -153,4 +153,13 @@
   <data name="PlayerJoinedGame" xml:space="preserve">
     <value>{0} se připojil ke hře</value>
   </data>
+  <data name="WaitingForSecondPlayer" xml:space="preserve">
+    <value>Čekání, až si druhý hráč vybere své karty</value>
+  </data>
+  <data name="CardHealed" xml:space="preserve">
+    <value>{0} byl uzdraven o {1}</value>
+  </data>
+  <data name="StatChanged" xml:space="preserve">
+    <value>{0} - {1} byla zmenena o {2}</value>
+  </data>
 </root>

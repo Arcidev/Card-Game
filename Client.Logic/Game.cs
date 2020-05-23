@@ -4,6 +4,7 @@ using Arci.Networking.Security.AesOptions;
 using Client.Logic.Enums;
 using Client.Network;
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,10 +40,13 @@ namespace Client.Logic
 
         public Chat Chat { get; }
 
+        public CombatLog CombatLog { get; }
+
         private Game(ClientNetwork clientNetwork)
         {
             network = clientNetwork;
             Chat = new Chat(this);
+            CombatLog = new CombatLog();
 
             var packet = new Packet(CMSGPackets.Init);
             using (var rsa = new RsaEncryptor(Security.RSAKey.Modulus, Security.RSAKey.Exponent))
@@ -126,6 +130,18 @@ namespace Client.Logic
         internal void OnErrorOccured(string error) => MessageReceived?.Invoke(MessageType.Error, error);
 
         internal void OnInformationReceived(string msg) => MessageReceived?.Invoke(MessageType.Information, msg);
+
+        internal Player GetPlayer(UInt32 playerId)
+        {
+            if (Player?.Id == playerId)
+                return Player;
+
+            if (Opponent?.Id == playerId)
+                return Opponent;
+
+            Debug.Assert(true, $"Player with Id:{playerId} not found");
+            return null;
+        }
 
         private async Task UpdateAsync()
         {

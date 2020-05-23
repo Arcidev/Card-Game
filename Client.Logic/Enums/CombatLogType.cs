@@ -1,7 +1,7 @@
 ﻿
 namespace Client.Logic.Enums
 {
-    public enum CombatLogTypes
+    public enum CombatLogType
     {
         BasicDamage,
         SpellUsage,

@@ -58,13 +58,13 @@ namespace Client.Game
         }
 
         // Writes message into combat log
-        public void WriteLog(string message, CombatLogTypes combatLogType)
+        public void WriteLog(string message, CombatLogType combatLogType)
         {
             InvokeToChat(message, clientGame.MainWindow.CombatLogChatTab, GetCombatLogColor(combatLogType));
         }
 
         // Write info about damage into combat log chat tab
-        public void LogDamage(CombatLogTypes combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
+        public void LogDamage(CombatLogType combatLogType, PlayableCard attacker, PlayableCard victim, byte damage, bool alive)
         {
             var message = alive ? $"{attacker.Name} dealt {damage} damage to {victim.Name}" : $"{attacker.Name} killed {victim.Name} with {damage}";
             WriteLog(message, combatLogType);
@@ -74,56 +74,56 @@ namespace Client.Game
         public void LogPeriodicDamage(PlayableCard victim, byte damage, bool alive)
         {
             var message = alive ? $"{victim.Name} suffered {damage} damage" : $"{victim.Name} has been killed with {damage} damage";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Logs stat change into chat
         public void LogStatChange(CardStat stat, PlayableCard card, sbyte value)
         {
             var message = $"{card.Name}'s {stat.GetDescription()} has been changed by {value}";
-            WriteLog(message, CombatLogTypes.StatChange);
+            WriteLog(message, CombatLogType.StatChange);
         }
 
         // Logs apply aura
         public void LogApplyAura(PlayableCard card, SpellData spell)
         {
             var message = $"{card.Name} is now aflicted by an effect from {spell.Name}";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Logs apply aura
         public void LogExpireAura(PlayableCard card, SpellData spell)
         {
             var message = $"Effect of {spell.Name} has expired from {card.Name}";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Logs heal from spell
         public void LogHeal(PlayableCard card, byte amount)
         {
             var message = $"{card.Name} has been healed by {amount}";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Logs consuming mana from spell
         public void LogManaConsume(PlayableCard card, SpellData spellData, byte manaCost)
         {
             var message = $"{spellData.Name} consumes {manaCost} mana from {card.Name}";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Logs mana replenishment
         public void LogManaReplenishment(Player player, byte mana)
         {
             var message = $"{player.Name}'s cards have replenished {mana} mana";
-            WriteLog(message, CombatLogTypes.StatChange);
+            WriteLog(message, CombatLogType.StatChange);
         }
 
         // Logs morph
         public void LogMorph(Card card, Card morph, bool isMorph)
         {
             var message = isMorph ? $"{card.Name} has been morphed to {morph.Name}" : $"{morph.Name} has been demorphed from {card.Name}";
-            WriteLog(message, CombatLogTypes.SpellUsage);
+            WriteLog(message, CombatLogType.SpellUsage);
         }
 
         // Returns chat color
@@ -146,15 +146,15 @@ namespace Client.Game
         }
 
         // Returns combat log color
-        private Brush GetCombatLogColor(CombatLogTypes combatLogType)
+        private Brush GetCombatLogColor(CombatLogType combatLogType)
         {
             switch (combatLogType)
             {
-                case CombatLogTypes.BasicDamage:
+                case CombatLogType.BasicDamage:
                     return Brushes.Red;
-                case CombatLogTypes.SpellUsage:
+                case CombatLogType.SpellUsage:
                     return Brushes.Blue;
-                case CombatLogTypes.StatChange:
+                case CombatLogType.StatChange:
                     return Brushes.Orange;
                 default:
                     return Brushes.Black;
