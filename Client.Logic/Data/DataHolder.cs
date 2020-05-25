@@ -25,28 +25,22 @@ namespace Client.Logic.Data
         }
 
         // Returns card by id
-        public static SelectableCard GetCard(UInt32 id)
-        {
-            return cardsMap != null && cardsMap.TryGetValue(id, out var card) ? card : null;
-        }
+        public static SelectableCard GetCard(UInt32 id) => cardsMap != null && cardsMap.TryGetValue(id, out var card) ? card : null;
 
         // Returns spells data
-        public static SpellData GetSpellData(UInt32 id)
-        {
-            return spellsDataMap.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, "", "");
-        }
+        public static SpellData GetSpellData(UInt32 id) => spellsDataMap.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, string.Empty, string.Empty, string.Empty, string.Empty);
 
         private static void LoadSpellsData(SQLiteConnection connection)
         {
             spellsDataMap.Clear();
             using (var cmd = connection.CreateCommand())
             {
-                cmd.CommandText = "SELECT id, name, description FROM Spells";
+                cmd.CommandText = "SELECT id, name, description, text, imagePath FROM Spells LEFT JOIN SpellAuras on Id = SpellId";
                 using (var result = cmd.ExecuteReader())
                 {
                     while (result.Read())
                     {
-                        var spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]));
+                        var spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]), Convert.ToString(result["text"]), Convert.ToString(result["imagePath"]));
                         spellsDataMap.Add(spellData.SpellId, spellData);
                     }
                 }
