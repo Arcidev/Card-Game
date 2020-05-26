@@ -177,4 +177,16 @@
   <data name="AuraExpired" xml:space="preserve">
     <value>Účinek kouzla {0} vypršela z {1}</value>
   </data>
+  <data name="Defense" xml:space="preserve">
+    <value>Obrana</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Síla</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Zdravie</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>Mana</value>
+  </data>
 </root>

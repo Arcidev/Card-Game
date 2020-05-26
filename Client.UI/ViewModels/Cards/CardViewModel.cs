@@ -6,6 +6,7 @@ namespace Client.UI.ViewModels.Cards
 {
     public abstract class CardViewModel<T> : NotifyPropertyViewModel where T : Card
     {
+        private string background;
         protected readonly T card;
 
         public UInt32 Id => card.Id;
@@ -26,13 +27,29 @@ namespace Client.UI.ViewModels.Cards
 
         public string Spell => card.Spell?.Info;
 
-        public string Background { get; }
+        public string Background
+        {
+            get => background;
+            private set
+            {
+                if (background == value)
+                    return;
+
+                background = value;
+                OnPropertyChanged();
+            }
+        }
 
         public CardViewModel(T card)
         {
             this.card = card;
             card.StatChanged += stat => OnPropertyChanged(stat.ToString());
 
+            SetBackground();
+        }
+
+        protected void SetBackground()
+        {
             switch (card.Type)
             {
                 case CreatureType.Defensive:

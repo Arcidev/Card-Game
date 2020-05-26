@@ -157,4 +157,16 @@
   <data name="AuraExpired" xml:space="preserve">
     <value>Effect of {0} has expired from {1}</value>
   </data>
+  <data name="Defense" xml:space="preserve">
+    <value>Defense</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Damage</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Health</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>Mana</value>
+  </data>
 </root>

@@ -126,14 +126,14 @@ namespace Client.Network
         // SMSG_SPELL_AURA_EXPIRED
         private static void HandleSpellAuraExpired(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 0, 5, 7, 2, 1, 4, 3, 6);
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 0, 5, 7, 2, 1, 4, 3, 6);
 
-            //var spellId = packet.ReadUInt32();
-            //packet.ReadGuidByteStreamInOrder(guid, 7, 6, 5, 4, 3, 2, 1, 0);
-            //var player = game.GetPlayer(packet.ReadUInt32());
+            var spellId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 7, 6, 5, 4, 3, 2, 1, 0);
+            var player = game.GetPlayer(packet.ReadUInt32());
 
-            //player.ExpireAuras(guid, new[] { spellId });
+            player.ExpireAuras(guid, new[] { spellId });
         }
 
         // SMSG_SPELL_AURAS_REMOVED
