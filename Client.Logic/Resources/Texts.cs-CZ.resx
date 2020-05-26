@@ -171,4 +171,10 @@
   <data name="CardDemorph" xml:space="preserve">
     <value>{0} byl proměněn spátky na {1}</value>
   </data>
+  <data name="AuraApplied" xml:space="preserve">
+    <value>{0} je nyní ovlivněn účinkem z kouzla {1}</value>
+  </data>
+  <data name="AuraExpired" xml:space="preserve">
+    <value>Účinek kouzla {0} vypršela z {1}</value>
+  </data>
 </root>

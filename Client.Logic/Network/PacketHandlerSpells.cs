@@ -63,14 +63,14 @@ namespace Client.Network
         // Handle SMSG_APPLY_AURA packet
         private static void HandleApplyAura(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 7, 2, 1, 3, 5, 4, 0, 6);
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 1, 3, 5, 4, 0, 6);
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //packet.ReadGuidByteStreamInOrder(guid, 0, 5, 2, 1, 7, 6, 4, 3);
-            //var spellId = packet.ReadUInt32();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            packet.ReadGuidByteStreamInOrder(guid, 0, 5, 2, 1, 7, 6, 4, 3);
+            var spellId = packet.ReadUInt32();
 
-            //player.ApplyAura(guid, spellId);
+            player.ApplyAura(guid, spellId);
         }
 
         // Handle SMSG_SPELL_PERIODIC_DAMAGE packet
@@ -139,14 +139,14 @@ namespace Client.Network
         // SMSG_SPELL_AURAS_REMOVED
         private static void HandleSpellAuraRemoved(Packet packet, Game game)
         {
-            //var guid = packet.ReadPacketGuid();
-            //var player = game.GetPlayer(packet.ReadUInt32());
+            var guid = packet.ReadPacketGuid();
+            var player = game.GetPlayer(packet.ReadUInt32());
 
-            //var spellIds = new UInt32[packet.ReadByte()];
-            //for (var i = 0; i < spellIds.Length; i++)
-            //    spellIds[i] = packet.ReadUInt32();
+            var spellIds = new UInt32[packet.ReadByte()];
+            for (var i = 0; i < spellIds.Length; i++)
+                spellIds[i] = packet.ReadUInt32();
 
-            //player.ExpireAuras(guid, spellIds);
+            player.ExpireAuras(guid, spellIds);
         }
     }
 }

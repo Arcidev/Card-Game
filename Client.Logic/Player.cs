@@ -1,4 +1,5 @@
-﻿using Client.Logic.Data.Cards;
+﻿using Client.Logic.Data;
+using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,34 @@ namespace Client.Logic
             {
                 game.CombatLog.LogMorph(card.Name, cardTemplate.Name, isMorph);
                 card.Morph(cardTemplate, mana);
+            });
+        }
+
+        internal void ApplyAura(UInt64 cardGuid, UInt32 spellId)
+        {
+            InvokeCardAction(cardGuid, card =>
+            {
+                var spellData = DataHolder.GetSpellData(spellId);
+                if (spellData == null)
+                    return;
+
+                card.ApplyAura(spellData);
+                game.CombatLog.LogApplyAura(card.Name, spellData.Name);
+            });
+        }
+
+        internal void ExpireAuras(UInt64 cardGuid, uint[] spellIds)
+        {
+            InvokeCardAction(cardGuid, card =>
+            {
+                foreach (var spellId in spellIds)
+                {
+                    var spellData = card.RemoveAura(spellId);
+                    if (spellData == null)
+                        continue;
+
+                    game.CombatLog.LogExpireAura(card.Name, spellData.Name);
+                }
             });
         }
 

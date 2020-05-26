@@ -1,17 +1,28 @@
-﻿using Client.Logic.Enums;
+﻿using Client.Logic.Data.Spells;
+using Client.Logic.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Client.Logic.Data.Cards
 {
     public abstract class PlayableCard : Card
     {
+        private readonly List<SpellData> auras;
+
         /// <summary>
         /// Called when the whole card changes (f.e. with morph)
         /// </summary>
         public event Action CardChanged;
 
+        /// <summary>
+        /// Called when auras on card changes (both add/remove)
+        /// </summary>
+        public event Action SpellAurasChanged;
+
         public UInt64 Guid { get; }
+
+        public IEnumerable<SpellData> Auras => auras;
 
         public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Health, card.Damage, card.Mana, card.Defense, card.Spell)
         {
@@ -19,6 +30,7 @@ namespace Client.Logic.Data.Cards
             Name = card.Name;
             Guid = guid;
 
+            auras = new List<SpellData>();
         }
 
         private static readonly Dictionary<CreatureType, Type> derrivedClasses = new Dictionary<CreatureType, Type>()
@@ -50,7 +62,7 @@ namespace Client.Logic.Data.Cards
             }
         }
 
-        public void Morph(Card card, byte mana)
+        internal void Morph(Card card, byte mana)
         {
             id = card.Id;
             ImageUri = card.ImageUri;
@@ -62,6 +74,23 @@ namespace Client.Logic.Data.Cards
             Mana = mana;
 
             CardChanged?.Invoke();
+        }
+
+        internal void ApplyAura(SpellData spellData)
+        {
+            auras.Add(spellData);
+            SpellAurasChanged?.Invoke();
+        }
+
+        internal SpellData RemoveAura(uint spellId)
+        {
+            var aura = auras.FirstOrDefault(x => x.SpellId == spellId);
+            if (aura == null)
+                return null;
+
+            auras.Remove(aura);
+            SpellAurasChanged?.Invoke();
+            return aura;
         }
     }
 }

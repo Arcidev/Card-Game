@@ -28,5 +28,15 @@ namespace Client.Logic
             var message = isMorph ? string.Format(Texts.CardMorphed, card, morph) : string.Format(Texts.CardDemorph, morph, card);
             MessageReceived?.Invoke(CombatLogType.SpellUsage, message);
         }
+
+        internal void LogApplyAura(string card, string spell)
+        {
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.AuraApplied, card, spell));
+        }
+
+        internal void LogExpireAura(string card, string spell)
+        {
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.AuraExpired, spell, card));
+        }
     }
 }

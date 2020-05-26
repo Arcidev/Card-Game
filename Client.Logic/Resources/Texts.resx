@@ -151,4 +151,10 @@
   <data name="CardDemorph" xml:space="preserve">
     <value>{0} has been demorphed from {1}</value>
   </data>
+  <data name="AuraApplied" xml:space="preserve">
+    <value>{0} is now aflicted by an effect from {1}</value>
+  </data>
+  <data name="AuraExpired" xml:space="preserve">
+    <value>Effect of {0} has expired from {1}</value>
+  </data>
 </root>

@@ -61,6 +61,24 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is now aflicted by an effect from {1}.
+        /// </summary>
+        public static string AuraApplied {
+            get {
+                return ResourceManager.GetString("AuraApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effect of {0} has expired from {1}.
+        /// </summary>
+        public static string AuraExpired {
+            get {
+                return ResourceManager.GetString("AuraExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} has been demorphed from {1}.
         /// </summary>
         public static string CardDemorph {
