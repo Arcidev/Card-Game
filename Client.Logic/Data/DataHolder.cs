@@ -8,10 +8,10 @@ namespace Client.Logic.Data
 {
     public static class DataHolder
     {
-        private static IDictionary<UInt32, SelectableCard> cardsMap;
-        private static readonly IDictionary<UInt32, SpellData> spellsDataMap = new Dictionary<UInt32, SpellData>();
+        private static IDictionary<UInt32, SelectableCard> cards;
+        private static readonly IDictionary<UInt32, SpellData> spellsData = new Dictionary<UInt32, SpellData>();
 
-        public static IEnumerable<SelectableCard> Cards => cardsMap?.Values;
+        public static IEnumerable<SelectableCard> Cards => cards?.Values;
 
         // Loads cards from database
         public static void LoadData(IDictionary<UInt32, SelectableCard> cards)
@@ -25,14 +25,14 @@ namespace Client.Logic.Data
         }
 
         // Returns card by id
-        public static SelectableCard GetCard(UInt32 id) => cardsMap != null && cardsMap.TryGetValue(id, out var card) ? card : null;
+        public static SelectableCard GetCard(UInt32 id) => cards != null && cards.TryGetValue(id, out var card) ? card : null;
 
         // Returns spells data
-        public static SpellData GetSpellData(UInt32 id) => spellsDataMap.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, string.Empty, string.Empty, string.Empty, string.Empty);
+        public static SpellData GetSpellData(UInt32 id) => spellsData.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, string.Empty, string.Empty, string.Empty, string.Empty);
 
         private static void LoadSpellsData(SQLiteConnection connection)
         {
-            spellsDataMap.Clear();
+            spellsData.Clear();
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT id, name, description, text, imagePath FROM Spells LEFT JOIN SpellAuras on Id = SpellId";
@@ -41,7 +41,7 @@ namespace Client.Logic.Data
                     while (result.Read())
                     {
                         var spellData = new SpellData(Convert.ToUInt32(result["id"]), Convert.ToString(result["name"]), Convert.ToString(result["description"]), Convert.ToString(result["text"]), Convert.ToString(result["imagePath"]));
-                        spellsDataMap.Add(spellData.SpellId, spellData);
+                        spellsData.Add(spellData.SpellId, spellData);
                     }
                 }
             }
@@ -69,7 +69,7 @@ namespace Client.Logic.Data
                 }
             }
 
-            cardsMap = cards;
+            DataHolder.cards = cards;
         }
     }
 }

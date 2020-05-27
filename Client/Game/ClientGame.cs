@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ClientNetwork = Arci.Networking.Client;
+using Client.Enums;
 
 namespace Client.Game
 {

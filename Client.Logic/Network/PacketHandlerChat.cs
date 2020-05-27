@@ -1,9 +1,8 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
-using Client.Logic;
 using Client.Logic.Resources;
 
-namespace Client.Network
+namespace Client.Logic.Network
 {
     public static partial class PacketHandler
     {

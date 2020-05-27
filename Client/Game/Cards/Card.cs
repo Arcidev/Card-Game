@@ -1,3 +1,4 @@
+using Client.Enums;
 using Client.Logic.Enums;
 using System;
 using System.Collections.Generic;
@@ -258,9 +259,8 @@ namespace Client.Game
 
         private Brush GetStatBrush(CardStat cardStat)
         {
-            var modifier = 0;
-            var stat = 0;
-
+            int modifier;
+            int stat;
             switch (cardStat)
             {
                 case CardStat.Defense:

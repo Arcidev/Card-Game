@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Client.Logic.Enums;
 using Client.UI;
 using Client.Misc;
+using Client.Enums;
 
 namespace Client
 {

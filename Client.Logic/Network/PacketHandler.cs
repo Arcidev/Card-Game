@@ -1,8 +1,7 @@
 ﻿using Arci.Networking.Data;
-using Client.Logic;
 using System;
 
-namespace Client.Network
+namespace Client.Logic.Network
 {
     public static partial class PacketHandler
     {

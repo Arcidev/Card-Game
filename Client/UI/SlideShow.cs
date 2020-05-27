@@ -5,6 +5,7 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Media.Animation;
+using Client.Enums;
 
 namespace Client.UI
 {

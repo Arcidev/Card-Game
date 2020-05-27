@@ -1,5 +1,5 @@
 ﻿
-namespace Client.Logic.Enums
+namespace Client.Enums
 {
     public enum SelectionType
     {

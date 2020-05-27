@@ -1,5 +1,4 @@
 ﻿using Arci.Networking.Data;
-using Client.Logic;
 using Client.Logic.Data;
 using Client.Logic.Data.Cards;
 using Client.Logic.Data.Spells;
@@ -8,7 +7,7 @@ using Client.Logic.Resources;
 using System;
 using System.Collections.Generic;
 
-namespace Client.Network
+namespace Client.Logic.Network
 {
     public static partial class PacketHandler
     {

@@ -2,7 +2,7 @@
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
 using Client.Logic.Enums;
-using Client.Network;
+using Client.Logic.Network;
 using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
