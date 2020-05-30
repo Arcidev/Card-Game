@@ -12,7 +12,7 @@
     </Page.DataContext>
     <TabControl>
         <TabItem Header="{x:Static resx:Texts.Game}">
-            <Frame Name="GameFrame" Source="MainMenu.xaml" />
+            <Frame IsEnabled="{Binding GameEnabled}" Name="GameFrame" Source="MainMenu.xaml" />
         </TabItem>
         <TabItem Header="{x:Static resx:Texts.Chat}">
             <Frame x:Name="ChatFrame" Source="Chat.xaml" DataContext="{Binding ChatViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />

@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    <PackageReference Include="Notifications.Wpf.Core" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,6 +104,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Game\Chat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Game\PlayingGame.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Game\SelectCards.xaml">

@@ -57,12 +57,14 @@ namespace Client.Logic.Network
         // Handle SMSG_SELECT_CARDS_WAIT_FOR_ANOTHER_PLAYER packet
         private static void HandleSelectCardsWait(Packet packet, Game game)
         {
+            game.IsWaiting = true;
             game.OnInformationReceived(Texts.WaitingForSecondPlayer);
         }
 
         // Handle SMSG_SELECT_CARDS packet
         private static void HandleSelectCards(Packet packet, Game game)
         {
+            game.IsWaiting = false;
             //game.MainWindow.SlideShow.SetVisible(false);
             //game.ShowCardDeck(true);
 

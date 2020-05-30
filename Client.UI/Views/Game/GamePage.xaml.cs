@@ -16,6 +16,12 @@ namespace Client.UI.Views.Game
             InitializeComponent();
 
             Loaded += GamePageLoaded;
+            Initialized += GamePageInitialized;
+        }
+
+        private void GamePageInitialized(object sender, EventArgs e)
+        {
+            GameFrame.Navigated += GameFrame_Navigated;
         }
 
         private void GamePageLoaded(object sender, RoutedEventArgs e)
@@ -23,7 +29,6 @@ namespace Client.UI.Views.Game
             if (!(DataContext is GameViewModel vm))
                 return;
 
-            vm.Game.UnsubscribeAllHandlers();
             vm.Game.PacketProcessed += OnPacketProcessed;
         }
 
@@ -33,9 +38,14 @@ namespace Client.UI.Views.Game
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    // Let's get rid of main menu from navigation bar
-                    GameFrame.Navigated += GameFrame_Navigated;
                     GameFrame.Navigate(new SelectCards());
+                });
+            }
+            else if (packet == (UInt16)SMSGPackets.SelectCards)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    GameFrame.Navigate(new PlayingGame());
                 });
             }
         }
@@ -43,10 +53,12 @@ namespace Client.UI.Views.Game
         private void GameFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             NavigationService.RemoveBackEntry();
-            GameFrame.Navigated -= GameFrame_Navigated;
 
-            if (DataContext is GameViewModel vm)
-                vm.ChatViewModel.AddGameChat();
+            if (!(DataContext is GameViewModel vm))
+                return;
+
+            vm.ChatViewModel.AddGameChat();
+            vm.OnGameEnabledChanged();
         }
 
         private void Frame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e) => UpdateFrameDataContext();

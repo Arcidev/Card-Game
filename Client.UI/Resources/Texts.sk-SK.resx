@@ -177,4 +177,7 @@
   <data name="Logout" xml:space="preserve">
     <value>Odhlásiť sa</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Chyba</value>
+  </data>
 </root>

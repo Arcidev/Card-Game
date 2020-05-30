@@ -331,8 +331,8 @@ inline void Player::SendPacket(Packet const& packet) const
 // Clears player cards
 void Player::ClearCards()
 {
-    for (const auto& [key, card] : m_cards)
-        delete card;
+    for (const auto& cardPair : m_cards)
+        delete cardPair.second;
 
     m_cards.clear();
 }

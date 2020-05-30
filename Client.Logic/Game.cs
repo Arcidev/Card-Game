@@ -38,6 +38,8 @@ namespace Client.Logic
 
         public Player Opponent { get; set; }
 
+        public bool IsWaiting { get; set; }
+
         public Chat Chat { get; }
 
         public CombatLog CombatLog { get; }
