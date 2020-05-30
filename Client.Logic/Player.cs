@@ -11,6 +11,9 @@ namespace Client.Logic
     {
         private readonly Game game;
         private readonly PlayableCard[] cardDeck;
+        private readonly Dictionary<UInt64, PlayableCard> cards;
+
+        public event Action CardDeckChanged;
 
         public UInt32 Id { get; set; }
 
@@ -28,6 +31,7 @@ namespace Client.Logic
             Name = name;
             this.game = game;
 
+            cards = new Dictionary<UInt64, PlayableCard>();
             cardDeck = new PlayableCard[4];
         }
 
@@ -91,6 +95,29 @@ namespace Client.Logic
                     game.CombatLog.LogExpireAura(card.Name, spellData.Name);
                 }
             });
+        }
+
+        internal void SetCards(IEnumerable<PlayableCard> cardsData)
+        {
+            cards.Clear();
+            foreach (var card in cardsData)
+                cards.Add(card.Guid, card);
+        }
+
+        internal void PutCardsOnDeck(UInt64[] cardGuids)
+        {
+            for (var i = 0; i < cardGuids.Length; i++)
+            {
+                if (cards.TryGetValue(cardGuids[i], out var card))
+                    cardDeck[i] = card;
+                else
+                    cardDeck[i] = null;
+            }
+
+            for (var i = cardGuids.Length; i < cardDeck.Length; i++)
+                cardDeck[i] = null;
+
+            CardDeckChanged?.Invoke();
         }
 
         private void InvokeCardAction(UInt64 cardGuid, Action<PlayableCard> action)

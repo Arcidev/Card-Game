@@ -65,76 +65,71 @@ namespace Client.Logic.Network
         private static void HandleSelectCards(Packet packet, Game game)
         {
             game.IsWaiting = false;
-            //game.MainWindow.SlideShow.SetVisible(false);
-            //game.ShowCardDeck(true);
 
-            //var count1 = packet.ReadByte();
-            //var count2 = packet.ReadByte();
+            var count1 = packet.ReadByte();
+            var count2 = packet.ReadByte();
 
-            //var guids1 = new PacketGuid[count1];
-            //var guids2 = new PacketGuid[count2];
+            var guids1 = new PacketGuid[count1];
+            var guids2 = new PacketGuid[count2];
 
-            //for (var i = 0; i < count2; i++)
-            //{
-            //    guids2[i] = new PacketGuid();
-            //    packet.ReadGuidBitStreamInOrder(guids2[i], 1, 2, 7, 0, 5, 3, 4, 6);
-            //}
+            for (var i = 0; i < count2; i++)
+            {
+                guids2[i] = new PacketGuid();
+                packet.ReadGuidBitStreamInOrder(guids2[i], 1, 2, 7, 0, 5, 3, 4, 6);
+            }
 
-            //for (var i = 0; i < count1; i++)
-            //{
-            //    guids1[i] = new PacketGuid();
-            //    packet.ReadGuidBitStreamInOrder(guids1[i], 7, 1, 2, 4, 6, 0, 3, 5);
-            //}
+            for (var i = 0; i < count1; i++)
+            {
+                guids1[i] = new PacketGuid();
+                packet.ReadGuidBitStreamInOrder(guids1[i], 7, 1, 2, 4, 6, 0, 3, 5);
+            }
 
-            //var senderId = packet.ReadUInt32();
-            //var player1 = (game.Player.Id == senderId) ? game.Player : game.Opponent;
-            //var player2 = (game.Player.Id == senderId) ? game.Opponent : game.Player;
+            var senderId = packet.ReadUInt32();
+            var player1 = (game.Player.Id == senderId) ? game.Player : game.Opponent;
+            var player2 = (game.Player.Id == senderId) ? game.Opponent : game.Player;
 
-            //var cards1 = new PlayableCard[count1];
-            //var cards2 = new PlayableCard[count2];
+            var cards1 = new PlayableCard[count1];
+            var cards2 = new PlayableCard[count2];
 
-            //for (var i = 0; i < count1; i++)
-            //{
-            //    packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0, 1, 6, 4, 5);
-            //    var id = packet.ReadUInt32();
-            //    packet.ReadGuidByteStreamInOrder(guids1[i], 3);
-            //    cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id));
-            //}
+            for (var i = 0; i < count1; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0, 1, 6, 4, 5);
+                var id = packet.ReadUInt32();
+                packet.ReadGuidByteStreamInOrder(guids1[i], 3);
+                cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id));
+            }
 
-            //for (var i = 0; i < count2; i++)
-            //{
-            //    packet.ReadGuidByteStreamInOrder(guids2[i], 4, 2, 6, 1, 7, 0);
-            //    var id = packet.ReadUInt32();
-            //    packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
-            //    cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id));
-            //}
+            for (var i = 0; i < count2; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(guids2[i], 4, 2, 6, 1, 7, 0);
+                var id = packet.ReadUInt32();
+                packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
+                cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id));
+            }
 
-            //player1.AddCards(cards1);
-            //player2.AddCards(cards2);
-
-            //game.UnloadData();
-            //game.Chat.Write("Game has started", ChatTypes.Info);
+            player1.SetCards(cards1);
+            player2.SetCards(cards2);
         }
 
         // Handle SMSG_DECK_CARDS packet
         private static void HandleDeckCards(Packet packet, Game game)
         {
-            //var cardsCount = packet.ReadByte();
-            //var guids = new PacketGuid[cardsCount];
-            //for (var i = 0; i < cardsCount; i++)
-            //{
-            //    guids[i] = new PacketGuid();
-            //    packet.ReadGuidBitStreamInOrder(guids[i], 7, 2, 1, 4, 5, 0, 6, 3);
-            //}
+            var cardsCount = packet.ReadByte();
+            var guids = new PacketGuid[cardsCount];
+            for (var i = 0; i < cardsCount; i++)
+            {
+                guids[i] = new PacketGuid();
+                packet.ReadGuidBitStreamInOrder(guids[i], 7, 2, 1, 4, 5, 0, 6, 3);
+            }
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //if (player == null)
-            //    return;
+            var player = game.GetPlayer(packet.ReadUInt32());
+            if (player == null)
+                return;
 
-            //for (var i = 0; i < cardsCount; i++)
-            //    packet.ReadGuidByteStreamInOrder(guids[i], 2, 1, 7, 6, 0, 5, 3, 4);
+            for (var i = 0; i < cardsCount; i++)
+                packet.ReadGuidByteStreamInOrder(guids[i], 2, 1, 7, 6, 0, 5, 3, 4);
 
-            //player.PutCardsOnDeck(Array.ConvertAll(guids, guid => (UInt64)guid));
+            player.PutCardsOnDeck(Array.ConvertAll(guids, guid => (UInt64)guid));
         }
 
         // Handle SMSG_CARD_STAT_CHANGED packet

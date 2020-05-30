@@ -17,7 +17,7 @@ namespace Client.UI.ViewModels
         /// Raises PropertyChanged event
         /// </summary>
         /// <param name="propertyName">Property name on which the change occured</param>
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (propertyName == null)
                 return;

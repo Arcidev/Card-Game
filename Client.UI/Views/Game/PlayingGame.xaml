@@ -7,10 +7,13 @@
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.Game}" Height="450" Width="800">
-    <!--<Page.DataContext>
-        <viewmodels:MainMenuViewModel />
-    </Page.DataContext>-->
+    <Page.DataContext>
+        <viewmodels:PlayingGameViewModel />
+    </Page.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
     </Grid>
 </Page>
