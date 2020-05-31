@@ -191,29 +191,27 @@ namespace Client.Logic.Network
         // Handle SMSG_ATTACK_RESULT packet
         private static void HandleAttackResult(Packet packet, Game game)
         {
-            //var result = (AttackResult)packet.ReadByte();
-            //if (result == AttackResult.InvalidTarget)
-            //{
-            //    game.SetActiveCardActionGrid(true);
-            //    game.Chat.Write("You cannot attack that target", ChatTypes.Info);
-            //    return;
-            //}
-            //else
-            //{
-            //    var cardGuid = new PacketGuid();
-            //    packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
-            //    packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
-            //    var attackerId = packet.ReadUInt32();
-            //    packet.ReadGuidByteStreamInOrder(cardGuid, 1, 3, 0);
-            //    var damage = packet.ReadByte();
-            //    packet.ReadGuidByteStreamInOrder(cardGuid, 5, 4);
+            var result = (AttackResult)packet.ReadByte();
+            if (result == AttackResult.InvalidTarget)
+            {
+                game.IsPlayerTurn = true;
+                game.OnErrorOccured(Texts.InvalidTarget);
+                return;
+            }
 
-            //    var opponent = game.GetOpponent(attackerId);
-            //    if (result == AttackResult.CardAttacked)
-            //        opponent.AttackCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
-            //    else
-            //        opponent.DestroyCard(cardGuid, damage, CombatLogTypes.BasicDamage, false);
-            //}
+            var cardGuid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(cardGuid, 6, 2, 1, 7, 3, 0, 4, 5);
+            packet.ReadGuidByteStreamInOrder(cardGuid, 2, 6, 7);
+            var attackerId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(cardGuid, 1, 3, 0);
+            var damage = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(cardGuid, 5, 4);
+
+            var opponent = game.GetOpponent(attackerId);
+            if (result == AttackResult.CardAttacked)
+                opponent?.AttackCard(cardGuid, damage, CombatLogType.BasicDamage, false);
+            else
+                opponent?.DestroyCard(cardGuid, damage, CombatLogType.BasicDamage, false);
         }
 
         // Handle SMSG_CARD_MORPH_INFO packet

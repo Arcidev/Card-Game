@@ -169,4 +169,7 @@
   <data name="Mana" xml:space="preserve">
     <value>Mana</value>
   </data>
+  <data name="InvalidTarget" xml:space="preserve">
+    <value>You cannot attack that target</value>
+  </data>
 </root>

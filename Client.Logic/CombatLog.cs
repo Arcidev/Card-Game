@@ -38,5 +38,17 @@ namespace Client.Logic
         {
             MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.AuraExpired, spell, card));
         }
+
+        public void LogDamage(CombatLogType combatLogType, string attackerName, string victimName, byte damage, bool alive)
+        {
+            var message = alive ? $"{attackerName} dealt {damage} damage to {victimName}" : $"{attackerName} killed {victimName} with {damage}";
+            MessageReceived?.Invoke(combatLogType, message);
+        }
+
+        public void LogPeriodicDamage(string name, byte damage, bool alive)
+        {
+            var message = alive ? $"{name} suffered {damage} damage" : $"{name} has been killed with {damage} damage";
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, message);
+        }
     }
 }

@@ -189,4 +189,7 @@
   <data name="Mana" xml:space="preserve">
     <value>Mana</value>
   </data>
+  <data name="InvalidTarget" xml:space="preserve">
+    <value>Na tento cieľ nemôžete zaútočiť</value>
+  </data>
 </root>

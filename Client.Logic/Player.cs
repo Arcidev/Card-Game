@@ -120,6 +120,33 @@ namespace Client.Logic
             CardDeckChanged?.Invoke();
         }
 
+
+        internal void AttackCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
+        {
+            InvokeCardAction(guid, card =>
+            {
+                card.Health -= damage;
+
+                if (isPeriodicDamage)
+                    game.CombatLog.LogPeriodicDamage(card.Name  , damage, true);
+                else
+                    game.CombatLog.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, true);
+            });
+        }
+
+        public void DestroyCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
+        {
+            if (cards.TryGetValue(guid, out var card))
+            {
+                if (isPeriodicDamage)
+                    game.CombatLog.LogPeriodicDamage(card.Name, damage, false);
+                else
+                    game.CombatLog.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, false);
+
+                cards.Remove(guid);
+            }
+        }
+
         private void InvokeCardAction(UInt64 cardGuid, Action<PlayableCard> action)
         {
             var card = cardDeck.FirstOrDefault(x => x.Guid == cardGuid);

@@ -1,4 +1,5 @@
 ﻿using Arci.Networking.Data;
+using Client.Logic.Enums;
 using System;
 
 namespace Client.Logic.Network
@@ -33,29 +34,29 @@ namespace Client.Logic.Network
         // Handle SMSG_SPELL_DAMAGE packet
         private static void HandleSpellDamage(Packet packet, Game game)
         {
-            //var targetsCount = packet.ReadByte();
-            //var targets = new PacketGuid[targetsCount];
-            //var isAlive = new bool[targetsCount];
+            var targetsCount = packet.ReadByte();
+            var targets = new PacketGuid[targetsCount];
+            var isAlive = new bool[targetsCount];
 
-            //for (int i = 0; i < targetsCount; i++)
-            //{
-            //    targets[i] = new PacketGuid();
-            //    isAlive[i] = packet.ReadBit();
-            //    packet.ReadGuidBitStreamInOrder(targets[i], 6, 3, 1, 7, 0, 2, 5, 4);
-            //}
+            for (int i = 0; i < targetsCount; i++)
+            {
+                targets[i] = new PacketGuid();
+                isAlive[i] = packet.ReadBit();
+                packet.ReadGuidBitStreamInOrder(targets[i], 6, 3, 1, 7, 0, 2, 5, 4);
+            }
 
-            //var opponent = game.GetOpponent(packet.ReadUInt32());
-            //for (int i = 0; i < targetsCount; i++)
-            //{
-            //    packet.ReadGuidByteStreamInOrder(targets[i], 4, 3, 5);
-            //    byte damage = packet.ReadByte();
-            //    packet.ReadGuidByteStreamInOrder(targets[i], 2, 0, 1, 6, 7);
+            var opponent = game.GetOpponent(packet.ReadUInt32());
+            for (int i = 0; i < targetsCount; i++)
+            {
+                packet.ReadGuidByteStreamInOrder(targets[i], 4, 3, 5);
+                byte damage = packet.ReadByte();
+                packet.ReadGuidByteStreamInOrder(targets[i], 2, 0, 1, 6, 7);
 
-            //    if (isAlive[i])
-            //        opponent.AttackCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
-            //    else
-            //        opponent.DestroyCard(targets[i], damage, CombatLogTypes.SpellUsage, false);
-            //}
+                if (isAlive[i])
+                    opponent.AttackCard(targets[i], damage, CombatLogType.SpellUsage, false);
+                else
+                    opponent.DestroyCard(targets[i], damage, CombatLogType.SpellUsage, false);
+            }
         }
 
         // Handle SMSG_APPLY_AURA packet
@@ -74,19 +75,19 @@ namespace Client.Logic.Network
         // Handle SMSG_SPELL_PERIODIC_DAMAGE packet
         private static void HandleSpellPeriodicDamage(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 6, 4, 1);
-            //var isAlive = packet.ReadBit();
-            //packet.ReadGuidBitStreamInOrder(guid, 7, 2, 3, 5, 0);
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 6, 4, 1);
+            var isAlive = packet.ReadBit();
+            packet.ReadGuidBitStreamInOrder(guid, 7, 2, 3, 5, 0);
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 7, 5, 4, 6);
-            //byte damage = packet.ReadByte();
+            var player = game.GetPlayer(packet.ReadUInt32());
+            packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 7, 5, 4, 6);
+            byte damage = packet.ReadByte();
 
-            //if (isAlive)
-            //    player.AttackCard(guid, damage, CombatLogTypes.SpellUsage, true);
-            //else
-            //    player.DestroyCard(guid, damage, CombatLogTypes.SpellUsage, true);
+            if (isAlive)
+                player.AttackCard(guid, damage, CombatLogType.SpellUsage, true);
+            else
+                player.DestroyCard(guid, damage, CombatLogType.SpellUsage, true);
         }
 
         // Handle SMSG_SPELL_DRAIN

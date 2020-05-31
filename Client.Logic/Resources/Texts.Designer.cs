@@ -169,6 +169,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot attack that target.
+        /// </summary>
+        public static string InvalidTarget {
+            get {
+                return ResourceManager.GetString("InvalidTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mana.
         /// </summary>
         public static string Mana {

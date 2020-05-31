@@ -40,12 +40,15 @@ namespace Client.Logic
 
         public bool IsWaiting { get; set; }
 
+        public bool IsPlayerTurn { get; set; }
+
         public Chat Chat { get; }
 
         public CombatLog CombatLog { get; }
 
         private Game(ClientNetwork clientNetwork)
         {
+            IsPlayerTurn = true;
             network = clientNetwork;
             Chat = new Chat(this);
             CombatLog = new CombatLog();
@@ -140,6 +143,18 @@ namespace Client.Logic
 
             if (Opponent?.Id == playerId)
                 return Opponent;
+
+            Debug.Assert(true, $"Player with Id:{playerId} not found");
+            return null;
+        }
+
+        internal Player GetOpponent(UInt32 playerId)
+        {
+            if (Player?.Id == playerId)
+                return Opponent;
+
+            if (Opponent?.Id == playerId)
+                return Player;
 
             Debug.Assert(true, $"Player with Id:{playerId} not found");
             return null;

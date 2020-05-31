@@ -189,4 +189,7 @@
   <data name="Mana" xml:space="preserve">
     <value>Maná</value>
   </data>
+  <data name="InvalidTarget" xml:space="preserve">
+    <value>No puedes atacar a ese objetivo</value>
+  </data>
 </root>
