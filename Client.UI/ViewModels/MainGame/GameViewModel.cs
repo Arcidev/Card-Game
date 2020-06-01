@@ -12,7 +12,7 @@ namespace Client.UI.ViewModels.MainGame
 
         public ChatViewModel ChatViewModel { get; }
 
-        public bool GameEnabled => !Game.IsWaiting;
+        public bool GameEnabled => !Game.IsGameWaiting;
 
         public GameViewModel()
         {

@@ -134,7 +134,7 @@ namespace Client.Logic
             });
         }
 
-        public void DestroyCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
+        internal void DestroyCard(UInt64 guid, byte damage, CombatLogType combatLogType, bool isPeriodicDamage)
         {
             if (cards.TryGetValue(guid, out var card))
             {
@@ -145,6 +145,28 @@ namespace Client.Logic
 
                 cards.Remove(guid);
             }
+        }
+
+        internal void SetActiveCard(UInt64 cardGuid)
+        {
+            for (var i = 0; i < cardDeck.Length; i++)
+            {
+                if (cardDeck[i]?.Guid == cardGuid)
+                {
+                    ActiveCardPosition = i;
+                    break;
+                }
+            }
+        }
+
+        internal void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
+        {
+            InvokeCardAction(cardGuid, card =>
+            {
+                var spellData = DataHolder.GetSpellData(spellId);
+                game.CombatLog.LogManaConsume(card.Name, spellData.Name, manaCost);
+                card.Mana = mana;
+            });
         }
 
         private void InvokeCardAction(UInt64 cardGuid, Action<PlayableCard> action)

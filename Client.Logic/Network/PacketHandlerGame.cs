@@ -27,18 +27,20 @@ namespace Client.Logic.Network
         // Handle SMSG_ACTIVE_PLAYER packet
         private static void HandleActivePlayer(Packet packet, Game game)
         {
-            //var cardGuid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(cardGuid, 7, 1, 2, 0, 3, 5, 4, 6);
+            var cardGuid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(cardGuid, 7, 1, 2, 0, 3, 5, 4, 6);
 
-            //packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
-            //var activePlayerId = packet.ReadUInt32();
-            //var activePlayer = (game.Player.Id == activePlayerId) ? game.Player : game.Opponent;
-            //var nonActivePlayer = (game.Player.Id == activePlayerId) ? game.Opponent : game.Player;
+            packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
+            var activePlayerId = packet.ReadUInt32();
+            var activePlayer = game.GetPlayer(activePlayerId);
+            var nonActivePlayer = game.GetOpponent(activePlayerId);
 
-            //packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
-            //nonActivePlayer.SetWaitingState();
-            //activePlayer.SetActiveState(cardGuid);
-            //game.SetActiveCardActionGrid(game.Player.Id == activePlayerId);
+            packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
+            if (game.Player == nonActivePlayer)
+                game.IsPlayerTurn = false;
+
+            game.IsPlayerTurn = game.Player == activePlayer;
+            activePlayer.SetActiveCard(cardGuid);
         }
 
         // Handle SMSG_PLAYER_DISCONNECTED packet

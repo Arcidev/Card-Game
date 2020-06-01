@@ -38,7 +38,7 @@ namespace Client.Logic
 
         public Player Opponent { get; set; }
 
-        public bool IsWaiting { get; set; }
+        public bool IsGameWaiting { get; set; }
 
         public bool IsPlayerTurn { get; set; }
 
@@ -48,7 +48,6 @@ namespace Client.Logic
 
         private Game(ClientNetwork clientNetwork)
         {
-            IsPlayerTurn = true;
             network = clientNetwork;
             Chat = new Chat(this);
             CombatLog = new CombatLog();

@@ -9,26 +9,26 @@ namespace Client.Logic.Network
         // Handle SMSG_SPELL_CAST_RESULT packet
         private static void HandleSpellCastResult(Packet packet, Game game)
         {
-            //SpellCastResult result = (SpellCastResult)packet.ReadByte();
-            //if (result != SpellCastResult.Success)
-            //{
-            //    game.SetActiveCardActionGrid(true);
-            //    game.Chat.Write(result.GetDescription(), ChatTypes.Info);
-            //    return;
-            //}
+            var result = (SpellCastResult)packet.ReadByte();
+            if (result != SpellCastResult.Success)
+            {
+                game.IsPlayerTurn = true;
+                game.OnErrorOccured(result.GetDescription());
+                return;
+            }
 
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 5, 7, 0, 1, 4, 3, 2, 6);
 
-            //var mana = packet.ReadByte();
-            //packet.ReadGuidByteStreamInOrder(guid, 7, 2);
-            //var manaCost = packet.ReadByte();
-            //packet.ReadGuidByteStreamInOrder(guid, 4, 0, 1);
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //var spellId = packet.ReadUInt32();
-            //packet.ReadGuidByteStreamInOrder(guid, 3, 6, 5);
+            var mana = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 7, 2);
+            var manaCost = packet.ReadByte();
+            packet.ReadGuidByteStreamInOrder(guid, 4, 0, 1);
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var spellId = packet.ReadUInt32();
+            packet.ReadGuidByteStreamInOrder(guid, 3, 6, 5);
 
-            //player.HandleSuccessfulSpellCast(guid, spellId, mana, manaCost);
+            player.HandleSuccessfulSpellCast(guid, spellId, mana, manaCost);
         }
 
         // Handle SMSG_SPELL_DAMAGE packet
