@@ -159,6 +159,11 @@ namespace Client.Logic
             }
         }
 
+        internal PlayableCard GetCard(UInt64 cardGuid)
+        {
+            return cardDeck.FirstOrDefault(x => x.Guid == cardGuid);
+        }
+
         internal void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
         {
             InvokeCardAction(cardGuid, card =>
@@ -171,7 +176,7 @@ namespace Client.Logic
 
         private void InvokeCardAction(UInt64 cardGuid, Action<PlayableCard> action)
         {
-            var card = cardDeck.FirstOrDefault(x => x.Guid == cardGuid);
+            var card = GetCard(cardGuid);
             if (card == null)
                 return;
 

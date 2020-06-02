@@ -93,33 +93,34 @@ namespace Client.Logic.Network
         // Handle SMSG_SPELL_DRAIN
         private static void HandleSpellDrain(Packet packet, Game game)
         {
-            //var guid = new PacketGuid();
-            //packet.ReadGuidBitStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
-            //var isAlive = packet.ReadBit();
+            var guid = new PacketGuid();
+            packet.ReadGuidBitStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
+            var isAlive = packet.ReadBit();
 
-            //var player = game.GetPlayer(packet.ReadUInt32());
-            //var opponent = game.GetOpponent(player.Id);
-            //packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
+            var player = game.GetPlayer(packet.ReadUInt32());
+            var opponent = game.GetOpponent(player.Id);
+            packet.ReadGuidByteStreamInOrder(guid, 0, 1, 2, 3, 4, 5, 6, 7);
 
-            //var drainedHealth = packet.ReadByte();
-            //var restoredHealth = packet.ReadByte();
-            //var drainedMana = packet.ReadByte();
-            //var restoredMana = packet.ReadByte();
-            //var opponentMana = packet.ReadByte();
-            //var health = packet.ReadByte();
-            //var mana = packet.ReadByte();
+            var drainedHealth = packet.ReadByte();
+            var restoredHealth = packet.ReadByte();
+            var drainedMana = packet.ReadByte();
+            var restoredMana = packet.ReadByte();
+            var opponentMana = packet.ReadByte();
+            var health = packet.ReadByte();
+            var mana = packet.ReadByte();
 
-            //if (isAlive)
-            //{
-            //    opponent.AttackCard(guid, drainedHealth, CombatLogTypes.SpellUsage, true);
-            //    opponent.SetCardMana(guid, opponentMana);
-            //}
-            //else
-            //    opponent.DestroyCard(guid, packet.ReadByte(), CombatLogTypes.SpellUsage, true);
+            game.CombatLog.LogManaDrain(player.ActiveCard.Name, player.GetCard(guid)?.Name, restoredMana, drainedMana);
+            if (isAlive)
+            {
+                opponent.AttackCard(guid, drainedHealth, CombatLogType.SpellUsage, true);
+                opponent.SetCardMana(guid, opponentMana);
+            }
+            else
+                opponent.DestroyCard(guid, packet.ReadByte(), CombatLogType.SpellUsage, true);
 
-            //var currentCardGuid = player.ActiveCard.Guid;
-            //player.HealCard(currentCardGuid, health, restoredHealth);
-            //player.SetCardMana(currentCardGuid, mana);
+            var currentCardGuid = player.ActiveCard.Guid;
+            player.HealCard(currentCardGuid, health, restoredHealth);
+            player.SetCardMana(currentCardGuid, mana);
         }
 
         // SMSG_SPELL_AURA_EXPIRED

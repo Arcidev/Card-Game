@@ -33,12 +33,8 @@ namespace Client.Logic.Network
             packet.ReadGuidByteStreamInOrder(cardGuid, 7, 5, 4, 2, 6);
             var activePlayerId = packet.ReadUInt32();
             var activePlayer = game.GetPlayer(activePlayerId);
-            var nonActivePlayer = game.GetOpponent(activePlayerId);
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
-            if (game.Player == nonActivePlayer)
-                game.IsPlayerTurn = false;
-
             game.IsPlayerTurn = game.Player == activePlayer;
             activePlayer.SetActiveCard(cardGuid);
         }

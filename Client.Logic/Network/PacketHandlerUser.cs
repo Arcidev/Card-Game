@@ -21,7 +21,7 @@ namespace Client.Logic.Network
                     game.Player = new Player(packet.ReadUInt32(), packet.ReadString(), game);
                     return;
                 case UserResult.PasswordChanged:
-                    game.OnErrorOccured(Texts.PasswordChanged);
+                    game.OnInformationReceived(Texts.PasswordChanged);
                     return;
                 case UserResult.InvalidCredentials:
                     game.OnErrorOccured(Texts.InvalidCredentials);

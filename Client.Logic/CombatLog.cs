@@ -55,5 +55,10 @@ namespace Client.Logic
         {
             MessageReceived?.Invoke(CombatLogType.SpellUsage, $"{spell} consumes {manaCost} mana from {card}");
         }
+
+        internal void LogManaDrain(string attacker, string victim, byte restoredMana, byte drainedMana)
+        {
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, $"{attacker} has drained {drainedMana} mana from {victim} and restored {restoredMana} mana");
+        }
     }
 }
