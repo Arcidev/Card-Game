@@ -55,10 +55,7 @@ namespace Client.Logic
             
         }
 
-        internal void SetCardMana(UInt64 cardGuid, byte mana)
-        {
-            InvokeCardAction(cardGuid, card => card.Mana = mana);
-        }
+        internal void SetCardMana(UInt64 cardGuid, byte mana) => InvokeCardAction(cardGuid, card => card.Mana = mana);
 
         internal void MorphCard(UInt64 cardGuid, Card cardTemplate, byte mana, bool isMorph)
         {
@@ -159,10 +156,7 @@ namespace Client.Logic
             }
         }
 
-        internal PlayableCard GetCard(UInt64 cardGuid)
-        {
-            return cardDeck.FirstOrDefault(x => x.Guid == cardGuid);
-        }
+        internal PlayableCard GetCard(UInt64 cardGuid) => cardDeck.FirstOrDefault(x => x.Guid == cardGuid);
 
         internal void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
         {

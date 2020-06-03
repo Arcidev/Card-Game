@@ -53,7 +53,6 @@ namespace Client.UI.Views.Game
         private void GameFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             NavigationService.RemoveBackEntry();
-
             if (!(DataContext is GameViewModel vm))
                 return;
 

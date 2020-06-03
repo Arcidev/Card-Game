@@ -41,19 +41,19 @@ namespace Client.Logic
 
         internal void LogDamage(CombatLogType combatLogType, string attackerName, string victimName, byte damage, bool alive)
         {
-            var message = alive ? $"{attackerName} dealt {damage} damage to {victimName}" : $"{attackerName} killed {victimName} with {damage}";
+            var message = alive ? $"{attackerName} has dealt {damage} damage to {victimName}" : string.Format(Texts.CardKilled, attackerName, victimName, damage);
             MessageReceived?.Invoke(combatLogType, message);
         }
 
         internal void LogPeriodicDamage(string name, byte damage, bool alive)
         {
-            var message = alive ? $"{name} suffered {damage} damage" : $"{name} has been killed with {damage} damage";
+            var message = alive ? $"{name} has suffered {damage} damage" : string.Format(Texts.CardPeriodicKill, name, damage);
             MessageReceived?.Invoke(CombatLogType.SpellUsage, message);
         }
 
         internal void LogManaConsume(string card, string spell, byte manaCost)
         {
-            MessageReceived?.Invoke(CombatLogType.SpellUsage, $"{spell} consumes {manaCost} mana from {card}");
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.ManaConsume, spell, manaCost, card));
         }
 
         internal void LogManaDrain(string attacker, string victim, byte restoredMana, byte drainedMana)

@@ -172,4 +172,13 @@
   <data name="InvalidTarget" xml:space="preserve">
     <value>You cannot attack that target</value>
   </data>
+  <data name="CardKilled" xml:space="preserve">
+    <value>{0} has killed {1} with {2} damage</value>
+  </data>
+  <data name="CardPeriodicKill" xml:space="preserve">
+    <value>{0} has been killed with {1} damage</value>
+  </data>
+  <data name="ManaConsume" xml:space="preserve">
+    <value>{0} consumes {1} mana from {2}</value>
+  </data>
 </root>

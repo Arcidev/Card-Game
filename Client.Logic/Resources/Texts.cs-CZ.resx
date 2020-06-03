@@ -192,4 +192,13 @@
   <data name="InvalidTarget" xml:space="preserve">
     <value>Na tento cíl nemůžete zaútočit</value>
   </data>
+  <data name="CardKilled" xml:space="preserve">
+    <value>{0} zabil {1} s poškozením {2}</value>
+  </data>
+  <data name="CardPeriodicKill" xml:space="preserve">
+    <value>{0} byl zabit s poškozením {1}</value>
+  </data>
+  <data name="ManaConsume" xml:space="preserve">
+    <value>{0} spotřebovává {1} many z {2}</value>
+  </data>
 </root>

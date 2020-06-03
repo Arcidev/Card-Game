@@ -97,11 +97,29 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has killed {1} with {2} damage.
+        /// </summary>
+        public static string CardKilled {
+            get {
+                return ResourceManager.GetString("CardKilled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}  has been morphed to {1}.
         /// </summary>
         public static string CardMorphed {
             get {
                 return ResourceManager.GetString("CardMorphed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has been killed with {1} damage.
+        /// </summary>
+        public static string CardPeriodicKill {
+            get {
+                return ResourceManager.GetString("CardPeriodicKill", resourceCulture);
             }
         }
         
@@ -183,6 +201,15 @@ namespace Client.Logic.Resources {
         public static string Mana {
             get {
                 return ResourceManager.GetString("Mana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} consumes {1} mana from {2}.
+        /// </summary>
+        public static string ManaConsume {
+            get {
+                return ResourceManager.GetString("ManaConsume", resourceCulture);
             }
         }
         

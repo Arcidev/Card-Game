@@ -192,4 +192,13 @@
   <data name="InvalidTarget" xml:space="preserve">
     <value>No puedes atacar a ese objetivo</value>
   </data>
+  <data name="CardKilled" xml:space="preserve">
+    <value>{0} ha matado {1} con {2} daños</value>
+  </data>
+  <data name="CardPeriodicKill" xml:space="preserve">
+    <value>{0} ha sido asesinado con {1} daños</value>
+  </data>
+  <data name="ManaConsume" xml:space="preserve">
+    <value>{0} consume {1} maná de {2}</value>
+  </data>
 </root>
