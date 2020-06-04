@@ -28,9 +28,9 @@ namespace Client.UI.ViewModels.MainGame
         private async void OnMessageReceived(MessageType type, string msg)
         {
             if (type == MessageType.Error)
-                await new NotificationManager().ShowAsync(new NotificationContent { Title = Texts.Error, Message = msg, Type = NotificationType.Error });
+                await new NotificationManager().ShowAsync(new NotificationContent { Title = Texts.Error, Message = msg, Type = NotificationType.Error }, areaName: "NotificationArea");
             else if (type == MessageType.Information)
-                await new NotificationManager().ShowAsync(new NotificationContent { Message = msg, Type = NotificationType.Information });
+                await new NotificationManager().ShowAsync(new NotificationContent { Message = msg, Type = NotificationType.Information }, areaName: "NotificationArea");
 
             OnGameEnabledChanged();
         }

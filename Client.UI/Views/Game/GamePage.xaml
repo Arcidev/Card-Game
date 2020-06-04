@@ -4,18 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:notifications="clr-namespace:Notifications.Wpf.Core.Controls;assembly=Notifications.Wpf.Core"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.MainMenu}">
     <Page.DataContext>
         <viewmodels:GameViewModel />
     </Page.DataContext>
-    <TabControl>
-        <TabItem Header="{x:Static resx:Texts.Game}">
-            <Frame IsEnabled="{Binding GameEnabled}" Name="GameFrame" Source="MainMenu.xaml" />
-        </TabItem>
-        <TabItem Header="{x:Static resx:Texts.Chat}">
-            <Frame x:Name="ChatFrame" Source="Chat.xaml" DataContext="{Binding ChatViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
-        </TabItem>
-    </TabControl>
+    <Grid>
+        <TabControl>
+            <TabItem Header="{x:Static resx:Texts.Game}">
+                <Frame IsEnabled="{Binding GameEnabled}" Name="GameFrame" Source="MainMenu.xaml" />
+            </TabItem>
+            <TabItem Header="{x:Static resx:Texts.Chat}">
+                <Frame x:Name="ChatFrame" Source="Chat.xaml" DataContext="{Binding ChatViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
+            </TabItem>
+        </TabControl>
+        <notifications:NotificationArea x:Name="NotificationArea" Position="TopRight" MaxItems="3"/>
+    </Grid>
 </Page>
