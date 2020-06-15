@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:controls="clr-namespace:Client.UI.Controls"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.Game}" Height="450" Width="800">
@@ -15,5 +16,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <controls:CardDeck DataContext="{Binding Opponent}"/>
+        <controls:CardDeck Grid.Row="1" DataContext="{Binding Player}" />
     </Grid>
 </Page>

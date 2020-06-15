@@ -251,7 +251,7 @@ inline std::string_view Player::GetName() const
 
 void Player::SendGameInfo() const
 {
-    Player* opponent = GetOpponent();
+    Player const* opponent = GetOpponent();
     Packet packet(SMSGPackets::SMSG_GAME_INFO);
     packet.WriteBit(opponent != nullptr);
     packet.FlushBits();
@@ -262,6 +262,8 @@ void Player::SendGameInfo() const
         packet << opponent->GetId();
         packet << opponent->GetName();
     }
+
+    SendPacket(packet);
 }
 
 // Sends all cards that are currently available to be played with

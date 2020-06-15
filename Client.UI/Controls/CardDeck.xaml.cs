@@ -3,11 +3,11 @@
 namespace Client.UI.Controls
 {
     /// <summary>
-    /// Interaction logic for CardControl.xaml
+    /// Interaction logic for CardDeck.xaml
     /// </summary>
-    public partial class CardControl : UserControl
+    public partial class CardDeck : UserControl
     {
-        public CardControl()
+        public CardDeck()
         {
             InitializeComponent();
         }

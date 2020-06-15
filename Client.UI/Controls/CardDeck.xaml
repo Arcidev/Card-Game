@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Client.UI.Controls.CardDeck"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
+        xmlns:controls="clr-namespace:Client.UI.Controls"
+        mc:Ignorable="d" Height="250" Width="800">
+    <ListView d:DataContext="{d:DesignInstance Type=viewmodels:CardDeckViewModel}" ItemsSource="{Binding Cards}">
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Margin="5 0" Orientation="Horizontal">
+                    <controls:CardControl DataContext="{Binding}" />
+                    <ListView ItemsSource="{Binding Auras}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</UserControl>

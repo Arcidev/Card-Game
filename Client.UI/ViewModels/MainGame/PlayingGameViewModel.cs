@@ -1,8 +1,5 @@
 ﻿using Client.Logic;
-using Client.UI.ViewModels.Cards;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -10,9 +7,9 @@ namespace Client.UI.ViewModels.MainGame
     {
         private readonly Game game;
 
-        public ObservableCollection<PlayableCardViewModel> PlayerCards { get; }
+        public CardDeckViewModel Player { get; }
 
-        public ObservableCollection<PlayableCardViewModel> OpponentCards { get; }
+        public CardDeckViewModel Opponent { get; }
 
         public PlayingGameViewModel()
         {
@@ -20,15 +17,8 @@ namespace Client.UI.ViewModels.MainGame
             if (game.Player == null || game.Opponent == null)
                 throw new InvalidOperationException("Both players must exist at this point");
 
-            PlayerCards = new ObservableCollection<PlayableCardViewModel>(game.Player.CardDeck.Select(x => new PlayableCardViewModel(x)));
-            OpponentCards = new ObservableCollection<PlayableCardViewModel>(game.Opponent.CardDeck.Select(x => new PlayableCardViewModel(x)));
-
-            game.Player.CardDeckChanged += () => OnDeckChanged(game.Player, PlayerCards);
-            game.Opponent.CardDeckChanged += () => OnDeckChanged(game.Opponent, PlayerCards);
-        }
-
-        private void OnDeckChanged(Player player, ObservableCollection<PlayableCardViewModel> cards)
-        {
+            Player = new CardDeckViewModel(game.Player);
+            Opponent = new CardDeckViewModel(game.Opponent);
         }
     }
 }

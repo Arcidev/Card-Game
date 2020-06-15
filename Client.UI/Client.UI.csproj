@@ -106,6 +106,9 @@
     <Page Update="Views\Game\Chat.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Controls\CardDeck.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Game\PlayingGame.xaml">
       <SubType>Designer</SubType>
     </Page>
