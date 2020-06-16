@@ -180,4 +180,13 @@
   <data name="Error" xml:space="preserve">
     <value>Chyba</value>
   </data>
+  <data name="Attack" xml:space="preserve">
+    <value>Útok</value>
+  </data>
+  <data name="Defend" xml:space="preserve">
+    <value>Brániť sa</value>
+  </data>
+  <data name="Spell" xml:space="preserve">
+    <value>Kúzlo</value>
+  </data>
 </root>

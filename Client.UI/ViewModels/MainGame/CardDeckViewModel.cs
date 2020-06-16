@@ -2,6 +2,7 @@
 using Client.UI.ViewModels.Cards;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -22,9 +23,12 @@ namespace Client.UI.ViewModels.MainGame
 
         private void OnDeckChanged()
         {
-            Cards.Clear();
-            foreach (var card in player.CardDeck.Where(x => x != null).Select(x => new PlayableCardViewModel(x)))
-                Cards.Add(card);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Cards.Clear();
+                foreach (var card in player.CardDeck.Where(x => x != null).Select(x => new PlayableCardViewModel(x)))
+                    Cards.Add(card);
+            });
         }
     }
 }

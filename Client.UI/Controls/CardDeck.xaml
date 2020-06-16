@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         xmlns:controls="clr-namespace:Client.UI.Controls"
-        mc:Ignorable="d" Height="250" Width="800">
+        mc:Ignorable="d">
     <ListView d:DataContext="{d:DesignInstance Type=viewmodels:CardDeckViewModel}" ItemsSource="{Binding Cards}">
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>

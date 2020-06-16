@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
+using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.Logic.Network;
 using System;
@@ -104,6 +105,28 @@ namespace Client.Logic
 
             if (disposePacket)
                 packet.Dispose();
+        }
+
+        public async Task DefendSelfAsync()
+        {
+            var packet = new Packet(CMSGPackets.DefendSelf);
+            await SendPacketAsync(packet);
+        }
+
+        public async Task SendCardAction(PlayableCard card, CardAction action)
+        {
+            if (action == CardAction.None)
+                return;
+
+            var packet = new Packet(CMSGPackets.CardAction).Builder()
+                .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
+                .FlushBits()
+                .WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0)
+                .Write((byte)action)
+                .WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4)
+                .Build();
+
+            await SendPacketAsync(packet);
         }
 
         /// <inheritdoc />

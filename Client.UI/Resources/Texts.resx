@@ -180,4 +180,13 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="Attack" xml:space="preserve">
+    <value>Attack</value>
+  </data>
+  <data name="Spell" xml:space="preserve">
+    <value>Spell</value>
+  </data>
+  <data name="Defend" xml:space="preserve">
+    <value>Defend</value>
+  </data>
 </root>

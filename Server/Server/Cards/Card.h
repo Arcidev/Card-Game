@@ -14,7 +14,6 @@ enum CardType
 enum CardActions
 {
     CARD_ACTION_NONE = 0,
-    CARD_ACTION_DEFEND,
     CARD_ACTION_BASIC_ATTACK,
     CARD_ACTION_SPELL_USE
 };

@@ -61,6 +61,15 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attack.
+        /// </summary>
+        public static string Attack {
+            get {
+                return ResourceManager.GetString("Attack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat.
         /// </summary>
         public static string Chat {
@@ -75,6 +84,15 @@ namespace Client.UI.Resources {
         public static string CreateAccount {
             get {
                 return ResourceManager.GetString("CreateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defend.
+        /// </summary>
+        public static string Defend {
+            get {
+                return ResourceManager.GetString("Defend", resourceCulture);
             }
         }
         
@@ -219,6 +237,15 @@ namespace Client.UI.Resources {
         public static string Server {
             get {
                 return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spell.
+        /// </summary>
+        public static string Spell {
+            get {
+                return ResourceManager.GetString("Spell", resourceCulture);
             }
         }
         

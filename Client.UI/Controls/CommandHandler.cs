@@ -10,7 +10,11 @@ namespace Client.UI.Controls
         private readonly Action<object> action;
         private readonly Func<object, bool> canExecute;
 
-        public CommandHandler(Action action, Func<bool> canExecute = null) : this(o => action(), o => canExecute()) { }
+        public CommandHandler(Action action, Func<bool> canExecute = null) : this(o => action())
+        {
+            if (canExecute != null)
+                this.canExecute = o => canExecute();
+        }
 
         public CommandHandler(Action<object> action, Func<object, bool> canExecute = null)
         {
