@@ -35,7 +35,7 @@ namespace Client.Logic.Network
             var activePlayer = game.GetPlayer(activePlayerId);
 
             packet.ReadGuidByteStreamInOrder(cardGuid, 1, 0, 3);
-            game.IsPlayerTurn = game.Player == activePlayer;
+            game.IsGameWaiting = game.Player != activePlayer;
             activePlayer.SetActiveCard(cardGuid);
         }
 

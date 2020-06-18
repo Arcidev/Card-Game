@@ -194,7 +194,7 @@ namespace Client.Logic.Network
             var result = (AttackResult)packet.ReadByte();
             if (result == AttackResult.InvalidTarget)
             {
-                game.IsPlayerTurn = true;
+                game.IsGameWaiting = false;
                 game.OnErrorOccured(Texts.InvalidTarget);
                 return;
             }

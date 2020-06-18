@@ -41,8 +41,6 @@ namespace Client.Logic
 
         public bool IsGameWaiting { get; set; }
 
-        public bool IsPlayerTurn { get; set; }
-
         public Chat Chat { get; }
 
         public CombatLog CombatLog { get; }

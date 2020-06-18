@@ -12,7 +12,7 @@ namespace Client.Logic.Network
             var result = (SpellCastResult)packet.ReadByte();
             if (result != SpellCastResult.Success)
             {
-                game.IsPlayerTurn = true;
+                game.IsGameWaiting = false;
                 game.OnErrorOccured(result.GetDescription());
                 return;
             }
