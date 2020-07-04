@@ -20,6 +20,6 @@
                 <Frame x:Name="ChatFrame" Source="Chat.xaml" DataContext="{Binding ChatViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
             </TabItem>
         </TabControl>
-        <notifications:NotificationArea x:Name="NotificationArea" Position="TopRight" MaxItems="3"/>
+        <notifications:NotificationArea x:Name="NotificationArea" Position="BottomRight" MaxItems="3"/>
     </Grid>
 </Page>

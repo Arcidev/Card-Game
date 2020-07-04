@@ -1,4 +1,6 @@
 ﻿using Client.Logic.Data.Cards;
+using Client.UI.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +8,24 @@ namespace Client.UI.ViewModels.Cards
 {
     public class PlayableCardViewModel : CardViewModel<PlayableCard>
     {
+        private SelectionType selectionType;
+
         public List<SpellAuraViewModel> Auras { get; }
+
+        public SelectionType SelectionType
+        {
+            get => selectionType;
+            set
+            {
+                if (selectionType == value)
+                    return;
+
+                selectionType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public UInt64 Guid => card.Guid;
 
         public PlayableCardViewModel(PlayableCard card) : base(card)
         {

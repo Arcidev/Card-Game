@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:enums="clr-namespace:Client.UI.Enums"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         xmlns:controls="clr-namespace:Client.UI.Controls"
         mc:Ignorable="d">
@@ -15,7 +16,46 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <StackPanel Margin="5 0" Orientation="Horizontal">
-                    <controls:CardControl DataContext="{Binding}" />
+                    <Border Background="Transparent" Opacity="1.0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectionType}" Value="{x:Static enums:SelectionType.None}">
+                                        <Setter Property="BorderBrush" Value="Black" />
+                                        <Setter Property="BorderThickness" Value="2" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectionType}" Value="{x:Static enums:SelectionType.BasicDamageAttackable}">
+                                        <Setter Property="BorderBrush" Value="Red" />
+                                        <Setter Property="BorderThickness" Value="2" />
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="5" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectionType}" Value="{x:Static enums:SelectionType.SpellUsable}">
+                                        <Setter Property="BorderBrush" Value="Blue" />
+                                        <Setter Property="BorderThickness" Value="2" />
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="5" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectionType}" Value="{x:Static enums:SelectionType.Selected}">
+                                        <Setter Property="BorderBrush" Value="Yellow" />
+                                        <Setter Property="BorderThickness" Value="2" />
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="5" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <controls:CardControl DataContext="{Binding}" />
+                    </Border>
                     <ListView ItemsSource="{Binding Auras}">
                         <ListView.ItemTemplate>
                             <DataTemplate>

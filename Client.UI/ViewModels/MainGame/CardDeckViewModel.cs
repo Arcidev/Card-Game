@@ -27,7 +27,9 @@ namespace Client.UI.ViewModels.MainGame
             {
                 Cards.Clear();
                 foreach (var card in player.CardDeck.Where(x => x != null).Select(x => new PlayableCardViewModel(x)))
+                {
                     Cards.Add(card);
+                }
             });
         }
     }

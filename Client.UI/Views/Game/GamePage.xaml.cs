@@ -11,25 +11,24 @@ namespace Client.UI.Views.Game
     /// </summary>
     public partial class GamePage : Page
     {
+        private bool loaded = false;
+
         public GamePage()
         {
             InitializeComponent();
 
             Loaded += GamePageLoaded;
-            Initialized += GamePageInitialized;
-        }
-
-        private void GamePageInitialized(object sender, EventArgs e)
-        {
-            GameFrame.Navigated += GameFrame_Navigated;
         }
 
         private void GamePageLoaded(object sender, RoutedEventArgs e)
         {
-            if (!(DataContext is GameViewModel vm))
+            if (loaded || !(DataContext is GameViewModel vm))
                 return;
 
+            loaded = true;
             vm.Game.PacketProcessed += OnPacketProcessed;
+            GameFrame.Navigated += GameFrame_Navigated;
+
         }
 
         private void OnPacketProcessed(UInt16 packet)
