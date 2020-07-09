@@ -1,14 +1,23 @@
-﻿using Client.Logic.Data.Cards;
+﻿using Arci.Networking.Data;
+using Client.Logic.Data.Cards;
+using Client.Logic.Enums;
+using Client.UI.Controls;
 using Client.UI.Enums;
+using Client.UI.ViewModels.MainGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Client.UI.ViewModels.Cards
 {
-    public class PlayableCardViewModel : CardViewModel<PlayableCard>
+    public class PlayableCardViewModel : CardViewModel
     {
+        private readonly PlayableCard card;
+        private readonly CardDeckViewModel deck;
         private SelectionType selectionType;
+
+        protected override Card Card => card;
 
         public List<SpellAuraViewModel> Auras { get; }
 
@@ -27,12 +36,17 @@ namespace Client.UI.ViewModels.Cards
 
         public UInt64 Guid => card.Guid;
 
-        public PlayableCardViewModel(PlayableCard card) : base(card)
+        public PlayableCardViewModel(PlayableCard card)
         {
-            Auras = card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)).ToList();
+            this.card = card;
 
+            Auras = card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)).ToList();
+            card.StatChanged += stat => OnPropertyChanged(stat.ToString());
             card.SpellAurasChanged += OnSpellAurasChanged;
             card.CardChanged += OnCardChanged;
+            SetBackground();
+
+            OnClickCmd = new AsyncCommandHandler(UseCardAction, () => SelectionType == SelectionType.BasicDamageAttackable || SelectionType == SelectionType.SpellUsable);
         }
 
         private void OnCardChanged()
@@ -53,6 +67,22 @@ namespace Client.UI.ViewModels.Cards
             }
 
             OnPropertyChanged(nameof(Auras));
+        }
+
+        private async Task UseCardAction()
+        {
+            if (SelectionType != SelectionType.BasicDamageAttackable && SelectionType != SelectionType.SpellUsable)
+                return;
+
+            var packet = new Packet(CMSGPackets.CardAction).Builder()
+                .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
+                .FlushBits()
+                .WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0)
+                .Write((byte)SelectionType)
+                .WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4)
+                .Build();
+
+            await card.Player.Game.SendPacketAsync(packet);
         }
     }
 }

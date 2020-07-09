@@ -9,7 +9,6 @@ namespace Client.Logic
 {
     public class Player
     {
-        private readonly Game game;
         private readonly PlayableCard[] cardDeck;
         private readonly Dictionary<UInt64, PlayableCard> cards;
 
@@ -18,6 +17,8 @@ namespace Client.Logic
         public UInt32 Id { get; set; }
 
         public string Name { get; }
+
+        public Game Game { get; }
 
         public IEnumerable<PlayableCard> CardDeck => cardDeck;
 
@@ -29,7 +30,7 @@ namespace Client.Logic
         {
             Id = id;
             Name = name;
-            this.game = game;
+            Game = game;
 
             cards = new Dictionary<UInt64, PlayableCard>();
             cardDeck = new PlayableCard[4];
@@ -40,7 +41,7 @@ namespace Client.Logic
             InvokeCardAction(cardGuid, card =>
             {
                 card.ApplyModifier(cardStat, value);
-                game.CombatLog.LogStatChange(cardStat, card.Name, value);
+                Game.CombatLog.LogStatChange(cardStat, card.Name, value);
 
             });
         }
@@ -50,7 +51,7 @@ namespace Client.Logic
             InvokeCardAction(cardGuid, card =>
             {
                 card.Health = health;
-                game.CombatLog.LogHeal(card.Name, amount);
+                Game.CombatLog.LogHeal(card.Name, amount);
             });
             
         }
@@ -61,7 +62,7 @@ namespace Client.Logic
         {
             InvokeCardAction(cardGuid, card =>
             {
-                game.CombatLog.LogMorph(card.Name, cardTemplate.Name, isMorph);
+                Game.CombatLog.LogMorph(card.Name, cardTemplate.Name, isMorph);
                 card.Morph(cardTemplate, mana);
             });
         }
@@ -75,7 +76,7 @@ namespace Client.Logic
                     return;
 
                 card.ApplyAura(spellData);
-                game.CombatLog.LogApplyAura(card.Name, spellData.Name);
+                Game.CombatLog.LogApplyAura(card.Name, spellData.Name);
             });
         }
 
@@ -89,7 +90,7 @@ namespace Client.Logic
                     if (spellData == null)
                         continue;
 
-                    game.CombatLog.LogExpireAura(card.Name, spellData.Name);
+                    Game.CombatLog.LogExpireAura(card.Name, spellData.Name);
                 }
             });
         }
@@ -125,9 +126,9 @@ namespace Client.Logic
                 card.Health -= damage;
 
                 if (isPeriodicDamage)
-                    game.CombatLog.LogPeriodicDamage(card.Name  , damage, true);
+                    Game.CombatLog.LogPeriodicDamage(card.Name  , damage, true);
                 else
-                    game.CombatLog.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, true);
+                    Game.CombatLog.LogDamage(combatLogType, Game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, true);
             });
         }
 
@@ -136,9 +137,9 @@ namespace Client.Logic
             if (cards.TryGetValue(guid, out var card))
             {
                 if (isPeriodicDamage)
-                    game.CombatLog.LogPeriodicDamage(card.Name, damage, false);
+                    Game.CombatLog.LogPeriodicDamage(card.Name, damage, false);
                 else
-                    game.CombatLog.LogDamage(combatLogType, game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, false);
+                    Game.CombatLog.LogDamage(combatLogType, Game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, false);
 
                 cards.Remove(guid);
             }
@@ -163,7 +164,7 @@ namespace Client.Logic
             InvokeCardAction(cardGuid, card =>
             {
                 var spellData = DataHolder.GetSpellData(spellId);
-                game.CombatLog.LogManaConsume(card.Name, spellData.Name, manaCost);
+                Game.CombatLog.LogManaConsume(card.Name, spellData.Name, manaCost);
                 card.Mana = mana;
             });
         }

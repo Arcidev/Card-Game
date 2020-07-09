@@ -8,37 +8,41 @@ namespace Client.UI.Controls
     {
         public event EventHandler CanExecuteChanged;
 
-        private bool _isExecuting;
-        private readonly Func<Task> _execute;
-        private readonly Func<bool> _canExecute;
+        private bool isExecuting;
+        private readonly Func<object, Task> execute;
+        private readonly Func<object, bool> canExecute;
 
-        public AsyncCommandHandler(
-            Func<Task> execute,
-            Func<bool> canExecute = null)
+        public AsyncCommandHandler(Func<Task> execute, Func<bool> canExecute = null)
         {
-            _execute = execute;
-            _canExecute = canExecute;
+            this.execute = (o) => execute();
+            this.canExecute = (o) => canExecute?.Invoke() ?? true;
         }
 
-        public bool CanExecute()
+        public AsyncCommandHandler(Func<object, Task> execute, Func<object, bool> canExecute = null)
         {
-            return !_isExecuting && (_canExecute?.Invoke() ?? true);
+            this.execute = execute;
+            this.canExecute = canExecute;
         }
 
-        public async Task ExecuteAsync()
+        public bool CanExecute(object obj)
         {
-            if (CanExecute())
+            return !isExecuting && (canExecute?.Invoke(obj) ?? true);
+        }
+
+        public async Task ExecuteAsync(object obj)
+        {
+            if (CanExecute(obj))
             {
                 try
                 {
-                    _isExecuting = true;
+                    isExecuting = true;
                     NotifyCanExecuteChanged();
 
-                    await _execute();
+                    await execute(obj);
                 }
                 finally
                 {
-                    _isExecuting = false;
+                    isExecuting = false;
                 }
             }
 
@@ -53,12 +57,12 @@ namespace Client.UI.Controls
         #region Explicit implementations
         bool ICommand.CanExecute(object parameter)
         {
-            return CanExecute();
+            return CanExecute(parameter);
         }
 
         async void ICommand.Execute(object parameter)
         {
-            await ExecuteAsync();
+            await ExecuteAsync(parameter);
         }
         #endregion
     }

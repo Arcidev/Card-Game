@@ -7,13 +7,13 @@
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         xmlns:controls="clr-namespace:Client.UI.Controls"
         mc:Ignorable="d">
-    <ListView d:DataContext="{d:DesignInstance Type=viewmodels:CardDeckViewModel}" ItemsSource="{Binding Cards}">
-        <ListView.ItemsPanel>
+    <ItemsControl d:DataContext="{d:DesignInstance Type=viewmodels:CardDeckViewModel}" ItemsSource="{Binding Cards}">
+        <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
-        </ListView.ItemsPanel>
-        <ListView.ItemTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <StackPanel Margin="5 0" Orientation="Horizontal">
                     <Border Background="Transparent" Opacity="1.0">
@@ -65,6 +65,6 @@
                     </ListView>
                 </StackPanel>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </UserControl>

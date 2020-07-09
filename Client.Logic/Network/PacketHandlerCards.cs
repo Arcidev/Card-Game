@@ -96,7 +96,7 @@ namespace Client.Logic.Network
                 packet.ReadGuidByteStreamInOrder(guids1[i], 7, 2, 0, 1, 6, 4, 5);
                 var id = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(guids1[i], 3);
-                cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id));
+                cards1[i] = PlayableCard.Create(guids1[i], DataHolder.GetCard(id), player1);
             }
 
             for (var i = 0; i < count2; i++)
@@ -104,7 +104,7 @@ namespace Client.Logic.Network
                 packet.ReadGuidByteStreamInOrder(guids2[i], 4, 2, 6, 1, 7, 0);
                 var id = packet.ReadUInt32();
                 packet.ReadGuidByteStreamInOrder(guids2[i], 3, 5);
-                cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id));
+                cards2[i] = PlayableCard.Create(guids2[i], DataHolder.GetCard(id), player2);
             }
 
             player1.SetCards(cards1);

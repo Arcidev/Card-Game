@@ -22,13 +22,16 @@ namespace Client.Logic.Data.Cards
 
         public UInt64 Guid { get; }
 
+        public Player Player { get; }
+
         public IEnumerable<SpellData> Auras => auras;
 
-        public PlayableCard(UInt64 guid, Card card) : base (card.Id, card.Type, card.Health, card.Damage, card.Mana, card.Defense, card.Spell)
+        protected PlayableCard(UInt64 guid, Card card, Player player) : base (card.Id, card.Type, card.Health, card.Damage, card.Mana, card.Defense, card.Spell)
         {
             ImageUri = card.ImageUri;
             Name = card.Name;
             Guid = guid;
+            Player = player;
 
             auras = new List<SpellData>();
         }
@@ -40,9 +43,9 @@ namespace Client.Logic.Data.Cards
             { CreatureType.Defensive,  typeof(DefensiveCard)   }
         };
 
-        public static PlayableCard Create(UInt64 guid, Card card)
+        public static PlayableCard Create(UInt64 guid, Card card, Player player)
         {
-            return Activator.CreateInstance(derrivedClasses[card.Type], guid, card) as PlayableCard;
+            return Activator.CreateInstance(derrivedClasses[card.Type], guid, card, player) as PlayableCard;
         }
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);

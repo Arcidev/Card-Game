@@ -19,7 +19,7 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid Width="300" Height="410">
+    <Grid Width="300" Height="410" PreviewMouseDown="Grid_PreviewMouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="45"/>

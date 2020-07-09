@@ -7,7 +7,7 @@ namespace Client.Logic.Data.Cards
 {
     public class RangedCard : PlayableCard
     {
-        public RangedCard(UInt64 guid, Card card) : base(guid, card) { }
+        public RangedCard(UInt64 guid, Card card, Player player) : base(guid, card, player) { }
 
         public override IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex)
         {

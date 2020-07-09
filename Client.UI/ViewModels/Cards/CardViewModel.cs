@@ -1,31 +1,34 @@
 ﻿using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using System;
+using System.Windows.Input;
 
 namespace Client.UI.ViewModels.Cards
 {
-    public abstract class CardViewModel<T> : NotifyPropertyViewModel where T : Card
+    public abstract class CardViewModel : NotifyPropertyViewModel
     {
         private string background;
-        protected readonly T card;
+        private ICommand onClickCmd;
 
-        public UInt32 Id => card.Id;
+        protected abstract Card Card { get; }
 
-        public byte Health => card.Health;
+        public UInt32 Id => Card.Id;
 
-        public byte Damage => card.DamageModified;
+        public byte Health => Card.Health;
 
-        public byte Defense => card.DefenseModified;
+        public byte Damage => Card.DamageModified;
 
-        public byte Mana => card.Mana;
+        public byte Defense => Card.DefenseModified;
 
-        public string Image => $"/Assets/Images/Cards/{card.ImageUri}";
+        public byte Mana => Card.Mana;
 
-        public string Name => card.Name;
+        public string Image => $"/Assets/Images/Cards/{Card.ImageUri}";
 
-        public bool HasSpell => card.Spell != null;
+        public string Name => Card.Name;
 
-        public string Spell => card.Spell?.Info;
+        public bool HasSpell => Card.Spell != null;
+
+        public string Spell => Card.Spell?.Info;
 
         public string Background
         {
@@ -40,17 +43,22 @@ namespace Client.UI.ViewModels.Cards
             }
         }
 
-        public CardViewModel(T card)
+        public ICommand OnClickCmd
         {
-            this.card = card;
-            card.StatChanged += stat => OnPropertyChanged(stat.ToString());
+            get => onClickCmd;
+            protected set
+            {
+                if (onClickCmd == value)
+                    return;
 
-            SetBackground();
+                onClickCmd = value;
+                OnPropertyChanged();
+            }
         }
 
         protected void SetBackground()
         {
-            switch (card.Type)
+            switch (Card.Type)
             {
                 case CreatureType.Defensive:
                 case CreatureType.Melee:

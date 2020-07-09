@@ -111,22 +111,6 @@ namespace Client.Logic
             await SendPacketAsync(packet);
         }
 
-        public async Task SendCardAction(PlayableCard card, CardAction action)
-        {
-            if (action == CardAction.None)
-                return;
-
-            var packet = new Packet(CMSGPackets.CardAction).Builder()
-                .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
-                .FlushBits()
-                .WriteGuidByteStreamInOrder(card.Guid, 6, 2, 7, 1, 0)
-                .Write((byte)action)
-                .WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4)
-                .Build();
-
-            await SendPacketAsync(packet);
-        }
-
         /// <inheritdoc />
         public void Dispose()
         {
