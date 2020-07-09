@@ -3,7 +3,6 @@ using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Enums;
-using Client.UI.ViewModels.MainGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,6 @@ namespace Client.UI.ViewModels.Cards
     public class PlayableCardViewModel : CardViewModel
     {
         private readonly PlayableCard card;
-        private readonly CardDeckViewModel deck;
         private SelectionType selectionType;
 
         protected override Card Card => card;
