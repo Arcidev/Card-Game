@@ -201,4 +201,13 @@
   <data name="ManaConsume" xml:space="preserve">
     <value>{0} consume {1} maná de {2}</value>
   </data>
+  <data name="CantCastSpell" xml:space="preserve">
+    <value>La carta actual no tiene hechizo</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>La carta actual no tiene suficiente maná</value>
+  </data>
+  <data name="InvalidSpellTarget" xml:space="preserve">
+    <value>La carta actual no puede usar hechizos en ese objetivo</value>
+  </data>
 </root>

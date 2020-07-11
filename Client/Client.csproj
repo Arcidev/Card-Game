@@ -90,7 +90,6 @@
     <Compile Include="Network\PacketHandlerCards.cs" />
     <Compile Include="Network\PacketHandlerSpells.cs" />
     <Compile Include="Network\PacketHandlerChat.cs" />
-    <Compile Include="Security\RSAKey.cs" />
     <Compile Include="UI\SlideShow.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

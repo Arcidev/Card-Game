@@ -1,15 +1,16 @@
-﻿using System.ComponentModel;
+﻿using Client.Logic.Attributes;
+using Client.Logic.Resources;
 
 namespace Client.Logic.Enums
 {
     public enum SpellCastResult
     {
         Success = 0,
-        [Description("Current card has no spell")]
+        [LocalizedDescription(nameof(Texts.CantCastSpell))]
         FailCantCastSpell,
-        [Description("Current card has not enough mana")]
+        [LocalizedDescription(nameof(Texts.NotEnoughMana))]
         FailNotEnoughMana,
-        [Description("Current card cannot use spell on that target")]
+        [LocalizedDescription(nameof(Texts.InvalidSpellTarget))]
         FailInvalidTarget
     };
 }

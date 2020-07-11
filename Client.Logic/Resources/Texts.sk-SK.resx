@@ -201,4 +201,13 @@
   <data name="ManaConsume" xml:space="preserve">
     <value>{0} konzumuje {1} many z {2}</value>
   </data>
+  <data name="CantCastSpell" xml:space="preserve">
+    <value>Aktuálna karta nemá žiadne kúzlo</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Aktuálna karta nemá dostatok many</value>
+  </data>
+  <data name="InvalidSpellTarget" xml:space="preserve">
+    <value>Aktuálna karta nemôže používať kúzlo na tento cieľ</value>
+  </data>
 </root>

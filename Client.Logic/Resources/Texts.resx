@@ -181,4 +181,13 @@
   <data name="ManaConsume" xml:space="preserve">
     <value>{0} consumes {1} mana from {2}</value>
   </data>
+  <data name="CantCastSpell" xml:space="preserve">
+    <value>Current card has no spell</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Current card has not enough mana</value>
+  </data>
+  <data name="InvalidSpellTarget" xml:space="preserve">
+    <value>Current card cannot use spell on that target</value>
+  </data>
 </root>

@@ -79,6 +79,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current card has no spell.
+        /// </summary>
+        public static string CantCastSpell {
+            get {
+                return ResourceManager.GetString("CantCastSpell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} has been demorphed from {1}.
         /// </summary>
         public static string CardDemorph {
@@ -187,6 +196,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current card cannot use spell on that target.
+        /// </summary>
+        public static string InvalidSpellTarget {
+            get {
+                return ResourceManager.GetString("InvalidSpellTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot attack that target.
         /// </summary>
         public static string InvalidTarget {
@@ -219,6 +237,15 @@ namespace Client.Logic.Resources {
         public static string ManaReplenished {
             get {
                 return ResourceManager.GetString("ManaReplenished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current card has not enough mana.
+        /// </summary>
+        public static string NotEnoughMana {
+            get {
+                return ResourceManager.GetString("NotEnoughMana", resourceCulture);
             }
         }
         
