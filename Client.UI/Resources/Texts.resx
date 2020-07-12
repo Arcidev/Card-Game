@@ -189,4 +189,7 @@
   <data name="Defend" xml:space="preserve">
     <value>Defend</value>
   </data>
+  <data name="CombatLog" xml:space="preserve">
+    <value>Combat Log</value>
+  </data>
 </root>

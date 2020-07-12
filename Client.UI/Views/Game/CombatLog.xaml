@@ -1,0 +1,14 @@
+﻿<Page x:Class="Client.UI.Views.Game.CombatLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
+        mc:Ignorable="d"
+        Title="{x:Static resx:Texts.CombatLog}"
+        d:DesignHeight="200" d:DesignWidth="300">
+    <Grid d:DataContext="{d:DesignInstance Type=viewmodels:CombatLogViewModel}">
+        <TextBlock Text="{Binding CombatLog, Mode=OneWay}" TextWrapping="Wrap" />
+    </Grid>
+</Page>

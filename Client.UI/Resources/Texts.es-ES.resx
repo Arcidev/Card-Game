@@ -189,4 +189,7 @@
   <data name="Spell" xml:space="preserve">
     <value>Hechizo</value>
   </data>
+  <data name="CombatLog" xml:space="preserve">
+    <value>Registro de combate</value>
+  </data>
 </root>

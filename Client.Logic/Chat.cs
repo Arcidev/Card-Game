@@ -32,10 +32,6 @@ namespace Client.Logic
             await game.SendPacketAsync(packet);
         }
 
-        public void OnMessageReceived(ChatType type, string sender, string msg) => MessageReceived?.Invoke(type, sender, msg);
-
-        public void OnError(ChatType type, string sender, string error) => ErrorOccured?.Invoke(type, sender, error);
-
         public void UnsubscribeAllHandlers()
         {
             if (ErrorOccured != null)
@@ -50,5 +46,9 @@ namespace Client.Logic
                     MessageReceived -= handler as Action<ChatType, string, string>;
             }
         }
+
+        internal void OnMessageReceived(ChatType type, string sender, string msg) => MessageReceived?.Invoke(type, sender, msg);
+
+        internal void OnError(ChatType type, string sender, string error) => ErrorOccured?.Invoke(type, sender, error);
     }
 }

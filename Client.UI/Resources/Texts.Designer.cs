@@ -79,6 +79,15 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Combat Log.
+        /// </summary>
+        public static string CombatLog {
+            get {
+                return ResourceManager.GetString("CombatLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Account.
         /// </summary>
         public static string CreateAccount {

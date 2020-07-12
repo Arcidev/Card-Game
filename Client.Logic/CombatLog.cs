@@ -8,6 +8,15 @@ namespace Client.Logic
     {
         public event Action<CombatLogType, string> MessageReceived;
 
+        public void UnsubscribeAllHandlers()
+        {
+            if (MessageReceived != null)
+            {
+                foreach (var handler in MessageReceived.GetInvocationList())
+                    MessageReceived -= handler as Action<CombatLogType, string>;
+            }
+        }
+
         internal void LogHeal(string name, byte amount)
         {
             MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.CardHealed, name, amount));

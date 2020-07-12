@@ -189,4 +189,7 @@
   <data name="Spell" xml:space="preserve">
     <value>Kúzlo</value>
   </data>
+  <data name="CombatLog" xml:space="preserve">
+    <value>Záznam boja</value>
+  </data>
 </root>

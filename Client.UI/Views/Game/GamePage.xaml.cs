@@ -59,14 +59,14 @@ namespace Client.UI.Views.Game
             vm.OnGameEnabledChanged();
         }
 
-        private void Frame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e) => UpdateFrameDataContext();
+        private void Frame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e) => UpdateFrameDataContext(sender);
 
-        private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) => UpdateFrameDataContext();
+        private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) => UpdateFrameDataContext(sender);
 
-        private void UpdateFrameDataContext()
+        private void UpdateFrameDataContext(object sender)
         {
-            if (ChatFrame.Content is FrameworkElement content)
-                content.DataContext = ChatFrame.DataContext;
+            if (sender is Frame frame && frame.Content is FrameworkElement content)
+                content.DataContext = frame.DataContext;
         }
     }
 }

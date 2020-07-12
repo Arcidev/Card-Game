@@ -12,12 +12,15 @@ namespace Client.UI.ViewModels.MainGame
 
         public ChatViewModel ChatViewModel { get; }
 
+        public CombatLogViewModel CombatLogViewModel { get; }
+
         public bool GameEnabled => !Game.IsGameWaiting;
 
         public GameViewModel()
         {
             Game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
             ChatViewModel = new ChatViewModel(Game);
+            CombatLogViewModel = new CombatLogViewModel(Game);
 
             Game.UnsubscribeAllHandlers();
             Game.MessageReceived += OnMessageReceived;
