@@ -56,7 +56,7 @@
                         </Border.Style>
                         <controls:CardControl DataContext="{Binding}" />
                     </Border>
-                    <ListView ItemsSource="{Binding Auras}">
+                    <ListView ItemsSource="{Binding Auras}" Visibility="{Binding HasAuras, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Image Source="{Binding Image}" />

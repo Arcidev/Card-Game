@@ -19,6 +19,10 @@ namespace Client.UI.ViewModels.Cards
 
         public List<SpellAuraViewModel> Auras { get; }
 
+        public bool HasAuras => Auras.Any();
+
+        public UInt64 Guid => card.Guid;
+
         public SelectionType SelectionType
         {
             get => selectionType;
@@ -31,8 +35,6 @@ namespace Client.UI.ViewModels.Cards
                 OnPropertyChanged();
             }
         }
-
-        public UInt64 Guid => card.Guid;
 
         public PlayableCardViewModel(PlayableCard card)
         {
@@ -65,6 +67,7 @@ namespace Client.UI.ViewModels.Cards
             }
 
             OnPropertyChanged(nameof(Auras));
+            OnPropertyChanged(nameof(HasAuras));
         }
 
         private async Task UseCardAction()

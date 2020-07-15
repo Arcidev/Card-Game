@@ -4,11 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
-        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.CombatLog}"
         d:DesignHeight="200" d:DesignWidth="300">
-    <Grid d:DataContext="{d:DesignInstance Type=viewmodels:CombatLogViewModel}">
-        <TextBlock Text="{Binding CombatLog, Mode=OneWay}" TextWrapping="Wrap" />
+    <Grid>
+        <RichTextBox x:Name="CombatLogTextBox" IsDocumentEnabled="True" IsReadOnly="True">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
     </Grid>
 </Page>
