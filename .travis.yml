@@ -4,6 +4,12 @@ language: cpp
 
 git:
   depth: 1
+  
+addons:
+  snaps: 
+  - name: dotnet-sdk
+    confinement: classic
+    channel: latest
 
 compiler: g++
 
@@ -13,7 +19,10 @@ before_install:
   - sudo apt-get install libpq-dev
 
 script:
+  - sudo snap alias dotnet-sdk.dotnet dotnet
   - cd Server
   - mkdir Build
   - chmod u+rx BUILD
   - ./BUILD
+  - cd ../Client.Logic
+  - dotnet build Client.Logic.csproj
