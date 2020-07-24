@@ -61,7 +61,7 @@ void ConnectedUser::ReceivePacket(uint32_t dataLength, char const* data)
             PacketHandlerFuncWrapper packetHandler = PacketHandler::GetPacketHandler(packetType);
             packetHandler.Invoke(this, packet);
         }
-        catch (std::out_of_range ex)
+        catch (std::out_of_range const& ex)
         {
             std::cerr << "Error occured while reading packet: " << ex.what() << std::endl;
         }

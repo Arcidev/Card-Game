@@ -1,3 +1,5 @@
+os: linux
+
 dist: focal
 
 language: cpp
@@ -8,7 +10,6 @@ git:
 addons:
   snaps: 
   - name: dotnet-sdk
-    confinement: classic
     channel: latest
 
 compiler: g++
