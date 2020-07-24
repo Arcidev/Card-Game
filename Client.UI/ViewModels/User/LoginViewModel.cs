@@ -2,6 +2,7 @@
 using Client.Logic;
 using Client.Logic.Enums;
 using Client.UI.Resources;
+using Client.UI.Sql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Client.UI.ViewModels.User
             var game = App.GetGame();
             if (game == null)
             {
-                game = await Game.CreateAsync(Server);
+                game = await Game.CreateAsync(Server, new DataHolder());
                 if (game == null)
                 {
                     ErrorMessage = Texts.UnableToConnect;

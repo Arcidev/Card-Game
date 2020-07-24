@@ -71,7 +71,7 @@ namespace Client.Logic
         {
             InvokeCardAction(cardGuid, card =>
             {
-                var spellData = DataHolder.GetSpellData(spellId);
+                var spellData = Game.DataHolder.GetSpellData(spellId);
                 if (spellData == null)
                     return;
 
@@ -163,7 +163,7 @@ namespace Client.Logic
         {
             InvokeCardAction(cardGuid, card =>
             {
-                var spellData = DataHolder.GetSpellData(spellId);
+                var spellData = Game.DataHolder.GetSpellData(spellId);
                 Game.CombatLog.LogManaConsume(card.Name, spellData.Name, manaCost);
                 card.Mana = mana;
             });

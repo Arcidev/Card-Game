@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
+using Client.Logic.Data;
 using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.Logic.Network;
@@ -45,9 +46,12 @@ namespace Client.Logic
 
         public CombatLog CombatLog { get; }
 
-        private Game(ClientNetwork clientNetwork)
+        public IDataHolder DataHolder { get; }
+
+        private Game(ClientNetwork clientNetwork, IDataHolder dataHolder)
         {
             network = clientNetwork;
+            DataHolder = dataHolder;
             Chat = new Chat(this);
             CombatLog = new CombatLog();
 
@@ -68,13 +72,13 @@ namespace Client.Logic
         /// </summary>
         /// <param name="server">Server url</param>
         /// <returns>Instance of game</returns>
-        public static async Task<Game> CreateAsync(string server)
+        public static async Task<Game> CreateAsync(string server, IDataHolder dataHolder)
         {
             var network = await ClientNetwork.CreateAsync(server, port);
             if (network == null)
                 return null;
 
-            return new Game(network);
+            return new Game(network, dataHolder);
         }
 
         /// <summary>
