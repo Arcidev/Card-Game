@@ -17,7 +17,7 @@ std::vector<uint8_t> Aes::Encrypt(std::vector<uint8_t> const& data, std::vector<
     EVP_EncryptFinal(ctx, &outdata[outLen], &outLen2);
     EVP_CIPHER_CTX_free(ctx);
 
-    outdata.resize(outLen + outLen2);
+    outdata.resize((size_t)outLen + outLen2);
     return outdata;
 }
 
@@ -36,7 +36,7 @@ std::vector<uint8_t> Aes::Decrypt(std::vector<uint8_t> const& data, std::vector<
     EVP_DecryptFinal(ctx, &outdata[outLen], &outLen2);
     EVP_CIPHER_CTX_free(ctx);
 
-    outdata.resize(outLen + outLen2);
+    outdata.resize((size_t)outLen + outLen2);
     return outdata;
 }
  
