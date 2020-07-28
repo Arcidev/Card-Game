@@ -57,11 +57,12 @@ namespace Client.UI.ViewModels.User
                     ErrorMessage = Texts.UnableToConnect;
                     return null;
                 }
+
+                game.MessageReceived += SetErrorMessage;
+                game.PacketProcessed += callback;
                 App.SetGame(game);
             }
 
-            game.MessageReceived += SetErrorMessage;
-            game.PacketProcessed += callback;
             await game.SendPacketAsync(packet);
             return game;
         }
