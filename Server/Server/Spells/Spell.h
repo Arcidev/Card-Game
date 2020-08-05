@@ -4,7 +4,7 @@
 
 typedef std::pair<SpellEffectFunc, SpellEffectValues> SpellEffectPair;
 
-enum SpellCastResult
+enum class SpellCastResult
 {
     SPELL_CAST_RESULT_SUCCESS = 0,
     SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS,
@@ -26,7 +26,7 @@ class Spell
     public:
         Spell(uint32_t id, uint8_t manaCost);
 
-        uint8_t Cast(Player* caster, Player* victim, uint64_t selectedCardGuid) const;
+        SpellCastResult Cast(Player* caster, Player* victim, uint64_t selectedCardGuid) const;
         uint8_t GetManaCost() const { return m_manaCost; }
         uint32_t GetId() const { return m_id; }
         std::list<SpellEffectPair> const& GetSpellEffects() const { return m_spellEffects; }

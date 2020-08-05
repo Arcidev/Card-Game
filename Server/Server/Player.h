@@ -4,12 +4,12 @@
 #include <vector>
 #include <list>
 #include "Game.h"
+#include "Spells/Spell.h"
 
 class Card;
 class ConnectedUser;
 class Packet;
 class PlayableCard;
-class Spell;
 class SpellAuraEffect;
 
 typedef std::map<uint64_t, PlayableCard*> CardsMap;
@@ -47,7 +47,7 @@ class Player
         void SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) const;
         void SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) const;
         void SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& spellIds) const;
-        void SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* amount) const;
+        void SendSpellCastResult(SpellCastResult reason, PlayableCard const* card, Spell const* amount) const;
         void SendCardHealed(PlayableCard const* card, uint8_t amount) const;
         void Attack(uint64_t victimCardGuid);
         void SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage, bool applyDefense);
@@ -60,7 +60,7 @@ class Player
         void ClearCards();
         void CreateCard(Card const* cardTemplate);
         void SendPacket(Packet const& packet) const;
-        void Disconnect();
+        void Disconnect() const;
         void HandleDeckCards(bool addCard);
 
         Player* GetOpponent() const { return m_game->GetOpponent(this); }

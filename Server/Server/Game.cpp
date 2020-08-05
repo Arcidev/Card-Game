@@ -17,9 +17,9 @@ Game::~Game()
 }
 
 // Called when player has been disconnected from server
-void Game::DisconnectPlayer(uint32_t playerId)
+void Game::DisconnectPlayer(uint32_t playerId) const
 {
-    Player* opponent = nullptr;
+    Player const* opponent = nullptr;
     
     if (m_player1 && (playerId == m_player1->GetId()))
         opponent = m_player2;
@@ -34,7 +34,7 @@ void Game::DisconnectPlayer(uint32_t playerId)
 // Removes player from game and destroys disconnected players
 void Game::RemovePlayer(uint32_t playerId)
 {
-    Player* opponnent = nullptr;
+    Player const* opponnent = nullptr;
     if (m_player1 && (playerId == m_player1->GetId()))
     {
         m_player1 = nullptr;

@@ -7,7 +7,6 @@
 #include "ServerNetwork.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
-#include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
 #include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
@@ -22,7 +21,7 @@ Player::~Player()
 }
 
 // Set player state to disconnected
-void Player::Disconnect()
+void Player::Disconnect() const
 {
     m_game->DisconnectPlayer(m_id);
 
@@ -143,11 +142,11 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
 }
 
 // Sends information about failed spell cast to client
-void Player::SendSpellCastResult(uint8_t reason, PlayableCard const* card, Spell const* spell) const
+void Player::SendSpellCastResult(SpellCastResult reason, PlayableCard const* card, Spell const* spell) const
 {
     Packet packet(SMSGPackets::SMSG_SPELL_CAST_RESULT);
-    packet << reason;
-    if (!reason)
+    packet << (uint8_t)reason;
+    if (reason == SpellCastResult::SPELL_CAST_RESULT_SUCCESS)
     {
         if (!card || !spell)
             return;
@@ -200,13 +199,13 @@ void Player::UseSpell(uint64_t selectedCardGuid)
 
     if (!currentCard->GetSpell())
     {
-        SendSpellCastResult(SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS, nullptr, nullptr);
+        SendSpellCastResult(SpellCastResult::SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS, nullptr, nullptr);
         return;
     }
 
     Spell const* spell = currentCard->GetSpell();
-    uint8_t result = spell->Cast(this, victim, selectedCardGuid);
-    if (result)
+    SpellCastResult result = spell->Cast(this, victim, selectedCardGuid);
+    if (result != SpellCastResult::SPELL_CAST_RESULT_SUCCESS)
     {
         SendSpellCastResult(result, nullptr, nullptr);
         return;
