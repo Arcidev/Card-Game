@@ -7,7 +7,7 @@ bool RangedCard::CanAttackCard(uint64_t guid, std::vector<PlayableCard*> const& 
     bool canAttack = true;
     for (PlayableCard const* card : opponentCards)
     {
-        if (card->GetType() == CARD_TYPE_DEFENSE)
+        if (card->GetType() == CardType::CARD_TYPE_DEFENSE)
         {
             if (card->GetGuid() == guid)
                 return true;

@@ -60,7 +60,7 @@ void DataHolder::loadCardsCallback(PGresult const* result)
         }
 
         uint32_t id = (uint32_t)strtoul(PQgetvalue(result, i, 0), nullptr, 0);
-        uint8_t type = (uint8_t)strtoul(PQgetvalue(result, i, 1), nullptr, 0);
+        CardType type = (CardType)strtoul(PQgetvalue(result, i, 1), nullptr, 0);
         uint8_t hp = (uint8_t)strtoul(PQgetvalue(result, i, 2), nullptr, 0);
         uint8_t damage = (uint8_t)strtoul(PQgetvalue(result, i, 3), nullptr, 0);
         uint8_t mana = (uint8_t)strtoul(PQgetvalue(result, i, 4), nullptr, 0);

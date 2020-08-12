@@ -12,7 +12,7 @@ void PacketHandler::handleSelectedCardsPacket(ConnectedUser* user, Packet& packe
     uint8_t cardCount;
     packet >> cardCount;
     if (cardCount != MAX_CARDS_COUNT)
-        user->GetPlayer()->SendSelectCardsFailed(INVALID_CARD_COUNT);
+        user->GetPlayer()->SendSelectCardsFailed(FailReson::INVALID_CARD_COUNT);
 
     // In case it failed in packet sended before
     user->GetPlayer()->ClearCards();
@@ -27,7 +27,7 @@ void PacketHandler::handleSelectedCardsPacket(ConnectedUser* user, Packet& packe
         if (!card)
         {
             // Rest of packet is ignored
-            user->GetPlayer()->SendSelectCardsFailed(INVALID_CARD_ID);
+            user->GetPlayer()->SendSelectCardsFailed(FailReson::INVALID_CARD_ID);
             return;
         }
 
@@ -91,9 +91,9 @@ void PacketHandler::handleCardActionPacket(ConnectedUser* user, Packet& packet)
     packet.ReadByteStreamInOrder(guid, { 5, 3, 4 });
 
     DEBUG_LOG("CMSG_CARD_ACTION:\r\n\tcardAction: %d\r\n", attackType);
-    if (attackType == CARD_ACTION_BASIC_ATTACK)
+    if ((CardActions)attackType == CardActions::CARD_ACTION_BASIC_ATTACK)
         user->GetPlayer()->Attack(guid);
-    else if (attackType == CARD_ACTION_SPELL_USE)
+    else if ((CardActions)attackType == CardActions::CARD_ACTION_SPELL_USE)
         user->GetPlayer()->UseSpell(guid);
 }
 

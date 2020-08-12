@@ -1,16 +1,9 @@
 #pragma once
 #include <list>
+#include "SpellDefines.h"
 #include "SpellEffect.h"
 
 typedef std::pair<SpellEffectFunc, SpellEffectValues> SpellEffectPair;
-
-enum class SpellCastResult
-{
-    SPELL_CAST_RESULT_SUCCESS = 0,
-    SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS,
-    SPELL_CAST_RESULT_FAIL_NOT_ENOUGH_MANA,
-    SPELL_CAST_RESULT_FAIL_INVALID_TARGET
-};
 
 class Spell
 {

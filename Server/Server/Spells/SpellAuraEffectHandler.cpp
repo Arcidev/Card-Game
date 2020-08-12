@@ -25,24 +25,24 @@ void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, P
 
 void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes, PlayableCard const* caster)
 {
-    damage = (std::max)(damage + caster->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+    damage = (std::max)(damage + caster->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
     card->GetOwner()->DealPeriodicDamage(card, damage, spellAttributes & SPELL_ATTRIBUTE_APPLY_DEFENSE);
 }
 
 void SpellAuraEffectHandler::statChangedApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
     SpellAuraEffect const& aura = applyAuraEffect(effectValues, targetCard, caster->GetCurrentCard());
-    targetCard->GetOwner()->SendCardStatChanged(targetCard, aura.GetValue1());
+    targetCard->GetOwner()->SendCardStatChanged(targetCard, (CardStats)aura.GetValue1());
 }
 
 void SpellAuraEffectHandler::statChangedRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
 {
-    card->GetOwner()->SendCardStatChanged(card, aura.GetValue1());
+    card->GetOwner()->SendCardStatChanged(card, (CardStats)aura.GetValue1());
 }
 
 void SpellAuraEffectHandler::handleHealOnTick(PlayableCard* card, uint8_t amount, uint32_t /*spellAttributes*/, PlayableCard const* caster)
 {
-    amount = (std::max)(amount + caster->GetStatModifierValue(CARD_STAT_SPELL_HEAL) + card->GetStatModifierValue(CARD_STAT_SPELL_HEAL_TAKEN), 0);
+    amount = (std::max)(amount + caster->GetStatModifierValue(CardStats::CARD_STAT_SPELL_HEAL) + card->GetStatModifierValue(CardStats::CARD_STAT_SPELL_HEAL_TAKEN), 0);
     card->Heal(amount);
 }
 

@@ -1,6 +1,7 @@
 #pragma once
+#include  <cstdint>
 
-enum SpellAuraEffects
+enum SpellAuraEffects : uint8_t
 {
     SPELL_AURA_EFFECT_DAMAGE = 0,
     SPELL_AURA_EFFECT_MODIFY_STAT,
@@ -9,7 +10,7 @@ enum SpellAuraEffects
     MAX_SPELL_AURA_VALUE
 };
 
-enum SpellAttributes
+enum SpellAttributes : uint8_t
 {
     SPELL_ATTRIBUTE_TARGET_MELEE        = 0x01,
     SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF = 0x02,
@@ -17,7 +18,15 @@ enum SpellAttributes
     SPELL_ATTRIBUTE_AURA_EXCLUSIVE      = 0x08
 };
 
-enum SpellTargets
+enum class SpellCastResult : uint8_t
+{
+    SPELL_CAST_RESULT_SUCCESS = 0,
+    SPELL_CAST_RESULT_FAIL_CANT_CAST_SPELLS,
+    SPELL_CAST_RESULT_FAIL_NOT_ENOUGH_MANA,
+    SPELL_CAST_RESULT_FAIL_INVALID_TARGET
+};
+
+enum SpellTargets : uint8_t
 {
     TARGET_UNIT_TARGET_ENEMY = 0,
     TARGET_UNIT_TARGET_FRIEND,

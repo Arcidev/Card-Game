@@ -3,10 +3,10 @@
 #include "Player.h"
 #include "ConnectedUser.h"
 #include "DataHolder.h"
-#include "PlayerDefines.h"
 #include "ServerNetwork.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
+#include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
 #include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
@@ -30,11 +30,11 @@ void Player::Disconnect() const
 }
 
 // Sends attack result
-void Player::SendAttackResult(uint8_t result, uint64_t cardGuid, uint8_t damage) const
+void Player::SendAttackResult(AttackResult result, uint64_t cardGuid, uint8_t damage) const
 {
     Packet packet(SMSGPackets::SMSG_ATTACK_RESULT);
-    packet << result;
-    if (result)
+    packet << (uint8_t)result;
+    if (result != AttackResult::ATTACK_RESULT_INVALID_TARGET)
     {
         packet.WriteBitStreamInOrder(cardGuid, { 6, 2, 1, 7, 3, 0, 4, 5 });
         packet.FlushBits();
@@ -66,24 +66,24 @@ void Player::Attack(uint64_t victimCardGuid)
 
     if (!currentCard->CanAttackCard(victimCardGuid, victim->GetCurrentCards(), m_currentCardIndex))
     {
-        SendAttackResult(ATTACK_RESULT_INVALID_TARGET, 0, 0);
+        SendAttackResult(AttackResult::ATTACK_RESULT_INVALID_TARGET, 0, 0);
         return;
     }
 
-    uint8_t damage = calculateReducedDamage(currentCard->GetModifiedDamage(victimCard->GetStatModifierValue(CARD_STAT_DAMAGE_TAKEN)), victimCard->GetModifiedDefense());
+    uint8_t damage = calculateReducedDamage(currentCard->GetModifiedDamage(victimCard->GetStatModifierValue(CardStats::CARD_STAT_DAMAGE_TAKEN)), victimCard->GetModifiedDefense());
     victimCard->DealDamage(damage);
 
     if (!victimCard->IsAlive())
     {
         victim->destroyCard(victimCardGuid);
-        SendAttackResult(ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
+        SendAttackResult(AttackResult::ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
             SendEndGame(m_id);
         else
             victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
     else
-        SendAttackResult(ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
+        SendAttackResult(AttackResult::ATTACK_RESULT_CARD_ATTACKED, victimCardGuid, damage);
 
     endTurn();
 }
@@ -100,10 +100,10 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     ByteBuffer buffer;
     packet << (uint8_t)targets.size();
 
-    uint8_t attackerModifier = GetCurrentCard()->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE);
+    uint8_t attackerModifier = GetCurrentCard()->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE);
     for (PlayableCard* target : targets)
     {
-        damage = (std::max)(damage + attackerModifier + target->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+        damage = (std::max)(damage + attackerModifier + target->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
         if (applyDefense)
             damage = calculateReducedDamage(damage, target->GetModifiedDefense());
 
@@ -280,7 +280,7 @@ void Player::SendAvailableCards() const
         packet.WriteBit(spell ? true : false);
 
         buffer << card.second.GetId();
-        buffer << card.second.GetType();
+        buffer << (uint8_t)card.second.GetType();
         buffer << card.second.GetHealth();
 
         if (spell)
@@ -308,10 +308,10 @@ void Player::SendAvailableCards() const
 }
 
 // Sends selection card has failed
-void Player::SendSelectCardsFailed(uint8_t failReason) const
+void Player::SendSelectCardsFailed(FailReson failReason) const
 {
     Packet packet(SMSGPackets::SMSG_SELECT_CARDS_FAILED);
-    packet << failReason;
+    packet << (uint8_t)failReason;
 
     SendPacket(packet);
 }
@@ -410,7 +410,7 @@ void Player::DefendSelf()
 }
 
 // Sends new card stat modifiers
-void Player::SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) const
+void Player::SendCardStatChanged(PlayableCard const* card, CardStats cardStat) const
 {
     Packet packet(SMSGPackets::SMSG_CARD_STAT_CHANGED);
     packet.WriteBitStreamInOrder(card->GetGuid(), { 2, 6, 7, 1, 0, 3, 5, 4 });
@@ -421,7 +421,7 @@ void Player::SendCardStatChanged(PlayableCard const* card, uint8_t cardStat) con
     packet.WriteByteStreamInOrder(card->GetGuid(), { 6, 3, 1 });
     packet << m_id;
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 4, 2 });
-    packet << cardStat;
+    packet << (uint8_t)cardStat;
 
     m_game->BroadcastPacket(packet);
 }
@@ -493,7 +493,7 @@ void Player::SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& sp
 // Replenishes mana
 void Player::replenishMana()
 {
-    m_replenishmentMoveCount = (m_replenishmentMoveCount + 1) % MANA_REPLENISHMENT_MOVES;
+    m_replenishmentMoveCount = (m_replenishmentMoveCount + 1) % (uint8_t)SystemStats::MANA_REPLENISHMENT_MOVES;
     if (!m_replenishmentMoveCount)
     {
         Packet packet(SMSGPackets::SMSG_MANA_REPLENISHMENT);
@@ -501,11 +501,11 @@ void Player::replenishMana()
 
         packet << (uint8_t)m_currentCards.size();
         buffer << m_id;
-        buffer << (uint8_t)MANA_REPLENISHMENT_VALUE;
+        buffer << (uint8_t)SystemStats::MANA_REPLENISHMENT_VALUE;
 
         for (PlayableCard* currentCard : m_currentCards)
         {
-            currentCard->AddMana(MANA_REPLENISHMENT_VALUE);
+            currentCard->AddMana((uint8_t)SystemStats::MANA_REPLENISHMENT_VALUE);
 
             packet.WriteBitStreamInOrder(currentCard->GetGuid(), { 5, 0, 1, 2, 3, 7, 4, 6 });
 
@@ -542,14 +542,14 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyD
 void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense)
 {
     auto currentCard = GetCurrentCard();
-    uint8_t damage = (std::max)(drainedHealth + currentCard->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+    uint8_t damage = (std::max)(drainedHealth + currentCard->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE) + card->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
     if (applyDefense)
         damage = calculateReducedDamage(damage, card->GetModifiedDefense());
 
     card->DealDamage(damage);
     card->SubtractMana(drainedMana);
 
-    restoredHealth = (std::max)(restoredHealth + currentCard->GetStatModifierValue(CARD_STAT_SPELL_HEAL) + currentCard->GetStatModifierValue(CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
+    restoredHealth = (std::max)(restoredHealth + currentCard->GetStatModifierValue(CardStats::CARD_STAT_SPELL_HEAL) + currentCard->GetStatModifierValue(CardStats::CARD_STAT_SPELL_DAMAGE_TAKEN), 0);
     currentCard->AddHealth(restoredHealth);
     currentCard->AddMana(restoredMana);
 
@@ -607,11 +607,11 @@ void Player::endTurn()
 
 uint8_t Player::calculateReducedDamage(uint8_t damage, uint8_t defense)
 {
-    float reduction = (float)(defense * DEFENSE_PERCENT_PER_POINT);
+    float reduction = (defense * (float)SystemStats::DEFENSE_PERCENT_PER_POINT);
     if (!reduction)
         return damage;
 
-    reduction /= 100.0f;
-    reduction += 1.0f;
+    reduction /= 100.f;
+    reduction += 1.f;
     return (uint8_t)(damage / reduction);
 }

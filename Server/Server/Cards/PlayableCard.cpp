@@ -15,11 +15,11 @@ PlayableCard* PlayableCard::Create(uint64_t guid, Card const* card, Player* owne
 {
     switch (card->GetType())
     {
-        case CARD_TYPE_MELEE:
+        case CardType::CARD_TYPE_MELEE:
             return new MeleeCard(guid, card, owner);
-        case CARD_TYPE_RANGED:
+        case CardType::CARD_TYPE_RANGED:
             return new RangedCard(guid, card, owner);
-        case CARD_TYPE_DEFENSE:
+        case CardType::CARD_TYPE_DEFENSE:
             return new DefensiveCard(guid, card, owner);
         default:
             throw std::invalid_argument("Card type not exists");
@@ -32,34 +32,34 @@ void PlayableCard::SetDefendState(bool defend)
         return;
 
     m_isDefending = defend;
-    m_owner->SendCardStatChanged(this, CARD_STAT_DEFENSE);  
+    m_owner->SendCardStatChanged(this, CardStats::CARD_STAT_DEFENSE);
 }
 
 uint8_t PlayableCard::GetModifiedDefense() const
 {
     uint8_t baseDefense = m_morph ? m_morph->GetDefense() : GetDefense();
-    int8_t defenseModifier = GetStatModifierValue(CARD_STAT_DEFENSE);
+    int8_t defenseModifier = GetStatModifierValue(CardStats::CARD_STAT_DEFENSE);
     return (std::max)(baseDefense + defenseModifier, 0);
 }
 
 uint8_t PlayableCard::GetModifiedDamage(uint8_t additional_modifier) const
 {
     uint8_t baseDamage = m_morph ? m_morph->GetDamage() : GetDamage();
-    int8_t damageModifier = GetStatModifierValue(CARD_STAT_DAMAGE);
+    int8_t damageModifier = GetStatModifierValue(CardStats::CARD_STAT_DAMAGE);
 
     return (std::max)(baseDamage + damageModifier + additional_modifier, 0);
 }
 
-int8_t PlayableCard::GetStatModifierValue(uint8_t stat) const
+int8_t PlayableCard::GetStatModifierValue(CardStats stat) const
 {
     int8_t modifier = 0;
     for (auto const& aura : m_auras)
         if (aura.second.GetDuration() && aura.second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-            if (aura.second.GetValue1() == stat)
+            if (aura.second.GetValue1() == (uint8_t)stat)
                 modifier += (int8_t)aura.second.GetValue2();
 
-    if ((stat == CARD_STAT_DEFENSE) && m_isDefending)
-        modifier += DEFENSE_BONUS_ON_DEFEND;
+    if ((stat == CardStats::CARD_STAT_DEFENSE) && m_isDefending)
+        modifier += (uint8_t)SystemStats::DEFENSE_BONUS_ON_DEFEND;
 
     return modifier;
 }

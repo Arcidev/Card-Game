@@ -140,6 +140,9 @@
     <ClInclude Include="Server\ConnectedUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Cards\CardDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">

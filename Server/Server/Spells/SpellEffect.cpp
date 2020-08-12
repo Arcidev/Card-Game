@@ -47,10 +47,10 @@ bool SpellEffect::handleHeal(Player* attacker, Player* victim, uint64_t targetGu
     if (targets.empty())
         return false;
 
-    uint8_t attackerModifier = attacker->GetCurrentCard()->GetStatModifierValue(CARD_STAT_SPELL_HEAL);
+    uint8_t attackerModifier = attacker->GetCurrentCard()->GetStatModifierValue(CardStats::CARD_STAT_SPELL_HEAL);
     for (PlayableCard* target : targets)
     {
-        uint8_t amount = (std::max)(effectValues.Value1 + attackerModifier + target->GetStatModifierValue(CARD_STAT_SPELL_HEAL_TAKEN), 0);
+        uint8_t amount = (std::max)(effectValues.Value1 + attackerModifier + target->GetStatModifierValue(CardStats::CARD_STAT_SPELL_HEAL_TAKEN), 0);
         target->Heal(amount);
     }
 
