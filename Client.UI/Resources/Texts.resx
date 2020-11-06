@@ -192,4 +192,19 @@
   <data name="CombatLog" xml:space="preserve">
     <value>Combat Log</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SettingsModified" xml:space="preserve">
+    <value>You have made some changes to settings. Do you wish to save them?</value>
+  </data>
 </root>

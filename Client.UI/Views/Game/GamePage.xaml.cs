@@ -28,7 +28,6 @@ namespace Client.UI.Views.Game
             loaded = true;
             vm.Game.PacketProcessed += OnPacketProcessed;
             GameFrame.Navigated += GameFrame_Navigated;
-
         }
 
         private void OnPacketProcessed(UInt16 packet)

@@ -54,7 +54,6 @@ namespace Client.UI.ViewModels.MainGame
             if (action == CardAction.SpellUse)
             {
                 var targets = game.Player.ActiveCard.Spell?.GetPossibleTargets(game.Player, game.Opponent);
-
                 foreach (var playerCards in Player.Cards.Where(x => targets.Contains(x.Guid)).Concat(Opponent.Cards.Where(x => targets.Contains(x.Guid))))
                 {
                     playerCards.SelectionType = SelectionType.SpellUsable;
@@ -62,7 +61,7 @@ namespace Client.UI.ViewModels.MainGame
             }
             else if (action == CardAction.BasicAttack)
             {
-                var targets = game.Player.ActiveCard?.GetPossibleTargets(game.Opponent.CardDeck, game.Player.ActiveCardPosition);
+                var targets = game.Player.ActiveCard.GetPossibleTargets(game.Opponent.CardDeck, game.Player.ActiveCardPosition);
                 foreach (var playerCards in Opponent.Cards.Where(x => targets.Contains(x.Guid)))
                 {
                     playerCards.SelectionType = SelectionType.BasicDamageAttackable;

@@ -1,0 +1,43 @@
+﻿<Page x:Class="Client.UI.Views.Settings.SettingsPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.Settings"
+        mc:Ignorable="d"
+        Title="{x:Static resx:Texts.Settings}" Height="450" Width="800">
+    <Page.DataContext>
+        <viewmodels:SettingsViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="Margin" Value="0 5" />
+        </Style>
+    </Page.Resources>
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{x:Static resx:Texts.Language}" Margin="0 0 5 0" />
+        <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}"  DisplayMemberPath="Name" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0 5">
+            <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 0">
+                <Hyperlink Click="Save_Click">
+                    <Run Text="{x:Static resx:Texts.Save}"/>
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 0">
+                <Hyperlink Click="Cancel_Click">
+                    <Run Text="{x:Static resx:Texts.Cancel}"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>

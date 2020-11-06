@@ -34,9 +34,14 @@
         <Button Name="LoginBtn" Margin="0 10 0 0" Grid.Row="4" Grid.ColumnSpan="2" Click="LoginBtn_Click" >
             <Label Content="{x:Static resx:Texts.Login}" />
         </Button>
-        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Left">
             <Hyperlink NavigateUri="CreateAccount.xaml">
                 <Run Text="{x:Static resx:Texts.CreateAccount}"/>
+            </Hyperlink>
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right">
+            <Hyperlink NavigateUri="../Settings/SettingsPage.xaml">
+                <Run Text="{x:Static resx:Texts.Settings}"/>
             </Hyperlink>
         </TextBlock>
     </Grid>
