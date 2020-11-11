@@ -2,7 +2,7 @@
 
 namespace Client.UI.ViewModels.Cards
 {
-    public class SpellAuraViewModel : NotifyPropertyViewModel
+    public class SpellAuraViewModel
     {
         public UInt32 SpellId { get; }
 
@@ -14,7 +14,7 @@ namespace Client.UI.ViewModels.Cards
         {
             SpellId = spellId;
             Text = text;
-            Image = $"/Assets/Images/Spells/{imageUri}";
+            Image = $"/Assets/Images/AuraIcons/{imageUri}";
         }
     }
 }

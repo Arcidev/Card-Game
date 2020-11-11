@@ -4,9 +4,11 @@ using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Enums;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Client.UI.ViewModels.Cards
 {
@@ -17,7 +19,7 @@ namespace Client.UI.ViewModels.Cards
 
         protected override Card Card => card;
 
-        public List<SpellAuraViewModel> Auras { get; }
+        public ObservableCollection<SpellAuraViewModel> Auras { get; }
 
         public bool HasAuras => Auras.Any();
 
@@ -40,7 +42,7 @@ namespace Client.UI.ViewModels.Cards
         {
             this.card = card;
 
-            Auras = card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)).ToList();
+            Auras = new ObservableCollection<SpellAuraViewModel>(card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)));
             card.StatChanged += stat => OnPropertyChanged(stat.ToString());
             card.SpellAurasChanged += OnSpellAurasChanged;
             card.CardChanged += OnCardChanged;
@@ -60,14 +62,16 @@ namespace Client.UI.ViewModels.Cards
 
         private void OnSpellAurasChanged()
         {
-            Auras.RemoveAll(x => !card.Auras.Any(y => x.SpellId == x.SpellId));
-            foreach (var aura in card.Auras.Where(x => !Auras.Any(y => x.SpellId == x.SpellId)))
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Auras.Add(new SpellAuraViewModel(aura.SpellId, aura.AuraText, aura.AuraImagePath));
-            }
+                foreach (var aura in Auras.Where(x => !card.Auras.Any(y => x.SpellId == y.SpellId)).ToList())
+                    Auras.Remove(aura);
 
-            OnPropertyChanged(nameof(Auras));
-            OnPropertyChanged(nameof(HasAuras));
+                foreach (var aura in card.Auras.Where(x => !Auras.Any(y => x.SpellId == y.SpellId)))
+                    Auras.Add(new SpellAuraViewModel(aura.SpellId, aura.AuraText, aura.AuraImagePath));
+
+                OnPropertyChanged(nameof(HasAuras));
+            });
         }
 
         private async Task UseCardAction()

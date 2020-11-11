@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <None Remove="Assets\Data\sqlite3.exe" />
+    <None Remove="Assets\Images\AuraIcons\Curse.png" />
+    <None Remove="Assets\Images\AuraIcons\Delude.png" />
+    <None Remove="Assets\Images\AuraIcons\Heal.png" />
+    <None Remove="Assets\Images\AuraIcons\Strength.png" />
     <None Remove="Assets\Images\Cards\Archer.png" />
     <None Remove="Assets\Images\Cards\Assassin.png" />
     <None Remove="Assets\Images\Cards\Demon.png" />
@@ -49,6 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\AuraIcons\Curse.png" />
+    <Resource Include="Assets\Images\AuraIcons\Delude.png" />
+    <Resource Include="Assets\Images\AuraIcons\Heal.png" />
+    <Resource Include="Assets\Images\AuraIcons\Strength.png" />
     <Resource Include="Assets\Images\Cards\Archer.png" />
     <Resource Include="Assets\Images\Cards\Assassin.png" />
     <Resource Include="Assets\Images\Cards\Demon.png" />

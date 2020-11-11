@@ -1,6 +1,5 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic;
-using Client.Logic.Data;
 using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.ViewModels.Cards;
