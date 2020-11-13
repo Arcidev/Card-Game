@@ -207,4 +207,10 @@
   <data name="SettingsModified" xml:space="preserve">
     <value>You have made some changes to settings. Do you wish to save them?</value>
   </data>
+  <data name="WonGame" xml:space="preserve">
+    <value>You have won.</value>
+  </data>
+  <data name="LostGame" xml:space="preserve">
+    <value>You have lost.</value>
+  </data>
 </root>

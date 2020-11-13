@@ -9,7 +9,7 @@ namespace Client.UI.ViewModels.MainGame
 {
     public class PlayingGameViewModel : NotifyPropertyViewModel
     {
-        private readonly Game game;
+        public Game Game { get; }
 
         public CardDeckViewModel Player { get; }
 
@@ -23,18 +23,18 @@ namespace Client.UI.ViewModels.MainGame
 
         public PlayingGameViewModel()
         {
-            game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            if (game.Player == null || game.Opponent == null)
+            Game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
+            if (Game.Player == null || Game.Opponent == null)
                 throw new InvalidOperationException("Both players must exist at this point");
 
-            Player = new CardDeckViewModel(game.Player);
-            Opponent = new CardDeckViewModel(game.Opponent);
+            Player = new CardDeckViewModel(Game.Player);
+            Opponent = new CardDeckViewModel(Game.Opponent);
 
             AttackCmd = new CommandHandler(() => InvokeCardAction(CardAction.BasicAttack));
             SpellAttackCmd = new CommandHandler(() => InvokeCardAction(CardAction.SpellUse));
-            DefendCmd = new AsyncCommandHandler(() => game.DefendSelfAsync());
+            DefendCmd = new AsyncCommandHandler(() => Game.DefendSelfAsync());
 
-            game.PacketProcessed += OnPacketProcessed;
+            Game.PacketProcessed += OnPacketProcessed;
         }
 
         private void OnPacketProcessed(UInt16 packet)
@@ -42,7 +42,7 @@ namespace Client.UI.ViewModels.MainGame
             if (packet == (UInt16)SMSGPackets.ActivePlayer)
             {
                 foreach (var card in Player.Cards)
-                    card.SelectionType = !game.IsGameWaiting && game.Player.ActiveCard.Guid == card.Guid ? SelectionType.Selected : SelectionType.None;
+                    card.SelectionType = !Game.IsGameWaiting && Game.Player.ActiveCard.Guid == card.Guid ? SelectionType.Selected : SelectionType.None;
 
                 foreach (var card in Opponent.Cards)
                     card.SelectionType = SelectionType.None;
@@ -53,7 +53,7 @@ namespace Client.UI.ViewModels.MainGame
         {
             if (action == CardAction.SpellUse)
             {
-                var targets = game.Player.ActiveCard.Spell?.GetPossibleTargets(game.Player, game.Opponent);
+                var targets = Game.Player.ActiveCard.Spell?.GetPossibleTargets(Game.Player, Game.Opponent);
                 foreach (var playerCards in Player.Cards.Where(x => targets.Contains(x.Guid)).Concat(Opponent.Cards.Where(x => targets.Contains(x.Guid))))
                 {
                     playerCards.SelectionType = SelectionType.SpellUsable;
@@ -61,7 +61,7 @@ namespace Client.UI.ViewModels.MainGame
             }
             else if (action == CardAction.BasicAttack)
             {
-                var targets = game.Player.ActiveCard.GetPossibleTargets(game.Opponent.CardDeck, game.Player.ActiveCardPosition);
+                var targets = Game.Player.ActiveCard.GetPossibleTargets(Game.Opponent.CardDeck, Game.Player.ActiveCardPosition);
                 foreach (var playerCards in Opponent.Cards.Where(x => targets.Contains(x.Guid)))
                 {
                     playerCards.SelectionType = SelectionType.BasicDamageAttackable;

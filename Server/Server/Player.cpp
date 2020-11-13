@@ -8,25 +8,24 @@
 #include "PacketHandlers/PacketHandler.h"
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
-#include "../Database/DatabaseInstance.h"
-#include "../Shared/SharedDefines.h"
 
-Player::Player(Game* game, ConnectedUser const* user)
+Player::Player(Game* game, ConnectedUser* user)
     : m_isPrepared(false), m_replenishmentMoveCount(0), m_id(user->GetId()), m_currentCardIndex(0), m_game(game), m_user(user) { }
 
 Player::~Player()
 {
     for (auto& card : m_cards)
         delete card.second;
+
+    m_user->UnsetPlayer();
+    m_user->GetNetwork()->OnPlayerDisconnected(this);
 }
 
 // Set player state to disconnected
 void Player::Disconnect() const
 {
     m_game->DisconnectPlayer(m_id);
-
-    DatabaseInstance::GetDbCommandHandler().UpdateUserLastLoginTime(m_id);
-    DEBUG_LOG("Client %d: Connection closed\r\n", m_id);
+    m_user->GetNetwork()->OnPlayerDisconnected(this);
 }
 
 // Sends attack result
@@ -78,7 +77,10 @@ void Player::Attack(uint64_t victimCardGuid)
         victim->destroyCard(victimCardGuid);
         SendAttackResult(AttackResult::ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
-            SendEndGame(m_id);
+        {
+            EndGame(m_id);
+            return;
+        }
         else
             victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
@@ -135,7 +137,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     if (sendOpponentCardDeck)
     {
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
-            SendEndGame(m_id);
+            EndGame(m_id);
         else
             victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
@@ -391,12 +393,13 @@ PlayableCard* Player::GetCurrentCard()
 }
 
 // Informs player that game has ended
-void Player::SendEndGame(uint32_t winnerId) const
+void Player::EndGame(uint32_t winnerId) const
 {
     Packet packet(SMSGPackets::SMSG_END_GAME);
     packet << winnerId;
 
     GetGame()->BroadcastPacket(packet);
+    delete GetGame();
 }
 
 // Sets active defend statte on current card
@@ -596,7 +599,7 @@ void Player::endTurn()
 
     if (m_currentCards.empty())
     {
-        SendEndGame(GetOpponent() ? GetOpponent()->GetId() : 0);
+        EndGame(GetOpponent() ? GetOpponent()->GetId() : 0);
         return;
     }
 

@@ -207,4 +207,10 @@
   <data name="SettingsModified" xml:space="preserve">
     <value>Provedli jste změny v nastavení. Přejete si je uložit?</value>
   </data>
+  <data name="WonGame" xml:space="preserve">
+    <value>Vyhrál jste.</value>
+  </data>
+  <data name="LostGame" xml:space="preserve">
+    <value>Prohrál jste.</value>
+  </data>
 </root>

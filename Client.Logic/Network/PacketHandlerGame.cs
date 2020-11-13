@@ -48,8 +48,8 @@ namespace Client.Logic.Network
         // Handle SMSG_END_GAME packet
         private static void HandleEndGame(Packet packet, Game game)
         {
-            //var winnerId = packet.ReadUInt32();
-            //game.EndGame(game.Player.Id == winnerId);
+            var winnerId = packet.ReadUInt32();
+            game.OnGameEnded(game.Player.Id == winnerId);
         }
     }
 }

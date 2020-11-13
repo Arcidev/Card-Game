@@ -28,7 +28,7 @@ class Player
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
-        ConnectedUser const* m_user;
+        ConnectedUser* m_user;
 
         void destroyCard(uint64_t cardGuid);
         void replenishMana();
@@ -36,7 +36,7 @@ class Player
         uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense);
 
     public:
-        Player(Game* game, ConnectedUser const* user);
+        Player(Game* game, ConnectedUser* user);
         ~Player();
 
         void SendGameInfo() const;
@@ -44,7 +44,7 @@ class Player
         void SendSelectCardsFailed(FailReson failReason) const;
         void SendPlayerDisconnected() const;
         void SendAttackResult(AttackResult result, uint64_t cardGuid, uint8_t damage) const;
-        void SendEndGame(uint32_t winnerId) const;
+        void EndGame(uint32_t winnerId) const;
         void SendCardStatChanged(PlayableCard const* card, CardStats cardStat) const;
         void SendMorphInfo(PlayableCard const* card) const;
         void SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) const;

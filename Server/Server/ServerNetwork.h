@@ -41,6 +41,6 @@ class ServerNetwork
         std::mutex& GetLocker() { return m_locker; }
         void SetLastPlayer(Player const* user) { m_lastPlayer = user; }
 
-        void OnPlayerDisconnected(ConnectedUser const* user);
+        void OnPlayerDisconnected(Player const* user);
         Game* GetGameForPlayer();
 };

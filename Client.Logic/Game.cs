@@ -2,7 +2,6 @@
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
 using Client.Logic.Data;
-using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.Logic.Network;
 using System;
@@ -27,6 +26,7 @@ namespace Client.Logic
 
         public event Action<MessageType, string> MessageReceived;
         public event Action<UInt16> PacketProcessed;
+        public event Action<bool> GameEnded;
 
         /// <summary>
         /// List of available servers
@@ -138,6 +138,12 @@ namespace Client.Logic
                 foreach (var handler in PacketProcessed.GetInvocationList())
                     PacketProcessed -= handler as Action<UInt16>;
             }
+        }
+
+        internal void OnGameEnded(bool hasWon)
+        {
+            IsGameWaiting = false;
+            GameEnded?.Invoke(hasWon);
         }
 
         internal void OnErrorOccured(string error) => MessageReceived?.Invoke(MessageType.Error, error);

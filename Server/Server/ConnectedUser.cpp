@@ -5,6 +5,7 @@
 #include "ServerNetwork.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "../Crypto/Aes.h"
+#include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
 
 ConnectedUser::ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network) : m_serverId(serverId), m_databaseId(0), m_name(""), m_disconnected(false), m_socket(socket), m_network(network), m_player(nullptr) { }
@@ -29,13 +30,18 @@ void ConnectedUser::CreatePlayer()
 
 void ConnectedUser::Disconnect()
 {
+    if (m_disconnected)
+        return;
+
     m_disconnected = true;
     if (m_player)
         m_player->Disconnect();
 
-    m_network->OnPlayerDisconnected(this);
     shutdown(m_socket, SD_BOTH);
     closesocket(m_socket);
+
+    DatabaseInstance::GetDbCommandHandler().UpdateUserLastLoginTime(m_databaseId);
+    DEBUG_LOG("Client %d: Connection closed\r\n", m_databaseId);
 }
 
 // Receive encrypted packet from client

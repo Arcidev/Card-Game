@@ -196,6 +196,15 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have lost..
+        /// </summary>
+        public static string LostGame {
+            get {
+                return ResourceManager.GetString("LostGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Menu.
         /// </summary>
         public static string MainMenu {
@@ -327,6 +336,15 @@ namespace Client.UI.Resources {
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have won..
+        /// </summary>
+        public static string WonGame {
+            get {
+                return ResourceManager.GetString("WonGame", resourceCulture);
             }
         }
     }

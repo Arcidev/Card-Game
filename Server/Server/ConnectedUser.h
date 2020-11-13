@@ -36,6 +36,7 @@ class ConnectedUser
         void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
 
         void CreatePlayer();
+        void UnsetPlayer() { m_player = nullptr; }
         void Disconnect();
         void ReceivePacket(uint32_t length, char const* packetData);
         void SendPacket(Packet const& packet) const;

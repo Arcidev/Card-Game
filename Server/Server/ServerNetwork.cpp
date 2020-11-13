@@ -223,9 +223,9 @@ bool ServerNetwork::SendPacketToPlayer(std::string_view playerName, Packet const
 }
 
 // Set last player to null if this player was the one last connected
-void ServerNetwork::OnPlayerDisconnected(ConnectedUser const* user)
+void ServerNetwork::OnPlayerDisconnected(Player const* player)
 {
-    if (m_lastPlayer && (user->GetId() == m_lastPlayer->GetId()))
+    if (m_lastPlayer && (player->GetId() == m_lastPlayer->GetId()))
         m_lastPlayer = nullptr;
 }
 

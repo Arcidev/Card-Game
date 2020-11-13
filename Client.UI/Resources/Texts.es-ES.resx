@@ -207,4 +207,10 @@
   <data name="SettingsModified" xml:space="preserve">
     <value>Ha realizado cambios en la configuración. ¿Quieres salvarlos?</value>
   </data>
+  <data name="WonGame" xml:space="preserve">
+    <value>Usted ha ganado.</value>
+  </data>
+  <data name="LostGame" xml:space="preserve">
+    <value>Usted ha perdido.</value>
+  </data>
 </root>
