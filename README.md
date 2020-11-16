@@ -5,7 +5,7 @@ Card-Game
 + OpenSSL 1.1.0i (x64 DLL/lib included for Windows)
 + PostgreSQL 11 (x64 DLL/lib included for Windows)
 + C++17
-+ C# 7.3
++ C# 9.0
 
 ## Build Status
 [![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game)
