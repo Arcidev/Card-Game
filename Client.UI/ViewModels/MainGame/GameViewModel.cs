@@ -17,7 +17,7 @@ namespace Client.UI.ViewModels.MainGame
         public GameViewModel()
         {
             Game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            ChatViewModel = new ChatViewModel(Game);
+            ChatViewModel = new (Game);
 
             Game.UnsubscribeAllHandlers();
             Game.MessageReceived += OnMessageReceived;

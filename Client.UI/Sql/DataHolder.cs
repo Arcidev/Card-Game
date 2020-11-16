@@ -9,13 +9,13 @@ namespace Client.UI.Sql
 {
     public class DataHolder : IDataHolder
     {
-        private IDictionary<UInt32, SelectableCard> cards;
-        private readonly IDictionary<UInt32, SpellData> spellsData = new Dictionary<UInt32, SpellData>();
+        private Dictionary<UInt32, SelectableCard> cards;
+        private readonly Dictionary<UInt32, SpellData> spellsData = new();
 
         public IEnumerable<SelectableCard> Cards => cards?.Values;
 
         // Loads cards from database
-        public void LoadData(IDictionary<UInt32, SelectableCard> cards)
+        public void LoadData(Dictionary<UInt32, SelectableCard> cards)
         {
             using var connection = new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;");
             connection.Open();
@@ -44,7 +44,7 @@ namespace Client.UI.Sql
         }
 
         // Loads cards
-        private void LoadCards(SQLiteConnection connection, IDictionary<UInt32, SelectableCard> cards)
+        private void LoadCards(SQLiteConnection connection, Dictionary<UInt32, SelectableCard> cards)
         {
             using var cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT id, name, imagePath FROM Cards";

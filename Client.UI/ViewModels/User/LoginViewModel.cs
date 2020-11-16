@@ -32,7 +32,7 @@ namespace Client.UI.ViewModels.User
 
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
-        public IEnumerable<string> ServerList => Game.Servers;
+        public static IEnumerable<string> ServerList => Game.Servers;
 
         public string Server { get; set; }
 

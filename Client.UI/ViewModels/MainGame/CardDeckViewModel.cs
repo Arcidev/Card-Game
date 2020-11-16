@@ -15,7 +15,7 @@ namespace Client.UI.ViewModels.MainGame
         public CardDeckViewModel(Player player)
         {
             this.player = player;
-            Cards = new ObservableCollection<PlayableCardViewModel>(player.CardDeck.Where(x => x != null).Select(x => new PlayableCardViewModel(x)));
+            Cards = new (player.CardDeck.Where(x => x != null).Select(x => new PlayableCardViewModel(x)));
 
             player.CardDeckChanged += OnDeckChanged;
         }

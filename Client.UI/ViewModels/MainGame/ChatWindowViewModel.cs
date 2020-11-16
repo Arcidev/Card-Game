@@ -1,6 +1,7 @@
 ﻿using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Resources;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,7 @@ namespace Client.UI.ViewModels.MainGame
             this.parent = parent;
 
             text = new StringBuilder();
-            HandleChatCommandCmd = new AsyncCommandHandler(HandleChatCommand);
+            HandleChatCommandCmd = new (HandleChatCommand);
         }
 
         public void Write(string name, string msg)
@@ -92,9 +93,9 @@ namespace Client.UI.ViewModels.MainGame
                 return;
 
             if (!Message.StartsWith('/'))
-                await parent.Game.Chat.SendMessage(Message, ChatType, ChatType == ChatType.Whisper ? new[] { Name } : new string[0]);
+                await parent.Game.Chat.SendMessage(Message, ChatType, ChatType == ChatType.Whisper ? new[] { Name } : Array.Empty<string>());
             else
-                await HandleCommand(Message.Substring(1));
+                await HandleCommand(Message[1..]);
 
             Message = null;
         }
@@ -115,18 +116,18 @@ namespace Client.UI.ViewModels.MainGame
                 case "game":
                     parent.SetActiveChat(ChatType.Game, null);
                     if (commandDelimiter > 0)
-                        await parent.Game.Chat.SendMessage(command.Substring(commandDelimiter).Trim(), ChatType.Game);
+                        await parent.Game.Chat.SendMessage(command[commandDelimiter..].Trim(), ChatType.Game);
                     break;
                 case "global":
                     parent.SetActiveChat(ChatType.Global, null);
                     if (commandDelimiter > 0)
-                        await parent.Game.Chat.SendMessage(command.Substring(commandDelimiter).Trim(), ChatType.Global);
+                        await parent.Game.Chat.SendMessage(command[commandDelimiter..].Trim(), ChatType.Global);
                     break;
                 case "help":
                     ListCommands();
                     break;
                 case "whisper":
-                    await HandleWhisperCommand(commandDelimiter > 0 ? command.Substring(commandDelimiter).Trim() : "");
+                    await HandleWhisperCommand(commandDelimiter > 0 ? command[commandDelimiter..].Trim() : "");
                     break;
                 default:
                     HandleInvalidCommand();
@@ -165,7 +166,7 @@ namespace Client.UI.ViewModels.MainGame
             }
 
             string receiverName = arg.Substring(0, commandDelimiter);
-            string message = arg.Substring(commandDelimiter).Trim();
+            string message = arg[commandDelimiter..].Trim();
 
             if (!message.Any())
             {

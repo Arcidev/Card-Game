@@ -26,9 +26,9 @@ namespace Client.UI.ViewModels.MainGame
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
 
-            Cards = new ObservableCollection<SelectableCardViewModel>(game.DataHolder.Cards.Select(x => new SelectableCardViewModel(x)));
-            SelectItemsCommand = new CommandHandler(SelectItems);
-            SendSelectedCardsCommand = new AsyncCommandHandler(SendSelectedCards, () => selectedItems?.Count == 5);
+            Cards = new (game.DataHolder.Cards.Select(x => new SelectableCardViewModel(x)));
+            SelectItemsCommand = new (SelectItems);
+            SendSelectedCardsCommand = new (SendSelectedCards, () => selectedItems?.Count == 5);
         }
 
         private async Task SendSelectedCards()
@@ -45,7 +45,7 @@ namespace Client.UI.ViewModels.MainGame
 
         private void SelectItems(object obj)
         {
-            if (!(obj is IList items))
+            if (obj is not IList items)
                 return;
 
             if (items.Count > 5)

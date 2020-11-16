@@ -22,7 +22,7 @@ namespace Client.UI.Views.Game
 
         private void GamePageLoaded(object sender, RoutedEventArgs e)
         {
-            if (loaded || !(DataContext is GameViewModel vm))
+            if (loaded || DataContext is not GameViewModel vm)
                 return;
 
             loaded = true;
@@ -51,7 +51,7 @@ namespace Client.UI.Views.Game
         private void GameFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             NavigationService.RemoveBackEntry();
-            if (!(DataContext is GameViewModel vm))
+            if (DataContext is not GameViewModel vm)
                 return;
 
             vm.ChatViewModel.AddGameChat();
@@ -62,7 +62,7 @@ namespace Client.UI.Views.Game
 
         private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) => UpdateFrameDataContext(sender);
 
-        private void UpdateFrameDataContext(object sender)
+        private static void UpdateFrameDataContext(object sender)
         {
             if (sender is Frame frame && frame.Content is FrameworkElement content)
                 content.DataContext = frame.DataContext;

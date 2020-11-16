@@ -21,7 +21,7 @@ namespace Client.UI.Views.Game
 
         private void PlayingGame_Loaded(object sender, RoutedEventArgs e)
         {
-            if (loaded || !(DataContext is PlayingGameViewModel vm))
+            if (loaded || DataContext is not PlayingGameViewModel vm)
                 return;
 
             loaded = true;

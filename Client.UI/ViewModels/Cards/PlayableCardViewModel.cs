@@ -40,8 +40,7 @@ namespace Client.UI.ViewModels.Cards
         public PlayableCardViewModel(PlayableCard card)
         {
             this.card = card;
-
-            Auras = new ObservableCollection<SpellAuraViewModel>(card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)));
+            Auras = new (card.Auras.Select(x => new SpellAuraViewModel(x.SpellId, x.AuraText, x.AuraImagePath)));
             card.StatChanged += stat => OnPropertyChanged(stat.ToString());
             card.SpellAurasChanged += OnSpellAurasChanged;
             card.CardChanged += OnCardChanged;

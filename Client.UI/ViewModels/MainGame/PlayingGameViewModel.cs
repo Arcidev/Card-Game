@@ -27,12 +27,12 @@ namespace Client.UI.ViewModels.MainGame
             if (Game.Player == null || Game.Opponent == null)
                 throw new InvalidOperationException("Both players must exist at this point");
 
-            Player = new CardDeckViewModel(Game.Player);
-            Opponent = new CardDeckViewModel(Game.Opponent);
+            Player = new (Game.Player);
+            Opponent = new (Game.Opponent);
 
-            AttackCmd = new CommandHandler(() => InvokeCardAction(CardAction.BasicAttack));
-            SpellAttackCmd = new CommandHandler(() => InvokeCardAction(CardAction.SpellUse));
-            DefendCmd = new AsyncCommandHandler(() => Game.DefendSelfAsync());
+            AttackCmd = new (() => InvokeCardAction(CardAction.BasicAttack));
+            SpellAttackCmd = new (() => InvokeCardAction(CardAction.SpellUse));
+            DefendCmd = new (() => Game.DefendSelfAsync());
 
             Game.PacketProcessed += OnPacketProcessed;
         }

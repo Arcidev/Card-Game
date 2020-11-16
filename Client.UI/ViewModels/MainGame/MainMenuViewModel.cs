@@ -1,5 +1,4 @@
-﻿using Arci.Networking.Data;
-using Client.Logic;
+﻿using Client.Logic;
 using Client.Logic.Enums;
 using Client.UI.Controls;
 using System;
@@ -16,12 +15,12 @@ namespace Client.UI.ViewModels.MainGame
         public MainMenuViewModel()
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            StartGameCommand = new AsyncCommandHandler(StartGameAsync);
+            StartGameCommand = new (StartGameAsync);
         }
 
         private async Task StartGameAsync()
         {
-            await game.SendPacketAsync(new Packet(CMSGPackets.StartGame));
+            await game.SendPacketAsync(new (CMSGPackets.StartGame));
         }
     }
 }

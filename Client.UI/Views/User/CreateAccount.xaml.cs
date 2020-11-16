@@ -21,7 +21,7 @@ namespace Client.UI.Views.User
 
         private async void CreateAccountBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (!(DataContext is CreateAccountViewModel vm))
+            if (DataContext is not CreateAccountViewModel vm)
                 return;
 
             if (Password.Password != PasswordAgain.Password)

@@ -20,7 +20,7 @@ namespace Client.UI.Views.User
 
         private async void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (!(DataContext is LoginViewModel vm))
+            if (DataContext is not LoginViewModel vm)
                 return;
 
             LoginBtn.IsEnabled = false;

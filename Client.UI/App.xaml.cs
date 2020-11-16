@@ -17,7 +17,7 @@ namespace Client.UI
 
         public static void SetGame(Game game)
         {
-            if (!(Current is App app))
+            if (Current is not App app)
                 return;
 
             if (game == app.game)

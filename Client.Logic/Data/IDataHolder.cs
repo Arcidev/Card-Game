@@ -7,7 +7,7 @@ namespace Client.Logic.Data
 {
     public interface IDataHolder
     {
-        void LoadData(IDictionary<UInt32, SelectableCard> cards);
+        void LoadData(Dictionary<UInt32, SelectableCard> cards);
 
         IEnumerable<SelectableCard> Cards { get; }
 

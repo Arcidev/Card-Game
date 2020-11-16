@@ -1,5 +1,4 @@
-﻿using Client.Logic.Data;
-using Client.Logic.Data.Cards;
+﻿using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using System;
 using System.Collections.Generic;
