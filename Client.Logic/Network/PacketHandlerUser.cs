@@ -15,7 +15,7 @@ namespace Client.Logic.Network
         {
             var result = (UserResult)packet.ReadByte();
 
-            switch(result)
+            switch (result)
             {
                 case UserResult.LogedIn:
                     game.Player = new Player(packet.ReadUInt32(), packet.ReadString(), game);

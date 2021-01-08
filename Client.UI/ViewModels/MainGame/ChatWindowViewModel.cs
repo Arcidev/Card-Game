@@ -10,12 +10,17 @@ namespace Client.UI.ViewModels.MainGame
 {
     public class ChatWindowViewModel : NotifyPropertyViewModel
     {
+        private const string game = "game";
+        private const string global = "global";
+        private const string help = "help";
+        private const string whisper = "whisper";
+
         private static readonly string[] commands =
         {
-            "game",
-            "global",
-            "help",
-            "whisper"
+            game,
+            global,
+            help,
+            whisper
         };
 
         private readonly ChatViewModel parent;
@@ -113,20 +118,20 @@ namespace Client.UI.ViewModels.MainGame
 
             switch (commands.FirstOrDefault(x => x.StartsWith(cmd)))
             {
-                case "game":
+                case game:
                     parent.SetActiveChat(ChatType.Game, null);
                     if (commandDelimiter > 0)
                         await parent.Game.Chat.SendMessage(command[commandDelimiter..].Trim(), ChatType.Game);
                     break;
-                case "global":
+                case global:
                     parent.SetActiveChat(ChatType.Global, null);
                     if (commandDelimiter > 0)
                         await parent.Game.Chat.SendMessage(command[commandDelimiter..].Trim(), ChatType.Global);
                     break;
-                case "help":
+                case help:
                     ListCommands();
                     break;
-                case "whisper":
+                case whisper:
                     await HandleWhisperCommand(commandDelimiter > 0 ? command[commandDelimiter..].Trim() : "");
                     break;
                 default:
@@ -154,7 +159,7 @@ namespace Client.UI.ViewModels.MainGame
         {
             void FormatSyntaxError()
             {
-                text.AppendLine(string.Format(Texts.InvalidSyntax, "/whisper [name] [message]"));
+                text.AppendLine(string.Format(Texts.InvalidSyntax, $"/{whisper} [name] [message]"));
                 OnPropertyChanged(nameof(Text));
             }
 

@@ -61,7 +61,7 @@ namespace Client.UI.ViewModels.Settings
                 }
                 catch (CultureNotFoundException)
                 {
-
+                    // just ignore it
                 }
             }
             return result;

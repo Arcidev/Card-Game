@@ -39,14 +39,14 @@ namespace Client.UI.ViewModels.MainGame
 
         private void OnPacketProcessed(UInt16 packet)
         {
-            if (packet == (UInt16)SMSGPackets.ActivePlayer)
-            {
-                foreach (var card in Player.Cards)
-                    card.SelectionType = !Game.IsGameWaiting && Game.Player.ActiveCard.Guid == card.Guid ? SelectionType.Selected : SelectionType.None;
+            if (packet != (UInt16)SMSGPackets.ActivePlayer)
+                return;
 
-                foreach (var card in Opponent.Cards)
-                    card.SelectionType = SelectionType.None;
-            }
+            foreach (var card in Player.Cards)
+                card.SelectionType = !Game.IsGameWaiting && Game.Player.ActiveCard.Guid == card.Guid ? SelectionType.Selected : SelectionType.None;
+
+            foreach (var card in Opponent.Cards)
+                card.SelectionType = SelectionType.None;
         }
 
         private void InvokeCardAction(CardAction action)
