@@ -165,6 +165,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Database\DatabaseInstance.h" />
     <ClInclude Include="Database\DbCommandHandler.h" />
     <ClInclude Include="Database\DbEntities.h" />
+    <ClInclude Include="Database\PreparedStatement.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\CardDefines.h" />

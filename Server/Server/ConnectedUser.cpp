@@ -105,7 +105,7 @@ void ConnectedUser::SendChatWhisperResponse(std::string_view message, std::strin
     SendPacket(pck);
 }
 
-// Sends info about opponent if is already connected
+// Sends response to init packet
 void ConnectedUser::SendInitResponse() const
 {
     Packet pck(SMSGPackets::SMSG_INIT_RESPONSE);

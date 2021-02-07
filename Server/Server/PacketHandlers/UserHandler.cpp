@@ -89,7 +89,7 @@ void PacketHandler::handleUserChangePassword(ConnectedUser* cUser, Packet& packe
     packet >> password >> newPassword;
 
     DEBUG_LOG("CMSG_USER_CHANGE_PASSWORD:\r\n\tId: %d\r\n", cUser->GetId());
-    User user = DatabaseInstance::GetDbCommandHandler().GetUser(cUser->GetId());
+    User user = DatabaseInstance::GetDbCommandHandler().GetUser(cUser->GetDatabaseId());
     Packet result(SMSGPackets::SMSG_USER_RESULT);
     if (!user.Id || Sha::CreateHash(password, user.PasswordSalt) != user.PasswordHash)
     {
@@ -99,7 +99,7 @@ void PacketHandler::handleUserChangePassword(ConnectedUser* cUser, Packet& packe
     }
 
     auto[salt, hash] = Sha::CreateHash(newPassword);
-    DatabaseInstance::GetDbCommandHandler().SetUserPassword(cUser->GetId(), salt, hash);
+    DatabaseInstance::GetDbCommandHandler().SetUserPassword(cUser->GetDatabaseId(), salt, hash);
 
     result << (uint8_t)USER_RESULT_PASSWORD_CHANGED;
     cUser->SendPacket(result);

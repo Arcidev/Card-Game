@@ -213,4 +213,10 @@
   <data name="LostGame" xml:space="preserve">
     <value>Prehrali ste.</value>
   </data>
+  <data name="PasswordChange" xml:space="preserve">
+    <value>Zmeniť heslo</value>
+  </data>
+  <data name="PasswordCurrent" xml:space="preserve">
+    <value>Aktuálne heslo:</value>
+  </data>
 </root>

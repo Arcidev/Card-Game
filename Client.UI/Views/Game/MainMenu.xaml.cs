@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Client.UI.Views.Settings;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Client.UI.Views.Game
 {
@@ -12,6 +14,12 @@ namespace Client.UI.Views.Game
             InitializeComponent();
         }
 
-        private void LogoutButton_Click(object sender, System.Windows.RoutedEventArgs e) => NavigationService.GoBack();
+        private void LogoutButton_Click(object sender, RoutedEventArgs e) => NavigationService.GoBack();
+
+        private void ChangePassword_Click(object sender, RoutedEventArgs e)
+        {
+            var changePasswordWindow = new ChangePasswordWindow();
+            changePasswordWindow.ShowDialog();
+        }
     }
 }

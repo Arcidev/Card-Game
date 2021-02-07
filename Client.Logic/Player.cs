@@ -125,7 +125,7 @@ namespace Client.Logic
                 card.Health -= damage;
 
                 if (isPeriodicDamage)
-                    Game.CombatLog.LogPeriodicDamage(card.Name  , damage, true);
+                    Game.CombatLog.LogPeriodicDamage(card.Name, damage, true);
                 else
                     Game.CombatLog.LogDamage(combatLogType, Game.GetOpponent(Id).ActiveCard?.Name, card.Name, damage, true);
             });

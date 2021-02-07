@@ -232,6 +232,24 @@ namespace Client.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        public static string PasswordChange {
+            get {
+                return ResourceManager.GetString("PasswordChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Password:.
+        /// </summary>
+        public static string PasswordCurrent {
+            get {
+                return ResourceManager.GetString("PasswordCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password and confirmation password do not match..
         /// </summary>
         public static string PasswordMismatch {

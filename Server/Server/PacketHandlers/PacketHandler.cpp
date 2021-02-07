@@ -17,7 +17,7 @@ PacketHandlerFuncWrapper const PacketHandler::packetHandlers[] =
 
 inline bool PacketHandler::isLoggedIn(ConnectedUser const* user)
 {
-    return user->IsLoggedIn();
+    return user->GetDatabaseId();
 }
 
 inline bool PacketHandler::isPlaying(ConnectedUser const* user)
