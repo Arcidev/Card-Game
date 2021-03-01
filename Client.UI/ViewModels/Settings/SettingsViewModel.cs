@@ -41,7 +41,7 @@ namespace Client.UI.ViewModels.Settings
                     return;
 
                 volume = value;
-                App.GetMediaPlayer().Volume = volume / 100d;
+                App.GetMediaPlayer().Volume = volume / 100;
                 OnPropertyChanged();
             }
         }
@@ -71,9 +71,9 @@ namespace Client.UI.ViewModels.Settings
         private static IEnumerable<CultureInfo> GetAvailableCultures()
         {
             var result = new List<CultureInfo>();
-
             var rm = new ResourceManager(typeof(Texts));
             var cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+
             foreach (var culture in cultures)
             {
                 try
