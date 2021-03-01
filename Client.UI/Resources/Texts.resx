@@ -219,4 +219,7 @@
   <data name="PasswordCurrent" xml:space="preserve">
     <value>Current Password:</value>
   </data>
+  <data name="Music" xml:space="preserve">
+    <value>Music:</value>
+  </data>
 </root>

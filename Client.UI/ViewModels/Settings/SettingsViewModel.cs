@@ -9,6 +9,7 @@ namespace Client.UI.ViewModels.Settings
     public class SettingsViewModel : NotifyPropertyViewModel
     {
         private LanguageViewModel selectedLanguage;
+        private double volume;
 
         public List<LanguageViewModel> AvailableLanguages { get; }
 
@@ -31,15 +32,36 @@ namespace Client.UI.ViewModels.Settings
             }
         }
 
+        public double Volume
+        {
+            get => volume;
+            set
+            {
+                if (volume == value)
+                    return;
+
+                volume = value;
+                App.GetMediaPlayer().Volume = volume / 100d;
+                OnPropertyChanged();
+            }
+        }
+
         public SettingsViewModel()
         {
             AvailableLanguages = GetAvailableCultures().Select(x => new LanguageViewModel(x)).ToList();
             selectedLanguage = AvailableLanguages.FirstOrDefault(x => x.CultureInfo.Equals(CultureInfo.CurrentCulture));
+            volume = App.GetMediaPlayer().Volume * 100;
+        }
+
+        public static void Cancel()
+        {
+            App.GetMediaPlayer().Volume = UI.Settings.Default.MusicVolume;
         }
 
         public void Save()
         {
             UI.Settings.Default.LanguageCode = SelectedLanguage?.CultureInfo.Name;
+            UI.Settings.Default.MusicVolume = App.GetMediaPlayer().Volume;
             UI.Settings.Default.Save();
 
             if (LanguageModified)

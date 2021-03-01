@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Client.UI
 {
@@ -12,8 +13,11 @@ namespace Client.UI
     public partial class App : Application
     {
         private Game game;
+        private readonly MediaPlayer mediaPlayer = new();
 
-        public static Game GetGame() => (Current as App)?.game;
+        public static Game GetGame() => (Current as App).game;
+
+        public static MediaPlayer GetMediaPlayer() => (Current as App).mediaPlayer;
 
         public static void SetGame(Game game)
         {
@@ -54,13 +58,26 @@ namespace Client.UI
                 }
             }
 
+            mediaPlayer.Open(new Uri("pack://siteoforigin:,,,/Assets/Sounds/MainMenu.mp3"));
+            mediaPlayer.MediaEnded += MusicPlayer_MediaEnded;
+            mediaPlayer.MediaOpened += (_, _) => mediaPlayer.Volume = Settings.Default.MusicVolume;
+            mediaPlayer.Play();
+
             base.OnStartup(e);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
+            mediaPlayer.Close();
             game?.Dispose();
             base.OnExit(e);
+        }
+
+        private void MusicPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            // Loop
+            mediaPlayer.Position = TimeSpan.Zero;
+            mediaPlayer.Play();
         }
     }
 }

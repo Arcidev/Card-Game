@@ -33,8 +33,10 @@ namespace Client.UI.Views.Settings
                 {
                     var result = MessageBox.Show(Texts.SettingsModified, string.Empty, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Cancel)
+                    {
+                        SettingsViewModel.Cancel();
                         return;
-
+                    }
                     if (result == MessageBoxResult.Yes)
                         vm.Save();
                 }

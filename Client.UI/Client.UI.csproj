@@ -38,9 +38,17 @@
     <None Remove="Assets\Images\Cards\Wizard.png" />
     <None Remove="Assets\Images\GameChat.png" />
     <None Remove="Assets\Images\GeneralChat.png" />
+    <None Remove="Assets\Sounds\MainMenu.mp3" />
+    <None Remove="Assets\Sounds\Music_HumbleBundleLicense.txt" />
     <None Remove="Sql\_applyAll.bat" />
     <None Remove="Views\Login.xaml" />
     <None Remove="Views\User\CreateAccount.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Sounds\MainMenu.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

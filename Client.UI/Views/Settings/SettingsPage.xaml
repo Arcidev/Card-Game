@@ -24,10 +24,13 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Text="{x:Static resx:Texts.Language}" Margin="0 0 5 0" />
         <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}"  DisplayMemberPath="Name" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0 5">
+        <TextBlock Grid.Row="1" Text="{x:Static resx:Texts.Music}" Margin="0 0 5 0" />
+        <Slider Grid.Row="1" Grid.Column="1" Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding Volume}"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0 5">
             <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 0">
                 <Hyperlink Click="Save_Click">
                     <Run Text="{x:Static resx:Texts.Save}"/>

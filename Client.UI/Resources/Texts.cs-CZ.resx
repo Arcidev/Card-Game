@@ -219,4 +219,7 @@
   <data name="PasswordCurrent" xml:space="preserve">
     <value>Aktuální heslo:</value>
   </data>
+  <data name="Music" xml:space="preserve">
+    <value>Hudba:</value>
+  </data>
 </root>
