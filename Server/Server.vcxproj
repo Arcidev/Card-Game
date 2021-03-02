@@ -167,6 +167,9 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Database\DbEntities.h" />
     <ClInclude Include="Database\PreparedStatement.h" />
     <ClInclude Include="Multiplatform\NetworkCommunication.h" />
+    <ClInclude Include="Server\Achievements\Achievement.h" />
+    <ClInclude Include="Server\Achievements\AchievementCriteria.h" />
+    <ClInclude Include="Server\Achievements\AchievementMgr.h" />
     <ClInclude Include="Server\Cards\Card.h" />
     <ClInclude Include="Server\Cards\CardDefines.h" />
     <ClInclude Include="Server\Cards\DefensiveCard.h" />
@@ -204,6 +207,9 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Database\DatabaseHandler.cpp" />
     <ClCompile Include="Database\DatabaseInstance.cpp" />
     <ClCompile Include="Database\DbCommandHandler.cpp" />
+    <ClCompile Include="Server\Achievements\Achievement.cpp" />
+    <ClCompile Include="Server\Achievements\AchievementCriteria.cpp" />
+    <ClCompile Include="Server\Achievements\AchievementMgr.cpp" />
     <ClCompile Include="Server\Cards\Card.cpp" />
     <ClCompile Include="Server\Cards\DefensiveCard.cpp" />
     <ClCompile Include="Server\Cards\MeleeCard.cpp" />

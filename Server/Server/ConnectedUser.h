@@ -52,4 +52,3 @@ class ConnectedUser
         bool IsDisconnected() const { return m_disconnected; }
         Player* GetPlayer() const { return m_player; }
 };
-

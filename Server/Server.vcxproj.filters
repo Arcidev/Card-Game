@@ -27,6 +27,9 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{c1c880b1-29c5-4e3c-960d-0d65762eefd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Achievements">
+      <UniqueIdentifier>{24d7a9bb-a8b0-4b7a-aa5f-e94b577245f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shared\SharedDefines.h">
@@ -146,6 +149,15 @@
     <ClInclude Include="Database\PreparedStatement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Achievements\AchievementMgr.h">
+      <Filter>Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Achievements\Achievement.h">
+      <Filter>Achievements</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Achievements\AchievementCriteria.h">
+      <Filter>Achievements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -255,6 +267,15 @@
     </ClCompile>
     <ClCompile Include="Server\ConnectedUser.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Achievements\AchievementMgr.cpp">
+      <Filter>Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Achievements\Achievement.cpp">
+      <Filter>Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Achievements\AchievementCriteria.cpp">
+      <Filter>Achievements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
