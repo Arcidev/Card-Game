@@ -17,7 +17,8 @@ SpellEffectValidatorFunc const SpellValidator::m_effectValidators[] =
     defaultEffectValidator,         // SPELL_EFFECT_APPLY_AURA
     defaultEffectValidator,         // SPELL_EFFECT_HEAL
     defaultEffectValidator,         // SPELL_EFFECT_DRAIN
-    defaultEffectValidator          // SPELL_EFFECT_REMOVE_AURA_TYPE
+    defaultEffectValidator,         // SPELL_EFFECT_REMOVE_AURA_TYPE
+    defaultEffectValidator          // SPELL_EFFECT_SWAP
 };
 
 SpellAuraValidatorFunc const SpellValidator::m_auraValidators[] =

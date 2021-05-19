@@ -8,6 +8,7 @@ enum SpellEffects
     SPELL_EFFECT_HEAL,
     SPELL_EFFECT_DRAIN,
     SPELL_EFFECT_REMOVE_AURA_TYPE,
+    SPELL_EFFECT_SWAP,
     MAX_SPELL_EFFECT_VALUE
 };
 
@@ -39,6 +40,7 @@ class SpellEffect
         static bool handleHeal(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
         static bool handleDrain(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
         static bool handleRemoveAuraType(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
+        static bool handleSwap(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues);
 
     public:
         static SpellEffectFunc GetSpellEffectFunc(uint8_t spellEffectId);

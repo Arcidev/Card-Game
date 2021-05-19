@@ -133,6 +133,33 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card {0} has been swapped with {1}.
+        /// </summary>
+        public static string CardSwap {
+            get {
+                return ResourceManager.GetString("CardSwap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swapping cards have failed.
+        /// </summary>
+        public static string CardSwapFailed {
+            get {
+                return ResourceManager.GetString("CardSwapFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swapping card {0} with {1} has failed.
+        /// </summary>
+        public static string CardSwapFailedInfo {
+            get {
+                return ResourceManager.GetString("CardSwapFailedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Damage.
         /// </summary>
         public static string Damage {

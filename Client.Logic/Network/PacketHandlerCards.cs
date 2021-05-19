@@ -228,5 +228,29 @@ namespace Client.Logic.Network
 
             player?.MorphCard(cardGuid, cardTemplate, mana, isMorph);
         }
+
+        // Handle SMSG_SWAP_CARDS packet
+        private static void HandleSwapCards(Packet packet, Game game)
+        {
+            var cardGuid1 = packet.ReadPacketGuid();
+            var cardGuid2 = packet.ReadPacketGuid();
+            var success = packet.ReadBit();
+
+            if (!success)
+            {
+                string message;
+                var card1 = game.GetCard(cardGuid1);
+                var card2 = game.GetCard(cardGuid2);
+                if (card1 == null || card2 == null)
+                    message = Texts.CardSwapFailed;
+                else
+                    message = string.Format(Texts.CardSwapFailedInfo, card1.Name, card2.Name);
+
+                game.OnErrorOccured(message);
+                return;
+            }
+
+            game.SwapCards(cardGuid1, cardGuid2);
+        }
     }
 }

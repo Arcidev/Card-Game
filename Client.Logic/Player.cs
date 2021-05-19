@@ -156,7 +156,9 @@ namespace Client.Logic
             }
         }
 
-        internal PlayableCard GetCard(UInt64 cardGuid) => cardDeck.FirstOrDefault(x => x.Guid == cardGuid);
+        internal PlayableCard GetCard(UInt64 cardGuid) => cardDeck.FirstOrDefault(x => x?.Guid == cardGuid);
+
+        internal int GetCardIndex(PlayableCard card) => Array.IndexOf(cardDeck, card);
 
         internal void HandleSuccessfulSpellCast(UInt64 cardGuid, UInt32 spellId, byte mana, byte manaCost)
         {
@@ -168,9 +170,19 @@ namespace Client.Logic
             });
         }
 
+        internal void SetCard(PlayableCard card, int index)
+        {
+            if (index >= cardDeck.Length)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            cardDeck[index] = card ?? throw new ArgumentNullException(nameof(card));
+            card.Player = this;
+            CardDeckChanged?.Invoke();
+        }
+
         private void InvokeCardAction(UInt64 cardGuid, Action<PlayableCard> action)
         {
-            var card = GetCard(cardGuid);
+            var card = Game.GetCard(cardGuid);
             if (card == null)
                 return;
 

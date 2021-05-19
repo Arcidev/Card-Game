@@ -27,6 +27,7 @@ namespace Client.Logic.Enums
         SpellAuraExpired,
         SpellAuraRemoved,
         CardMorphInfo,
-        UserResult
+        UserResult,
+        SwapCards
     }
 }

@@ -31,7 +31,8 @@ namespace Client.Logic.Network
             HandleSpellAuraExpired,     // SMSG_SPELL_AURA_EXPIRED
             HandleSpellAuraRemoved,     // SMSG_SPELL_AURAS_REMOVED
             HandleCardMorphInfo,        // SMSG_CARD_MORPH_INFO
-            HandleUserResult            // SMSG_USER_RESULT
+            HandleUserResult,           // SMSG_USER_RESULT
+            HandleSwapCards             // SMSG_SWAP_CARDS
         };
 
         // Returns function to handle packet

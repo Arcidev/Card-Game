@@ -210,4 +210,13 @@
   <data name="InvalidSpellTarget" xml:space="preserve">
     <value>Aktuální karta nemůže použít kouzlo na tento cíl</value>
   </data>
+  <data name="CardSwapFailed" xml:space="preserve">
+    <value>Výměna karet selhala</value>
+  </data>
+  <data name="CardSwapFailedInfo" xml:space="preserve">
+    <value>Výměna karty {0} za {1} se nezdařila</value>
+  </data>
+  <data name="CardSwap" xml:space="preserve">
+    <value>Karta {0} byla zaměněna za {1}</value>
+  </data>
 </root>

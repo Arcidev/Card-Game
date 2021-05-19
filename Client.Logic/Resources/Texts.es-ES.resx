@@ -210,4 +210,13 @@
   <data name="InvalidSpellTarget" xml:space="preserve">
     <value>La carta actual no puede usar hechizos en ese objetivo</value>
   </data>
+  <data name="CardSwapFailed" xml:space="preserve">
+    <value>El intercambio de tarjetas ha fallado</value>
+  </data>
+  <data name="CardSwapFailedInfo" xml:space="preserve">
+    <value>El intercambio de tarjeta {0} con {1} ha fallado</value>
+  </data>
+  <data name="CardSwap" xml:space="preserve">
+    <value>La carta {0} se ha cambiado por {1}</value>
+  </data>
 </root>

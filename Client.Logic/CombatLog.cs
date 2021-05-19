@@ -69,5 +69,10 @@ namespace Client.Logic
         {
             MessageReceived?.Invoke(CombatLogType.SpellUsage, $"{attacker} has drained {drainedMana} mana from {victim} and restored {restoredMana} mana");
         }
+
+        internal void LoagSwapCard(string card1, string card2)
+        {
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.CardSwap, card1, card2));
+        }
     }
 }

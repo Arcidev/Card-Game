@@ -101,14 +101,18 @@ void Game::ActivateSecondPlayer()
 
     // Stop defending if is in defend state
     currentCard->SetDefendState(false);
+    SendActivePlayer(currentCard);
+}
 
+void Game::SendActivePlayer(PlayableCard const* card) const
+{
     Packet packet(SMSGPackets::SMSG_ACTIVE_PLAYER);
-    packet.WriteBitStreamInOrder(currentCard->GetGuid(), { 7, 1, 2, 0, 3, 5, 4, 6 });
+    packet.WriteBitStreamInOrder(card->GetGuid(), { 7, 1, 2, 0, 3, 5, 4, 6 });
     packet.FlushBits();
 
-    packet.WriteByteStreamInOrder(currentCard->GetGuid(), { 7, 5, 4, 2, 6 });
-    packet << m_activePlayerId;
-    packet.WriteByteStreamInOrder(currentCard->GetGuid(), { 1, 0, 3 });
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 7, 5, 4, 2, 6 });
+    packet << card->GetOwner()->GetId();
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 1, 0, 3 });
 
     BroadcastPacket(packet);
 }

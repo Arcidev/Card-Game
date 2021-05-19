@@ -158,6 +158,9 @@
     <ClInclude Include="Server\Achievements\AchievementCriteria.h">
       <Filter>Achievements</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Achievements\AchievementCriteriaEntry.h">
+      <Filter>Achievements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -275,6 +278,9 @@
       <Filter>Achievements</Filter>
     </ClCompile>
     <ClCompile Include="Server\Achievements\AchievementCriteria.cpp">
+      <Filter>Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Achievements\AchievementCriteriaEntry.cpp">
       <Filter>Achievements</Filter>
     </ClCompile>
   </ItemGroup>

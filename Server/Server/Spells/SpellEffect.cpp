@@ -12,7 +12,8 @@ SpellEffectFunc const SpellEffect::m_spellEffects[] =
     handleApplyAura,        // SPELL_EFFECT_APPLY_AURA
     handleHeal,             // SPELL_EFFECT_HEAL
     handleDrain,            // SPELL_EFFECT_DRAIN
-    handleRemoveAuraType    // SPELL_EFFECT_REMOVE_AURA_TYPE
+    handleRemoveAuraType,   // SPELL_EFFECT_REMOVE_AURA_TYPE
+    handleSwap              // SPELL_EFFECT_SWAP
 };
 
 bool SpellEffect::handleDirectDamage(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
@@ -79,6 +80,15 @@ bool SpellEffect::handleRemoveAuraType(Player* attacker, Player* victim, uint64_
         target->RemoveAurasByType(effectValues.Value1, effectValues.Value2);
 
     return true;
+}
+
+bool SpellEffect::handleSwap(Player* attacker, Player* victim, uint64_t targetGuid, SpellEffectValues const& effectValues)
+{
+    std::list<PlayableCard*> targets = SpellTargetSelector::GetTargets(effectValues.Target, attacker, victim, targetGuid, effectValues.SpellAttributes);
+    if (targets.empty())
+        return false;
+
+    return attacker->SwapCards(attacker->GetCurrentCard(), targets.front());
 }
 
 SpellEffectFunc SpellEffect::GetSpellEffectFunc(uint8_t spellEffectId)

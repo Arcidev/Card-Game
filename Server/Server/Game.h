@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 
+class PlayableCard;
 class Player;
 class Packet;
 
@@ -22,6 +23,7 @@ class Game
         void AddPlayer(Player* player);
         void ActivateSecondPlayer();
         void RemovePlayer(uint32_t playerId);
+        void SendActivePlayer(PlayableCard const* card) const;
 
         uint64_t GetNextCardGuid() { return m_nextCardGuid++; };
         Player* GetOpponent(Player const* player) const;

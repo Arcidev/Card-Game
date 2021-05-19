@@ -1,15 +1,24 @@
 #include "AchievementCriteria.h"
 #include "Achievement.h"
 
-AchievementCriteria::AchievementCriteria(Achievement* achievement) : m_isMet(false), m_progress(0), m_achievement(achievement) { }
+AchievementCriteria::AchievementCriteria(Achievement* achievement, uint32_t progress, AchievementCriteriaEntry const& entry) : AchievementCriteriaEntry(entry), m_isMet(false), m_progress(progress), m_achievement(achievement)
+{
+    setIsMet();
+}
 
-void AchievementCriteria::CheckCriteriaMet()
+void AchievementCriteria::checkCriteriaMet()
+{
+    setIsMet();
+
+    if (m_isMet)
+        m_achievement->checkCriteriaMet();
+}
+
+void AchievementCriteria::SetProgress(int progress)
 {
     if (m_isMet)
         return;
 
-    // TODO
-
-    if (m_isMet)
-        m_achievement->checkCriteriaMet();
+    m_progress = progress;
+    checkCriteriaMet();
 }

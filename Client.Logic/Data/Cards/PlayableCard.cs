@@ -22,7 +22,7 @@ namespace Client.Logic.Data.Cards
 
         public UInt64 Guid { get; }
 
-        public Player Player { get; }
+        public Player Player { get; internal set; }
 
         public IEnumerable<SpellData> Auras => auras;
 

@@ -190,4 +190,13 @@
   <data name="InvalidSpellTarget" xml:space="preserve">
     <value>Current card cannot use spell on that target</value>
   </data>
+  <data name="CardSwapFailed" xml:space="preserve">
+    <value>Swapping cards have failed</value>
+  </data>
+  <data name="CardSwapFailedInfo" xml:space="preserve">
+    <value>Swapping card {0} with {1} has failed</value>
+  </data>
+  <data name="CardSwap" xml:space="preserve">
+    <value>Card {0} has been swapped with {1}</value>
+  </data>
 </root>

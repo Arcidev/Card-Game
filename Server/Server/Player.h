@@ -59,6 +59,7 @@ class Player
         void Prepare();
         void DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense);
         void Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense);
+        bool SwapCards(PlayableCard* card, PlayableCard* other);
 
         void ClearCards();
         void CreateCard(Card const* cardTemplate);

@@ -10,7 +10,7 @@ namespace Client.Logic.Network
         private static void HandleSpellCastResult(Packet packet, Game game)
         {
             var result = (SpellCastResult)packet.ReadByte();
-            if (result != SpellCastResult.Success)
+            if (result != SpellCastResult.Success && result != SpellCastResult.SuccessContinueMove)
             {
                 game.IsGameWaiting = false;
                 game.OnErrorOccured(result.GetDescription());

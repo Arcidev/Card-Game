@@ -2,6 +2,7 @@
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
 using Client.Logic.Data;
+using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.Logic.Network;
 using System;
@@ -172,6 +173,24 @@ namespace Client.Logic
 
             Debug.Assert(true, $"Player with Id:{playerId} not found");
             return null;
+        }
+
+        internal PlayableCard GetCard(UInt64 cardGuid) => Player?.GetCard(cardGuid) ?? Opponent?.GetCard(cardGuid);
+
+        internal void SwapCards(UInt64 cardGuid1, UInt64 cardGuid2)
+        {
+            var card1 = GetCard(cardGuid1);
+            var card2 = GetCard(cardGuid2);
+
+            var player1 = card1.Player;
+            var player2 = card2.Player;
+
+            var idx1 = player1.GetCardIndex(card1);
+            var idx2 = player2.GetCardIndex(card2);
+
+            player1.SetCard(card2, idx1);
+            player2.SetCard(card1, idx2);
+            CombatLog.LoagSwapCard(card1.Name, card2.Name);
         }
 
         private async Task UpdateAsync()

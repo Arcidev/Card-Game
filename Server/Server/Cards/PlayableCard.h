@@ -37,7 +37,7 @@ class PlayableCard : public Card
         void SetMana(uint8_t mana) { m_mana = mana; }
         void HandleTickOnAuras();
         void Morph(Card const* morph) { m_morph = morph; }
-
+        void SetOwner(Player* player) { if (player) m_owner = player; }
         bool IsAlive() const { return GetHealth() > 0; }
         bool HasAuras() const { return !m_auras.empty(); }
         uint8_t GetModifiedDefense() const;

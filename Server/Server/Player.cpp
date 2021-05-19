@@ -4,6 +4,7 @@
 #include "ConnectedUser.h"
 #include "DataHolder.h"
 #include "ServerNetwork.h"
+#include "StaticHelper.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "Spells/Spell.h"
@@ -148,25 +149,26 @@ void Player::SendSpellCastResult(SpellCastResult reason, PlayableCard const* car
 {
     Packet packet(SMSGPackets::SMSG_SPELL_CAST_RESULT);
     packet << (uint8_t)reason;
-    if (reason == SpellCastResult::SPELL_CAST_RESULT_SUCCESS)
+    if (reason != SpellCastResult::SPELL_CAST_RESULT_SUCCESS && reason != SpellCastResult::SPELL_CAST_RESULT_SUCCESS_CONTINUE_MOVE)
     {
-        if (!card || !spell)
-            return;
-
-        packet.WriteBitStreamInOrder(card->GetGuid(), { 5, 7, 0, 1, 4, 3, 2, 6 });
-        packet.FlushBits();
-
-        packet << card->GetMana();
-        packet.WriteByteStreamInOrder(card->GetGuid(), { 7, 2 });
-        packet << spell->GetManaCost();
-        packet.WriteByteStreamInOrder(card->GetGuid(), { 4, 0, 1 });
-        packet << m_id;
-        packet << spell->GetId();
-        packet.WriteByteStreamInOrder(card->GetGuid(), { 3, 6, 5 });
-        GetGame()->BroadcastPacket(packet);
-    }
-    else
         SendPacket(packet);
+        return;
+    }
+
+    if (!card || !spell)
+        return;
+
+    packet.WriteBitStreamInOrder(card->GetGuid(), { 5, 7, 0, 1, 4, 3, 2, 6 });
+    packet.FlushBits();
+
+    packet << card->GetMana();
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 7, 2 });
+    packet << spell->GetManaCost();
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 4, 0, 1 });
+    packet << m_id;
+    packet << spell->GetId();
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 3, 6, 5 });
+    GetGame()->BroadcastPacket(packet);
 }
 
 // Sends information that card has been healed
@@ -207,7 +209,7 @@ void Player::UseSpell(uint64_t selectedCardGuid)
 
     Spell const* spell = currentCard->GetSpell();
     SpellCastResult result = spell->Cast(this, victim, selectedCardGuid);
-    if (result != SpellCastResult::SPELL_CAST_RESULT_SUCCESS)
+    if (result != SpellCastResult::SPELL_CAST_RESULT_SUCCESS && result != SpellCastResult::SPELL_CAST_RESULT_SUCCESS_CONTINUE_MOVE)
     {
         SendSpellCastResult(result, nullptr, nullptr);
         return;
@@ -219,6 +221,12 @@ void Player::UseSpell(uint64_t selectedCardGuid)
 
     SendSpellCastResult(result, currentCard, spell);
 
+    if (result == SpellCastResult::SPELL_CAST_RESULT_SUCCESS_CONTINUE_MOVE)
+    {
+        GetGame()->SendActivePlayer(GetCurrentCard());
+        return;
+    }
+        
     endTurn();
 }
 
@@ -617,4 +625,42 @@ uint8_t Player::calculateReducedDamage(uint8_t damage, uint8_t defense)
     reduction /= 100.f;
     reduction += 1.f;
     return (uint8_t)(damage / reduction);
+}
+
+bool Player::SwapCards(PlayableCard* card, PlayableCard* other)
+{
+    static auto getCardIndex = [](std::vector<PlayableCard*> const& all, PlayableCard const* toFind)
+    {
+        auto const& cardIter = std::find(all.begin(), all.end(), toFind);
+        return cardIter != all.end() ? (int)std::distance(all.begin(), cardIter) : -1;
+    };
+
+    auto& cards = card->GetOwner()->m_currentCards;
+    auto& otherCards = card->GetOwner()->m_currentCards;
+
+    int cardIdx = getCardIndex(cards, card);
+    int otherIdx = getCardIndex(otherCards, other);
+    bool success = cardIdx != -1 && otherIdx != -1;
+
+    Packet packet(SMSGPackets::SMSG_SWAP_CARDS);
+    packet.WriteBitStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteBitStreamInOrder(other->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteByteStreamInOrder(other->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
+    packet.WriteBit(success);
+    packet.FlushBits();
+
+    if (!success)
+    {
+        SendPacket(packet);
+        return false;
+    }
+
+    std::swap(cards[cardIdx], otherCards[otherIdx]);
+    Player* player = card->GetOwner();
+    card->SetOwner(other->GetOwner());
+    other->SetOwner(player);
+
+    GetGame()->BroadcastPacket(packet);
+    return true;
 }
