@@ -219,4 +219,13 @@
   <data name="CardSwap" xml:space="preserve">
     <value>La carta {0} se ha cambiado por {1}</value>
   </data>
+  <data name="CardDamaged" xml:space="preserve">
+    <value>{0} ha infligido {2} daño a {1}</value>
+  </data>
+  <data name="CardPeriodicDamage" xml:space="preserve">
+    <value>{0} ha sufrido {1} daños</value>
+  </data>
+  <data name="CardManaDrain" xml:space="preserve">
+    <value>{0} ha drenado {2} maná de {1} y ha restorido {3} maná</value>
+  </data>
 </root>

@@ -4,7 +4,6 @@
 #include "ConnectedUser.h"
 #include "DataHolder.h"
 #include "ServerNetwork.h"
-#include "StaticHelper.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "Spells/Spell.h"

@@ -219,4 +219,13 @@
   <data name="CardSwap" xml:space="preserve">
     <value>Karta {0} byla zaměněna za {1}</value>
   </data>
+  <data name="CardDamaged" xml:space="preserve">
+    <value>{1} utržil {2} bodů poškození od {0}</value>
+  </data>
+  <data name="CardPeriodicDamage" xml:space="preserve">
+    <value>{0} utržil {1} bodů poškození</value>
+  </data>
+  <data name="CardManaDrain" xml:space="preserve">
+    <value>{0} vysal {2} many od {1} a obnovil si {3} many</value>
+  </data>
 </root>

@@ -50,13 +50,13 @@ namespace Client.Logic
 
         internal void LogDamage(CombatLogType combatLogType, string attackerName, string victimName, byte damage, bool alive)
         {
-            var message = alive ? $"{attackerName} has dealt {damage} damage to {victimName}" : string.Format(Texts.CardKilled, attackerName, victimName, damage);
+            var message =  string.Format(alive ? Texts.CardDamaged : Texts.CardKilled, attackerName, victimName, damage);
             MessageReceived?.Invoke(combatLogType, message);
         }
 
         internal void LogPeriodicDamage(string name, byte damage, bool alive)
         {
-            var message = alive ? $"{name} has suffered {damage} damage" : string.Format(Texts.CardPeriodicKill, name, damage);
+            var message =  string.Format(alive ? Texts.CardPeriodicDamage : Texts.CardPeriodicKill, name, damage);
             MessageReceived?.Invoke(CombatLogType.SpellUsage, message);
         }
 
@@ -67,7 +67,7 @@ namespace Client.Logic
 
         internal void LogManaDrain(string attacker, string victim, byte restoredMana, byte drainedMana)
         {
-            MessageReceived?.Invoke(CombatLogType.SpellUsage, $"{attacker} has drained {drainedMana} mana from {victim} and restored {restoredMana} mana");
+            MessageReceived?.Invoke(CombatLogType.SpellUsage, string.Format(Texts.CardManaDrain, attacker, victim, drainedMana, restoredMana));
         }
 
         internal void LoagSwapCard(string card1, string card2)
