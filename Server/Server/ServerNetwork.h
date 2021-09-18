@@ -4,6 +4,7 @@
 #include <thread>
 #include "../Multiplatform/NetworkCommunication.h"
 
+class AchievementManager;
 class ConnectedUser;
 class Game;
 class Packet;
@@ -29,7 +30,7 @@ class ServerNetwork
 
         void Close() { shutdown(m_listenSocket, SD_BOTH); closesocket(m_listenSocket); }
         // accept new connections
-        bool AcceptNewClient(unsigned int const& id);
+        bool AcceptNewClient(unsigned int const& id, AchievementManager* achievementMgr);
         // receive incoming data
         int ReceiveData(ConnectedUser const* player, char* recvbuf) const;
         void BroadcastPacket(Packet const& packet) const;

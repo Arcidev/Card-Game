@@ -32,7 +32,9 @@ namespace Client.Logic.Network
             HandleSpellAuraRemoved,     // SMSG_SPELL_AURAS_REMOVED
             HandleCardMorphInfo,        // SMSG_CARD_MORPH_INFO
             HandleUserResult,           // SMSG_USER_RESULT
-            HandleSwapCards             // SMSG_SWAP_CARDS
+            HandleSwapCards,            // SMSG_SWAP_CARDS
+            HandleAchievements,         // SMSG_ACHIEVEMENTS
+            HandleAchievementEarned     // SMSG_ACHIEVEMENT_EARNED
         };
 
         // Returns function to handle packet

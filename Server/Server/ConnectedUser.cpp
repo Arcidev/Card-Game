@@ -8,12 +8,21 @@
 #include "../Database/DatabaseInstance.h"
 #include "../Shared/SharedDefines.h"
 
-ConnectedUser::ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network) : m_serverId(serverId), m_databaseId(0), m_name(""), m_disconnected(false), m_socket(socket), m_network(network), m_player(nullptr) { }
+ConnectedUser::ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network, AchievementManager* achievementMgr) : m_serverId(serverId), m_databaseId(0), m_name(""), m_disconnected(false), m_socket(socket), m_network(network), m_player(nullptr), m_achievementMgr(achievementMgr) { }
 
 ConnectedUser::~ConnectedUser()
 {
     if (m_player)
         delete m_player;
+}
+
+void ConnectedUser::OnLoggedIn(uint32_t databaseId)
+{
+    if (m_databaseId)
+        return;
+
+    m_databaseId = databaseId;
+    handleAchievementCriteria(CriteriaTypes::CRITERIA_TYPE_LOGIN, [](AchievementCriteria& criteria) { criteria.SetProgress(criteria.GetProgress() + 1); });
 }
 
 void ConnectedUser::CreatePlayer()
@@ -110,4 +119,30 @@ void ConnectedUser::SendInitResponse() const
 {
     Packet pck(SMSGPackets::SMSG_INIT_RESPONSE);
     SendPacket(pck);
+}
+
+void ConnectedUser::handleAchievementCriteria(CriteriaTypes type, std::function<void(AchievementCriteria&)> func)
+{
+    AchievementMap& achievements = m_databaseId != 0 && m_achievements.empty() ? (m_achievements = m_achievementMgr->GetPlayerAchievements(m_databaseId)) : m_achievements;
+    for (auto& achievement : achievements)
+    {
+        if (achievement.second.IsCompleted())
+            continue;
+
+        for (auto& criteria : achievement.second.GetCriterias())
+        {
+            if (criteria.IsMet())
+                continue;
+
+            if (criteria.GetType() == type)
+                func(criteria);
+        }
+
+        if (achievement.second.IsCompleted())
+        {
+            Packet pck(SMSGPackets::SMSG_ACHIEVEMENT_EARNED);
+            pck << achievement.first;
+            SendPacket(pck);
+        }
+    }
 }

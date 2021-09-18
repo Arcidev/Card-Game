@@ -2,14 +2,9 @@
 #include <string>
 #include "DbCommandHandler.h"
 
-DbCommandHandler::DbCommandHandler(std::string_view dbName, std::string_view userName, std::string_view password) : dbHandler(dbName, userName, password)
+Db::User DbCommandHandler::executeGetUserCommand(PreparedStatement const& stmt) const
 {
-
-}
-
-User DbCommandHandler::executeGetUserCommand(PreparedStatement const& stmt) const
-{
-     User user;
+    Db::User user;
      dbHandler.ExecuteCommand(stmt, [&user](auto res)
      {
          if (PQntuples(res) < 1)
@@ -26,7 +21,7 @@ User DbCommandHandler::executeGetUserCommand(PreparedStatement const& stmt) cons
      return user;
 }
 
-User DbCommandHandler::GetUser(std::string_view email) const
+Db::User DbCommandHandler::GetUser(std::string_view email) const
 {
     PreparedStatement stmt("SELECT id, email, user_name, password_salt, password_hash, user_role FROM users WHERE email = $1 AND is_active;");
     stmt.AddParameter(email);
@@ -34,7 +29,7 @@ User DbCommandHandler::GetUser(std::string_view email) const
     return executeGetUserCommand(stmt);
 }
 
-User DbCommandHandler::GetUser(uint32_t id) const
+Db::User DbCommandHandler::GetUser(uint32_t id) const
 {
     std::string idStr = std::to_string(id);
     PreparedStatement stmt("SELECT id, email, user_name, password_salt, password_hash, user_role FROM users WHERE id = $1 AND is_active;");
@@ -43,7 +38,7 @@ User DbCommandHandler::GetUser(uint32_t id) const
     return executeGetUserCommand(stmt);
 }
 
-void DbCommandHandler::CreateUser(User& user) const
+void DbCommandHandler::CreateUser(Db::User& user) const
 {
     std::string userRoleStr = std::to_string(user.UserRole);
     PreparedStatement stmt("INSERT INTO users (email, user_name, password_salt, password_hash, user_role, is_active) VALUES ($1, $2, $3, $4, $5, true) RETURNING id;");

@@ -1,5 +1,6 @@
 #pragma once
 #include "ServerNetwork.h"
+#include "Achievements/AchievementMgr.h"
 
 class ServerGame
 {
@@ -9,6 +10,7 @@ class ServerGame
         static unsigned int m_clientId;
         // The ServerNetwork object 
         ServerNetwork m_network;
+        AchievementManager m_achievementMgr;
 
         void update();
 

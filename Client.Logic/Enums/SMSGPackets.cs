@@ -28,6 +28,8 @@ namespace Client.Logic.Enums
         SpellAuraRemoved,
         CardMorphInfo,
         UserResult,
-        SwapCards
+        SwapCards,
+        Achievements,
+        AchievementEarned
     }
 }

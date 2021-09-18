@@ -115,13 +115,13 @@ ServerNetwork::~ServerNetwork()
 }
 
 // Accepts new connections
-bool ServerNetwork::AcceptNewClient(unsigned int const& id)
+bool ServerNetwork::AcceptNewClient(unsigned int const& id, AchievementManager* achievementMgr)
 {
     // if client is waiting, accept the connection and save the socket
     SOCKET clientSocket = accept(m_listenSocket, nullptr, nullptr);
     if (clientSocket != INVALID_SOCKET)
     {
-        ConnectedUser* user = new ConnectedUser(id, clientSocket, this);
+        ConnectedUser* user = new ConnectedUser(id, clientSocket, this, achievementMgr);
         std::thread* t = new std::thread(&ServerNetwork::handlePlayerNetwork, user);
 
         // insert new client into session id table

@@ -125,7 +125,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;$(ProjectDir)..\Server\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DbCommandHandler.obj;DatabaseHandler.obj;Sha.obj;..\Server\DataBase\libpq.lib;..\Server\Crypto\OpenSSL\libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DbUserCommandHandler.obj;DatabaseHandler.obj;Sha.obj;..\Server\DataBase\libpq.lib;..\Server\Crypto\OpenSSL\libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>for /d  %%i in ($(ProjectDir)..\Server\DLL\*) do ROBOCOPY "%%i"  "$(TargetDir)." *.dll

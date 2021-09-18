@@ -20,7 +20,7 @@
                 <Frame x:Name="ChatFrame" Source="Chat.xaml" DataContext="{Binding ChatViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
             </TabItem>
             <TabItem Header="{x:Static resx:Texts.CombatLog}">
-                <Frame x:Name="CombatLogFrame" Source="CombatLog.xaml" DataContext="{Binding CombatLogViewModel}" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
+                <Frame x:Name="CombatLogFrame" Source="CombatLog.xaml" LoadCompleted="Frame_LoadCompleted" DataContextChanged="Frame_DataContextChanged" />
             </TabItem>
         </TabControl>
         <notifications:NotificationArea x:Name="NotificationArea" Position="BottomRight" MaxItems="3"/>

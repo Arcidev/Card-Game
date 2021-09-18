@@ -1,5 +1,6 @@
 ﻿using Client.Logic.Enums;
 using Client.UI.ViewModels.MainGame;
+using Client.UI.Views.Achievement;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +45,13 @@ namespace Client.UI.Views.Game
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     GameFrame.Navigate(new PlayingGame());
+                });
+            }
+            else if (packet == (UInt16)SMSGPackets.Achievements)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    GameFrame.Navigate(new AchievementsPage());
                 });
             }
         }

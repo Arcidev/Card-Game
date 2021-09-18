@@ -265,7 +265,7 @@
     <ClCompile Include="Database\DatabaseInstance.cpp">
       <Filter>Database</Filter>
     </ClCompile>
-    <ClCompile Include="Database\DbCommandHandler.cpp">
+    <ClCompile Include="Database\DbUserCommandHandler.cpp">
       <Filter>Database</Filter>
     </ClCompile>
     <ClCompile Include="Server\ConnectedUser.cpp">
@@ -282,6 +282,12 @@
     </ClCompile>
     <ClCompile Include="Server\Achievements\AchievementCriteriaEntry.cpp">
       <Filter>Achievements</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\DbAchievementCommandHandler.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\PacketHandlers\AchievementsHandler.cpp">
+      <Filter>PacketHandlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

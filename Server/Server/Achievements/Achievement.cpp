@@ -1,7 +1,9 @@
 #include <algorithm>
 #include "Achievement.h"
 
-void Achievement::checkCriteriaMet()
+Achievement::Achievement(uint32_t id, uint32_t parentId) : m_id(id), m_parentId(parentId), m_isCompleted(false) { }
+
+void Achievement::CheckCriteriaMet()
 {
     if (m_isCompleted)
         return;

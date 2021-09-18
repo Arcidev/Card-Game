@@ -27,15 +27,15 @@ namespace ServerTests
         {
             DbCommandHandler commandHandler(DbName, UserName, Password);
 
-            User user;
+            Db::User user;
             user.Email = "test@mail.sk";
             user.UserName = "test_user";
             user.PasswordHash = "1234";
             user.PasswordSalt = "1234";
 
             commandHandler.CreateUser(user);
-            Assert::AreNotEqual(0, user.Id);
-            User dbUser = commandHandler.GetUser(user.Email);
+            Assert::AreNotEqual((uint32_t)0, user.Id);
+            Db::User dbUser = commandHandler.GetUser(user.Email);
             Assert::AreEqual(user.Id, dbUser.Id);
             Assert::AreEqual(user.Email, dbUser.Email);
             Assert::AreEqual(user.UserName, dbUser.UserName);
@@ -45,21 +45,21 @@ namespace ServerTests
 
             commandHandler.SetUserActive(user.Id, false);
             dbUser = commandHandler.GetUser(user.Email);
-            Assert::AreEqual(0, dbUser.Id);
+            Assert::AreEqual((uint32_t)0, dbUser.Id);
             commandHandler.SetUserActive(user.Id, true);
             dbUser = commandHandler.GetUser(user.Email);
             Assert::AreEqual(user.Id, dbUser.Id);
 
             commandHandler.DeleteUser(user.Id);
             dbUser = commandHandler.GetUser(user.Email);
-            Assert::AreEqual(0, dbUser.Id);
+            Assert::AreEqual((uint32_t)0, dbUser.Id);
         }
 
         TEST_METHOD(UserInUseTests)
         {
             DbCommandHandler commandHandler(DbName, UserName, Password);
 
-            User user;
+            Db::User user;
             user.Email = "user_email@mail.sk";
             user.UserName = "used_name";
             user.PasswordHash = "1234";

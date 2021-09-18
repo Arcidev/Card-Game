@@ -222,4 +222,7 @@
   <data name="Music" xml:space="preserve">
     <value>Hudba:</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>Trofeje</value>
+  </data>
 </root>

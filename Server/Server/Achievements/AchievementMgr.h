@@ -1,18 +1,19 @@
 #pragma once
 #include <list>
-#include <map>
 #include <mutex>
 #include "Achievement.h"
+#include "../../Database/DatabaseInstance.h"
 
-typedef std::map<uint32_t, AchievementCriteriaEntry> AchievementMap;
+typedef std::map<uint32_t, Achievement> AchievementMap;
+class ConnectedUser;
 
 class AchievementManager
 {
     private:
         std::mutex m_locker;
-        AchievementMap m_achievementMap;
-        AchievementMap const& getAchievementMap();
+        DbAchievementMap m_achievementMap;
+        DbAchievementMap const& getAchievementMap();
 
     public:
-        std::list<Achievement> GetPlayerAchievements(uint32_t userId);
+        AchievementMap GetPlayerAchievements(uint32_t userId);
 };

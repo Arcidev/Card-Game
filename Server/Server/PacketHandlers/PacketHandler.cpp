@@ -12,7 +12,8 @@ PacketHandlerFuncWrapper const PacketHandler::packetHandlers[] =
     { handleDefendSelfPacket, isInGame },       // CMSG_DEFEND_SELF
     { handleUserCreatePacket, notLoggedIn },    // CMSG_USER_CREATE
     { handleUserLogInPacket, notLoggedIn },     // CMSG_USER_LOGIN
-    { handleUserChangePassword, isLoggedIn }    // CMSG_USER_CHANGE_PASSWORD
+    { handleUserChangePassword, isLoggedIn },   // CMSG_USER_CHANGE_PASSWORD
+    { handleGetAchievementsPacket, isLoggedIn } // CMSG_GET_ACHIEVEMENTS
 };
 
 inline bool PacketHandler::isLoggedIn(ConnectedUser const* user)

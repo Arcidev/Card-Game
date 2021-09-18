@@ -1,5 +1,4 @@
 ﻿using Arci.Networking.Data;
-using Client.Logic.Data;
 using Client.Logic.Data.Cards;
 using Client.Logic.Data.Spells;
 using Client.Logic.Enums;

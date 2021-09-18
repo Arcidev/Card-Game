@@ -2,7 +2,6 @@
 using Client.Logic.Enums;
 using Client.UI.Controls;
 using System;
-using System.Threading.Tasks;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -12,15 +11,13 @@ namespace Client.UI.ViewModels.MainGame
 
         public AsyncCommandHandler StartGameCommand { get; }
 
+        public AsyncCommandHandler AchievementsCommand { get; }
+
         public MainMenuViewModel()
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            StartGameCommand = new (StartGameAsync);
-        }
-
-        private async Task StartGameAsync()
-        {
-            await game.SendPacketAsync(new (CMSGPackets.StartGame));
+            StartGameCommand = new(async () => await game.SendPacketAsync(new(CMSGPackets.StartGame)));
+            AchievementsCommand = new(async () => await game.SendPacketAsync(new(CMSGPackets.GetAchievements)));
         }
     }
 }

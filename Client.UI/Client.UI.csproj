@@ -125,6 +125,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Achievements\AchievementsPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Game\CombatLog.xaml">
       <SubType>Designer</SubType>
     </Page>

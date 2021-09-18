@@ -36,6 +36,8 @@ class PacketHandler
         static void handleUserLogInPacket(ConnectedUser* user, Packet& packet);
         static void handleUserChangePassword(ConnectedUser* user, Packet& packet);
 
+        static void handleGetAchievementsPacket(ConnectedUser* cUser, Packet& /*packet*/);
+
         // Validators
         static bool isLoggedIn(ConnectedUser const* user);
         static bool isPlaying(ConnectedUser const* user);

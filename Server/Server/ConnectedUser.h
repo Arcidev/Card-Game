@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "Achievements/AchievementMgr.h"
 #include "../Multiplatform/NetworkCommunication.h"
 
 class Packet;
@@ -21,17 +22,21 @@ class ConnectedUser
         uint32_t m_databaseId;
         std::string m_name;
         bool m_disconnected;
+        AchievementMap m_achievements;
 
         SOCKET m_socket;
         ServerNetwork* m_network;
         Player* m_player;
         AesEncryptor m_AesEncryptor;
+        AchievementManager* m_achievementMgr;
+
+        void handleAchievementCriteria(CriteriaTypes type, std::function<void (AchievementCriteria&)> func);
 
     public:
-        ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network);
+        ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network, AchievementManager* achievementMgr);
         ~ConnectedUser();
 
-        void SetDatabaseUserId(uint32_t id) { m_databaseId = id; }
+        void OnLoggedIn(uint32_t id);
         void SetName(std::string_view name) { m_name = name; }
         void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
 
@@ -51,4 +56,5 @@ class ConnectedUser
         AesEncryptor const& GetAesEncryptor() const { return m_AesEncryptor; }
         bool IsDisconnected() const { return m_disconnected; }
         Player* GetPlayer() const { return m_player; }
+        AchievementMap const& GetAchievements() { return m_databaseId != 0 && m_achievements.empty() ? (m_achievements = m_achievementMgr->GetPlayerAchievements(m_databaseId)) : m_achievements; }
 };

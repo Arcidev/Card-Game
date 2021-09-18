@@ -3,7 +3,7 @@
 
 class Achievement;
 
-class AchievementCriteria : AchievementCriteriaEntry
+class AchievementCriteria : public AchievementCriteriaEntry
 {
     private:
         bool m_isMet;

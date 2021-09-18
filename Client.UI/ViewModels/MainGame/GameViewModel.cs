@@ -32,6 +32,8 @@ namespace Client.UI.ViewModels.MainGame
                 await new NotificationManager().ShowAsync(new NotificationContent { Title = Texts.Error, Message = msg, Type = NotificationType.Error }, areaName: "NotificationArea");
             else if (type == MessageType.Information)
                 await new NotificationManager().ShowAsync(new NotificationContent { Message = msg, Type = NotificationType.Information }, areaName: "NotificationArea");
+            else if (type == MessageType.Achievement)
+                await new NotificationManager().ShowAsync(new NotificationContent { Title = "Achievement Earned", Message = msg, Type = NotificationType.Success }, areaName: "NotificationArea");
         }
     }
 }

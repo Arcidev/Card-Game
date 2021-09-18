@@ -11,7 +11,7 @@ void AchievementCriteria::checkCriteriaMet()
     setIsMet();
 
     if (m_isMet)
-        m_achievement->checkCriteriaMet();
+        m_achievement->CheckCriteriaMet();
 }
 
 void AchievementCriteria::SetProgress(int progress)

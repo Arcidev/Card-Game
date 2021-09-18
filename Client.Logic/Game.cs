@@ -2,11 +2,14 @@
 using Arci.Networking.Security;
 using Arci.Networking.Security.AesOptions;
 using Client.Logic.Data;
+using Client.Logic.Data.Achievements;
 using Client.Logic.Data.Cards;
 using Client.Logic.Enums;
 using Client.Logic.Network;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +27,7 @@ namespace Client.Logic
         private readonly AesEncryptor aes;
         private readonly Task networkConnectionTask;
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private readonly Dictionary<UInt32, Achievement> achievements = new Dictionary<uint, Achievement>();
 
         public event Action<MessageType, string> MessageReceived;
         public event Action<UInt16> PacketProcessed;
@@ -48,6 +52,8 @@ namespace Client.Logic
         public CombatLog CombatLog { get; }
 
         public IDataHolder DataHolder { get; }
+
+        public IEnumerable<Achievement> Achievements => achievements.Values;
 
         private Game(ClientNetwork clientNetwork, IDataHolder dataHolder)
         {
@@ -151,6 +157,8 @@ namespace Client.Logic
 
         internal void OnInformationReceived(string msg) => MessageReceived?.Invoke(MessageType.Information, msg);
 
+        internal void OnAchievementEarned(string achievement) => MessageReceived?.Invoke(MessageType.Achievement, achievement);
+
         internal Player GetPlayer(UInt32 playerId)
         {
             if (Player?.Id == playerId)
@@ -191,6 +199,27 @@ namespace Client.Logic
             player1.SetCard(card2, idx1);
             player2.SetCard(card1, idx2);
             CombatLog.LoagSwapCard(card1.Name, card2.Name);
+        }
+
+        internal void SetAchievements(List<Achievement> achievementsList)
+        {
+            achievements.Clear();
+            foreach (var achievement in achievementsList.OrderBy(x => x.Id))
+            {
+                if (achievement.ParentId == 0)
+                {
+                    achievements.Add(achievement.Id, achievement);
+                    continue;
+                }
+
+                if (achievements.TryGetValue(achievement.ParentId, out var value) && value.IsCompleted)
+                {
+                    if (value.ParentId > 0)
+                        achievements.Remove(value.ParentId);
+
+                    achievements.Add(achievement.Id, achievement);
+                }
+            }
         }
 
         private async Task UpdateAsync()

@@ -207,7 +207,8 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Crypto\Sha.cpp" />
     <ClCompile Include="Database\DatabaseHandler.cpp" />
     <ClCompile Include="Database\DatabaseInstance.cpp" />
-    <ClCompile Include="Database\DbCommandHandler.cpp" />
+    <ClCompile Include="Database\DbAchievementCommandHandler.cpp" />
+    <ClCompile Include="Database\DbUserCommandHandler.cpp" />
     <ClCompile Include="Server\Achievements\Achievement.cpp" />
     <ClCompile Include="Server\Achievements\AchievementCriteria.cpp" />
     <ClCompile Include="Server\Achievements\AchievementCriteriaEntry.cpp" />
@@ -220,6 +221,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\DataHolder.cpp" />
     <ClCompile Include="Server\Game.cpp" />
     <ClCompile Include="Server\NetworkServices.cpp" />
+    <ClCompile Include="Server\PacketHandlers\AchievementsHandler.cpp" />
     <ClCompile Include="Server\PacketHandlers\ByteBuffer.cpp" />
     <ClCompile Include="Server\PacketHandlers\CardHandler.cpp" />
     <ClCompile Include="Server\PacketHandlers\ChatHandler.cpp" />

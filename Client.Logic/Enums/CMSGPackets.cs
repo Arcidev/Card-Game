@@ -11,6 +11,7 @@ namespace Client.Logic.Enums
         DefendSelf,
         UserCreate,
         UserLogIn,
-        UserChangePassword
+        UserChangePassword,
+        GetAchievements
     }
 }
