@@ -9,15 +9,17 @@ namespace Client.Logic.Data.Achievements
 
         public UInt32 ParentId { get; }
 
-        public bool IsCompleted { get; }
+        public bool IsCompleted => CompletionDate.HasValue;
+
+        public DateTime? CompletionDate { get; }
 
         public IEnumerable<Criteria> Criterias { get; }
 
-        public Achievement(UInt32 id, UInt32 parentId, bool isCompleted, List<Criteria> criterias)
+        public Achievement(UInt32 id, UInt32 parentId, DateTime? completionDate, List<Criteria> criterias)
         {
             Id = id;
             ParentId = parentId;
-            IsCompleted = isCompleted;
+            CompletionDate = completionDate;
             Criterias = criterias;
         }
     }

@@ -52,7 +52,7 @@ DbAchievementMap DbCommandHandler::GetAchievements() const
 DbUserCriteriaMap DbCommandHandler::GetUserAchievementProgress(uint32_t userId) const
 {
     std::string idStr = std::to_string(userId);
-    PreparedStatement stmt("SELECT criteria_id, progress FROM user_achievement_criterias WHERE user_id = $1;");
+    PreparedStatement stmt("SELECT criteria_id, progress, last_modified FROM user_achievement_criterias WHERE user_id = $1;");
     stmt.AddParameter(idStr);
 
     DbUserCriteriaMap userCriterias;
@@ -67,7 +67,8 @@ DbUserCriteriaMap DbCommandHandler::GetUserAchievementProgress(uint32_t userId) 
             Db::UserAchievementCriteria criteria =
             {
                 (uint32_t)strtoul(PQgetvalue(res, i, 0), nullptr, 0), // Criteria Id
-                (uint32_t)strtoul(PQgetvalue(res, i, 1), nullptr, 0)  // Progress
+                (uint32_t)strtoul(PQgetvalue(res, i, 1), nullptr, 0), // Progress
+                (time_t)strtoll(PQgetvalue(res, i, 2), nullptr, 0)    // Last Modified
             };
 
             userCriterias.insert({ criteria.CriteriaId, criteria });

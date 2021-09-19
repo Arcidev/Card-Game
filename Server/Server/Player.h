@@ -76,7 +76,7 @@ class Player
         uint32_t GetId() const { return m_id; }
         uint8_t GetCurrentCardIndex() const { return m_currentCardIndex; }
         std::string_view GetName() const;
-        ConnectedUser const* GetUser() const { return m_user; }
+        ConnectedUser* GetUser() const { return m_user; }
         bool IsPrepared() const { return m_isPrepared; }
         bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }
 };

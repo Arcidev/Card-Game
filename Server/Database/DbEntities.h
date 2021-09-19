@@ -38,5 +38,6 @@ namespace Db
     {
         uint32_t CriteriaId;
         uint32_t Progress;
+        time_t LastModified;
     };
 }

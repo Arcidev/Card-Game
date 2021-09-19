@@ -6,8 +6,6 @@
              xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.Achievements"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-    </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid d:DataContext="{d:DesignInstance Type=viewmodels:AchievementViewModel}" Margin="0 0 0 5">
             <Grid.RowDefinitions>
@@ -27,10 +25,11 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="{Binding Image}" />
-                    <TextBlock Text="{Binding Name, FallbackValue=Name}" FontWeight="Bold" FontSize="18" />
-                </StackPanel>
+                <Grid VerticalAlignment="Center" >
+                    <Image HorizontalAlignment="Center" Source="{Binding Image}" />
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding Name, FallbackValue=Name}" FontWeight="Bold" FontSize="18" />
+                    <TextBlock Margin="10 0" HorizontalAlignment="Right" Text="{Binding CompletionDate, FallbackValue=01.01.1970}" FontSize="14" FontWeight="Bold" Visibility="{Binding IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </Grid>
             </Grid>
             <ItemsControl Grid.Row="1" ItemsSource="{Binding Criterias}">
                 <ItemsControl.ItemsPanel>
@@ -45,9 +44,9 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5">
                                 <TextBlock Foreground="LightGreen" Text="&#x2713;" Visibility="{Binding IsMet, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                <TextBlock Margin="5 0 5 5" Text="{Binding Description}" />
+                                <TextBlock Margin="5 0" Text="{Binding Description}" />
                             </StackPanel>
                             <Grid Grid.Row="1">
                                 <Grid.Style>

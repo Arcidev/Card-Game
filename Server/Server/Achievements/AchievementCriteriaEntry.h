@@ -3,7 +3,9 @@
 
 enum class CriteriaTypes
 {
-    CRITERIA_TYPE_LOGIN
+    CRITERIA_TYPE_LOGIN,
+    CRITERIA_TYPE_GAME_PLAYED,
+    CRITERIA_TYPE_GAME_WON
 };
 
 

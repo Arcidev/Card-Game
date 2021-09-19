@@ -137,6 +137,13 @@ bool ByteBuffer::ReadBit()
     return ((m_curbitval >> (7 - m_bitpos)) & 1) != 0;
 }
 
+// Stores uint64 value in stream
+ByteBuffer& ByteBuffer::operator << (uint64_t value)
+{
+    append(value);
+    return *this;
+}
+
 // Stores uint32 value in stream
 ByteBuffer& ByteBuffer::operator << (uint32_t value)
 {

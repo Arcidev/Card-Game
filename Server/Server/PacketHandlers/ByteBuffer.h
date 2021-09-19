@@ -30,6 +30,8 @@ class ByteBuffer
 
         std::vector<uint8_t> const& GetStorage() const { return m_storage; }
 
+        ByteBuffer& operator << (uint64_t value);
+        ByteBuffer& operator << (int64_t value) { return operator<<((uint64_t)value); }
         ByteBuffer& operator << (uint32_t value);
         ByteBuffer& operator << (int32_t value) { return operator<<((uint32_t)value); }
         ByteBuffer& operator << (uint16_t value);

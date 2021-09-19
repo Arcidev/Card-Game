@@ -37,6 +37,9 @@ class ConnectedUser
         ~ConnectedUser();
 
         void OnLoggedIn(uint32_t id);
+        void OnGameEnded();
+        void OnGameWon();
+
         void SetName(std::string_view name) { m_name = name; }
         void SetAesEncryptor(std::vector<uint8_t> const& key, std::vector<uint8_t> const& iVec) { m_AesEncryptor.Key = key; m_AesEncryptor.IVec = iVec; }
 

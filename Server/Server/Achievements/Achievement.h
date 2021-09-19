@@ -17,5 +17,7 @@ class Achievement
         bool IsCompleted() const { return m_isCompleted; }
         std::list<AchievementCriteria>& GetCriterias() { return m_criterias; }
         std::list<AchievementCriteria> const& GetCriterias() const { return m_criterias; }
+        time_t GetCompletionDate() const;
+
         void CheckCriteriaMet();
 };

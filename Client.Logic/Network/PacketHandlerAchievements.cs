@@ -21,9 +21,15 @@ namespace Client.Logic.Network
                 var id = packet.ReadUInt32();
                 var parentId = packet.ReadUInt32();
                 var isCompleted = packet.ReadByte() != 0;
+                DateTime? completionDate = null;
+                if (isCompleted)
+                {
+                    var timespan = packet.ReadInt64();
+                    completionDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds(timespan);
+                }
 
                 var criterias = new List<Criteria>();
-                achievements.Add(new Achievement(id, parentId, isCompleted, criterias));
+                achievements.Add(new Achievement(id, parentId, completionDate, criterias));
 
                 var criteriaCount = packet.ReadByte();
                 for (var j = 0; j < criteriaCount; j++)

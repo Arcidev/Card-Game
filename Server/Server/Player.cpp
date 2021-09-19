@@ -402,6 +402,17 @@ PlayableCard* Player::GetCurrentCard()
 // Informs player that game has ended
 void Player::EndGame(uint32_t winnerId) const
 {
+    if (m_id == winnerId)
+    {
+        m_user->OnGameWon();
+        GetOpponent()->GetUser()->OnGameEnded();
+    }
+    else
+    {
+        m_user->OnGameEnded();
+        GetOpponent()->GetUser()->OnGameWon();
+    }
+
     Packet packet(SMSGPackets::SMSG_END_GAME);
     packet << winnerId;
 

@@ -25,6 +25,17 @@ void ConnectedUser::OnLoggedIn(uint32_t databaseId)
     handleAchievementCriteria(CriteriaTypes::CRITERIA_TYPE_LOGIN, [](AchievementCriteria& criteria) { criteria.SetProgress(criteria.GetProgress() + 1); });
 }
 
+void ConnectedUser::OnGameEnded()
+{
+    handleAchievementCriteria(CriteriaTypes::CRITERIA_TYPE_GAME_PLAYED, [](AchievementCriteria& criteria) { criteria.SetProgress(criteria.GetProgress() + 1); });
+}
+
+void ConnectedUser::OnGameWon()
+{
+    OnGameEnded();
+    handleAchievementCriteria(CriteriaTypes::CRITERIA_TYPE_GAME_WON, [](AchievementCriteria& criteria) { criteria.SetProgress(criteria.GetProgress() + 1); });
+}
+
 void ConnectedUser::CreatePlayer()
 {
     m_network->GetLocker().lock();

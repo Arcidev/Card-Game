@@ -16,6 +16,8 @@ void PacketHandler::handleGetAchievementsPacket(ConnectedUser* cUser, Packet& /*
         result << achievement.second.GetParentId();
         result.WriteBit(achievement.second.IsCompleted());
         result.FlushBits();
+        if (achievement.second.IsCompleted())
+            result << achievement.second.GetCompletionDate();
 
         auto const& criterias = achievement.second.GetCriterias();
         result << (uint8_t)criterias.size();

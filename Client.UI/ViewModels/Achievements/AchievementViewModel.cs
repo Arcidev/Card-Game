@@ -16,6 +16,8 @@ namespace Client.UI.ViewModels.Achievements
 
         public bool IsCompleted => achievement.IsCompleted;
 
+        public string CompletionDate => achievement.CompletionDate?.ToShortDateString();
+
         public IEnumerable<CriteriaViewModel> Criterias { get; }
 
         public AchievementViewModel(Achievement achievement, IDataHolder dataHolder)
