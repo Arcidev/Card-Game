@@ -52,7 +52,7 @@ DbAchievementMap DbCommandHandler::GetAchievements() const
 DbUserCriteriaMap DbCommandHandler::GetUserAchievementProgress(uint32_t userId) const
 {
     std::string idStr = std::to_string(userId);
-    PreparedStatement stmt("SELECT criteria_id, progress, last_modified FROM user_achievement_criterias WHERE user_id = $1;");
+    PreparedStatement stmt("SELECT criteria_id, progress, extract(epoch from last_modified)::bigint FROM user_achievement_criterias WHERE user_id = $1;");
     stmt.AddParameter(idStr);
 
     DbUserCriteriaMap userCriterias;
@@ -76,4 +76,17 @@ DbUserCriteriaMap DbCommandHandler::GetUserAchievementProgress(uint32_t userId) 
     });
 
     return userCriterias;
+}
+
+void DbCommandHandler::SetUserAchievementProgress(uint32_t userId, uint32_t criteriaId, uint32_t progress) const
+{
+    std::string userStr = std::to_string(userId);
+    std::string criteriaStr = std::to_string(criteriaId);
+    std::string progressStr = std::to_string(progress);
+    PreparedStatement stmt("INSERT INTO user_achievement_criterias (user_id, criteria_id, progress) VALUES ($1, $2, $3) ON CONFLICT (user_id, criteria_id) DO UPDATE SET progress = $2, last_modified = CURRENT_TIMESTAMP;");
+    stmt.AddParameter(userStr);
+    stmt.AddParameter(criteriaStr);
+    stmt.AddParameter(progressStr);
+
+    dbHandler.ExecuteCommand(stmt, nullptr);
 }

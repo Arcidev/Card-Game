@@ -146,7 +146,10 @@ void ConnectedUser::handleAchievementCriteria(CriteriaTypes type, std::function<
                 continue;
 
             if (criteria.GetType() == type)
+            {
                 func(criteria);
+                m_achievementMgr->SetAchievementProgress(m_databaseId, criteria.GetId(), criteria.GetProgress());
+            }
         }
 
         if (achievement.second.IsCompleted())

@@ -27,6 +27,7 @@ class DbCommandHandler
 
         DbAchievementMap GetAchievements() const;
         DbUserCriteriaMap GetUserAchievementProgress(uint32_t userId) const;
+        void SetUserAchievementProgress(uint32_t userId, uint32_t criteriaId, uint32_t progress) const;
 
         void ExecuteCommand(PreparedStatement const& statement, std::function<void(PGresult const*)> callback) const { dbHandler.ExecuteCommand(statement, callback); }
 };

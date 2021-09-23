@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <mutex>
+#include <thread>
 #include "Achievement.h"
 #include "../../Database/DatabaseInstance.h"
 
@@ -11,9 +12,17 @@ class AchievementManager
 {
     private:
         std::mutex m_locker;
+        std::map<std::tuple<uint32_t, uint32_t>, uint32_t> m_userAchievementProgress;
         DbAchievementMap m_achievementMap;
+        std::thread m_userAchievementProgressThread;
+        bool m_stopUpdateThread;
+
         DbAchievementMap const& getAchievementMap();
+        void updateUserAchievementProgress();
 
     public:
+        AchievementManager();
+        ~AchievementManager();
         AchievementMap GetPlayerAchievements(uint32_t userId);
+        void SetAchievementProgress(uint32_t userId, uint32_t criteriaId, uint32_t progress);
 };
