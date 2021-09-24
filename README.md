@@ -10,7 +10,7 @@ Card-Game
 ## Build Status
 [![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game)
 [![Build status](https://img.shields.io/appveyor/ci/Arcidev/Card-Game.svg?logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/Arcidev/card-game)
-[![Build status](https://img.shields.io/github/workflow/status/Arcidev/Card-Game/.NET%20Core?logo=github&style=flat-square)](https://github.com/Arcidev/Card-Game/actions)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FArcidev%2FCard-Game%2Fbadge&style=flat-square)](https://actions-badge.atrox.dev/Arcidev/Card-Game/goto)
 
 ## How to build and run:
   <b>Windows (Automated for MS Visual Studio 15):</b>
