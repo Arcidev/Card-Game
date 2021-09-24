@@ -55,7 +55,7 @@ AchievementMap AchievementManager::GetPlayerAchievements(uint32_t userId)
 
     for (auto const& iter : achievements)
     {
-        auto& inserted = playerAchievements.insert({ iter.first, Achievement(iter.first, iter.second.ParentId) });
+        auto const& inserted = playerAchievements.insert({ iter.first, Achievement(iter.first, iter.second.ParentId) });
         for (auto const& dbCriteria : iter.second.Criterias)
         {
             uint32_t progress = 0;

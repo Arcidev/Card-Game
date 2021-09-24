@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: create output
+    - name: setup permissions
       working-directory: ./Server
       run: chmod u+rx BUILD
     - name: build project
