@@ -6,7 +6,6 @@
 #include "../../Database/DatabaseInstance.h"
 
 typedef std::map<uint32_t, Achievement> AchievementMap;
-class ConnectedUser;
 
 class AchievementManager
 {

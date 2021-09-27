@@ -83,7 +83,7 @@ void DbCommandHandler::SetUserAchievementProgress(uint32_t userId, uint32_t crit
     std::string userStr = std::to_string(userId);
     std::string criteriaStr = std::to_string(criteriaId);
     std::string progressStr = std::to_string(progress);
-    PreparedStatement stmt("INSERT INTO user_achievement_criterias (user_id, criteria_id, progress) VALUES ($1, $2, $3) ON CONFLICT (user_id, criteria_id) DO UPDATE SET progress = $2, last_modified = CURRENT_TIMESTAMP;");
+    PreparedStatement stmt("INSERT INTO user_achievement_criterias (user_id, criteria_id, progress) VALUES ($1, $2, $3) ON CONFLICT (user_id, criteria_id) DO UPDATE SET progress = $3, last_modified = CURRENT_TIMESTAMP;");
     stmt.AddParameter(userStr);
     stmt.AddParameter(criteriaStr);
     stmt.AddParameter(progressStr);

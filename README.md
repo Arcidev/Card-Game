@@ -8,7 +8,7 @@ Card-Game
 + C# 9.0
 
 ## Build Status
-[![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game)
+<!--- [![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game) --->
 [![Build status](https://img.shields.io/appveyor/ci/Arcidev/Card-Game.svg?logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/Arcidev/card-game)
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FArcidev%2FCard-Game%2Fbadge&style=flat-square)](https://actions-badge.atrox.dev/Arcidev/Card-Game/goto)
 

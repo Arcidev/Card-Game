@@ -1,6 +1,5 @@
 #include <chrono>
 #include "AchievementMgr.h"
-#include "../ConnectedUser.h"
 #include "../../Shared/SharedDefines.h"
 
 AchievementManager::AchievementManager() : m_userAchievementProgressThread(&AchievementManager::updateUserAchievementProgress, this), m_stopUpdateThread(false) { }
