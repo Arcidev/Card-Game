@@ -4,7 +4,7 @@ Card-Game
 + Platform: Linux or Windows
 + OpenSSL 1.1.0i (x64 DLL/lib included for Windows)
 + PostgreSQL 11 (x64 DLL/lib included for Windows)
-+ C++17
++ C++20
 + C# 9.0
 
 ## Build Status
