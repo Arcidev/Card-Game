@@ -34,7 +34,10 @@ namespace Client.Logic.Network
             HandleUserResult,           // SMSG_USER_RESULT
             HandleSwapCards,            // SMSG_SWAP_CARDS
             HandleAchievements,         // SMSG_ACHIEVEMENTS
-            HandleAchievementEarned     // SMSG_ACHIEVEMENT_EARNED
+            HandleAchievementEarned,    // SMSG_ACHIEVEMENT_EARNED
+            HandleUserList,             // SMSG_USER_LIST
+            HandleFriendStatus,         // SMSG_FRIEND_STATUS
+            HandleUserRelation          // SMSG_USER_RELATION
         };
 
         // Returns function to handle packet

@@ -103,7 +103,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -143,7 +143,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -198,6 +198,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClInclude Include="Server\Spells\SpellValidator.h" />
     <ClInclude Include="Server\StaticHelper.h" />
     <ClInclude Include="Server\ConnectedUser.h" />
+    <ClInclude Include="Server\Friend.h" />
     <ClInclude Include="Settings\SettingsHandler.h" />
     <ClInclude Include="Shared\SharedDefines.h" />
   </ItemGroup>
@@ -243,6 +244,7 @@ IF %ERRORLEVEL% LSS 8 exit 0 else exit %ERRORLEVEL%</Command>
     <ClCompile Include="Server\Spells\SpellValidator.cpp" />
     <ClCompile Include="Server\StaticHelper.cpp" />
     <ClCompile Include="Server\ConnectedUser.cpp" />
+    <ClCompile Include="Server\Friend.cpp" />
     <ClCompile Include="Settings\SettingsHandler.cpp" />
   </ItemGroup>
   <ItemGroup>

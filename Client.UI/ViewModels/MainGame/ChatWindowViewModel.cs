@@ -1,4 +1,5 @@
-﻿using Client.Logic.Enums;
+﻿using Arci.Networking.Data;
+using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Resources;
 using System;
@@ -10,17 +11,23 @@ namespace Client.UI.ViewModels.MainGame
 {
     public class ChatWindowViewModel : NotifyPropertyViewModel
     {
+        private const string friend = "friend";
         private const string game = "game";
         private const string global = "global";
         private const string help = "help";
         private const string whisper = "whisper";
+        private const string block = "block";
+        private const string unblock = "unblock";
 
         private static readonly string[] commands =
         {
             game,
             global,
             help,
-            whisper
+            whisper,
+            friend,
+            block,
+            unblock
         };
 
         private readonly ChatViewModel parent;
@@ -134,6 +141,17 @@ namespace Client.UI.ViewModels.MainGame
                 case whisper:
                     await HandleWhisperCommand(commandDelimiter > 0 ? command[commandDelimiter..].Trim() : "");
                     break;
+                case friend:
+                    await HandleFriendCommand(commandDelimiter > 0 ? command[commandDelimiter..].Trim() : "");
+                    break;
+                case block:
+                    if (commandDelimiter > 0)
+                        await HandleBlockCommand(command[commandDelimiter..].Trim(), true);
+                    break;
+                case unblock:
+                    if (commandDelimiter > 0)
+                        await HandleBlockCommand(command[commandDelimiter..].Trim(), false);
+                    break;
                 default:
                     HandleInvalidCommand();
                     break;
@@ -181,6 +199,66 @@ namespace Client.UI.ViewModels.MainGame
 
             parent.SetActiveChat(ChatType.Whisper, receiverName, true);
             await parent.Game.Chat.SendMessage(message, ChatType.Whisper, receiverName);
+        }
+
+        private async Task HandleFriendCommand(string arg)
+        {
+            const string addFriend = "add";
+            const string acceptFriend = "accept";
+            const string denyFriend = "deny";
+            const string removeFriend = "remove";
+
+            void FormatSyntaxError()
+            {
+                text.AppendLine(string.Format(Texts.InvalidSyntax, $"/{friend} [{addFriend}/{acceptFriend}/{denyFriend}/{removeFriend}] [name]"));
+                OnPropertyChanged(nameof(Text));
+            }
+
+            int commandDelimiter = arg.IndexOf(" ");
+            if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
+            {
+                FormatSyntaxError();
+                return;
+            }
+
+            string command = arg.Substring(0, commandDelimiter);
+            string name = arg[commandDelimiter..].Trim();
+
+            UserRelationAction action;
+            switch (command.ToLower())
+            {
+                case addFriend:
+                    action = UserRelationAction.AddFriend;
+                    break;
+                case acceptFriend:
+                    action = UserRelationAction.AcceptFriend;
+                    break;
+                case denyFriend:
+                    action = UserRelationAction.DenyFriend;
+                    break;
+                case removeFriend:
+                    action = UserRelationAction.RemoveFriend;
+                    break;
+                default:
+                    FormatSyntaxError();
+                    return;
+            }
+
+            var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
+                .Write(name).Write((byte)action).Build();
+
+            await parent.Game.SendPacketAsync(packet);
+        }
+
+        private async Task HandleBlockCommand(string name, bool block)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
+                .Write(name).Write((byte)(block ? UserRelationAction.BlockUser : UserRelationAction.RemoveBlockedUser)).Build();
+
+            await parent.Game.SendPacketAsync(packet);
         }
     }
 }

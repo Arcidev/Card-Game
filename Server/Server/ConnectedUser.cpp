@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "NetworkServices.h"
 #include "ServerNetwork.h"
+#include "StaticHelper.h"
 #include "PacketHandlers/PacketHandler.h"
 #include "../Crypto/Aes.h"
 #include "../Database/DatabaseInstance.h"
@@ -12,6 +13,12 @@ ConnectedUser::ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* ne
 
 ConnectedUser::~ConnectedUser()
 {
+    if (m_databaseId)
+    {
+        m_network->GetDbUsers().erase(m_databaseId);
+        m_network->GetUserNames().erase(StaticHelper::ToUpper(m_name));
+    }
+
     if (m_player)
         delete m_player;
 }
@@ -23,6 +30,19 @@ void ConnectedUser::OnLoggedIn(uint32_t databaseId)
 
     m_databaseId = databaseId;
     handleAchievementCriteria(CriteriaTypes::CRITERIA_TYPE_LOGIN, [](AchievementCriteria& criteria) { criteria.SetProgress(criteria.GetProgress() + 1); });
+    m_network->GetDbUsers()[databaseId] = this;
+    m_network->GetUserNames()[StaticHelper::ToUpper(m_name)] = this;
+
+    DbCommandHandler const& dbHandler = DatabaseInstance::GetDbCommandHandler();
+    for (auto const& dbFriend : dbHandler.GetUserFriends(databaseId))
+    {
+        Friend userFriend(dbFriend.UserId, dbFriend.UserName, m_network);
+        userFriend.SendOwnersOnlineStatus(m_name, true);
+        m_friends.push_back(userFriend);
+    }
+
+    for (auto const& dbBlocked : dbHandler.GetBlockedUsers(databaseId))
+        m_blockedUsers[dbBlocked.UserId] = dbBlocked.UserName;
 }
 
 void ConnectedUser::OnGameEnded()
@@ -56,6 +76,9 @@ void ConnectedUser::Disconnect()
     m_disconnected = true;
     if (m_player)
         m_player->Disconnect();
+
+    for (auto const& userFriend : m_friends)
+        userFriend.SendOwnersOnlineStatus(m_name, false);
 
     shutdown(m_socket, SD_BOTH);
     closesocket(m_socket);

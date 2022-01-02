@@ -214,6 +214,69 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has come offline.
+        /// </summary>
+        public static string FriendOffline {
+            get {
+                return ResourceManager.GetString("FriendOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has come online.
+        /// </summary>
+        public static string FriendOnline {
+            get {
+                return ResourceManager.GetString("FriendOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You and {0} are no longer friends.
+        /// </summary>
+        public static string FriendRemoved {
+            get {
+                return ResourceManager.GetString("FriendRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You and {0} are now friends.
+        /// </summary>
+        public static string FriendRequestAccepted {
+            get {
+                return ResourceManager.GetString("FriendRequestAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friend request from {0} has been denied.
+        /// </summary>
+        public static string FriendRequestDenied {
+            get {
+                return ResourceManager.GetString("FriendRequestDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing friend request from {0}.
+        /// </summary>
+        public static string FriendRequestMissing {
+            get {
+                return ResourceManager.GetString("FriendRequestMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friend request sent to  {0}.
+        /// </summary>
+        public static string FriendRequestSent {
+            get {
+                return ResourceManager.GetString("FriendRequestSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Health.
         /// </summary>
         public static string Health {
@@ -349,6 +412,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are being blocked by {0}.
+        /// </summary>
+        public static string SenderBlocked {
+            get {
+                return ResourceManager.GetString("SenderBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - {1} has been changed by {2}.
         /// </summary>
         public static string StatChanged {
@@ -367,11 +439,38 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User {0} has been blocked.
+        /// </summary>
+        public static string UserBlocked {
+            get {
+                return ResourceManager.GetString("UserBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username already in use.
         /// </summary>
         public static string UsernameInUse {
             get {
                 return ResourceManager.GetString("UsernameInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} not found.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been unblocked.
+        /// </summary>
+        public static string UserUnblocked {
+            get {
+                return ResourceManager.GetString("UserUnblocked", resourceCulture);
             }
         }
         

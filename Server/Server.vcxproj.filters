@@ -161,6 +161,9 @@
     <ClInclude Include="Server\Achievements\AchievementCriteriaEntry.h">
       <Filter>Achievements</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Friend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server\DataHolder.cpp">
@@ -288,6 +291,9 @@
     </ClCompile>
     <ClCompile Include="Server\PacketHandlers\AchievementsHandler.cpp">
       <Filter>PacketHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Friend.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -228,4 +228,37 @@
   <data name="CardManaDrain" xml:space="preserve">
     <value>{0} vysal {2} many od {1} a obnovil si {3} many</value>
   </data>
+  <data name="FriendOffline" xml:space="preserve">
+    <value>{0} sa odhlásil</value>
+  </data>
+  <data name="FriendOnline" xml:space="preserve">
+    <value>{0} sa prihlásil</value>
+  </data>
+  <data name="FriendRequestSent" xml:space="preserve">
+    <value>Žiadosť o priateľstvo s užívateľom {0} bola odoslaná</value>
+  </data>
+  <data name="FriendRequestAccepted" xml:space="preserve">
+    <value>Vy a {0} ste teraz priatelia</value>
+  </data>
+  <data name="FriendRequestDenied" xml:space="preserve">
+    <value>Žiadosť o priateľstvo od užívateľa {0} bola zamietnutá</value>
+  </data>
+  <data name="FriendRemoved" xml:space="preserve">
+    <value>Vy a {0} už nie ste priatelia</value>
+  </data>
+  <data name="UserBlocked" xml:space="preserve">
+    <value>Užívateľ {0} je teraz zablokovaný</value>
+  </data>
+  <data name="UserUnblocked" xml:space="preserve">
+    <value>Užívateľ {0} už nie je zablokovaný</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Užívateľ {0} nenájdený</value>
+  </data>
+  <data name="FriendRequestMissing" xml:space="preserve">
+    <value>Chýba žiadosť o priateľstvo od {0}</value>
+  </data>
+  <data name="SenderBlocked" xml:space="preserve">
+    <value>Ste blokovaný užívateľom {0}</value>
+  </data>
 </root>

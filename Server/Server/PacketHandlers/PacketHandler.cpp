@@ -4,16 +4,18 @@
 
 PacketHandlerFuncWrapper const PacketHandler::packetHandlers[] =
 {
-    { handleInitPacket, notLoggedIn },          // CMSG_INIT_PACKET
-    { handleChatPacket, isLoggedIn },           // CMSG_CHAT_MESSAGE
-    { handleStartGamePacket, notPlaying },      // CMSG_START_GAME
-    { handleSelectedCardsPacket, notPrepared }, // CMSG_SELECTED_CARDS
-    { handleCardActionPacket, isInGame },       // CMSG_CARD_ACTION
-    { handleDefendSelfPacket, isInGame },       // CMSG_DEFEND_SELF
-    { handleUserCreatePacket, notLoggedIn },    // CMSG_USER_CREATE
-    { handleUserLogInPacket, notLoggedIn },     // CMSG_USER_LOGIN
-    { handleUserChangePassword, isLoggedIn },   // CMSG_USER_CHANGE_PASSWORD
-    { handleGetAchievementsPacket, isLoggedIn } // CMSG_GET_ACHIEVEMENTS
+    { handleInitPacket, notLoggedIn },              // CMSG_INIT_PACKET
+    { handleChatPacket, isLoggedIn },               // CMSG_CHAT_MESSAGE
+    { handleStartGamePacket, notPlaying },          // CMSG_START_GAME
+    { handleSelectedCardsPacket, notPrepared },     // CMSG_SELECTED_CARDS
+    { handleCardActionPacket, isInGame },           // CMSG_CARD_ACTION
+    { handleDefendSelfPacket, isInGame },           // CMSG_DEFEND_SELF
+    { handleUserCreatePacket, notLoggedIn },        // CMSG_USER_CREATE
+    { handleUserLogInPacket, notLoggedIn },         // CMSG_USER_LOGIN
+    { handleUserChangePassword, isLoggedIn },       // CMSG_USER_CHANGE_PASSWORD
+    { handleGetAchievementsPacket, isLoggedIn },    // CMSG_GET_ACHIEVEMENTS
+    { handleGetUserListPacket, isLoggedIn },        // CMST_GET_USER_LIST
+    { handleUserRelationPacket, isLoggedIn }        // CMSG_USER_RELATION
 };
 
 inline bool PacketHandler::isLoggedIn(ConnectedUser const* user)

@@ -12,6 +12,8 @@ namespace Client.Logic.Enums
         UserCreate,
         UserLogIn,
         UserChangePassword,
-        GetAchievements
+        GetAchievements,
+        GetUserList,
+        UserRelation
     }
 }

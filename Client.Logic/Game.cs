@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,9 +30,14 @@ namespace Client.Logic
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
         private readonly Dictionary<UInt32, Achievement> achievements = new Dictionary<uint, Achievement>();
 
+        private List<(string name, bool isOnline)> friends;
+        private List<string> friendRequests;
+        private List<string> blockedUsers;
+
         public event Action<MessageType, string> MessageReceived;
         public event Action<UInt16> PacketProcessed;
         public event Action<bool> GameEnded;
+        public event Action<string> PropertyChanged;
 
         /// <summary>
         /// List of available servers
@@ -54,6 +60,36 @@ namespace Client.Logic
         public IDataHolder DataHolder { get; }
 
         public IEnumerable<Achievement> Achievements => achievements.Values;
+
+        public IEnumerable<(string name, bool isOnline)> Friends
+        {
+            get => friends;
+            set
+            {
+                friends = value?.ToList();
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<string> FriendRequets
+        {
+            get => friendRequests;
+            set
+            {
+                friendRequests = value?.ToList();
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<string> BlockedUsers
+        {
+            get => blockedUsers;
+            set
+            {
+                blockedUsers = value?.ToList();
+                OnPropertyChanged();
+            }
+        }
 
         private Game(ClientNetwork clientNetwork, IDataHolder dataHolder)
         {
@@ -245,5 +281,7 @@ namespace Client.Logic
                 }
             }
         }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(propertyName);
     }
 }

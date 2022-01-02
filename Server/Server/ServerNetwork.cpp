@@ -115,7 +115,7 @@ ServerNetwork::~ServerNetwork()
 }
 
 // Accepts new connections
-bool ServerNetwork::AcceptNewClient(unsigned int const& id, AchievementManager* achievementMgr)
+bool ServerNetwork::AcceptNewClient(uint32_t id, AchievementManager* achievementMgr)
 {
     // if client is waiting, accept the connection and save the socket
     SOCKET clientSocket = accept(m_listenSocket, nullptr, nullptr);
@@ -201,25 +201,23 @@ int ServerNetwork::ReceiveData(ConnectedUser const* user, char* recvbuf) const
 }
 
 // Broadcasts packet to all clients
-void ServerNetwork::BroadcastPacket(Packet const& packet) const
+void ServerNetwork::BroadcastPacket(Packet const& packet, ConnectedUser const* sender) const
 {
     for (auto const& user : m_users)
+        if (!sender || !user.second.first->IsUserBlocked(sender->GetDatabaseId()))
         user.second.first->SendPacket(packet);
 }
 
-// Sends packet to player searched by name
-bool ServerNetwork::SendPacketToPlayer(std::string_view playerName, Packet const& packet) const
+ConnectedUser* ServerNetwork::GetUser(uint32_t dbId) const
 {
-    for (auto const& user : m_users)
-    {
-        if (StaticHelper::CompareStringCaseInsensitive(user.second.first->GetName(), playerName))
-        {
-            user.second.first->SendPacket(packet);
-            return true;
-        }
-    }
+    DbUserMap::const_iterator iter =  m_dbUsers.find(dbId);
+    return iter != m_dbUsers.end() ? iter->second : nullptr;
+}
 
-    return false;
+ConnectedUser* ServerNetwork::GetUser(std::string_view name) const
+{
+    UserNameMap::const_iterator iter = m_userNames.find(StaticHelper::ToUpper(name));
+    return iter != m_userNames.end() ? iter->second : nullptr;
 }
 
 // Set last player to null if this player was the one last connected

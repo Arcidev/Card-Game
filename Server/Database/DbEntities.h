@@ -40,4 +40,10 @@ namespace Db
         uint32_t Progress;
         time_t LastModified;
     };
+
+    struct UserRelation
+    {
+        uint32_t UserId;
+        std::string UserName;
+    };
 }

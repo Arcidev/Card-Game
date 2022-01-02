@@ -30,6 +30,9 @@ namespace Client.Logic.Enums
         UserResult,
         SwapCards,
         Achievements,
-        AchievementEarned
+        AchievementEarned,
+        UserList,
+        FriendStatus,
+        UserRelation
     }
 }

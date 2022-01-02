@@ -78,12 +78,12 @@ Player* Game::GetActivePlayer() const
 }
 
 // Sends packet to all players in this game
-void Game::BroadcastPacket(Packet const& packet) const
+void Game::BroadcastPacket(Packet const& packet, ConnectedUser const* sender) const
 {
-    if (m_player1)
+    if (m_player1 && (!sender || !m_player1->GetUser()->IsUserBlocked(sender->GetDatabaseId())))
         m_player1->SendPacket(packet);
 
-    if (m_player2)
+    if (m_player2 && (!sender || !m_player2->GetUser()->IsUserBlocked(sender->GetDatabaseId())))
         m_player2->SendPacket(packet);
 }
 

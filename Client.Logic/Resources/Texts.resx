@@ -208,4 +208,37 @@
   <data name="CardManaDrain" xml:space="preserve">
     <value>{0} has drained {2} mana from {1} and restored {3} mana</value>
   </data>
+  <data name="FriendOnline" xml:space="preserve">
+    <value>{0} has come online</value>
+  </data>
+  <data name="FriendOffline" xml:space="preserve">
+    <value>{0} has come offline</value>
+  </data>
+  <data name="FriendRequestSent" xml:space="preserve">
+    <value>Friend request sent to  {0}</value>
+  </data>
+  <data name="FriendRequestAccepted" xml:space="preserve">
+    <value>You and {0} are now friends</value>
+  </data>
+  <data name="FriendRequestDenied" xml:space="preserve">
+    <value>Friend request from {0} has been denied</value>
+  </data>
+  <data name="FriendRemoved" xml:space="preserve">
+    <value>You and {0} are no longer friends</value>
+  </data>
+  <data name="UserBlocked" xml:space="preserve">
+    <value>User {0} has been blocked</value>
+  </data>
+  <data name="UserUnblocked" xml:space="preserve">
+    <value>User {0} has been unblocked</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User {0} not found</value>
+  </data>
+  <data name="FriendRequestMissing" xml:space="preserve">
+    <value>Missing friend request from {0}</value>
+  </data>
+  <data name="SenderBlocked" xml:space="preserve">
+    <value>You are being blocked by {0}</value>
+  </data>
 </root>

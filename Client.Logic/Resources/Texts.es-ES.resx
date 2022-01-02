@@ -228,4 +228,37 @@
   <data name="CardManaDrain" xml:space="preserve">
     <value>{0} ha drenado {2} maná de {1} y ha restorido {3} maná</value>
   </data>
+  <data name="FriendOffline" xml:space="preserve">
+    <value>{0} Se ha desconectado</value>
+  </data>
+  <data name="FriendOnline" xml:space="preserve">
+    <value>{0} Se ha conectado</value>
+  </data>
+  <data name="FriendRequestSent" xml:space="preserve">
+    <value>Solicitud de amistad enviada a {0}</value>
+  </data>
+  <data name="FriendRequestAccepted" xml:space="preserve">
+    <value>Tu y {0} ahora son amigos</value>
+  </data>
+  <data name="FriendRequestDenied" xml:space="preserve">
+    <value>Se rechazó la solicitud de amistad de {0}</value>
+  </data>
+  <data name="FriendRemoved" xml:space="preserve">
+    <value>Tú y {0} ya no sois amigos</value>
+  </data>
+  <data name="UserUnblocked" xml:space="preserve">
+    <value>Se desbloqueó al usuario {0}</value>
+  </data>
+  <data name="UserBlocked" xml:space="preserve">
+    <value>El usuario {0} ha sido bloqueado</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Usuario {0} no encontrado</value>
+  </data>
+  <data name="FriendRequestMissing" xml:space="preserve">
+    <value>Falta la solicitud de amistad de {0}</value>
+  </data>
+  <data name="SenderBlocked" xml:space="preserve">
+    <value>Estás siendo bloqueado por {0}</value>
+  </data>
 </root>

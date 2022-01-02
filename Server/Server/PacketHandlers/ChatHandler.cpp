@@ -20,17 +20,21 @@ void PacketHandler::handleChatPacket(ConnectedUser* user, Packet& packet)
     switch (chatId)
     {
         case CHAT_GLOBAL:
-            user->GetNetwork()->BroadcastPacket(pck);
+            user->GetNetwork()->BroadcastPacket(pck, user);
             break;
         case CHAT_LOCAL:
             if (user->GetPlayer()) // user does not have to be playing to use chat, but for game chat he should
-                user->GetPlayer()->GetGame()->BroadcastPacket(pck);
+                user->GetPlayer()->GetGame()->BroadcastPacket(pck, user);
             break;
         case CHAT_WHISPER:
         {
             std::string receiverName;
             packet >> receiverName;
-            user->SendChatWhisperResponse(message, receiverName, user->GetNetwork()->SendPacketToPlayer(receiverName, pck));
+            ConnectedUser* receiver = user->GetNetwork()->GetUser(receiverName);
+            bool canSendMessage = receiver && !receiver->IsUserBlocked(user->GetDatabaseId());
+            if (canSendMessage)
+                receiver->SendPacket(pck);
+            user->SendChatWhisperResponse(message, receiverName, canSendMessage);
             break;
         }
         default:
