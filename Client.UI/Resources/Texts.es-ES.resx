@@ -225,4 +225,16 @@
   <data name="Achievements" xml:space="preserve">
     <value>Trofeos</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Usarios</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Amigos</value>
+  </data>
+  <data name="FriendRequests" xml:space="preserve">
+    <value>Peticiones de amistad</value>
+  </data>
+  <data name="BlockedUsers" xml:space="preserve">
+    <value>Bloqueados</value>
+  </data>
 </root>

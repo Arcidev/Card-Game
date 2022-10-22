@@ -225,4 +225,16 @@
   <data name="Achievements" xml:space="preserve">
     <value>Trofeje</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Uživatelé</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Přátelé</value>
+  </data>
+  <data name="FriendRequests" xml:space="preserve">
+    <value>Žádosti o přátelství</value>
+  </data>
+  <data name="BlockedUsers" xml:space="preserve">
+    <value>Zablokovaní</value>
+  </data>
 </root>

@@ -154,7 +154,7 @@ void PacketHandler::handleGetUserListPacket(ConnectedUser* cUser, Packet& packet
         case USER_LIST_FRIENDS:
             result << (uint16_t)cUser->GetFriends().size();
             for (Friend const& userFriend : cUser->GetFriends())
-                result << userFriend.IsOnline();
+                result.WriteBit(userFriend.IsOnline());
 
             result.FlushBits();
             for (Friend const& userFriend : cUser->GetFriends())
