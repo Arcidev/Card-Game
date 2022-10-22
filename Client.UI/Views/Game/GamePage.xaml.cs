@@ -33,26 +33,26 @@ namespace Client.UI.Views.Game
 
         private void OnPacketProcessed(UInt16 packet)
         {
-            if (packet == (UInt16)SMSGPackets.AvailableCards)
+            switch ((SMSGPackets)packet)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    GameFrame.Navigate(new SelectCards());
-                });
-            }
-            else if (packet == (UInt16)SMSGPackets.SelectCards)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    GameFrame.Navigate(new PlayingGame());
-                });
-            }
-            else if (packet == (UInt16)SMSGPackets.Achievements)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    GameFrame.Navigate(new AchievementsPage());
-                });
+                case SMSGPackets.AvailableCards:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        GameFrame.Navigate(new SelectCards());
+                    });
+                    break;
+                case SMSGPackets.SelectCards:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        GameFrame.Navigate(new PlayingGame());
+                    });
+                    break;
+                case SMSGPackets.Achievements:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        GameFrame.Navigate(new AchievementsPage());
+                    });
+                    break;
             }
         }
 

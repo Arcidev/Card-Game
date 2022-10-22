@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>BlueLootBox_19_t.ico</ApplicationIcon>
   </PropertyGroup>
@@ -52,8 +52,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
-    <PackageReference Include="Notifications.Wpf.Core" Version="1.3.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Notifications.Wpf.Core" Version="1.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -152,6 +152,9 @@
     </Page>
     <Page Update="Views\Game\MainMenu.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\User\UserListWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\User\Login.xaml">
       <SubType>Designer</SubType>

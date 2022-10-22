@@ -42,7 +42,7 @@ namespace Client.UI.Sql
 
         public string GetCriteriaDescription(UInt32 id) => criteriaDescriptions.TryGetValue(id, out var description) ? description : string.Empty;
 
-        private SQLiteConnection GetConnection() => new SQLiteConnection("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;");
+        private static SQLiteConnection GetConnection() => new("Data Source=Assets/Data/data.db;Version=3;New=False;Compress=True;");
 
         private void LoadSpellsData(SQLiteConnection connection)
         {

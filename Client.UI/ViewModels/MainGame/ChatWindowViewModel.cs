@@ -121,7 +121,7 @@ namespace Client.UI.ViewModels.MainGame
             }
 
             int commandDelimiter = command.IndexOf(" ");
-            var cmd = commandDelimiter > 0 ? command.Substring(0, commandDelimiter).ToLower() : command;
+            var cmd = commandDelimiter > 0 ? command[..commandDelimiter].ToLower() : command;
 
             switch (commands.FirstOrDefault(x => x.StartsWith(cmd)))
             {
@@ -188,7 +188,7 @@ namespace Client.UI.ViewModels.MainGame
                 return;
             }
 
-            string receiverName = arg.Substring(0, commandDelimiter);
+            string receiverName = arg[..commandDelimiter];
             string message = arg[commandDelimiter..].Trim();
 
             if (!message.Any())
@@ -221,7 +221,7 @@ namespace Client.UI.ViewModels.MainGame
                 return;
             }
 
-            string command = arg.Substring(0, commandDelimiter);
+            string command = arg[..commandDelimiter];
             string name = arg[commandDelimiter..].Trim();
 
             UserRelationAction action;

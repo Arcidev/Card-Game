@@ -19,6 +19,7 @@
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.StartGame}" Command="{Binding StartGameCommand}" />
         <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.Achievements}" Command="{Binding AchievementsCommand}" />
+        <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.Friends}" Command="{Binding FriendsCommand}" />
         <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.PasswordChange}" Click="ChangePassword_Click" />
         <Button Style="{StaticResource ButtonStyle}" Content="{x:Static resx:Texts.Logout}" Click="LogoutButton_Click" />
     </StackPanel>

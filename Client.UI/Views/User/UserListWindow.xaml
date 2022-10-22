@@ -1,0 +1,82 @@
+﻿<Window x:Class="Client.UI.Views.User.UserListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.User"
+        mc:Ignorable="d"
+        Title="{x:Static resx:Texts.Users}" Height="520" Width="300">
+    <Window.DataContext>
+        <viewmodels:UserListViewModel />
+    </Window.DataContext>
+    <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabItem x:Name="FriendsTab" Header="{x:Static resx:Texts.Friends}">
+            <ListBox ItemsSource="{Binding Friends}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0 2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Width="6" Height="6" Margin="2">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="Red"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                <Setter Property="Fill" Value="LightGreen" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="{Binding Name}" Grid.Column="1" Margin="2" />
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="2">
+                                <Button Content="&#x274C;" Foreground="Red" Command="{Binding RemoveFriend}" Margin="2 0" />
+                                <Button Content="&#x2757;" Foreground="Yellow" Command="{Binding BlockUser}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+        <TabItem x:Name="FriendRequestsTab" Header="{x:Static resx:Texts.FriendRequests}">
+            <ListBox ItemsSource="{Binding FriendRequests}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0 2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Margin="2" />
+                            <StackPanel Grid.Column="1" Margin="2">
+                                <Button Content="&#x2705;" Foreground="LightGreen" Command="{Binding AcceptFriend}" Margin="2 0" />
+                                <Button Content="&#x274C;" Foreground="Red" Command="{Binding DenyFriend}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+        <TabItem x:Name="BlockedTab" Header="{x:Static resx:Texts.BlockedUsers}">
+            <ListBox ItemsSource="{Binding BlockedUsers}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0 2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Margin="2" />
+                            <Button Grid.Column="1" Content="&#x274C;" Foreground="Red" Command="{Binding RemoveBlockedUser}" Margin="2" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+    </TabControl>
+</Window>
