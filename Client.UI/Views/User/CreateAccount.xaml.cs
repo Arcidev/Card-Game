@@ -40,9 +40,9 @@ namespace Client.UI.Views.User
                 if (opcodeNumber == (UInt16)SMSGPackets.UserResult)
                 {
                     if (game.Player != null)
-                        NavigationService.Navigate(new GamePage());
+                        Dispatcher.Invoke(() => NavigationService.Navigate(new GamePage()));
                     else
-                        CreateAccountBtn.IsEnabled = true;
+                        Dispatcher.Invoke(() => CreateAccountBtn.IsEnabled = true);
                 }
             });
 

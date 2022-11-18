@@ -1,5 +1,4 @@
-﻿using Arci.Networking.Data;
-using Client.Logic;
+﻿using Client.Logic;
 using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Views.User;

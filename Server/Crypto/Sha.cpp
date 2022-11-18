@@ -5,8 +5,8 @@
 #include "OpenSSL/rand.h"
 #include "OpenSSL/sha.h"
 
-constexpr int bufferLength = SHA256_DIGEST_LENGTH * 2 + 1;
-constexpr int saltBufferLength = 16;
+constexpr int bufferLength = SHA512_DIGEST_LENGTH * 2 + 1;
+constexpr int saltBufferLength = 32;
 
 // Creates hash from data
 std::tuple<std::string, std::string> Sha::CreateHash(std::string_view data)
@@ -43,20 +43,20 @@ std::string Sha::createHash(std::string_view data, uint8_t const* salt, uint8_t 
     std::memcpy(&saltedPassword[0], salt, saltLength);
     std::memcpy(&saltedPassword[saltLength], data.data(), data.size());
 
-    uint8_t hash[SHA256_DIGEST_LENGTH];
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, &saltedPassword[0], saltedPassword.size());
-    SHA256_Final(hash, &sha256);
+    uint8_t hash[SHA512_DIGEST_LENGTH];
+    SHA512_CTX sha512;
+    SHA512_Init(&sha512);
+    SHA512_Update(&sha512, &saltedPassword[0], saltedPassword.size());
+    SHA512_Final(hash, &sha512);
 
-    return convertToHexString(hash, SHA256_DIGEST_LENGTH);
+    return convertToHexString(hash, SHA512_DIGEST_LENGTH);
 }
 
 std::string Sha::convertToHexString(uint8_t const* data, uint8_t length)
 {
     char outputBuffer[bufferLength];
     for (int i = 0; i < length; i++)
-        snprintf(outputBuffer + (i * 2), bufferLength - (i * 2), "%02x", data[i]);
+        snprintf(outputBuffer + (i * 2), (size_t)(bufferLength - (i * 2)), "%02x", data[i]);
 
     outputBuffer[length * 2] = '\0';
     return outputBuffer;
