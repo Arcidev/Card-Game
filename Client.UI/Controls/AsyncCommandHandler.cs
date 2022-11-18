@@ -7,6 +7,7 @@ namespace Client.UI.Controls
     public class AsyncCommandHandler : ICommand
     {
         public event EventHandler CanExecuteChanged;
+        public event Action OnExecuted;
 
         private bool isExecuting;
         private readonly Func<object, Task> execute;
@@ -39,6 +40,7 @@ namespace Client.UI.Controls
                     NotifyCanExecuteChanged();
 
                     await execute(obj);
+                    OnExecuted?.Invoke();
                 }
                 finally
                 {

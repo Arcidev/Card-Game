@@ -237,4 +237,10 @@
   <data name="BlockedUsers" xml:space="preserve">
     <value>Zablokovaní</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="Block" xml:space="preserve">
+    <value>Zablokovat</value>
+  </data>
 </root>

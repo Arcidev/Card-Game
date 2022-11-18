@@ -237,4 +237,10 @@
   <data name="BlockedUsers" xml:space="preserve">
     <value>Blocked</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
 </root>

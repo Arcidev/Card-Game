@@ -16,14 +16,14 @@ namespace Client.UI.ViewModels.MainGame
 
         public AsyncCommandHandler AchievementsCommand { get; }
 
-        public AsyncCommandHandler FriendsCommand { get; }
+        public CommandHandler FriendsCommand { get; }
 
         public MainMenuViewModel()
         {
             game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
             StartGameCommand = new(async () => await game.SendPacketAsync(new(CMSGPackets.StartGame)));
             AchievementsCommand = new(async () => await game.SendPacketAsync(new(CMSGPackets.GetAchievements)));
-            FriendsCommand = new(async () =>
+            FriendsCommand = new(() =>
             {
                 if (usersWindow != null)
                 {
@@ -38,11 +38,6 @@ namespace Client.UI.ViewModels.MainGame
                     usersWindow = null;
                 };
                 usersWindow.Show();
-
-                var packet = new Packet(CMSGPackets.GetUserList);
-                packet.Write((byte)UserListType.Friends);
-
-                await game.SendPacketAsync(packet);
             });
         }
     }

@@ -111,11 +111,12 @@ void PacketHandler::handleUserLogInPacket(ConnectedUser* cUser, Packet& packet)
 // Handle CMSG_USER_CHANGE_PASSWORD packet
 void PacketHandler::handleUserChangePassword(ConnectedUser* cUser, Packet& packet)
 {
+    DEBUG_LOG("CMSG_USER_CHANGE_PASSWORD:\r\n\tId: %d\r\n", cUser->GetId());
+
     std::string password;
     std::string newPassword;
     packet >> password >> newPassword;
 
-    DEBUG_LOG("CMSG_USER_CHANGE_PASSWORD:\r\n\tId: %d\r\n", cUser->GetId());
     Db::User user = DatabaseInstance::GetDbCommandHandler().GetUser(cUser->GetDatabaseId());
     Packet result(SMSGPackets::SMSG_USER_RESULT);
     if (!user.Id || Sha::CreateHash(password, user.PasswordSalt) != user.PasswordHash)
@@ -137,6 +138,7 @@ void PacketHandler::handleGetUserListPacket(ConnectedUser* cUser, Packet& packet
     uint8_t listType;
     packet >> listType;
 
+    DEBUG_LOG("CMST_GET_USER_LIST:\r\n\tId: %d\r\n\tList Type: %d\r\n", cUser->GetId(), listType);
     DbCommandHandler const& dbHandler = DatabaseInstance::GetDbCommandHandler();
     Packet result(SMSGPackets::SMSG_USER_LIST);
     result << listType;
@@ -177,6 +179,8 @@ void PacketHandler::handleUserRelationPacket(ConnectedUser* cUser, Packet& packe
     std::string name;
     uint8_t type;
     packet >> name >> type;
+
+    DEBUG_LOG("CMSG_USER_RELATION:\r\n\tId: %d\r\n\tType: %d\r\n\tName: %s\r\n", cUser->GetId(), type, name.c_str());
     DbCommandHandler const& dbHandler = DatabaseInstance::GetDbCommandHandler();
     uint32_t id = dbHandler.GetUserId(name);
 

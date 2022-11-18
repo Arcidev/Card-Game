@@ -1,5 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
+using Client.UI.ViewModels.User;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,10 +11,17 @@ namespace Client.UI.Views.User
     /// </summary>
     public partial class UserListWindow : Window
     {
-
         public UserListWindow()
         {
             InitializeComponent();
+            Loaded += (obj, args) =>
+            {
+                if (DataContext is not UserListViewModel vm)
+                    return;
+
+                vm.AddFriendCmd.OnExecuted += () => AddFriendTextBox.Clear();
+                vm.BlockUserCmd.OnExecuted += () => BlockUserTextBox.Clear();
+            };
         }
 
         private async void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -21,11 +29,14 @@ namespace Client.UI.Views.User
             if (e.Source is not TabControl)
                 return;
 
+            AddFriendTextBox.Clear();
+            BlockUserTextBox.Clear();
+
             var packet = new Packet(CMSGPackets.GetUserList);
             if (FriendsTab.IsSelected)
                 packet.Write((byte)UserListType.Friends);
             else if (FriendRequestsTab.IsSelected)
-                packet.Write((byte)UserListType.Friends);
+                packet.Write((byte)UserListType.Requests);
             else if (BlockedTab.IsSelected)
                 packet.Write((byte)UserListType.Blocked);
 

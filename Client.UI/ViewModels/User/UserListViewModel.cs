@@ -1,7 +1,11 @@
-﻿using Client.Logic;
+﻿using Arci.Networking.Data;
+using Client.Logic;
+using Client.Logic.Enums;
+using Client.UI.Controls;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Client.UI.ViewModels.User
@@ -14,6 +18,10 @@ namespace Client.UI.ViewModels.User
 
         public ObservableCollection<UserViewModel> BlockedUsers { get; } = new();
 
+        public AsyncCommandHandler AddFriendCmd { get; }
+
+        public AsyncCommandHandler BlockUserCmd { get; }
+
         public UserListViewModel()
         {
             var game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
@@ -22,6 +30,9 @@ namespace Client.UI.ViewModels.User
             ReloadFriends();
             ReloadFriendRequests();
             ReloadBlockedUsers();
+
+            AddFriendCmd = new (async (o) => await HandlerUser(o as string, UserRelationAction.AddFriend));
+            BlockUserCmd = new (async (o) => await HandlerUser(o as string, UserRelationAction.BlockUser));
         }
 
         public void Dispose()
@@ -79,6 +90,18 @@ namespace Client.UI.ViewModels.User
                 foreach (var blockedUser in game.BlockedUsers?.Select(x => new UserViewModel(x, game)) ?? Enumerable.Empty<UserViewModel>())
                     BlockedUsers.Add(blockedUser);
             });
+        }
+
+        private static async Task HandlerUser(string name, UserRelationAction action)
+        {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            var game = App.GetGame();
+            var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
+                .Write(name).Write((byte)action).Build();
+
+            await game.SendPacketAsync(packet);
         }
     }
 }
