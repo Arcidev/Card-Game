@@ -241,4 +241,7 @@
   <data name="SenderBlocked" xml:space="preserve">
     <value>You are being blocked by {0}</value>
   </data>
+  <data name="FriendRequestReceived" xml:space="preserve">
+    <value>New friend request from {0}</value>
+  </data>
 </root>

@@ -107,6 +107,9 @@ namespace Client.Logic.Network
                     case UserRelationAction.AddFriend:
                         game.OnInformationReceived(string.Format(Texts.FriendRequestSent, name));
                         break;
+                    case UserRelationAction.NewFriendRequest:
+                        game.OnInformationReceived(string.Format(Texts.FriendRequestReceived, name));
+                        break;
                     case UserRelationAction.AcceptFriend:
                         game.OnInformationReceived(string.Format(Texts.FriendRequestAccepted, name));
                         break;

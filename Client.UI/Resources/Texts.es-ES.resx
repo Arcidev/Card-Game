@@ -243,4 +243,7 @@
   <data name="Block" xml:space="preserve">
     <value>Bloquear</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remover</value>
+  </data>
 </root>

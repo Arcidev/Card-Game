@@ -261,4 +261,7 @@
   <data name="SenderBlocked" xml:space="preserve">
     <value>Jste blokován uživatelem {0}</value>
   </data>
+  <data name="FriendRequestReceived" xml:space="preserve">
+    <value>Nová žádost o přátelství od {0}</value>
+  </data>
 </root>

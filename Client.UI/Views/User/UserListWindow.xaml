@@ -11,13 +11,23 @@
         <viewmodels:UserListViewModel />
     </Window.DataContext>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabControl.Resources>
+            <Style x:Key="ActionButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+        </TabControl.Resources>
         <TabItem x:Name="FriendsTab" Header="{x:Static resx:Texts.Friends}">
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition  />
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="4">
                     <TextBox x:Name="AddFriendTextBox" Width="100" Margin="2 0" />
                     <Button Padding="2" Content="{x:Static resx:Texts.Add}" Command="{Binding AddFriendCmd}" CommandParameter="{Binding Text, ElementName=AddFriendTextBox}" IsDefault="{Binding IsFocused, ElementName=AddFriendTextBox}" />
                 </StackPanel>
-                <ListBox ItemsSource="{Binding Friends}" HorizontalContentAlignment="Stretch">
+                <ListBox Grid.Row="1" ItemsSource="{Binding Friends}" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0 2">
@@ -40,14 +50,14 @@
                                 </Ellipse>
                                 <TextBlock Text="{Binding Name}" Grid.Column="1" Margin="2" />
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="2">
-                                    <Button Content="&#x274C;" Foreground="Red" Command="{Binding RemoveFriend}" Margin="2 0" />
-                                    <Button Content="&#x2757;" Foreground="Yellow" Command="{Binding BlockUser}" />
+                                    <Button Content="&#x274C;" Style="{StaticResource ActionButton}" Foreground="Red" ToolTip="{x:Static resx:Texts.Remove}" Command="{Binding RemoveFriend}" Margin="2 0" />
+                                    <Button Content="&#x2757;" Style="{StaticResource ActionButton}" Foreground="DarkOrange" ToolTip="{x:Static resx:Texts.Block}" Command="{Binding BlockUser}" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
+            </Grid>
         </TabItem>
         <TabItem x:Name="FriendRequestsTab" Header="{x:Static resx:Texts.FriendRequests}">
             <ListBox ItemsSource="{Binding FriendRequests}" HorizontalContentAlignment="Stretch">
@@ -59,9 +69,9 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Name}" Margin="2" />
-                            <StackPanel Grid.Column="1" Margin="2">
-                                <Button Content="&#x2705;" Foreground="LightGreen" Command="{Binding AcceptFriend}" Margin="2 0" />
-                                <Button Content="&#x274C;" Foreground="Red" Command="{Binding DenyFriend}" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="2">
+                                <Button Content="&#x2705;" Style="{StaticResource ActionButton}" Foreground="Green" ToolTip="{x:Static resx:Texts.Add}" Command="{Binding AcceptFriend}" Margin="2 0" />
+                                <Button Content="&#x274C;" Style="{StaticResource ActionButton}" Foreground="Red" ToolTip="{x:Static resx:Texts.Cancel}" Command="{Binding DenyFriend}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -69,12 +79,16 @@
             </ListBox>
         </TabItem>
         <TabItem x:Name="BlockedTab" Header="{x:Static resx:Texts.BlockedUsers}">
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="4">
                     <TextBox x:Name="BlockUserTextBox" Width="100" Margin="2 0" />
                     <Button Padding="2" Content="{x:Static resx:Texts.Block}" Command="{Binding BlockUserCmd}" CommandParameter="{Binding Text, ElementName=BlockUserTextBox}" IsDefault="{Binding IsFocused, ElementName=BlockUserTextBox}" />
                 </StackPanel>
-                <ListBox ItemsSource="{Binding BlockedUsers}" HorizontalContentAlignment="Stretch">
+                <ListBox Grid.Row="1" ItemsSource="{Binding BlockedUsers}" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0 2">
@@ -83,12 +97,12 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Name}" Margin="2" />
-                                <Button Grid.Column="1" Content="&#x274C;" Foreground="Red" Command="{Binding RemoveBlockedUser}" Margin="2" />
+                                <Button Grid.Column="1" Content="&#x274C;" Style="{StaticResource ActionButton}" Foreground="Red" ToolTip="{x:Static resx:Texts.Remove}" Command="{Binding RemoveBlockedUser}" Margin="2" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
+            </Grid>
         </TabItem>
     </TabControl>
 </Window>

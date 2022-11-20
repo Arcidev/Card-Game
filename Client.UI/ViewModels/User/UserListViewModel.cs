@@ -52,6 +52,7 @@ namespace Client.UI.ViewModels.User
                     ReloadBlockedUsers();
                     break;
                 case nameof(Game.FriendRequets):
+                    ReloadFriendRequests();
                     break;
             }
         }

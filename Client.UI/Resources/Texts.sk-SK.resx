@@ -243,4 +243,7 @@
   <data name="Block" xml:space="preserve">
     <value>Zablokovať</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Odstrániť</value>
+  </data>
 </root>

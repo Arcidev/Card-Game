@@ -25,6 +25,7 @@ enum UserListType
 enum UserRelationAction
 {
     USER_RELATION_ACTION_ADD_FRIEND = 0,
+    USER_RELATION_ACTION_NEW_FRIEND_REQUEST,
     USER_RELATION_ACTION_ACCEPT_FRIEND,
     USER_RELATION_ACTION_DENY_FRIEND,
     USER_RELATION_ACTION_REMOVE_FRIEND,
@@ -196,7 +197,15 @@ void PacketHandler::handleUserRelationPacket(ConnectedUser* cUser, Packet& packe
                 else if (dbHandler.IsUserBlocked(cUser->GetDatabaseId(), id))
                     result = USER_RELATION_ACTION_RESULT_USER_BLOCKED;
                 else
+                {
                     dbHandler.SetFriendRequest(cUser->GetDatabaseId(), id);
+                    if (ConnectedUser const* user = cUser->GetNetwork()->GetUser(id))
+                    {
+                        Packet friendPacket(SMSGPackets::SMSG_USER_RELATION);
+                        friendPacket << (uint8_t)USER_RELATION_ACTION_NEW_FRIEND_REQUEST << result << cUser->GetName();
+                        user->SendPacket(friendPacket);
+                    }
+                }
                 break;
             case USER_RELATION_ACTION_ACCEPT_FRIEND:
                 if (dbHandler.HasFriendRequest(id, cUser->GetDatabaseId()))
@@ -208,7 +217,7 @@ void PacketHandler::handleUserRelationPacket(ConnectedUser* cUser, Packet& packe
                     if (ConnectedUser* user = cUser->GetNetwork()->GetUser(id))
                     {
                         user->AddFriend(cUser->GetDatabaseId(), cUser->GetName());
-                        Packet friendPacket(SMSGPackets::SMSG_USER_RESULT);
+                        Packet friendPacket(SMSGPackets::SMSG_USER_RELATION);
                         friendPacket << type << result << cUser->GetName();
                         user->SendPacket(friendPacket);
                     }
