@@ -30,6 +30,6 @@ class Game
         Player* GetOpponent(Player const* player) const;
         Player* GetActivePlayer() const;
         uint32_t GetActivePlayerId() const { return m_activePlayerId; }
-        void BroadcastPacket(Packet const& packet, ConnectedUser const* sender = nullptr) const;
+        void BroadcastPacket(Packet const& packet) const;
 };
 

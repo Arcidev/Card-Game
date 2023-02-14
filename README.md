@@ -5,7 +5,7 @@ Card-Game
 + OpenSSL 1.1.0i (x64 DLL/lib included for Windows)
 + PostgreSQL 11 (x64 DLL/lib included for Windows)
 + C++20
-+ C# 9.0
++ C# 11.0 (.Net 7.0)
 
 ## Build Status
 <!--- [![Build status](https://img.shields.io/travis/Arcidev/Card-Game.svg?logo=travis&style=flat-square)](https://travis-ci.org/Arcidev/Card-Game) --->
@@ -13,7 +13,7 @@ Card-Game
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FArcidev%2FCard-Game%2Fbadge&style=flat-square)](https://actions-badge.atrox.dev/Arcidev/Card-Game/goto)
 
 ## How to build and run:
-  <b>Windows (Automated for MS Visual Studio 15):</b>
+  <b>Windows (Automated for MS Visual Studio 16):</b>
   
     Server:
       Copy DLL files from directory Server/DLL to directory where you have built executable

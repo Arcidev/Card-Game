@@ -34,10 +34,9 @@ namespace Client.UI.ViewModels.MainGame
         private async Task SendSelectedCards()
         {
             var packet = new Packet(CMSGPackets.SelectedCards);
-            var cards = selectedItems.Cast<SelectableCardViewModel>().ToList();
 
-            packet.Write((byte)cards.Count);
-            foreach (var card in cards)
+            packet.Write((byte)selectedItems.Count);
+            foreach (var card in selectedItems.Cast<SelectableCardViewModel>())
                 packet.Write(card.Id);
 
             await game.SendPacketAsync(packet);

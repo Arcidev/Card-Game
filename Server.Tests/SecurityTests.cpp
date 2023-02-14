@@ -12,13 +12,13 @@ namespace ServerTests
     {
     public:
 
-        TEST_METHOD(UserCrudTests)
+        TEST_METHOD(HashingTest)
         {
             auto[salt, hash] = Sha::CreateHash(Password);
             Assert::IsFalse(salt.empty());
             Assert::IsFalse(hash.empty());
-            Assert::AreEqual(32, (int)salt.length());
-            Assert::AreEqual(64, (int)hash.length());
+            Assert::AreEqual(64, (int)salt.length());
+            Assert::AreEqual(128, (int)hash.length());
 
             auto saltedHash = Sha::CreateHash(Password, salt);
             Assert::AreEqual(hash, saltedHash);

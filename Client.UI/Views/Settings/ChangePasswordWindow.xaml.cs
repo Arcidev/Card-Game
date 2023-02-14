@@ -1,7 +1,6 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
 using Client.UI.Resources;
-using Client.UI.ViewModels.Settings;
 using System.Windows;
 
 namespace Client.UI.Views.Settings
@@ -18,12 +17,13 @@ namespace Client.UI.Views.Settings
 
         private async void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ChangePasswordViewModel vm)
+            var game = App.GetGame();
+            if (game == null)
                 return;
 
             if (Password.Password != PasswordAgain.Password)
             {
-                vm.ErrorMessage = Texts.PasswordMismatch;
+                ErrorMessageTextBlock.Text = Texts.PasswordMismatch;
                 return;
             }
 
@@ -32,7 +32,7 @@ namespace Client.UI.Views.Settings
             packet.Write(PasswordCurrent.Password);
             packet.Write(Password.Password);
 
-            await vm.Game.SendPacketAsync(packet);
+            await game.SendPacketAsync(packet);
             DialogResult = true;
         }
 

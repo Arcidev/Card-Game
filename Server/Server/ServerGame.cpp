@@ -19,7 +19,7 @@ void ServerGame::update()
     }
 }
 
-// Infinite server pdate loop
+// Infinite server update loop
 void ServerGame::Loop()
 {
     SignalHandler::RegisterMethod(SIGINT, [&]() { m_isShuttingDown = true; m_network.Close(); return true; });

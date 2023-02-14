@@ -23,8 +23,15 @@ void PacketHandler::handleChatPacket(ConnectedUser* user, Packet& packet)
             user->GetNetwork()->BroadcastPacket(pck, user);
             break;
         case CHAT_LOCAL:
-            if (user->GetPlayer()) // user does not have to be playing to use chat, but for game chat he should
-                user->GetPlayer()->GetGame()->BroadcastPacket(pck, user);
+            if (Player const* player = user->GetPlayer()) // user does not have to be playing to use chat, but for game chat he should
+            {
+                Game const* game = player->GetGame();
+                Player const* opponent = game->GetOpponent(player);
+                if (opponent && !opponent->GetUser()->IsUserBlocked(user->GetDatabaseId()))
+                    game->BroadcastPacket(pck);
+                else
+                    user->SendPacket(pck);
+            }
             break;
         case CHAT_WHISPER:
         {
