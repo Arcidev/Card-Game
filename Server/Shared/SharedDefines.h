@@ -3,6 +3,7 @@
 #ifdef NDEBUG
 #define DEBUG_LOG [] (...) { }
 #else
+#include <cstdio>
 #define DEBUG_LOG printf
 #endif
 
