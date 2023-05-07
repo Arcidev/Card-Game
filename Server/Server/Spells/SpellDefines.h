@@ -10,13 +10,14 @@ enum SpellAuraEffects : uint8_t
     MAX_SPELL_AURA_VALUE
 };
 
-enum SpellAttributes : uint8_t
+enum SpellAttributes : uint32_t
 {
     SPELL_ATTRIBUTE_TARGET_MELEE        = 0x01,
     SPELL_ATTRIBUTE_TARGET_EXCLUDE_SELF = 0x02,
     SPELL_ATTRIBUTE_APPLY_DEFENSE       = 0x04,
     SPELL_ATTRIBUTE_AURA_EXCLUSIVE      = 0x08,
-    SPELL_ATTRIBUTE_CONTINUE_MOVE       = 0x10
+    SPELL_ATTRIBUTE_CONTINUE_MOVE       = 0x10,
+    SPELL_ATTRIBUTE_AURA_UNREMOVABLE    = 0x20
 };
 
 enum class SpellCastResult : uint8_t

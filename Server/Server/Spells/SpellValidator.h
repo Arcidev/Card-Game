@@ -27,6 +27,7 @@ class SpellValidator
 
         // Aura validators
         static void validateSpellAuraMorph(SpellEffectValues const& values);
+        static void writeAuraAttributeValidationErrorMessage(uint32_t spellId, uint32_t spellEffectId, uint32_t attribute, std::string_view attrName);
 
     public:
         static void ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const& values);

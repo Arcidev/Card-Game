@@ -55,10 +55,10 @@ int8_t PlayableCard::GetStatModifierValue(CardStats stat) const
     int8_t modifier = 0;
     for (auto const& aura : m_auras)
         if (aura.second.GetDuration() && aura.second.GetId() == SPELL_AURA_EFFECT_MODIFY_STAT)
-            if (aura.second.GetValue1() == (uint8_t)stat)
+            if (aura.second.GetValue1() & (uint8_t)stat)
                 modifier += (int8_t)aura.second.GetValue2();
 
-    if ((stat == CardStats::CARD_STAT_DEFENSE) && m_isDefending)
+    if ((stat & CardStats::CARD_STAT_DEFENSE) && m_isDefending)
         modifier += (uint8_t)SystemStats::DEFENSE_BONUS_ON_DEFEND;
 
     return modifier;
@@ -89,7 +89,7 @@ void PlayableCard::RemoveAurasByType(uint8_t auraTypeId, size_t toRemove)
     std::list<uint32_t> removedSpellIds;
     for (SpellAuraEffectsMap::iterator iter = m_auras.begin(); iter != m_auras.end();)
     {
-        if (iter->second.GetId() != auraTypeId)
+        if (iter->second.GetId() != auraTypeId || iter->second.GetSpellAttributes() & SPELL_ATTRIBUTE_AURA_UNREMOVABLE)
         {
             ++iter;
             continue;

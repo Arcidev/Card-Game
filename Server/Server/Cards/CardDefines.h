@@ -31,3 +31,8 @@ enum class CardStats : uint8_t
     CARD_STAT_SPELL_HEAL = 0x20,
     CARD_STAT_SPELL_HEAL_TAKEN = 0x40
 };
+
+inline uint8_t operator & (CardStats a, CardStats b)
+{
+    return static_cast<uint8_t>(a) | static_cast<uint8_t>(b);
+}

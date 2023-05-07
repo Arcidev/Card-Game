@@ -64,10 +64,13 @@ void SpellValidator::validateTargetUnitSelf(uint32_t spellEffectId, SpellEffectV
 
 void SpellValidator::defaultEffectValidator(uint32_t spellEffectId, SpellEffectValues const& values)
 {
-    if (values.SpellAttributes & SPELL_ATTRIBUTE_AURA_EXCLUSIVE && spellEffectId != SPELL_EFFECT_APPLY_AURA)
+    if (spellEffectId != SPELL_EFFECT_APPLY_AURA)
     {
-        std::cerr << "SpellId: " << values.SpellId << ", SpellEffectId: " << spellEffectId << " - Attribute " << SPELL_ATTRIBUTE_AURA_EXCLUSIVE
-            << " (SPELL_ATTRIBUTE_AURA_EXCLUSIVE) is only valid for SPELL_EFFECT_APPLY_AURA" << std::endl;
+        if (values.SpellAttributes & SPELL_ATTRIBUTE_AURA_EXCLUSIVE)
+            writeAuraAttributeValidationErrorMessage(values.SpellId, spellEffectId, SPELL_ATTRIBUTE_AURA_EXCLUSIVE, "SPELL_ATTRIBUTE_AURA_EXCLUSIVE");
+        
+        if (values.SpellAttributes & SPELL_ATTRIBUTE_AURA_UNREMOVABLE)
+            writeAuraAttributeValidationErrorMessage(values.SpellId, spellEffectId, SPELL_ATTRIBUTE_AURA_UNREMOVABLE, "SPELL_ATTRIBUTE_AURA_UNREMOVABLE");
     }
 }
 
@@ -90,6 +93,12 @@ void SpellValidator::validateSpellAuraMorph(SpellEffectValues const& values)
         std::cerr << "SpellId: " << values.SpellId << ", SpellAuraEffectId: " << SPELL_AURA_EFFECT_MORPH << " - Attribute " << SPELL_ATTRIBUTE_AURA_EXCLUSIVE
             << " (SPELL_ATTRIBUTE_AURA_EXCLUSIVE) is not required on aura type SPELL_AURA_EFFECT_MORPH as it is always exclusive" << std::endl;
     }
+}
+
+void SpellValidator::writeAuraAttributeValidationErrorMessage(uint32_t spellId, uint32_t spellEffectId, uint32_t attribute, std::string_view attrName)
+{
+    std::cerr << "SpellId: " << spellId << ", SpellEffectId: " << spellEffectId << " - Attribute "
+        << attribute << " (" << attrName << ") is only valid for SPELL_EFFECT_APPLY_AURA" << std::endl;
 }
 
 void SpellValidator::ValidateSpellEffect(uint32_t spellEffectId, SpellEffectValues const& values)

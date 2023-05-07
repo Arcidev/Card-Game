@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 
-class ConnectedUser;
 class PlayableCard;
 class Player;
 class Packet;
