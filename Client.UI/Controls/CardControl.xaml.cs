@@ -15,7 +15,7 @@ namespace Client.UI.Controls
 
         private void Grid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (!(DataContext is CardViewModel vm))
+            if (DataContext is not CardViewModel vm)
                 return;
 
             vm.OnClickCmd?.Execute(vm);

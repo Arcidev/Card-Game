@@ -18,7 +18,7 @@ namespace Client.Logic.Data.Spells
 
         public IEnumerable<UInt64> GetPossibleTargets(Player player, Player opponent)
         {
-            return targetSelector?.Invoke(player, opponent, SpellAttributes) ?? new List<UInt64>();
+            return targetSelector?.Invoke(player, opponent, SpellAttributes) ?? [];
         }
     }
 }

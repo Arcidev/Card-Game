@@ -8,12 +8,12 @@ namespace Client.Logic.Data.Spells
     public class SpellTargetSelector
     {
         private static readonly Func<Player, Player, SpellAttributes, IEnumerable<UInt64>>[] targetSelectors =
-        {
+        [
             HandleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
             HandleTargetUnitFriend,         // TARGET_UNIT_TARGET_FRIEND
             HandleTargetUnitTargetEnemy,    // TARGET_UNIT_CLEAVE_ENEMY same as TARGET_UNIT_TARGET_ENEMY
             HandleTargetUnitSelf            // TARGET_UNIT_SELF
-        };
+        ];
 
         public static Func<Player, Player, SpellAttributes, IEnumerable<UInt64>> GetTargetSelector(byte target)
         {
@@ -29,7 +29,7 @@ namespace Client.Logic.Data.Spells
                 return enemy.CardDeck.Where(x => x != null).Select(x => x.Guid);
 
             var card = enemy.CardDeck.ElementAtOrDefault(player.ActiveCardPosition);
-            return card != null ? new List<UInt64>() { card.Guid } : new List<UInt64>();
+            return card != null ? [card.Guid] : [];
         }
 
         private static IEnumerable<UInt64> HandleTargetUnitFriend(Player player, Player enemy, SpellAttributes attributes)
@@ -44,7 +44,7 @@ namespace Client.Logic.Data.Spells
         private static IEnumerable<UInt64> HandleTargetUnitSelf(Player player, Player enemy, SpellAttributes attributes)
         {
             var card = player.ActiveCard;
-            return card == null ? new List<UInt64>() : new List<UInt64>() { card.Guid };
+            return card == null ? [] : [card.Guid];
         }
     }
 }

@@ -133,7 +133,7 @@ namespace Client.Logic.Network
             packet.ReadGuidByteStreamInOrder(guid, 7, 6, 5, 4, 3, 2, 1, 0);
             var player = game.GetPlayer(packet.ReadUInt32());
 
-            player.ExpireAuras(guid, new[] { spellId });
+            player.ExpireAuras(guid, [spellId]);
         }
 
         // SMSG_SPELL_AURAS_REMOVED

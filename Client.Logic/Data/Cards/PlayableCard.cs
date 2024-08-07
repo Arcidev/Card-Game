@@ -8,7 +8,7 @@ namespace Client.Logic.Data.Cards
 {
     public abstract class PlayableCard : Card
     {
-        private readonly List<SpellData> auras;
+        private readonly List<SpellData> auras = [];
 
         /// <summary>
         /// Called when the whole card changes (f.e. with morph)
@@ -32,11 +32,9 @@ namespace Client.Logic.Data.Cards
             Name = card.Name;
             Guid = guid;
             Player = player;
-
-            auras = new List<SpellData>();
         }
 
-        private static readonly Dictionary<CreatureType, Type> derrivedClasses = new Dictionary<CreatureType, Type>()
+        private static readonly Dictionary<CreatureType, Type> derrivedClasses = new()
         {
             { CreatureType.Melee,      typeof(MeleeCard)       },
             { CreatureType.Ranged,     typeof(RangedCard)      },

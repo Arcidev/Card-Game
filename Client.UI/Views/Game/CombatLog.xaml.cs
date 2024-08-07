@@ -37,7 +37,7 @@ namespace Client.UI.Views.Game
             });
         }
 
-        private static Brush GetCombatLogColor(CombatLogType combatLogType)
+        private static SolidColorBrush GetCombatLogColor(CombatLogType combatLogType)
         {
             return combatLogType switch
             {

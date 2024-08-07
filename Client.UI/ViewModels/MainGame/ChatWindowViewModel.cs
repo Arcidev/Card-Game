@@ -20,7 +20,7 @@ namespace Client.UI.ViewModels.MainGame
         private const string unblock = "unblock";
 
         private static readonly string[] commands =
-        {
+        [
             game,
             global,
             help,
@@ -28,7 +28,7 @@ namespace Client.UI.ViewModels.MainGame
             friend,
             block,
             unblock
-        };
+        ];
 
         private readonly ChatViewModel parent;
         private readonly StringBuilder text;
@@ -105,7 +105,7 @@ namespace Client.UI.ViewModels.MainGame
                 return;
 
             if (!Message.StartsWith('/'))
-                await parent.Game.Chat.SendMessage(Message, ChatType, ChatType == ChatType.Whisper ? new[] { Name } : Array.Empty<string>());
+                await parent.Game.Chat.SendMessage(Message, ChatType, ChatType == ChatType.Whisper ? [Name] : []);
             else
                 await HandleCommand(Message[1..]);
 
@@ -120,7 +120,7 @@ namespace Client.UI.ViewModels.MainGame
                 return;
             }
 
-            int commandDelimiter = command.IndexOf(" ");
+            int commandDelimiter = command.IndexOf(' ');
             var cmd = commandDelimiter > 0 ? command[..commandDelimiter].ToLower() : command;
 
             switch (commands.FirstOrDefault(x => x.StartsWith(cmd)))
@@ -181,7 +181,7 @@ namespace Client.UI.ViewModels.MainGame
                 OnPropertyChanged(nameof(Text));
             }
 
-            int commandDelimiter = arg.IndexOf(" ");
+            int commandDelimiter = arg.IndexOf(' ');
             if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
             {
                 FormatSyntaxError();
@@ -191,7 +191,7 @@ namespace Client.UI.ViewModels.MainGame
             string receiverName = arg[..commandDelimiter];
             string message = arg[commandDelimiter..].Trim();
 
-            if (!message.Any())
+            if (message.Length == 0)
             {
                 FormatSyntaxError();
                 return;
@@ -214,7 +214,7 @@ namespace Client.UI.ViewModels.MainGame
                 OnPropertyChanged(nameof(Text));
             }
 
-            int commandDelimiter = arg.IndexOf(" ");
+            int commandDelimiter = arg.IndexOf(' ');
             if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
             {
                 FormatSyntaxError();

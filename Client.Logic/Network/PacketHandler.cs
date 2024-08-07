@@ -6,7 +6,7 @@ namespace Client.Logic.Network
     public static partial class PacketHandler
     {
         private static readonly Action<Packet, Game>[] packetHandlers = 
-        {
+        [
             null,                       // SMSG_INIT_RESPONSE
             HandleGameInfo,             // SMSG_GAME_INFO
             HandleAvailableCards,       // SMSG_AVAILABLE_CARDS
@@ -38,7 +38,7 @@ namespace Client.Logic.Network
             HandleUserList,             // SMSG_USER_LIST
             HandleFriendStatus,         // SMSG_FRIEND_STATUS
             HandleUserRelation          // SMSG_USER_RELATION
-        };
+        ];
 
         // Returns function to handle packet
         internal static Action<Packet, Game> GetPacketHandler(UInt16 packetType)

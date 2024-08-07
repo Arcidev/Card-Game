@@ -27,8 +27,8 @@ namespace Client.Logic
         private readonly ClientNetwork network;
         private readonly AesEncryptor aes;
         private readonly Task networkConnectionTask;
-        private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
-        private readonly Dictionary<UInt32, Achievement> achievements = new Dictionary<uint, Achievement>();
+        private readonly CancellationTokenSource tokenSource = new();
+        private readonly Dictionary<UInt32, Achievement> achievements = [];
 
         private List<(string name, bool isOnline)> friends;
         private List<string> friendRequests;
@@ -43,9 +43,9 @@ namespace Client.Logic
         /// List of available servers
         /// </summary>
         public static string[] Servers { get; } =
-        {
+        [
             "localhost"
-        };
+        ];
 
         public Player Player { get; set; }
 

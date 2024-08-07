@@ -8,8 +8,8 @@ namespace Client.Logic
 {
     public class Player
     {
-        private readonly PlayableCard[] cardDeck;
-        private readonly Dictionary<UInt64, PlayableCard> cards;
+        private readonly PlayableCard[] cardDeck = new PlayableCard[4];
+        private readonly Dictionary<UInt64, PlayableCard> cards = [];
 
         public event Action CardDeckChanged;
 
@@ -30,9 +30,6 @@ namespace Client.Logic
             Id = id;
             Name = name;
             Game = game;
-
-            cards = new Dictionary<UInt64, PlayableCard>();
-            cardDeck = new PlayableCard[4];
         }
 
         internal void ModifyCardStat(UInt64 cardGuid, CardStat cardStat, sbyte value)
@@ -172,8 +169,7 @@ namespace Client.Logic
 
         internal void SetCard(PlayableCard card, int index)
         {
-            if (index >= cardDeck.Length)
-                throw new ArgumentOutOfRangeException(nameof(index));
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, cardDeck.Length);
 
             cardDeck[index] = card ?? throw new ArgumentNullException(nameof(card));
             card.Player = this;

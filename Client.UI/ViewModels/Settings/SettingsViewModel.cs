@@ -68,7 +68,7 @@ namespace Client.UI.ViewModels.Settings
                 App.SetLanguage(SelectedLanguage.CultureInfo);
         }
 
-        private static IEnumerable<CultureInfo> GetAvailableCultures()
+        private static List<CultureInfo> GetAvailableCultures()
         {
             var result = new List<CultureInfo>();
             var rm = new ResourceManager(typeof(Texts));

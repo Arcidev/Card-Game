@@ -33,7 +33,7 @@ namespace Client.UI.ViewModels.MainGame
         public ChatViewModel(Game game)
         {
             Game = game;
-            ChatWindows = new () { new (Texts.GlobalChat, ChatType.Global, this) { Picture = "/Assets/Images/GeneralChat.png" } };
+            ChatWindows = [new (Texts.GlobalChat, ChatType.Global, this) { Picture = "/Assets/Images/GeneralChat.png" }];
 
             ActiveChat = ChatWindows.First();
 
