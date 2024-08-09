@@ -141,6 +141,7 @@ void PlayableCard::HandleTickOnAuras()
         }
 
         iter->second.Remove(); 
+        m_owner->SendAuraExpired(m_guid, iter->second);
         iter = m_auras.erase(iter);
     }
 }

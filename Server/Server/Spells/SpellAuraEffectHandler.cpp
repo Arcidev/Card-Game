@@ -7,20 +7,15 @@
 
 SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
 {
-    { defaultApplyHandler,      defaultRemoveHandler,       handleDamageOnTick  },  // SPELL_AURA_EFFECT_DAMAGE
+    { defaultApplyHandler,      nullptr,                    handleDamageOnTick  },  // SPELL_AURA_EFFECT_DAMAGE
     { statChangedApplyHandler,  statChangedRemoveHandler,   nullptr             },  // SPELL_AURA_EFFECT_MODIFY_STAT
-    { defaultApplyHandler,      defaultRemoveHandler,       handleHealOnTick    },  // SPELL_AURA_EFFECT_HEAL
+    { defaultApplyHandler,      nullptr,                    handleHealOnTick    },  // SPELL_AURA_EFFECT_HEAL
     { morphApplyHandler,        morphRemoveHandler,         nullptr             }   // SPELL_AURA_EFFECT_MORPH
 };
 
 void SpellAuraEffectHandler::defaultApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard)
 {
     applyAuraEffect(effectValues, targetCard, caster->GetCurrentCard());
-}
-
-void SpellAuraEffectHandler::defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card)
-{
-    card->GetOwner()->SendAuraExpired(card->GetGuid(), aura);
 }
 
 void SpellAuraEffectHandler::handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes, PlayableCard const* caster)

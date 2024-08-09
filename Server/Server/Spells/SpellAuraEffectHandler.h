@@ -23,7 +23,6 @@ class SpellAuraEffectHandler
         static SpellAuraEffectFuncWrapper const m_spellAuraEffectHandlers[];
 
         static void defaultApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard);
-        static void defaultRemoveHandler(SpellAuraEffect const& aura, PlayableCard* card);
 
         // SPELL_AURA_EFFECT_DAMAGE
         static void handleDamageOnTick(PlayableCard* card, uint8_t damage, uint32_t spellAttributes, PlayableCard const* caster);
