@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Client.Logic.Data.Spells
 {
-    public class SpellTargetSelector
+    public static class SpellTargetSelector
     {
         private static readonly Func<Player, Player, SpellAttributes, IEnumerable<UInt64>>[] targetSelectors =
         [

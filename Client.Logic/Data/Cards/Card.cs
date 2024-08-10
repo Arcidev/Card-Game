@@ -4,7 +4,7 @@ using System;
 
 namespace Client.Logic.Data.Cards
 {
-    public class Card
+    public abstract class Card
     {
         private byte health;
         private byte mana;
@@ -110,7 +110,7 @@ namespace Client.Logic.Data.Cards
 
         public Spell Spell { get; set; }
 
-        public Card(UInt32 id, CreatureType type, byte health, byte damage, byte mana, byte defense, Spell spell)
+        protected Card(UInt32 id, CreatureType type, byte health, byte damage, byte mana, byte defense, Spell spell)
         {
             this.id = id;
             Type = type;

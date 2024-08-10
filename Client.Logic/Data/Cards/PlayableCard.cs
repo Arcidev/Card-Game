@@ -34,16 +34,15 @@ namespace Client.Logic.Data.Cards
             Player = player;
         }
 
-        private static readonly Dictionary<CreatureType, Type> derrivedClasses = new()
-        {
-            { CreatureType.Melee,      typeof(MeleeCard)       },
-            { CreatureType.Ranged,     typeof(RangedCard)      },
-            { CreatureType.Defensive,  typeof(DefensiveCard)   }
-        };
-
         public static PlayableCard Create(UInt64 guid, Card card, Player player)
         {
-            return Activator.CreateInstance(derrivedClasses[card.Type], guid, card, player) as PlayableCard;
+            return card.Type switch
+            {
+                CreatureType.Melee => new MeleeCard(guid, card, player),
+                CreatureType.Ranged => new RangedCard(guid, card, player),
+                CreatureType.Defensive => new DefensiveCard(guid, card, player),
+                _ => throw new ArgumentOutOfRangeException($"Invalid value {card.Type} for {nameof(CreatureType)}"),
+            };
         }
 
         public abstract IEnumerable<UInt64> GetPossibleTargets(IEnumerable<PlayableCard> enemyCards, int currentCardIndex);

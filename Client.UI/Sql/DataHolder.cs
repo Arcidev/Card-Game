@@ -10,10 +10,10 @@ namespace Client.UI.Sql
 {
     public class DataHolder : IDataHolder
     {
-        private Dictionary<UInt32, SelectableCard> cards;
-        private readonly Dictionary<UInt32, SpellData> spellsData = new();
-        private readonly Dictionary<UInt32, AchievementInfo> achievements = new();
-        private readonly Dictionary<UInt32, string> criteriaDescriptions = new();
+        private IReadOnlyDictionary<UInt32, SelectableCard> cards;
+        private readonly Dictionary<UInt32, SpellData> spellsData = [];
+        private readonly Dictionary<UInt32, AchievementInfo> achievements = [];
+        private readonly Dictionary<UInt32, string> criteriaDescriptions = [];
 
         public IEnumerable<SelectableCard> Cards => cards?.Values;
 
@@ -26,7 +26,7 @@ namespace Client.UI.Sql
         }
 
         // Loads data from database
-        public void LoadData(Dictionary<UInt32, SelectableCard> cards)
+        public void LoadData(IReadOnlyDictionary<UInt32, SelectableCard> cards)
         {
             using var connection = GetConnection();
             connection.Open();
@@ -59,7 +59,7 @@ namespace Client.UI.Sql
         }
 
         // Loads cards
-        private void LoadCards(SQLiteConnection connection, Dictionary<UInt32, SelectableCard> cards)
+        private void LoadCards(SQLiteConnection connection, IReadOnlyDictionary<UInt32, SelectableCard> cards)
         {
             using var cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT id, name, imagePath FROM Cards";

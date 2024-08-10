@@ -10,7 +10,7 @@ namespace Client.Logic.Data
     {
         IEnumerable<SelectableCard> Cards { get; }
 
-        void LoadData(Dictionary<UInt32, SelectableCard> cards);
+        void LoadData(IReadOnlyDictionary<UInt32, SelectableCard> cards);
 
         SelectableCard GetCard(UInt32 id);
 
