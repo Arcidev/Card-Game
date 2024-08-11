@@ -3,7 +3,7 @@
 #include "SpellDefines.h"
 #include "SpellEffect.h"
 
-SpellTargetValidatorFunc const SpellValidator::m_targetValidators[] =
+SpellValidator::SpellTargetValidatorFunc const SpellValidator::m_targetValidators[] =
 {
     validateTargetUnitTargetEnemy,  // TARGET_UNIT_TARGET_ENEMY
     validateTargetUnitTargetFriend, // TARGET_UNIT_TARGET_FRIEND
@@ -11,7 +11,7 @@ SpellTargetValidatorFunc const SpellValidator::m_targetValidators[] =
     validateTargetUnitSelf          // TARGET_UNIT_SELF
 };
 
-SpellEffectValidatorFunc const SpellValidator::m_effectValidators[] =
+SpellValidator::SpellEffectValidatorFunc const SpellValidator::m_effectValidators[] =
 {
     defaultEffectValidator,         // SPELL_EFFECT_DIRECT_DAMAGE
     defaultEffectValidator,         // SPELL_EFFECT_APPLY_AURA
@@ -21,7 +21,7 @@ SpellEffectValidatorFunc const SpellValidator::m_effectValidators[] =
     defaultEffectValidator          // SPELL_EFFECT_SWAP
 };
 
-SpellAuraValidatorFunc const SpellValidator::m_auraValidators[] =
+SpellValidator::SpellAuraValidatorFunc const SpellValidator::m_auraValidators[] =
 {
     nullptr,                // SPELL_AURA_EFFECT_DAMAGE
     nullptr,                // SPELL_AURA_EFFECT_MODIFY_STAT

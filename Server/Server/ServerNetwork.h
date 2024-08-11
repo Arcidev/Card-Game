@@ -33,7 +33,7 @@ class ServerNetwork
         ServerNetwork();
         ~ServerNetwork();
 
-        void Close() { shutdown(m_listenSocket, SD_BOTH); closesocket(m_listenSocket); }
+        void Close() const { shutdown(m_listenSocket, SD_BOTH); closesocket(m_listenSocket); }
         // accept new connections
         bool AcceptNewClient(uint32_t id, AchievementManager* achievementMgr);
         // receive incoming data

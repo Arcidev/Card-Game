@@ -264,4 +264,7 @@
   <data name="FriendRequestReceived" xml:space="preserve">
     <value>Nová žádost o přátelství od {0}</value>
   </data>
+  <data name="FriendRequestPending" xml:space="preserve">
+    <value>Již máte nevyřízenou žádost o přátelství od uživatele {0}</value>
+  </data>
 </root>

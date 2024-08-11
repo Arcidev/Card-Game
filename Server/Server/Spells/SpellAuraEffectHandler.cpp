@@ -5,7 +5,7 @@
 #include "../Player.h"
 #include "../Cards/PlayableCard.h"
 
-SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
+SpellAuraEffectHandler::SpellAuraEffectFuncWrapper const SpellAuraEffectHandler::m_spellAuraEffectHandlers[] =
 {
     { defaultApplyHandler,      nullptr,                    handleDamageOnTick  },  // SPELL_AURA_EFFECT_DAMAGE
     { statChangedApplyHandler,  statChangedRemoveHandler,   nullptr             },  // SPELL_AURA_EFFECT_MODIFY_STAT

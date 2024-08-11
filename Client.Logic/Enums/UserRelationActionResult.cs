@@ -6,6 +6,7 @@ namespace Client.Logic.Enums
         Success = 0,
         UserNotFound,
         MissingFriendRequest,
+        PendingFriendRequest,
         UserBlocked,
         SenderBlocked
     }

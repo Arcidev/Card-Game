@@ -10,16 +10,16 @@ typedef void(*SpellAuraEffectApplyHandlerFunc)(SpellEffectValues const& aura, Pl
 typedef void(*SpellAuraEffectRemoveHandlerFunc)(SpellAuraEffect const& aura, PlayableCard* card);
 typedef void(*SpellAuraEffectTickHandlerFunc)(PlayableCard* card, uint8_t value, uint32_t spellAttributes, PlayableCard const* caster);
 
-struct SpellAuraEffectFuncWrapper
-{
-    SpellAuraEffectApplyHandlerFunc Apply;
-    SpellAuraEffectRemoveHandlerFunc Remove;
-    SpellAuraEffectTickHandlerFunc Tick;
-};
-
 class SpellAuraEffectHandler
 {
     private:
+        struct SpellAuraEffectFuncWrapper
+        {
+            SpellAuraEffectApplyHandlerFunc Apply;
+            SpellAuraEffectRemoveHandlerFunc Remove;
+            SpellAuraEffectTickHandlerFunc Tick;
+        };
+
         static SpellAuraEffectFuncWrapper const m_spellAuraEffectHandlers[];
 
         static void defaultApplyHandler(SpellEffectValues const& effectValues, Player* caster, PlayableCard* targetCard);

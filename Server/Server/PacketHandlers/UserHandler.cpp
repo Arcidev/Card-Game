@@ -38,6 +38,7 @@ enum UserRelationActionResult
     USER_RELATION_ACTION_RESULT_SUCCESS = 0,
     USER_RELATION_ACTION_RESULT_USER_NOT_FOUND,
     USER_RELATION_ACTION_RESULT_MISSING_FRIEND_REQUEST,
+    USER_RELATION_ACTION_RESULT_PENDING_FRIEND_REQUEST,
     USER_RELATION_ACTION_RESULT_USER_BLOCKED,
     USER_RELATION_ACTION_RESULT_SENDER_BLOCKED
 };
@@ -196,6 +197,8 @@ void PacketHandler::handleUserRelationPacket(ConnectedUser* cUser, Packet& packe
                     result = USER_RELATION_ACTION_RESULT_SENDER_BLOCKED;
                 else if (dbHandler.IsUserBlocked(cUser->GetDatabaseId(), id))
                     result = USER_RELATION_ACTION_RESULT_USER_BLOCKED;
+                else if (dbHandler.HasFriendRequest(id, cUser->GetDatabaseId()))
+                    result = USER_RELATION_ACTION_RESULT_PENDING_FRIEND_REQUEST;
                 else
                 {
                     dbHandler.SetFriendRequest(cUser->GetDatabaseId(), id);

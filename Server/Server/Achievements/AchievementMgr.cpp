@@ -36,7 +36,7 @@ void AchievementManager::updateUserAchievementProgress()
         }
 
         m_locker.lock();
-        auto mapCopy = std::map<std::tuple<uint32_t, uint32_t>, uint32_t>(m_userAchievementProgress);
+        auto mapCopy = UserAchievementProgress(m_userAchievementProgress);
         m_userAchievementProgress.clear();
         m_locker.unlock();
 

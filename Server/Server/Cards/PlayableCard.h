@@ -4,13 +4,14 @@
 #include "Card.h"
 #include "../Spells/SpellAuraEffect.h"
 
-typedef std::map<std::pair<uint32_t, uint32_t>, SpellAuraEffect> SpellAuraEffectsMap;
 
 class Player;
 
 class PlayableCard : public Card
 {
     private:
+        typedef std::map<std::pair<uint32_t, uint32_t>, SpellAuraEffect> SpellAuraEffectsMap;
+
         uint64_t m_guid;
         bool m_isDefending;
         Player* m_owner;

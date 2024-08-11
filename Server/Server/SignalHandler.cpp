@@ -2,7 +2,7 @@
 #include "SignalHandler.h"
 #include "../Shared/SharedDefines.h"
 
-SignalHandlersMap SignalHandler::m_handlers;
+SignalHandler::SignalHandlersMap SignalHandler::m_handlers;
 
 void SignalHandler::RegisterMethod(int signal, std::function<bool()> func)
 {

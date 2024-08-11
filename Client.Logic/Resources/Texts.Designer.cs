@@ -268,6 +268,15 @@ namespace Client.Logic.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You already have a pending friend request from {0}.
+        /// </summary>
+        public static string FriendRequestPending {
+            get {
+                return ResourceManager.GetString("FriendRequestPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New friend request from {0}.
         /// </summary>
         public static string FriendRequestReceived {

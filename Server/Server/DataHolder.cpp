@@ -4,7 +4,7 @@
 #include "Spells/SpellValidator.h"
 
 CardsDataMap DataHolder::m_cards;
-SpellsDataMap DataHolder::m_spells;
+DataHolder::SpellsDataMap DataHolder::m_spells;
 
 // Callback for selecting spells
 void DataHolder::loadSpellsCallback(PGresult const* result)

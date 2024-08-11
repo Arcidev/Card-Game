@@ -4,15 +4,15 @@
 
 class ConnectedUser;
 
-typedef void(*PacketHandlerFunc)(ConnectedUser* user, Packet& packet);
-typedef bool(*HandlerValidatorFunc)(ConnectedUser const* user);
-
 struct PacketHandlerFuncWrapper
 {
+    typedef void(*PacketHandlerFunc)(ConnectedUser* user, Packet& packet);
+    typedef bool(*HandlerValidatorFunc)(ConnectedUser const* user);
+
     PacketHandlerFunc Handler;
     HandlerValidatorFunc HandlerValidator;
 
-    void Invoke(ConnectedUser* user, Packet& packet)
+    void Invoke(ConnectedUser* user, Packet& packet) const
     {
         if (Handler != nullptr && HandlerValidator != nullptr && HandlerValidator(user))
             Handler(user, packet);

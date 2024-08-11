@@ -6,11 +6,12 @@
 #include "../Database/DatabaseInstance.h"
 
 typedef std::map<uint32_t, Card> CardsDataMap;
-typedef std::map<uint32_t, Spell> SpellsDataMap;
 
 class DataHolder
 {
     private:
+        typedef std::map<uint32_t, Spell> SpellsDataMap;
+
         static SpellsDataMap m_spells;
         static CardsDataMap m_cards;
         

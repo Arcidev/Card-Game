@@ -4,13 +4,13 @@
 
 struct SpellEffectValues;
 
-typedef void(*SpellTargetValidatorFunc)(uint32_t spellEffectId, SpellEffectValues const& values);
-typedef void(*SpellEffectValidatorFunc)(uint32_t spellEffectId, SpellEffectValues const& values);
-typedef void(*SpellAuraValidatorFunc)(SpellEffectValues const& values);
-
 class SpellValidator
 {
     private:
+        typedef void(*SpellTargetValidatorFunc)(uint32_t spellEffectId, SpellEffectValues const& values);
+        typedef void(*SpellEffectValidatorFunc)(uint32_t spellEffectId, SpellEffectValues const& values);
+        typedef void(*SpellAuraValidatorFunc)(SpellEffectValues const& values);
+
         static SpellTargetValidatorFunc const m_targetValidators[];
         static SpellEffectValidatorFunc const m_effectValidators[];
         static SpellAuraValidatorFunc const m_auraValidators[];

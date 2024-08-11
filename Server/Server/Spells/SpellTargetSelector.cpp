@@ -3,7 +3,7 @@
 #include "../Cards/PlayableCard.h"
 #include "../Player.h"
 
-SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
+SpellTargetSelector::SpellTargetSelectorFunc const SpellTargetSelector::m_spellTargetSelectors[] =
 {
     handleTargetUnitTargetEnemy,    // TARGET_UNIT_TARGET_ENEMY
     handleTargetUnitTargetFriend,   // TARGET_UNIT_TARGET_FRIEND

@@ -244,4 +244,7 @@
   <data name="FriendRequestReceived" xml:space="preserve">
     <value>New friend request from {0}</value>
   </data>
+  <data name="FriendRequestPending" xml:space="preserve">
+    <value>You already have a pending friend request from {0}</value>
+  </data>
 </root>

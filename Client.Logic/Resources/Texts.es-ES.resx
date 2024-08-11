@@ -264,4 +264,7 @@
   <data name="FriendRequestReceived" xml:space="preserve">
     <value>Nueva solicitud de amistad de {0}</value>
   </data>
+  <data name="FriendRequestPending" xml:space="preserve">
+    <value>Ya tienes una solicitud de amistad pendiente de {0}</value>
+  </data>
 </root>

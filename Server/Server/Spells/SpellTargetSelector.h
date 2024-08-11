@@ -4,11 +4,12 @@
 
 class PlayableCard;
 class Player;
-typedef std::list<PlayableCard*>(*SpellTargetSelectorFunc)(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
 
 class SpellTargetSelector
 {
     private:
+        typedef std::list<PlayableCard*>(*SpellTargetSelectorFunc)(Player const* attacker, Player const* victim, uint64_t targetGuid, uint32_t spellAttributes);
+
         static SpellTargetSelectorFunc const m_spellTargetSelectors[];
 
         // target handlers

@@ -139,6 +139,9 @@ namespace Client.Logic.Network
                 case UserRelationActionResult.MissingFriendRequest:
                     game.OnInformationReceived(string.Format(Texts.FriendRequestMissing, name));
                     break;
+                case UserRelationActionResult.PendingFriendRequest:
+                    game.OnInformationReceived(string.Format(Texts.FriendRequestPending, name));
+                    break;
                 case UserRelationActionResult.UserBlocked:
                     game.OnInformationReceived(string.Format(Texts.UserBlocked, name));
                     break;

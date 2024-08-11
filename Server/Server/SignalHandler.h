@@ -2,11 +2,11 @@
 #include <functional>
 #include <map>
 
-typedef std::map<int, std::function<bool()>> SignalHandlersMap;
-
 class SignalHandler
 {
     private:
+        typedef std::map<int, std::function<bool()>> SignalHandlersMap;
+
         static SignalHandlersMap m_handlers;
         static void signalControlHandler(int signal);
 
