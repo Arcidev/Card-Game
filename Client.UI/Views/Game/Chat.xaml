@@ -39,7 +39,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding Message}" />
+                <TextBox Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" KeyDown="TextBox_KeyDown" />
                 <Button Grid.Column="1" Content="{x:Static resx:Texts.Send}" Command="{Binding HandleChatCommandCmd}" Width="100" />
             </Grid>
         </Grid>

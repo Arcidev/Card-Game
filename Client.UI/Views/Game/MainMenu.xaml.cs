@@ -12,6 +12,7 @@ namespace Client.UI.Views.Game
         public MainMenu()
         {
             InitializeComponent();
+            Loaded += (_, _) => NavigationService.RemoveBackEntry();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) => NavigationService.GoBack();

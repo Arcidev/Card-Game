@@ -58,12 +58,15 @@ namespace Client.UI.Views.Game
 
         private void GameFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            NavigationService.RemoveBackEntry();
             if (DataContext is not GameViewModel vm)
                 return;
 
-            vm.ChatViewModel.AddGameChat();
-            vm.OnGameEnabledChanged();
+            if (e.Content.GetType() == typeof(SelectCards) || e.Content.GetType() == typeof(PlayingGame))
+            {
+                NavigationService.RemoveBackEntry();
+                vm.ChatViewModel.AddGameChat();
+                vm.OnGameEnabledChanged();
+            }
         }
 
         private void Frame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e) => UpdateFrameDataContext(sender);

@@ -18,6 +18,7 @@ namespace Client.UI.ViewModels.MainGame
         private const string whisper = "whisper";
         private const string block = "block";
         private const string unblock = "unblock";
+        private const string clear = "clear";
 
         private static readonly string[] commands =
         [
@@ -27,7 +28,8 @@ namespace Client.UI.ViewModels.MainGame
             whisper,
             friend,
             block,
-            unblock
+            unblock,
+            clear
         ];
 
         private readonly ChatViewModel parent;
@@ -151,6 +153,10 @@ namespace Client.UI.ViewModels.MainGame
                 case unblock:
                     if (commandDelimiter > 0)
                         await HandleBlockCommand(command[commandDelimiter..].Trim(), false);
+                    break;
+                case clear:
+                    text.Clear();
+                    OnPropertyChanged(nameof(Text));
                     break;
                 default:
                     HandleInvalidCommand();
