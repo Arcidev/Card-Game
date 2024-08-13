@@ -2,8 +2,12 @@
 
 namespace Client.UI.ViewModels.MainGame
 {
-    public record ChatMessageViewModel(string Author, string Message, ChatMessageType Type =  ChatMessageType.Message)
+    public record ChatMessageViewModel(string Author, string Message, ChatMessageType Type)
     {
-        public bool ShowAuthor => Type == ChatMessageType.Message;
+        public string Text => Type switch
+        {
+            ChatMessageType.Message => $"{Author}> {Message}",
+            _ => Message,
+        };
     }
 }

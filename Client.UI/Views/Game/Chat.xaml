@@ -37,22 +37,17 @@
             <ItemsControl ItemsSource="{Binding Messages}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
+                        <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Type}" Value="{x:Static enums:ChatMessageType.System}">
                                             <Setter Property="TextElement.Foreground" Value="OrangeRed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </StackPanel.Style>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding ShowAuthor, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock Text="{Binding Author, Mode=OneWay}" />
-                                <TextBlock Text=">&#160;" />
-                            </StackPanel>
-                            <TextBlock Text="{Binding Message, Mode=OneWay}" />
-                        </StackPanel>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

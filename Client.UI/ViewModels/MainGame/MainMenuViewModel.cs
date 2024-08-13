@@ -31,7 +31,7 @@ namespace Client.UI.ViewModels.MainGame
                 }
 
                 usersWindow = new UserListWindow();
-                usersWindow.Closed += (obj, args) =>
+                usersWindow.Closed += (_, _) =>
                 {
                     (usersWindow.DataContext as IDisposable)?.Dispose();
                     usersWindow = null;

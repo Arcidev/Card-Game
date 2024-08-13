@@ -15,7 +15,11 @@ namespace Client.UI.Views.User
         {
             InitializeComponent();
 
-            Loaded += (obj, args) => App.SetGame(null);
+            Loaded += (_, _) =>
+            {
+                App.SetGame(null);
+                NavigationService.RemoveBackEntry();
+            };
         }
 
         private async void LoginBtn_Click(object sender, System.Windows.RoutedEventArgs e)

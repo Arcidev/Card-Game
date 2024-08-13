@@ -16,7 +16,7 @@ namespace Client.UI.Views.User
         {
             InitializeComponent();
 
-            Loaded += (obj, args) => App.SetGame(null);
+            Loaded += (_, _) => App.SetGame(null);
         }
 
         private async void CreateAccountBtn_Click(object sender, System.Windows.RoutedEventArgs e)

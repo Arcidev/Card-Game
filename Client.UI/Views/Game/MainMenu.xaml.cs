@@ -1,6 +1,9 @@
-﻿using Client.UI.Views.Settings;
+﻿using Client.UI.Utilities;
+using Client.UI.Views.Settings;
+using Client.UI.Views.User;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace Client.UI.Views.Game
 {
@@ -15,7 +18,10 @@ namespace Client.UI.Views.Game
             Loaded += (_, _) => NavigationService.RemoveBackEntry();
         }
 
-        private void LogoutButton_Click(object sender, RoutedEventArgs e) => NavigationService.GoBack();
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.FindParent<GamePage>()?.NavigationService.Navigate(new Login());
+        }
 
         private void ChangePassword_Click(object sender, RoutedEventArgs e)
         {

@@ -14,7 +14,7 @@ namespace Client.UI.Views.User
         public UserListWindow()
         {
             InitializeComponent();
-            Loaded += (obj, args) =>
+            Loaded += (_, _) =>
             {
                 if (DataContext is not UserListViewModel vm)
                     return;

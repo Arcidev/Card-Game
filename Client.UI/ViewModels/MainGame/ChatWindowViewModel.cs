@@ -1,6 +1,7 @@
 ﻿using Arci.Networking.Data;
 using Client.Logic.Enums;
 using Client.UI.Controls;
+using Client.UI.Enums;
 using Client.UI.Resources;
 using System;
 using System.Collections.ObjectModel;
@@ -99,7 +100,7 @@ namespace Client.UI.ViewModels.MainGame
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Messages.Add(new ChatMessageViewModel(name, msg));
+                Messages.Add(new ChatMessageViewModel(name, msg, ChatMessageType.Message));
             });
         }
 
@@ -177,7 +178,7 @@ namespace Client.UI.ViewModels.MainGame
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Messages.Add(new ChatMessageViewModel(string.Empty, commandsStr.ToString(), Enums.ChatMessageType.System));
+                Messages.Add(new ChatMessageViewModel(string.Empty, commandsStr.ToString(), ChatMessageType.System));
             });
         }
 
@@ -185,7 +186,7 @@ namespace Client.UI.ViewModels.MainGame
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Messages.Add(new ChatMessageViewModel(string.Empty, Texts.InvalidCommand, Enums.ChatMessageType.System));
+                Messages.Add(new ChatMessageViewModel(string.Empty, Texts.InvalidCommand, ChatMessageType.System));
             });
         }
 
@@ -195,7 +196,7 @@ namespace Client.UI.ViewModels.MainGame
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{whisper} [name] [message]"), Enums.ChatMessageType.System));
+                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{whisper} [name] [message]"), ChatMessageType.System));
                 });
             }
 
@@ -230,7 +231,7 @@ namespace Client.UI.ViewModels.MainGame
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{friend} [{addFriend}/{acceptFriend}/{denyFriend}/{removeFriend}] [name]"), Enums.ChatMessageType.System));
+                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{friend} [{addFriend}/{acceptFriend}/{denyFriend}/{removeFriend}] [name]"), ChatMessageType.System));
                 });
             }
 
