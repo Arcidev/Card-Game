@@ -12,7 +12,7 @@
                 <RowDefinition Height="70" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid >
+            <Grid>
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Style.Triggers>

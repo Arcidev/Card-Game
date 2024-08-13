@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resx="clr-namespace:Client.UI.Resources"
+        xmlns:enums="clr-namespace:Client.UI.Enums"
         xmlns:viewmodels="clr-namespace:Client.UI.ViewModels.MainGame"
         mc:Ignorable="d"
         Title="{x:Static resx:Texts.Chat}"
@@ -33,7 +34,28 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" />
+            <ItemsControl ItemsSource="{Binding Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static enums:ChatMessageType.System}">
+                                            <Setter Property="TextElement.Foreground" Value="OrangeRed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding ShowAuthor, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Author, Mode=OneWay}" />
+                                <TextBlock Text=">&#160;" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding Message, Mode=OneWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

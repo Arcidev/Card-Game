@@ -3,9 +3,11 @@ using Client.Logic.Enums;
 using Client.UI.Controls;
 using Client.UI.Resources;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -33,7 +35,6 @@ namespace Client.UI.ViewModels.MainGame
         ];
 
         private readonly ChatViewModel parent;
-        private readonly StringBuilder text;
         private string message;
         private string picture;
         private bool pendingMessages;
@@ -44,7 +45,7 @@ namespace Client.UI.ViewModels.MainGame
 
         public AsyncCommandHandler HandleChatCommandCmd { get; }
 
-        public string Text => text.ToString();
+        public ObservableCollection<ChatMessageViewModel> Messages { get; } = [];
 
         public bool PendingMessages
         {
@@ -91,14 +92,15 @@ namespace Client.UI.ViewModels.MainGame
             ChatType = chatType;
             this.parent = parent;
 
-            text = new StringBuilder();
             HandleChatCommandCmd = new (HandleChatCommand);
         }
 
         public void Write(string name, string msg)
         {
-            text.Append(name).Append("> ").AppendLine(msg);
-            OnPropertyChanged(nameof(Text));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Messages.Add(new ChatMessageViewModel(name, msg));
+            });
         }
 
         private async Task HandleChatCommand()
@@ -155,8 +157,7 @@ namespace Client.UI.ViewModels.MainGame
                         await HandleBlockCommand(command[commandDelimiter..].Trim(), false);
                     break;
                 case clear:
-                    text.Clear();
-                    OnPropertyChanged(nameof(Text));
+                    Messages.Clear();
                     break;
                 default:
                     HandleInvalidCommand();
@@ -166,25 +167,36 @@ namespace Client.UI.ViewModels.MainGame
 
         private void ListCommands()
         {
-            text.Append(Texts.PossibleCommands).AppendLine(":");
+            var commandsStr = new StringBuilder();
+            commandsStr.Append(Texts.PossibleCommands).Append(':');
             foreach (var command in commands)
-                text.AppendLine(command);
+            {
+                commandsStr.AppendLine();
+                commandsStr.Append(command);
+            }
 
-            OnPropertyChanged(nameof(Text));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Messages.Add(new ChatMessageViewModel(string.Empty, commandsStr.ToString(), Enums.ChatMessageType.System));
+            });
         }
 
         private void HandleInvalidCommand()
         {
-            text.AppendLine(Texts.InvalidCommand);
-            OnPropertyChanged(nameof(Text));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Messages.Add(new ChatMessageViewModel(string.Empty, Texts.InvalidCommand, Enums.ChatMessageType.System));
+            });
         }
 
         private async Task HandleWhisperCommand(string arg)
         {
             void FormatSyntaxError()
             {
-                text.AppendLine(string.Format(Texts.InvalidSyntax, $"/{whisper} [name] [message]"));
-                OnPropertyChanged(nameof(Text));
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{whisper} [name] [message]"), Enums.ChatMessageType.System));
+                });
             }
 
             int commandDelimiter = arg.IndexOf(' ');
@@ -216,8 +228,10 @@ namespace Client.UI.ViewModels.MainGame
 
             void FormatSyntaxError()
             {
-                text.AppendLine(string.Format(Texts.InvalidSyntax, $"/{friend} [{addFriend}/{acceptFriend}/{denyFriend}/{removeFriend}] [name]"));
-                OnPropertyChanged(nameof(Text));
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Messages.Add(new ChatMessageViewModel(string.Empty, string.Format(Texts.InvalidSyntax, $"/{friend} [{addFriend}/{acceptFriend}/{denyFriend}/{removeFriend}] [name]"), Enums.ChatMessageType.System));
+                });
             }
 
             int commandDelimiter = arg.IndexOf(' ');
