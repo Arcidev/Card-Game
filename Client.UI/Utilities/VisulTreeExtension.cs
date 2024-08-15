@@ -7,14 +7,10 @@ namespace Client.UI.Utilities
     {
         public static T FindParent<T>(this DependencyObject obj) where T : DependencyObject
         {
-            if (obj == null)
-                return null;
+            while (obj != null && obj is not T)
+                obj = VisualTreeHelper.GetParent(obj);
 
-            obj = VisualTreeHelper.GetParent(obj);
-            if (obj is T)
-                return obj as T;
-
-            return FindParent<T>(obj);
+            return obj as T;
         }
     }
 }
