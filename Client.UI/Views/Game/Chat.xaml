@@ -34,20 +34,25 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ItemsControl ItemsSource="{Binding Messages}">
+            <ItemsControl ItemsSource="{Binding Messages}" AlternationCount="2">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap">
+                        <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" x:Name="MessageTextBlock">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Type}" Value="{x:Static enums:ChatMessageType.System}">
-                                            <Setter Property="TextElement.Foreground" Value="OrangeRed"/>
+                                            <Setter Property="Foreground" Value="OrangeRed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#F1F1F1" TargetName="MessageTextBlock" />
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

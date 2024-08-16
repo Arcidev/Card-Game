@@ -6,7 +6,7 @@ namespace Client.UI.ViewModels.MainGame
     {
         public string Text => Type switch
         {
-            ChatMessageType.Message => $"{Author}> {Message}",
+            ChatMessageType.Message => $"{Author}>\u00A0{Message}",
             _ => Message,
         };
     }
