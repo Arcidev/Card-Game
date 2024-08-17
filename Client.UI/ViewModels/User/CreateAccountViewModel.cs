@@ -10,9 +10,9 @@ namespace Client.UI.ViewModels.User
     {
         public string Username { get; set; }
 
-        public async Task<Game> CreateAccount(string password, Action<UInt16> callback)
+        public Task<Game> CreateAccount(string password, Action<UInt16> callback)
         {
-            return await UserOperation(new Packet(CMSGPackets.UserCreate).Builder().Write(Username).Write(Email).Write(password).Build(), callback);
+            return UserOperation(new Packet(CMSGPackets.UserCreate).Builder().Write(Username).Write(Email).Write(password).Build(), callback);
         }
     }
 }

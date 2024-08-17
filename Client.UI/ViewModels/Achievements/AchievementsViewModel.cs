@@ -11,7 +11,8 @@ namespace Client.UI.ViewModels.Achievements
         public AchievementsViewModel()
         {
             var game = App.GetGame() ?? throw new InvalidOperationException("Game must exist at this point");
-            Achievements = game.Achievements.OrderByDescending(x => x.IsCompleted).ThenByDescending(x => x.CompletionDate).Select(x => new AchievementViewModel(x, game.DataHolder)).ToList();
+            Achievements = game.Achievements.OrderByDescending(x => x.IsCompleted).ThenByDescending(x => x.CompletionDate)
+                .Select(x => new AchievementViewModel(x, game.DataHolder)).ToList();
         }
     }
 }

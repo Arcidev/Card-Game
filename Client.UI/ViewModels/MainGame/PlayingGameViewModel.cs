@@ -32,7 +32,7 @@ namespace Client.UI.ViewModels.MainGame
 
             AttackCmd = new (() => InvokeCardAction(CardAction.BasicAttack));
             SpellAttackCmd = new (() => InvokeCardAction(CardAction.SpellUse));
-            DefendCmd = new (() => Game.DefendSelfAsync());
+            DefendCmd = new (Game.DefendSelfAsync);
 
             Game.PacketProcessed += OnPacketProcessed;
         }

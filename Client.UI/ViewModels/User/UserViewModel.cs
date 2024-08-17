@@ -20,19 +20,19 @@ namespace Client.UI.ViewModels.User
         {
             this.game = game;
             Name = name;
-            AcceptFriend = new AsyncCommandHandler(async () => await HandleFriendRequest(UserRelationAction.AcceptFriend));
-            DenyFriend = new AsyncCommandHandler(async () => await HandleFriendRequest(UserRelationAction.DenyFriend));
-            BlockUser = new AsyncCommandHandler(async () => await HandleFriendRequest(UserRelationAction.BlockUser));
-            RemoveBlockedUser = new AsyncCommandHandler(async () => await HandleFriendRequest(UserRelationAction.RemoveBlockedUser));
+            AcceptFriend = new AsyncCommandHandler(() => HandleFriendRequest(UserRelationAction.AcceptFriend));
+            DenyFriend = new AsyncCommandHandler(() => HandleFriendRequest(UserRelationAction.DenyFriend));
+            BlockUser = new AsyncCommandHandler(() => HandleFriendRequest(UserRelationAction.BlockUser));
+            RemoveBlockedUser = new AsyncCommandHandler(() => HandleFriendRequest(UserRelationAction.RemoveBlockedUser));
         }
 
-        protected async Task HandleFriendRequest(UserRelationAction action)
+        protected Task HandleFriendRequest(UserRelationAction action)
         {
             var packet = new Packet(CMSGPackets.UserRelation);
             packet.Write(Name);
             packet.Write((byte)action);
 
-            await game.SendPacketAsync(packet);
+            return game.SendPacketAsync(packet);
         }
     }
 }

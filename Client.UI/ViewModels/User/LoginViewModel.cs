@@ -41,9 +41,9 @@ namespace Client.UI.ViewModels.User
             Server = ServerList.FirstOrDefault();
         }
 
-        public async Task<Game> Login(string password, Action<UInt16> callback)
+        public Task<Game> Login(string password, Action<UInt16> callback)
         {
-            return await UserOperation(new Packet(CMSGPackets.UserLogIn).Builder().Write(Email).Write(password).Build(), callback);
+            return UserOperation(new Packet(CMSGPackets.UserLogIn).Builder().Write(Email).Write(password).Build(), callback);
         }
 
         protected async Task<Game> UserOperation(Packet packet, Action<UInt16> callback)

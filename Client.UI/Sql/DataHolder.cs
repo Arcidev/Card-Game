@@ -38,7 +38,7 @@ namespace Client.UI.Sql
 
         public SpellData GetSpellData(UInt32 id) => spellsData.TryGetValue(id, out var spellData) ? spellData : new SpellData(id, string.Empty, string.Empty, string.Empty, string.Empty);
 
-        public AchievementInfo GetAchievementInfo(UInt32 id) => achievements.TryGetValue(id, out var name) ? name : null;
+        public AchievementInfo GetAchievementInfo(UInt32 id) => achievements.TryGetValue(id, out var name) ? name : new AchievementInfo(string.Empty, string.Empty);
 
         public string GetCriteriaDescription(UInt32 id) => criteriaDescriptions.TryGetValue(id, out var description) ? description : string.Empty;
 

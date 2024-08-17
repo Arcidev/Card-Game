@@ -46,7 +46,7 @@ namespace Client.UI.ViewModels.Cards
         public ICommand OnClickCmd
         {
             get => onClickCmd;
-            protected set
+            protected init
             {
                 if (onClickCmd == value)
                     return;
