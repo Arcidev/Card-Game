@@ -144,7 +144,7 @@ void ServerNetwork::handlePlayerNetwork(ConnectedUser* user)
 
         // get data for that client
         int dataLength = network->ReceiveData(user, networkData);
-        if (!dataLength)
+        if (dataLength <= 0)
         {
             if (!network->IsShuttingDown())
             {
