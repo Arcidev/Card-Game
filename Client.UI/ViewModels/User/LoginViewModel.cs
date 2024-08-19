@@ -51,7 +51,7 @@ namespace Client.UI.ViewModels.User
             var game = App.GetGame();
             if (game == null)
             {
-                game = await Game.CreateAsync(Server, new DataHolder());
+                game = await Game.CreateAsync(Server, new DataHolder(), callback);
                 if (game == null)
                 {
                     ErrorMessage = Texts.UnableToConnect;
@@ -59,7 +59,6 @@ namespace Client.UI.ViewModels.User
                 }
 
                 game.MessageReceived += SetErrorMessage;
-                game.PacketProcessed += callback;
                 App.SetGame(game);
             }
 

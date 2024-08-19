@@ -98,15 +98,8 @@ namespace Client.Logic
             Chat = new Chat(this);
             CombatLog = new CombatLog();
 
-            var packet = new Packet(CMSGPackets.Init);
-            using (var rsa = new RsaEncryptor(Security.RSAKey.Modulus, Security.RSAKey.Exponent))
-            {
-                aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
-                network.Encryptor = aes;
-                packet.Write(rsa.Encrypt(aes.Encryptors));
-            }
-
-            SendPacket(packet, false);
+            aes = new AesEncryptor(AesEncryptionType.Aes256Bits) { PaddingMode = PaddingMode.PKCS7 };
+            network.Encryptor = aes;
             networkConnectionTask = Task.Run(UpdateAsync, tokenSource.Token);
         }
 
@@ -114,14 +107,26 @@ namespace Client.Logic
         /// Creates new instance of game
         /// </summary>
         /// <param name="server">Server url</param>
+        /// <param name="dataHolder">Data Holder</param>
+        /// <param name="packetCallback">Callback for processed packets</param>
         /// <returns>Instance of game</returns>
-        public static async Task<Game> CreateAsync(string server, IDataHolder dataHolder)
+        public static async Task<Game> CreateAsync(string server, IDataHolder dataHolder, Action<UInt16> packetCallback)
         {
             var network = await ClientNetwork.CreateAsync(server, port);
             if (network == null)
                 return null;
 
-            return new Game(network, dataHolder);
+            var game = new Game(network, dataHolder);
+            game.PacketProcessed += packetCallback;
+
+            var packet = new Packet(CMSGPackets.Init);
+            using (var rsa = new RsaEncryptor(Security.RSAKey.Modulus, Security.RSAKey.Exponent))
+            {
+                packet.Write(rsa.Encrypt(game.aes.Encryptors));
+            }
+
+            await game.SendPacketAsync(packet, false);
+            return game;
         }
 
         /// <summary>
