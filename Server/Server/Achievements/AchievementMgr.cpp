@@ -36,7 +36,7 @@ void AchievementManager::updateUserAchievementProgress()
         }
 
         m_locker.lock();
-        auto mapCopy = UserAchievementProgress(m_userAchievementProgress);
+        auto mapCopy = UserAchievementProgressMap(m_userAchievementProgress);
         m_userAchievementProgress.clear();
         m_locker.unlock();
 

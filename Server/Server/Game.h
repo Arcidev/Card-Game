@@ -8,7 +8,7 @@ class Packet;
 class Game
 {
     private:
-        uint32_t m_activePlayerId;
+        Player* m_activePlayer;
         Player* m_player1;
         Player* m_player2;
         uint64_t m_nextCardGuid;
@@ -27,8 +27,7 @@ class Game
 
         uint64_t GetNextCardGuid() { return m_nextCardGuid++; };
         Player* GetOpponent(Player const* player) const;
-        Player* GetActivePlayer() const;
-        uint32_t GetActivePlayerId() const { return m_activePlayerId; }
+        Player* GetActivePlayer() const { return m_activePlayer; }
         void BroadcastPacket(Packet const& packet) const;
 };
 

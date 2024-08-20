@@ -4,7 +4,7 @@
 #include "PacketHandlers/Packet.h"
 #include "Cards/PlayableCard.h"
 
-Game::Game() : m_activePlayerId(0), m_player1(nullptr), m_player2(nullptr), m_nextCardGuid(1) {}
+Game::Game() : m_activePlayer(nullptr), m_player1(nullptr), m_player2(nullptr), m_nextCardGuid(1) {}
 
 // Free resources
 Game::~Game()
@@ -71,12 +71,6 @@ Player* Game::GetOpponent(Player const* player) const
     return player->GetId() == m_player1->GetId() ? m_player2 : m_player1;
 }
 
-// Returns currently active player
-Player* Game::GetActivePlayer() const
-{
-    return m_activePlayerId == m_player1->GetId() ? m_player1 : m_player2;
-}
-
 // Sends packet to all players in this game
 void Game::BroadcastPacket(Packet const& packet) const
 {
@@ -90,12 +84,12 @@ void Game::BroadcastPacket(Packet const& packet) const
 // Activates second player and deactives the active one
 void Game::ActivateSecondPlayer()
 {
-    if (m_activePlayerId)
-        m_activePlayerId = (m_player1->GetId() == m_activePlayerId) ? m_player2->GetId() : m_player1->GetId();
+    if (m_activePlayer)
+        m_activePlayer = (m_player1 == m_activePlayer) ? m_player2 : m_player1;
     else
-        m_activePlayerId = (rand() % 2) ? m_player1->GetId() : m_player2->GetId();
+        m_activePlayer = (rand() % 2) ? m_player1 : m_player2;
 
-    PlayableCard* currentCard = GetActivePlayer()->GetCurrentCard();
+    PlayableCard* currentCard = m_activePlayer->GetCurrentCard();
     if (!currentCard)
         return;
 

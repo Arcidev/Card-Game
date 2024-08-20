@@ -10,10 +10,10 @@ typedef std::map<uint32_t, Achievement> AchievementMap;
 class AchievementManager
 {
     private:
-        typedef std::map<std::tuple<uint32_t, uint32_t>, uint32_t> UserAchievementProgress;
+        typedef std::map<std::tuple<uint32_t, uint32_t>, uint32_t> UserAchievementProgressMap;
 
         std::mutex m_locker;
-        UserAchievementProgress m_userAchievementProgress;
+        UserAchievementProgressMap m_userAchievementProgress;
         DbAchievementMap m_achievementMap;
         std::thread m_userAchievementProgressThread;
         bool m_stopUpdateThread;

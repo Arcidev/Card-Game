@@ -78,5 +78,5 @@ class Player
         std::string_view GetName() const;
         ConnectedUser* GetUser() const { return m_user; }
         bool IsPrepared() const { return m_isPrepared; }
-        bool IsActive() const { return m_game->GetActivePlayerId() == m_id; }
+        bool IsActive() const { return m_game->GetActivePlayer() == this; }
 };
