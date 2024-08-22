@@ -72,7 +72,7 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding Image}" ToolTip="{Binding Text}" Width="40" Height="40" Margin="2" />
+                                <Image Source="{Binding Image}" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Text}" Width="40" Height="40" Margin="2" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
