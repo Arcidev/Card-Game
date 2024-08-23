@@ -1,4 +1,3 @@
-#include <chrono>
 #include "AchievementMgr.h"
 #include "../../Shared/SharedDefines.h"
 
@@ -40,8 +39,7 @@ void AchievementManager::updateUserAchievementProgress()
         m_userAchievementProgress.clear();
         m_locker.unlock();
 
-        for (auto const& item : mapCopy)
-            DatabaseInstance::GetDbCommandHandler().SetUserAchievementProgress(std::get<0>(item.first), std::get<1>(item.first), item.second);
+        DatabaseInstance::GetDbCommandHandler().SetUserAchievementProgress(mapCopy);
     }
     DEBUG_LOG("Achievement update process ended\r\n");
 }

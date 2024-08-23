@@ -1,5 +1,6 @@
 #include <cstring>
 #include <map>
+#include <sstream>
 #include <string>
 #include "DbCommandHandler.h"
 
@@ -78,15 +79,20 @@ DbUserCriteriaMap DbCommandHandler::GetUserAchievementProgress(uint32_t userId) 
     return userCriterias;
 }
 
-void DbCommandHandler::SetUserAchievementProgress(uint32_t userId, uint32_t criteriaId, uint32_t progress) const
+void DbCommandHandler::SetUserAchievementProgress(std::map<std::tuple<uint32_t, uint32_t>, uint32_t> const& userAchievements) const
 {
-    std::string userStr = std::to_string(userId);
-    std::string criteriaStr = std::to_string(criteriaId);
-    std::string progressStr = std::to_string(progress);
-    PreparedStatement stmt("INSERT INTO user_achievement_criterias (user_id, criteria_id, progress) VALUES ($1, $2, $3) ON CONFLICT (user_id, criteria_id) DO UPDATE SET progress = $3, last_modified = CURRENT_TIMESTAMP;");
-    stmt.AddParameter(userStr);
-    stmt.AddParameter(criteriaStr);
-    stmt.AddParameter(progressStr);
+    if (userAchievements.empty())
+        return;
 
+    std::stringstream ss;
+    ss << "INSERT INTO user_achievement_criterias(user_id, criteria_id, progress) VALUES ";
+
+    for (auto const& item : userAchievements)
+        ss << '(' << std::get<0>(item.first) << ", " << std::get<1>(item.first) << ", " << item.second << "),";
+
+    ss.seekp(-1, std::ios_base::end);
+    ss << " ON CONFLICT (user_id, criteria_id) DO UPDATE SET progress = excluded.progress, last_modified = CURRENT_TIMESTAMP;";
+
+    PreparedStatement stmt(ss.str());
     dbHandler.ExecuteCommand(stmt, nullptr);
 }
