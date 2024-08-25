@@ -1,8 +1,9 @@
 #include <algorithm>
 #include <random>
-#include "Player.h"
 #include "ConnectedUser.h"
 #include "DataHolder.h"
+#include "Game.h"
+#include "Player.h"
 #include "ServerNetwork.h"
 #include "Cards/PlayableCard.h"
 #include "PacketHandlers/PacketHandler.h"
@@ -255,6 +256,16 @@ PlayableCard* Player::GetCard(uint64_t cardGuid)
 inline std::string_view Player::GetName() const
 {
     return m_user->GetName();
+}
+
+inline Player* Player::GetOpponent() const
+{
+    return m_game->GetOpponent(this);
+}
+
+inline bool Player::IsActive() const
+{
+    return m_game->GetActivePlayer() == this;
 }
 
 void Player::SendGameInfo() const

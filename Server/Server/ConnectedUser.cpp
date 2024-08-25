@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ConnectedUser.h"
+#include "Game.h"
 #include "Player.h"
 #include "NetworkServices.h"
 #include "ServerNetwork.h"

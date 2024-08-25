@@ -3,13 +3,13 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "Game.h"
 #include "PlayerDefines.h"
 #include "Cards/CardDefines.h"
 #include "Spells/SpellDefines.h"
 
 class Card;
 class ConnectedUser;
+class Game;
 class Packet;
 class PlayableCard;
 class Spell;
@@ -67,7 +67,7 @@ class Player
         void Disconnect() const;
         void HandleDeckCards(bool addCard);
 
-        Player* GetOpponent() const { return m_game->GetOpponent(this); }
+        Player* GetOpponent() const;
         PlayableCard* GetCurrentCard();
         CardsMap const& GetCards() const { return m_cards; }
         std::vector<PlayableCard*> const& GetCurrentCards() const { return m_currentCards; }
@@ -78,5 +78,5 @@ class Player
         std::string_view GetName() const;
         ConnectedUser* GetUser() const { return m_user; }
         bool IsPrepared() const { return m_isPrepared; }
-        bool IsActive() const { return m_game->GetActivePlayer() == this; }
+        bool IsActive() const;
 };

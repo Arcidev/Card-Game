@@ -1,6 +1,7 @@
 #include "PacketHandler.h"
 #include "../ConnectedUser.h"
 #include "../DataHolder.h"
+#include "../Game.h"
 #include "../Player.h"
 #include "../Cards/PlayableCard.h"
 #include "../../Shared/SharedDefines.h"

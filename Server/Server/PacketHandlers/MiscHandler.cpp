@@ -1,5 +1,6 @@
 #include "PacketHandler.h"
 #include "../ConnectedUser.h"
+#include "../Game.h"
 #include "../Player.h"
 #include "../../Shared/SharedDefines.h"
 #include "../../Crypto/Aes.h"
