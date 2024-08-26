@@ -4,6 +4,7 @@ using Client.UI.Controls;
 using Client.UI.Enums;
 using System;
 using System.Linq;
+using System.Windows;
 
 namespace Client.UI.ViewModels.MainGame
 {
@@ -31,7 +32,7 @@ namespace Client.UI.ViewModels.MainGame
             Opponent = new (Game.Opponent);
 
             AttackCmd = new (() => InvokeCardAction(CardAction.BasicAttack));
-            SpellAttackCmd = new (() => InvokeCardAction(CardAction.SpellUse));
+            SpellAttackCmd = new (() => InvokeCardAction(CardAction.SpellUse), () => Game.Player.ActiveCard?.Spell != null);
             DefendCmd = new (Game.DefendSelfAsync);
 
             Game.PacketProcessed += OnPacketProcessed;
@@ -47,6 +48,8 @@ namespace Client.UI.ViewModels.MainGame
 
             foreach (var card in Opponent.Cards)
                 card.SelectionType = SelectionType.None;
+
+            Application.Current.Dispatcher.Invoke(SpellAttackCmd.NotifyCanExecuteChanged);
         }
 
         private void InvokeCardAction(CardAction action)
@@ -54,6 +57,9 @@ namespace Client.UI.ViewModels.MainGame
             if (action == CardAction.SpellUse)
             {
                 var targets = Game.Player.ActiveCard.Spell?.GetPossibleTargets(Game.Player, Game.Opponent);
+                if (targets == null)
+                    return;
+
                 foreach (var playerCards in Player.Cards.Where(x => targets.Contains(x.Guid)).Concat(Opponent.Cards.Where(x => targets.Contains(x.Guid))))
                 {
                     playerCards.SelectionType = SelectionType.SpellUsable;
