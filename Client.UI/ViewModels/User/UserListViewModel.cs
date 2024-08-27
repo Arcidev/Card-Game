@@ -93,16 +93,16 @@ namespace Client.UI.ViewModels.User
             });
         }
 
-        private static async Task HandlerUser(string name, UserRelationAction action)
+        private static Task HandlerUser(string name, UserRelationAction action)
         {
             if (string.IsNullOrEmpty(name))
-                return;
+                return Task.CompletedTask;
 
             var game = App.GetGame();
             var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
                 .Write(name).Write((byte)action).Build();
 
-            await game.SendPacketAsync(packet);
+            return game.SendPacketAsync(packet);
         }
     }
 }

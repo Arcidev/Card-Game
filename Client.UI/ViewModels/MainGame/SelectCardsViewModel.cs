@@ -31,7 +31,7 @@ namespace Client.UI.ViewModels.MainGame
             SendSelectedCardsCommand = new (SendSelectedCards, () => selectedItems?.Count == 5);
         }
 
-        private async Task SendSelectedCards()
+        private Task SendSelectedCards()
         {
             var packet = new Packet(CMSGPackets.SelectedCards);
 
@@ -39,7 +39,7 @@ namespace Client.UI.ViewModels.MainGame
             foreach (var card in selectedItems.Cast<SelectableCardViewModel>())
                 packet.Write(card.Id);
 
-            await game.SendPacketAsync(packet);
+            return game.SendPacketAsync(packet);
         }
 
         private void SelectItems(object obj)

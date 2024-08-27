@@ -190,7 +190,7 @@ namespace Client.UI.ViewModels.MainGame
             });
         }
 
-        private async Task HandleWhisperCommand(string arg)
+        private Task HandleWhisperCommand(string arg)
         {
             void FormatSyntaxError()
             {
@@ -204,7 +204,7 @@ namespace Client.UI.ViewModels.MainGame
             if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
             {
                 FormatSyntaxError();
-                return;
+                return Task.CompletedTask;
             }
 
             string receiverName = arg[..commandDelimiter];
@@ -213,14 +213,14 @@ namespace Client.UI.ViewModels.MainGame
             if (message.Length == 0)
             {
                 FormatSyntaxError();
-                return;
+                return Task.CompletedTask;
             }
 
             parent.SetActiveChat(ChatType.Whisper, receiverName, true);
-            await parent.Game.Chat.SendMessage(message, ChatType.Whisper, receiverName);
+            return parent.Game.Chat.SendMessage(message, ChatType.Whisper, receiverName);
         }
 
-        private async Task HandleFriendCommand(string arg)
+        private Task HandleFriendCommand(string arg)
         {
             const string addFriend = "add";
             const string acceptFriend = "accept";
@@ -239,7 +239,7 @@ namespace Client.UI.ViewModels.MainGame
             if (string.IsNullOrWhiteSpace(arg) || (commandDelimiter <= 0))
             {
                 FormatSyntaxError();
-                return;
+                return Task.CompletedTask;
             }
 
             string command = arg[..commandDelimiter];
@@ -262,24 +262,24 @@ namespace Client.UI.ViewModels.MainGame
                     break;
                 default:
                     FormatSyntaxError();
-                    return;
+                    return Task.CompletedTask;
             }
 
             var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
                 .Write(name).Write((byte)action).Build();
 
-            await parent.Game.SendPacketAsync(packet);
+            return parent.Game.SendPacketAsync(packet);
         }
 
-        private async Task HandleBlockCommand(string name, bool block)
+        private Task HandleBlockCommand(string name, bool block)
         {
             if (string.IsNullOrWhiteSpace(name))
-                return;
+                return Task.CompletedTask;
 
             var packet = new Packet((UInt16)CMSGPackets.UserRelation).Builder()
                 .Write(name).Write((byte)(block ? UserRelationAction.BlockUser : UserRelationAction.RemoveBlockedUser)).Build();
 
-            await parent.Game.SendPacketAsync(packet);
+            return parent.Game.SendPacketAsync(packet);
         }
     }
 }

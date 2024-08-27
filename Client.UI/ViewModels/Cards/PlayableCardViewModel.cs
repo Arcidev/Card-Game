@@ -72,10 +72,10 @@ namespace Client.UI.ViewModels.Cards
             });
         }
 
-        private async Task UseCardAction()
+        private Task UseCardAction()
         {
             if (SelectionType != SelectionType.BasicDamageAttackable && SelectionType != SelectionType.SpellUsable)
-                return;
+                return Task.CompletedTask;
 
             var packet = new Packet(CMSGPackets.CardAction).Builder()
                 .WriteGuidBitStreamInOrder(card.Guid, 4, 3, 2, 7, 1, 6, 0, 5)
@@ -85,7 +85,7 @@ namespace Client.UI.ViewModels.Cards
                 .WriteGuidByteStreamInOrder(card.Guid, 5, 3, 4)
                 .Build();
 
-            await card.Player.Game.SendPacketAsync(packet);
+            return card.Player.Game.SendPacketAsync(packet);
         }
     }
 }
