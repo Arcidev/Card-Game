@@ -31,8 +31,8 @@ namespace Client.UI.ViewModels.User
             ReloadFriendRequests();
             ReloadBlockedUsers();
 
-            AddFriendCmd = new (async (o) => await HandlerUser(o as string, UserRelationAction.AddFriend));
-            BlockUserCmd = new (async (o) => await HandlerUser(o as string, UserRelationAction.BlockUser));
+            AddFriendCmd = new (async (o) => await HandleUser(o as string, UserRelationAction.AddFriend));
+            BlockUserCmd = new (async (o) => await HandleUser(o as string, UserRelationAction.BlockUser));
         }
 
         public void Dispose()
@@ -93,7 +93,7 @@ namespace Client.UI.ViewModels.User
             });
         }
 
-        private static Task HandlerUser(string name, UserRelationAction action)
+        private static Task HandleUser(string name, UserRelationAction action)
         {
             if (string.IsNullOrEmpty(name))
                 return Task.CompletedTask;
