@@ -10,6 +10,17 @@
 #include "Spells/Spell.h"
 #include "Spells/SpellAuraEffect.h"
 
+static uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense)
+{
+    float reduction = (defense * (float)SystemStats::DEFENSE_PERCENT_PER_POINT);
+    if (!reduction)
+        return damage;
+
+    reduction /= 100.f;
+    reduction += 1.f;
+    return (uint8_t)(damage / reduction);
+}
+
 Player::Player(Game* game, ConnectedUser* user)
     : m_isPrepared(false), m_replenishmentMoveCount(0), m_id(user->GetId()), m_currentCardIndex(0), m_game(game), m_user(user) { }
 
@@ -637,18 +648,7 @@ void Player::endTurn()
     GetGame()->ActivateSecondPlayer();
 }
 
-uint8_t Player::calculateReducedDamage(uint8_t damage, uint8_t defense)
-{
-    float reduction = (defense * (float)SystemStats::DEFENSE_PERCENT_PER_POINT);
-    if (!reduction)
-        return damage;
-
-    reduction /= 100.f;
-    reduction += 1.f;
-    return (uint8_t)(damage / reduction);
-}
-
-bool Player::SwapCards(PlayableCard* card, PlayableCard* other)
+bool Player::SwapCards(PlayableCard* card, PlayableCard* other) const
 {
     static auto getCardIndex = [](std::vector<PlayableCard*> const& all, PlayableCard const* toFind)
     {

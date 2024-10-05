@@ -33,7 +33,6 @@ class Player
         void destroyCard(uint64_t cardGuid);
         void replenishMana();
         void endTurn();
-        uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense);
 
     public:
         Player(Game* game, ConnectedUser* user);
@@ -59,7 +58,7 @@ class Player
         void Prepare();
         void DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense);
         void Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense);
-        bool SwapCards(PlayableCard* card, PlayableCard* other);
+        bool SwapCards(PlayableCard* card, PlayableCard* other) const;
 
         void ClearCards();
         void CreateCard(Card const* cardTemplate);
