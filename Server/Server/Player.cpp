@@ -22,7 +22,7 @@ static uint8_t calculateReducedDamage(uint8_t damage, uint8_t defense)
 }
 
 Player::Player(Game* game, ConnectedUser* user)
-    : m_isPrepared(false), m_replenishmentMoveCount(0), m_id(user->GetId()), m_currentCardIndex(0), m_game(game), m_user(user) { }
+    : m_isPrepared(false), m_replenishmentMoveCount(0), m_currentCardIndex(0), m_game(game), m_user(user) { }
 
 Player::~Player()
 {
@@ -36,7 +36,7 @@ Player::~Player()
 // Set player state to disconnected
 void Player::Disconnect() const
 {
-    m_game->DisconnectPlayer(m_id);
+    m_game->DisconnectPlayer(GetId());
     m_user->GetNetwork()->OnPlayerDisconnected(this);
 }
 
@@ -50,7 +50,7 @@ void Player::SendAttackResult(AttackResult result, uint64_t cardGuid, uint8_t da
         packet.WriteBitStreamInOrder(cardGuid, { 6, 2, 1, 7, 3, 0, 4, 5 });
         packet.FlushBits();
         packet.WriteByteStreamInOrder(cardGuid, { 2, 6, 7 });
-        packet << m_id;
+        packet << GetId();
         packet.WriteByteStreamInOrder(cardGuid, { 1, 3, 0 });
         packet << damage;
         packet.WriteByteStreamInOrder(cardGuid, { 5, 4 });
@@ -90,7 +90,7 @@ void Player::Attack(uint64_t victimCardGuid)
         SendAttackResult(AttackResult::ATTACK_RESULT_CARD_DESTROYED, victimCardGuid, damage);
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
         {
-            EndGame(m_id);
+            EndGame(GetId());
             return;
         }
         else
@@ -141,7 +141,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     }
 
     packet.FlushBits();
-    packet << m_id;
+    packet << GetId();
     packet << buffer;
 
     GetGame()->BroadcastPacket(packet);
@@ -149,7 +149,7 @@ void Player::SpellAttack(std::list<PlayableCard*> const& targets, uint8_t damage
     if (sendOpponentCardDeck)
     {
         if (victim->m_cardOrder.empty() && victim->m_currentCards.empty())
-            EndGame(m_id);
+            EndGame(GetId());
         else
             victim->HandleDeckCards(victim->m_currentCards.empty() ? true : false);
     }
@@ -176,7 +176,7 @@ void Player::SendSpellCastResult(SpellCastResult reason, PlayableCard const* car
     packet.WriteByteStreamInOrder(card->GetGuid(), { 7, 2 });
     packet << spell->GetManaCost();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 4, 0, 1 });
-    packet << m_id;
+    packet << GetId();
     packet << spell->GetId();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 3, 6, 5 });
     GetGame()->BroadcastPacket(packet);
@@ -193,7 +193,7 @@ void Player::SendCardHealed(PlayableCard const* card, uint8_t amount) const
     packet.FlushBits();
 
     packet.WriteByteStreamInOrder(card->GetGuid(), { 5, 2, 7, 1 });
-    packet << m_id;
+    packet << GetId();
     packet << card->GetHealth();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 4, 0, 3, 6 });
     packet << amount;
@@ -264,6 +264,11 @@ PlayableCard* Player::GetCard(uint64_t cardGuid)
     return (iter == m_cards.end()) ? nullptr : iter->second;
 }
 
+inline uint32_t Player::GetId() const
+{
+    return m_user->GetId();
+}
+
 inline std::string_view Player::GetName() const
 {
     return m_user->GetName();
@@ -286,7 +291,7 @@ void Player::SendGameInfo() const
     packet.WriteBit(opponent != nullptr);
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     if (opponent)
     {
         packet << opponent->GetId();
@@ -404,7 +409,7 @@ void Player::HandleDeckCards(bool addCard)
         packet.WriteBitStreamInOrder(m_currentCards[i]->GetGuid(), { 7, 2, 1, 4, 5, 0, 6, 3 });
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     for (uint8_t i = 0; i < cardsCount; i++)
         packet.WriteByteStreamInOrder(m_currentCards[i]->GetGuid(), { 2, 1, 7, 6, 0, 5, 3, 4 });
     
@@ -424,7 +429,7 @@ PlayableCard* Player::GetCurrentCard()
 // Informs player that game has ended
 void Player::EndGame(uint32_t winnerId) const
 {
-    if (m_id == winnerId)
+    if (GetId() == winnerId)
     {
         m_user->OnGameWon();
         GetOpponent()->GetUser()->OnGameEnded();
@@ -462,7 +467,7 @@ void Player::SendCardStatChanged(PlayableCard const* card, CardStats cardStat) c
     packet.WriteByteStreamInOrder(card->GetGuid(), { 5, 7 });
     packet << card->GetStatModifierValue(cardStat);
     packet.WriteByteStreamInOrder(card->GetGuid(), { 6, 3, 1 });
-    packet << m_id;
+    packet << GetId();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 4, 2 });
     packet << (uint8_t)cardStat;
 
@@ -478,7 +483,7 @@ void Player::SendMorphInfo(PlayableCard const* card) const
     packet.WriteBit(card->GetMorph() != nullptr);
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     packet.WriteBitStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet << cardInfo->GetId();
@@ -494,7 +499,7 @@ void Player::SendApplyAura(uint64_t targetGuid, SpellAuraEffect const& aura) con
     packet.WriteBitStreamInOrder(targetGuid, { 7, 2, 1, 3, 5, 4, 0, 6 });
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     packet.WriteByteStreamInOrder(targetGuid, { 0, 5, 2, 1, 7, 6, 4, 3 });
     packet << aura.GetSpellId();
 
@@ -510,7 +515,7 @@ void Player::SendAuraExpired(uint64_t targetGuid, SpellAuraEffect const& aura) c
 
     packet << aura.GetSpellId();
     packet.WriteByteStreamInOrder(targetGuid, { 7, 6, 5, 4, 3, 2, 1, 0 });
-    packet << m_id;
+    packet << GetId();
 
     GetGame()->BroadcastPacket(packet);
 }
@@ -524,7 +529,7 @@ void Player::SendAurasRemoved(uint64_t targetGuid, std::list<uint32_t> const& sp
     Packet packet(SMSGPackets::SMSG_SPELL_AURAS_REMOVED);
     packet.WriteBitStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet.WriteByteStreamInOrder(targetGuid, { 0, 1, 2, 3, 4, 5, 6, 7 });
-    packet << m_id;
+    packet << GetId();
 
     packet << (uint8_t)spellIds.size();
     for (uint32_t spellId : spellIds)
@@ -543,7 +548,7 @@ void Player::replenishMana()
         ByteBuffer buffer;
 
         packet << (uint8_t)m_currentCards.size();
-        buffer << m_id;
+        buffer << GetId();
         buffer << (uint8_t)SystemStats::MANA_REPLENISHMENT_VALUE;
 
         for (PlayableCard* currentCard : m_currentCards)
@@ -564,7 +569,7 @@ void Player::replenishMana()
 }
 
 // Handles periodic damage from aura
-void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense)
+void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense) const
 {
     damage = applyDefense ? calculateReducedDamage(damage, card->GetModifiedDefense()) : damage;
     card->DealDamage(damage);
@@ -575,7 +580,7 @@ void Player::DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyD
     packet.WriteBitStreamInOrder(card->GetGuid(), { 7, 2, 3, 5, 0 });
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 7, 5, 4, 6 });
     packet << damage;
     GetGame()->BroadcastPacket(packet);
@@ -601,7 +606,7 @@ void Player::Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHe
     packet.WriteBit(card->IsAlive());
     packet.FlushBits();
 
-    packet << m_id;
+    packet << GetId();
     packet.WriteByteStreamInOrder(card->GetGuid(), { 0, 1, 2, 3, 4, 5, 6, 7 });
     packet << damage << restoredHealth << drainedMana << restoredMana;
     packet << card->GetMana() << currentCard->GetHealth() << currentCard->GetMana();

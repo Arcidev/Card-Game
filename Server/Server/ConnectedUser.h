@@ -33,6 +33,7 @@ class ConnectedUser
         BlockedUsersMap m_blockedUsers;
 
         void handleAchievementCriteria(CriteriaTypes type, std::function<void (AchievementCriteria&)> func);
+
     public:
         ConnectedUser(uint32_t serverId, SOCKET socket, ServerNetwork* network, AchievementManager* achievementMgr);
         ~ConnectedUser();

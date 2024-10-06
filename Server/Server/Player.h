@@ -24,7 +24,6 @@ class Player
         std::vector<PlayableCard*> m_currentCards;
         bool m_isPrepared;
         uint8_t m_replenishmentMoveCount;
-        uint32_t m_id;
         CardsMap m_cards;
         uint8_t m_currentCardIndex;
         Game* m_game;
@@ -56,7 +55,7 @@ class Player
         void UseSpell(uint64_t selectedCardGuid);
         void DefendSelf();
         void Prepare();
-        void DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense);
+        void DealPeriodicDamage(PlayableCard* card, uint32_t damage, bool applyDefense) const;
         void Drain(PlayableCard* card, uint8_t drainedHealth, uint8_t restoredHealth, uint8_t drainedMana, uint8_t restoredMana, bool applyDefense);
         bool SwapCards(PlayableCard* card, PlayableCard* other) const;
 
@@ -72,7 +71,7 @@ class Player
         std::vector<PlayableCard*> const& GetCurrentCards() const { return m_currentCards; }
         PlayableCard* GetCard(uint64_t cardGuid);
         Game* GetGame() const { return m_game; }
-        uint32_t GetId() const { return m_id; }
+        uint32_t GetId() const;
         uint8_t GetCurrentCardIndex() const { return m_currentCardIndex; }
         std::string_view GetName() const;
         ConnectedUser* GetUser() const { return m_user; }
